@@ -1,5 +1,5 @@
-// Use relative URL for Vite proxy in dev, absolute for production
-const API_BASE_URL = import.meta.env.DEV ? '/api' : 'http://localhost:3001/api';
+// Use relative URL - works with any domain (localhost, railway, custom domain)
+const API_BASE_URL = '/api';
 
 const DEFAULT_TIMEOUT = 15000; // 15 seconds
 

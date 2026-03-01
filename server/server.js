@@ -669,6 +669,14 @@ app.post('/api/alert/dismiss', (req, res) => {
   res.json({ dismissed: true });
 });
 
+// Serve static files from dist folder (production build)
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Serve index.html for all other routes (SPA routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 // Get ticker text (for comic ticker) - Instant response
 app.get('/api/ticker', async (req, res) => {
   const startTime = Date.now();
