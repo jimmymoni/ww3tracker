@@ -1,0 +1,85 @@
+FIX THE WAR MARKET COMPONENT - CRITICAL ISSUES
+
+CURRENT FILE: src/components/SpicyMeter.jsx
+
+PROBLEMS TO FIX:
+1. Remove ALL red glow/border effects from the component
+2. Remove ALL flashing animations
+3. Remove ALL background color changes
+4. Make text HIGHLY READABLE with good contrast
+5. Keep it looking like a clean stock ticker
+
+EXACT REQUIREMENTS:
+
+HEADER:
+- Title: "📉 WAR MARKET" in white, bold, readable
+- Small red "LIVE" indicator (static, no animation)
+- Share buttons (X, Copy, Download) - keep these
+
+STOCK ROWS (5 total):
+Display exactly like this with HIGH CONTRAST:
+
+┌─────────────────────────────┐
+│ PEACE.INC      35%    ▼     │
+│ WW3.RISK       37%    ▲     │
+│ US.SANCTIONS   75%    ▲     │
+│ DIPLOMACY      65%    ▼     │
+│ IRAN.PROXY     25%    ▲     │
+└─────────────────────────────┘
+
+STYLING RULES:
+- Symbol names: WHITE text, bold, font-mono
+- Percentages: 
+  * Green (#4ade80) for GOOD values
+  * Red (#f87171) for BAD values
+  * Large font, highly readable
+- Arrows: Simple ▲ ▼ (green for up, red for down)
+- NO backgrounds on rows
+- NO flashing, pulsing, or animated glows
+- NO red borders around the card
+- Clean dark background only
+
+COLOR LOGIC (Red = Bad for humanity, Green = Good):
+- PEACE.INC (100 - tension): Higher is GOOD (green)
+- WW3.RISK (probability): Higher is BAD (red)  
+- US.SANCTIONS (usHP): Higher is GOOD (green)
+- DIPLOMACY (100 - sentiment): Higher is GOOD (green)
+- IRAN.PROXY (100 - iranHP): Higher is BAD (red)
+
+CIRCUIT BREAKER:
+- ONLY show when tension >= 95
+- Simple red overlay, no flashing
+- Text: "CIRCUIT BREAKER - TRADING HALTED"
+
+SHARE TEXT FORMAT:
+"📉 PEACE.INC down [X]%
+WW3.RISK at [X]%
+Markets not okay 😭
+thestandoff.live #WW3"
+
+FOOTER:
+- Left: Status text (gray, small)
+- Right: Current time
+- Simple border-top separator
+
+REMOVE THESE COMPLETELY:
+- AnimatePresence for glow effects
+- Any motion.div with border animations
+- Background gradients
+- Box-shadow effects
+- Flashing/pulsing CSS
+- isCrash variable checks for styling
+- Red overlay flashes
+
+KEEP THESE:
+- Basic framer-motion for entry animations (fade in)
+- Share button functionality
+- Circuit breaker at 95% tension
+- The 5 stock rows with correct calculations
+
+BEFORE SUBMITTING:
+1. Verify NO red glow on the card
+2. Verify text is HIGHLY readable (white on dark)
+3. Verify clean, minimal design
+4. Verify no flashing animations
+5. Verify it looks like a professional stock ticker
