@@ -672,6 +672,11 @@ app.post('/api/alert/dismiss', (req, res) => {
 // Serve static files from dist folder (production build)
 app.use(express.static(path.join(__dirname, '../dist')));
 
+// Explicit route for sitemap.xml (before SPA catch-all)
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/sitemap.xml'));
+});
+
 // Serve index.html for all other routes (SPA routing)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
