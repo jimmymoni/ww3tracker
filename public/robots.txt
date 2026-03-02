@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# AI Bots - Allowed to crawl for training/indexing
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Sitemap
+Sitemap: https://ww3tracker.live/sitemap.xml
