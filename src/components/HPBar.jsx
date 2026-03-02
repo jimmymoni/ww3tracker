@@ -29,29 +29,32 @@ const HPBar = ({ usHP = 75, iranHP = 60 }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-6 sm:mb-8">
-      {/* Top Labels - Mobile Optimized */}
-      <div className="flex justify-between items-end mb-2 sm:mb-3">
+      {/* Top Labels - Mobile Optimized - FIXED CENTERING */}
+      <div className="grid grid-cols-3 gap-2 items-end mb-2 sm:mb-3">
+        {/* US Side */}
         <div className="text-left">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="text-xl sm:text-2xl">🇺🇸</span>
             <span className="font-heading font-bold text-sm sm:text-xl text-blue-400 tracking-wide">UNITED STATES</span>
           </div>
-          <span className="text-[10px] sm:text-xs text-gray-500 font-body">The Dealmaker</span>
+          <span className="text-[10px] sm:text-xs text-gray-500 font-body block mt-0.5">The Dealmaker</span>
         </div>
 
-        <div className="text-center px-2 sm:px-6">
+        {/* Center VS - Properly Centered */}
+        <div className="text-center">
           <div className="font-heading text-[10px] sm:text-sm text-gray-500 mb-0.5 sm:mb-1">ROUND 1</div>
-          <div className="vs-divider gap-2 sm:gap-4">
-            <span className="font-heading font-bold text-xl sm:text-3xl text-yellow-500 text-glow">VS</span>
+          <div className="flex items-center justify-center">
+            <span className="font-heading font-bold text-2xl sm:text-4xl text-yellow-500 text-glow">VS</span>
           </div>
         </div>
 
+        {/* Iran Side */}
         <div className="text-right">
           <div className="flex items-center gap-1.5 sm:gap-2 justify-end">
             <span className="font-heading font-bold text-sm sm:text-xl text-red-400 tracking-wide">IRAN</span>
             <span className="text-xl sm:text-2xl">🇮🇷</span>
           </div>
-          <span className="text-[10px] sm:text-xs text-gray-500 font-body">The Shadow</span>
+          <span className="text-[10px] sm:text-xs text-gray-500 font-body block mt-0.5">The Shadow</span>
         </div>
       </div>
 
