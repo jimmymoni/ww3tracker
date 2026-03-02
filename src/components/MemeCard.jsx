@@ -58,9 +58,9 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
 
   const getShareText = () => {
     if (meme?.analysis?.memeCaption) {
-      return `${meme.analysis.badge} ${meme.analysis.memeCaption}\n☢️ WW3 tracker is LIVE\nthestandoff.live #WW3 #USvsIran #TheStandoff`;
+      return `${meme.analysis.badge} ${meme.analysis.memeCaption}\n☢️ WW3 tracker is LIVE\nww3tracker.live #WW3 #USvsIran #TheStandoff`;
     }
-    return `☢️ WW3: ${ww3Data?.probability || 50}% likely right now thestandoff.live #WW3 #TheStandoff`;
+    return `☢️ WW3: ${ww3Data?.probability || 50}% likely right now ww3tracker.live #WW3 #TheStandoff`;
   };
 
   const shareToX = () => {
@@ -69,14 +69,14 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
 
   const shareToReddit = () => {
     const title = meme?.analysis?.memeCaption 
-      ? `${meme.analysis.memeCaption} [thestandoff.live]`
+      ? `${meme.analysis.memeCaption} [ww3tracker.live]`
       : `WW3 Probability: ${ww3Data?.probability || 50}% - Live Tracker`;
-    window.open(`https://reddit.com/submit?url=${encodeURIComponent('https://thestandoff.live')}&title=${encodeURIComponent(title)}`, '_blank');
+    window.open(`https://reddit.com/submit?url=${encodeURIComponent('https://ww3tracker.live')}&title=${encodeURIComponent(title)}`, '_blank');
   };
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText('https://thestandoff.live');
+      await navigator.clipboard.writeText('https://ww3tracker.live');
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -100,7 +100,7 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
       ctx.font = 'bold 14px Arial';
       ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
       ctx.textAlign = 'right';
-      ctx.fillText('thestandoff.live', canvas.width - 10, canvas.height - 10);
+      ctx.fillText('ww3tracker.live', canvas.width - 10, canvas.height - 10);
 
       // For WW3 counter, add dramatic overlay
       if (isWW3 && ww3Data) {
@@ -113,7 +113,7 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
         ctx.fillText('right now', canvas.width / 2, canvas.height / 2 + 30);
         ctx.font = 'bold 14px Arial';
         ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-        ctx.fillText('thestandoff.live', canvas.width / 2, canvas.height / 2 + 55);
+        ctx.fillText('ww3tracker.live', canvas.width / 2, canvas.height / 2 + 55);
       }
 
       const link = document.createElement('a');

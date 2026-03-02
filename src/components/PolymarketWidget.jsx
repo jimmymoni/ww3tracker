@@ -11,7 +11,7 @@ const DEFAULT_POLYMARKET_DATA = {
       probability: 18,
       volume: 2847200,
       endDate: '2026-06-30T23:59:59Z',
-      url: 'https://polymarket.com/event/will-the-iranian-regime-fall-by-june-30?r=thestandoff',
+      url: 'https://polymarket.com/event/will-the-iranian-regime-fall-by-june-30?r=ww3tracker',
       isReal: true,
       source: 'polymarket'
     },
@@ -21,7 +21,7 @@ const DEFAULT_POLYMARKET_DATA = {
       probability: 12,
       volume: 5156700,
       endDate: '2026-03-31T23:59:59Z',
-      url: 'https://polymarket.com/event/will-the-us-invade-iran-by-march-31?r=thestandoff',
+      url: 'https://polymarket.com/event/will-the-us-invade-iran-by-march-31?r=ww3tracker',
       isReal: true,
       source: 'polymarket'
     },
@@ -31,7 +31,7 @@ const DEFAULT_POLYMARKET_DATA = {
       probability: 35,
       volume: 2218900,
       endDate: '2026-06-30T23:59:59Z',
-      url: 'https://polymarket.com/event/will-israel-declare-war-on-iran-before-july-989?r=thestandoff',
+      url: 'https://polymarket.com/event/will-israel-declare-war-on-iran-before-july-989?r=ww3tracker',
       isReal: true,
       source: 'polymarket'
     },
@@ -41,7 +41,7 @@ const DEFAULT_POLYMARKET_DATA = {
       probability: 52,
       volume: 2100000,
       endDate: '2026-06-30T23:59:59Z',
-      url: 'https://polymarket.com/event/usisrael-strikes-iran-on?r=thestandoff',
+      url: 'https://polymarket.com/event/usisrael-strikes-iran-on?r=ww3tracker',
       isReal: true,
       source: 'polymarket'
     }
@@ -114,13 +114,13 @@ const MarketCard = ({ market, cloutMode, userPoints, onPredict, hasPredicted }) 
   const noPercent = 100 - yesPercent;
 
   const shareToX = () => {
-    const text = `I just bet ${hasPredicted?.prediction?.toUpperCase() || 'YES'} on "${market.question.substring(0, 50)}..."\nMarkets say ${yesPercent}% — thestandoff.live\n#Polymarket #USvsIran #WW3`;
+    const text = `I just bet ${hasPredicted?.prediction?.toUpperCase() || 'YES'} on "${market.question.substring(0, 50)}..."\nMarkets say ${yesPercent}% — ww3tracker.live\n#Polymarket #USvsIran #WW3`;
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
   };
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`https://thestandoff.live — ${market.question}`);
+      await navigator.clipboard.writeText(`https://ww3tracker.live — ${market.question}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -132,7 +132,7 @@ const MarketCard = ({ market, cloutMode, userPoints, onPredict, hasPredicted }) 
     if (market?.url) {
       window.open(market.url, '_blank');
     } else {
-      window.open('https://polymarket.com?r=thestandoff', '_blank');
+      window.open('https://polymarket.com?r=ww3tracker', '_blank');
     }
   };
 

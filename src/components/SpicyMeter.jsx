@@ -71,14 +71,14 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
     const gold = stocks.find(s => s.label === 'SAFE.HAVEN');
     const defense = stocks.find(s => s.label === 'WAR.STOCKS');
     
-    const text = `📉 LIVE WAR MARKET UPDATE:\n🛢️ Oil: ${oil?.change || 'N/A'}\n🥇 Gold: ${gold?.change || 'N/A'}\n🚀 Defense stocks: ${defense?.change || 'N/A'}\n💸 Iran Rial: SUFFERING\nMarkets know something 👀\nthestandoff.live #WW3 #USvsIran`;
+    const text = `📉 LIVE WAR MARKET UPDATE:\n🛢️ Oil: ${oil?.change || 'N/A'}\n🥇 Gold: ${gold?.change || 'N/A'}\n🚀 Defense stocks: ${defense?.change || 'N/A'}\n💸 Iran Rial: SUFFERING\nMarkets know something 👀\nww3tracker.live #WW3 #USvsIran`;
     
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
   };
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText('https://thestandoff.live');
+      await navigator.clipboard.writeText('https://ww3tracker.live');
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {

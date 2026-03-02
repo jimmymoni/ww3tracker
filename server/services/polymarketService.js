@@ -27,7 +27,7 @@ const HARDCODED_IRAN_MARKETS = [
     probability: 18,
     volume: 2847200,
     endDate: '2026-06-30T23:59:59Z',
-    url: 'https://polymarket.com/event/will-the-iranian-regime-fall-by-june-30?r=thestandoff',
+    url: 'https://polymarket.com/event/will-the-iranian-regime-fall-by-june-30?r=ww3tracker',
     isReal: true,
     source: 'polymarket'
   },
@@ -37,7 +37,7 @@ const HARDCODED_IRAN_MARKETS = [
     probability: 12,
     volume: 5156700,
     endDate: '2026-03-31T23:59:59Z',
-    url: 'https://polymarket.com/event/will-the-us-invade-iran-by-march-31?r=thestandoff',
+    url: 'https://polymarket.com/event/will-the-us-invade-iran-by-march-31?r=ww3tracker',
     isReal: true,
     source: 'polymarket'
   },
@@ -47,7 +47,7 @@ const HARDCODED_IRAN_MARKETS = [
     probability: 35,
     volume: 2218900,
     endDate: '2026-06-30T23:59:59Z',
-    url: 'https://polymarket.com/event/will-israel-declare-war-on-iran-before-july-989?r=thestandoff',
+    url: 'https://polymarket.com/event/will-israel-declare-war-on-iran-before-july-989?r=ww3tracker',
     isReal: true,
     source: 'polymarket'
   },
@@ -57,7 +57,7 @@ const HARDCODED_IRAN_MARKETS = [
     probability: 52,
     volume: 2100000,
     endDate: '2026-06-30T23:59:59Z',
-    url: 'https://polymarket.com/event/usisrael-strikes-iran-on?r=thestandoff',
+    url: 'https://polymarket.com/event/usisrael-strikes-iran-on?r=ww3tracker',
     isReal: true,
     source: 'polymarket'
   },
@@ -67,7 +67,7 @@ const HARDCODED_IRAN_MARKETS = [
     probability: 8,
     volume: 1521000,
     endDate: '2026-03-31T23:59:59Z',
-    url: 'https://polymarket.com/event/trump-announces-military-action-against-iran-durring-sotu?r=thestandoff',
+    url: 'https://polymarket.com/event/trump-announces-military-action-against-iran-durring-sotu?r=ww3tracker',
     isReal: true,
     source: 'polymarket'
   }

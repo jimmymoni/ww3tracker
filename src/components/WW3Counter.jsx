@@ -63,7 +63,7 @@ const WW3Counter = ({ tension = 65 }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const shareText = `☢️ WW3 is ${ww3Probability}% likely right now\nBased on live Polymarket + news data 😭\nthestandoff.live #WW3 #TheStandoff`;
+  const shareText = `☢️ WW3 is ${ww3Probability}% likely right now\nBased on live Polymarket + news data 😭\nww3tracker.live #WW3 #TheStandoff`;
 
   const shareToX = () => {
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText), '_blank');
@@ -71,7 +71,7 @@ const WW3Counter = ({ tension = 65 }) => {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText('https://thestandoff.live');
+      await navigator.clipboard.writeText('https://ww3tracker.live');
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -281,7 +281,7 @@ const WW3Counter = ({ tension = 65 }) => {
               {isReal ? ' • Live data' : ' • Estimated'}
             </p>
             <p className="text-[9px] sm:text-[10px] text-gray-600 font-body hidden sm:block">
-              thestandoff.live
+              ww3tracker.live
             </p>
           </div>
         </div>

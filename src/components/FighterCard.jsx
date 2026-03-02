@@ -7,7 +7,7 @@ const TRUMP_GIF_URL = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXJvdm5m
 const IRAN_GIF_URL = 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3Q1eGJhODQyNzdqdGs3NDByb3FzNjNpOWt1cHdjYTg3NmtieGh0MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KdxduNi5eiR7f6DI68/giphy.gif';
 
 // Website URL - change this to your actual domain when deployed
-const SITE_URL = 'https://thestandoff.live';
+const SITE_URL = 'https://ww3tracker.live';
 
 const FighterCard = ({ 
   side = 'us', 
