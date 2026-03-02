@@ -7,9 +7,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'bangers': ['Bangers', 'cursive'],
-        'comic': ['Comic Neue', 'cursive'],
-        'impact': ['Impact', 'sans-serif'],
+        'heading': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        'body': ['Inter', 'system-ui', 'sans-serif'],
+        'mono': ['JetBrains Mono', 'monospace'],
+        // Legacy font aliases for backwards compatibility
+        'bangers': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        'comic': ['Inter', 'system-ui', 'sans-serif'],
+        'impact': ['JetBrains Mono', 'monospace'],
       },
       colors: {
         'comic-yellow': '#FFE500',

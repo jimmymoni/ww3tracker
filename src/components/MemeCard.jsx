@@ -166,28 +166,28 @@ const SkeletonCard = ({ index }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.1 }}
-    className="comic-panel rounded-lg p-3 relative animate-pulse"
+    className="comic-panel rounded-lg p-2.5 sm:p-3 relative animate-pulse"
   >
     {/* Header skeleton */}
-    <div className="flex justify-between items-start mb-2">
-      <div className="h-4 w-16 bg-white/10 rounded"></div>
+    <div className="flex justify-between items-start mb-1.5 sm:mb-2">
+      <div className="h-3 sm:h-4 w-14 sm:w-16 bg-white/10 rounded"></div>
       <div className="w-2 h-2 rounded-full bg-white/10"></div>
     </div>
 
     {/* Headline skeleton */}
-    <div className="h-3 bg-white/10 rounded mb-2 w-full"></div>
-    <div className="h-3 bg-white/10 rounded mb-2 w-3/4"></div>
+    <div className="h-2.5 sm:h-3 bg-white/10 rounded mb-1.5 sm:mb-2 w-full"></div>
+    <div className="h-2.5 sm:h-3 bg-white/10 rounded mb-1.5 sm:mb-2 w-3/4"></div>
 
     {/* Caption skeleton */}
-    <div className="h-2 bg-white/10 rounded mb-2 w-full"></div>
+    <div className="h-2 bg-white/10 rounded mb-1.5 sm:mb-2 w-full"></div>
 
     {/* Source skeleton */}
-    <div className="flex items-center justify-between pt-2 border-t border-white/5">
-      <div className="h-2 w-12 bg-white/10 rounded"></div>
+    <div className="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-white/5">
+      <div className="h-2 w-10 sm:w-12 bg-white/10 rounded"></div>
       <div className="flex items-center gap-1">
-        <div className="w-3.5 h-3.5 rounded bg-white/10"></div>
-        <div className="w-3.5 h-3.5 rounded bg-white/10"></div>
-        <div className="w-3.5 h-3.5 rounded bg-white/10"></div>
+        <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-white/10"></div>
+        <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-white/10"></div>
+        <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded bg-white/10"></div>
       </div>
     </div>
   </motion.div>
@@ -213,11 +213,11 @@ const Card = ({ meme, index }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="comic-panel rounded-lg p-3 relative"
+      className="comic-panel rounded-lg p-2.5 sm:p-3 relative"
     >
       {/* Header */}
-      <div className="flex justify-between items-start mb-2">
-        <span className={`text-[10px] px-2 py-0.5 rounded border ${badgeColors[badge] || badgeColors['SUS 👀']}`}>
+      <div className="flex justify-between items-start mb-1.5 sm:mb-2">
+        <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded border ${badgeColors[badge] || badgeColors['SUS 👀']}`}>
           {badge}
         </span>
         <span className={`w-2 h-2 rounded-full ${
@@ -226,18 +226,18 @@ const Card = ({ meme, index }) => {
       </div>
 
       {/* Headline */}
-      <p className="text-xs text-gray-300 font-comic mb-2 line-clamp-2">
+      <p className="text-[11px] sm:text-xs text-gray-300 font-body mb-1.5 sm:mb-2 line-clamp-2 leading-relaxed">
         {meme.headline}
       </p>
 
       {/* Caption */}
-      <p className="text-[10px] text-gray-400 font-comic mb-2 italic">
+      <p className="text-[10px] text-gray-400 font-body mb-1.5 sm:mb-2 italic leading-relaxed">
         "{meme.analysis?.memeCaption}"
       </p>
 
       {/* Source & Share Buttons */}
-      <div className="flex items-center justify-between pt-2 border-t border-white/5">
-        <span className="text-[9px] text-gray-500">via {meme.source}</span>
+      <div className="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-white/5">
+        <span className="text-[8px] sm:text-[9px] text-gray-500">via {meme.source}</span>
         <ShareButtons meme={meme} cardRef={cardRef} />
       </div>
     </motion.div>
@@ -287,17 +287,17 @@ const MemeFeed = () => {
     <div className="w-full">
       {/* Header */}
       <div className="section-header">
-        <div className="section-icon text-purple-400">
-          <span className="text-lg">🎭</span>
+        <div className="section-icon text-purple-400 w-8 h-8 sm:w-9 sm:h-9">
+          <span className="text-base sm:text-lg">🎭</span>
         </div>
         <div>
-          <h2 className="font-bangers text-xl text-white tracking-wider"> BREAKING FEED</h2>
-          <p className="text-gray-500 text-xs font-comic">Live updates as they happen</p>
+          <h2 className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">BREAKING FEED</h2>
+          <p className="text-gray-500 text-[10px] sm:text-xs font-body">Live updates as they happen</p>
         </div>
       </div>
 
       {/* 4 Cards Grid - show skeletons when loading, cards when ready */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
         {loading && memes.length === 0 ? (
           // Show skeleton loaders when loading and no cached data
           Array.from({ length: 4 }).map((_, index) => (

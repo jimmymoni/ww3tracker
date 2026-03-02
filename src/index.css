@@ -132,11 +132,12 @@ body {
   border-top: 13px solid rgba(59, 130, 246, 0.5);
 }
 
-/* Clean comic text */
+/* Clean heading text - Professional */
 .comic-text {
-  font-family: 'Bangers', cursive;
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.05em;
 }
 
 /* Glow effects - more subtle */
@@ -204,31 +205,34 @@ body {
   animation: ticker 40s linear infinite;
 }
 
-/* Eliminated stamp - cleaner */
+/* Eliminated stamp - Professional */
 .eliminated-stamp {
   transform: rotate(-12deg);
   border: 2px solid #dc2626;
   color: #dc2626;
-  font-family: 'Impact', sans-serif;
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
   padding: 4px 12px;
   font-size: 0.75rem;
-  letter-spacing: 2px;
+  letter-spacing: 0.1em;
   opacity: 0.9;
 }
 
-/* Combo text - only show when needed */
+/* Combo text - Professional */
 .combo-text {
-  font-family: 'Impact', sans-serif;
-  font-style: italic;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-/* Meme card badge - cleaner */
+/* Meme card badge - Professional */
 .meme-badge {
-  font-family: 'Bangers', cursive;
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.05em;
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 4px;
@@ -257,25 +261,40 @@ body {
   background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
 }
 
-/* Section headers - consistent style */
+/* Section headers - consistent style - Mobile Optimized */
 .section-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
+@media (min-width: 640px) {
+  .section-header {
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+}
+
 .section-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255,255,255,0.05);
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (min-width: 640px) {
+  .section-icon {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 /* Card hover effect - subtle */

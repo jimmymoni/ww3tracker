@@ -118,14 +118,14 @@ const TimelineCard = ({ event, index, isExpanded, onToggle }) => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03 }}
-      className="relative pl-5 pb-2 last:pb-0"
+      className="relative pl-4 sm:pl-5 pb-1.5 sm:pb-2 last:pb-0"
     >
       {/* Timeline Line */}
-      <div className="absolute left-[7px] top-4 bottom-0 w-px bg-white/10" />
+      <div className="absolute left-[5px] sm:left-[7px] top-3 sm:top-4 bottom-0 w-px bg-white/10" />
       
       {/* Year Dot */}
-      <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full bg-[#1a1a1a] border border-white/20 flex items-center justify-center">
-        <span className="text-[6px] font-bold text-white/40">{event.year.slice(-2)}</span>
+      <div className="absolute left-0 top-1 sm:top-1.5 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-[#1a1a1a] border border-white/20 flex items-center justify-center">
+        <span className="text-[5px] sm:text-[6px] font-bold text-white/40">{event.year.slice(-2)}</span>
       </div>
 
       {/* Card */}
@@ -133,30 +133,30 @@ const TimelineCard = ({ event, index, isExpanded, onToggle }) => {
         onClick={onToggle}
         className={`comic-panel rounded border-l-2 ${sideColors[event.side]} bg-white/[0.02] cursor-pointer hover:bg-white/[0.05] transition-all ${isExpanded ? 'ring-1 ring-white/10' : ''}`}
       >
-        <div className="p-2">
+        <div className="p-1.5 sm:p-2">
           {/* Header Row */}
-          <div className="flex items-start gap-2">
-            <span className="text-lg shrink-0">{event.icon}</span>
+          <div className="flex items-start gap-1.5 sm:gap-2">
+            <span className="text-base sm:text-lg shrink-0">{event.icon}</span>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-[9px] font-impact text-gray-500">{event.year}</span>
-                <h3 className="font-bangers text-sm text-white tracking-wide">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[8px] sm:text-[9px] font-mono font-medium text-gray-500">{event.year}</span>
+                <h3 className="font-heading font-semibold text-xs sm:text-sm text-white tracking-wide truncate">
                   {event.title}
                 </h3>
               </div>
-              <p className="text-[10px] text-gray-400 mt-0.5">{event.subtitle}</p>
+              <p className="text-[9px] sm:text-[10px] text-gray-400 mt-0.5">{event.subtitle}</p>
               
               {/* Always visible summary */}
-              <p className="text-[11px] text-gray-300 font-comic mt-1 leading-snug">
-                {event.description.substring(0, 120)}...
+              <p className="text-[10px] sm:text-[11px] text-gray-300 font-body mt-0.5 sm:mt-1 leading-snug">
+                {event.description.substring(0, 100)}...
               </p>
               
-              <p className="text-[9px] text-yellow-400/70 font-comic mt-1">
+              <p className="text-[8px] sm:text-[9px] text-yellow-400/70 font-body mt-0.5 sm:mt-1">
                 → {event.impact}
               </p>
             </div>
             <ChevronDown 
-              className={`w-4 h-4 text-gray-500 transition-transform shrink-0 mt-1 ${isExpanded ? 'rotate-180' : ''}`} 
+              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 transition-transform shrink-0 mt-0.5 sm:mt-1 ${isExpanded ? 'rotate-180' : ''}`} 
             />
           </div>
 
@@ -169,11 +169,11 @@ const TimelineCard = ({ event, index, isExpanded, onToggle }) => {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <p className="text-[11px] text-gray-400 font-comic mt-2 leading-relaxed border-t border-white/5 pt-2">
+                <p className="text-[10px] sm:text-[11px] text-gray-400 font-body mt-1.5 sm:mt-2 leading-relaxed border-t border-white/5 pt-1.5 sm:pt-2">
                   {event.details}
                 </p>
-                <p className="text-[10px] text-gray-300 font-comic mt-1.5">
-                  {event.description.substring(120)}
+                <p className="text-[9px] sm:text-[10px] text-gray-300 font-body mt-1 sm:mt-1.5">
+                  {event.description.substring(100)}
                 </p>
               </motion.div>
             )}
@@ -191,24 +191,24 @@ const TimelineOfChaos = () => {
     <div className="w-full">
       {/* Header */}
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center">
-          <Clock className="w-4 h-4 text-yellow-400" />
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+          <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400" />
         </div>
         <div>
-          <h2 className="font-bangers text-lg text-white tracking-wider">WHY WE'RE HERE</h2>
-          <p className="text-gray-500 text-[10px] font-comic">The 70-year grudge (1953-2026)</p>
+          <h2 className="font-heading font-bold text-base sm:text-lg text-white tracking-wide">WHY WE'RE HERE</h2>
+          <p className="text-gray-500 text-[9px] sm:text-[10px] font-body">The 70-year grudge (1953-2026)</p>
         </div>
       </div>
 
       {/* Intro */}
-      <div className="comic-panel rounded p-1.5 mb-2 bg-gradient-to-r from-red-500/10 to-blue-500/10 border border-white/10">
-        <p className="text-[10px] text-gray-300 font-comic text-center leading-tight">
-          🇺🇸 vs 🇮🇷 Started in <span className="text-yellow-400">1953</span> CIA coup • Escalating to <span className="text-red-400">2026</span> potential war
+      <div className="comic-panel rounded p-1.5 sm:p-2 mb-2 bg-gradient-to-r from-red-500/10 to-blue-500/10 border border-white/10">
+        <p className="text-[9px] sm:text-[10px] text-gray-300 font-body text-center leading-tight">
+          🇺🇸 vs 🇮🇷 Started <span className="text-yellow-400">1953</span> • Escalating <span className="text-red-400">2026</span>
         </p>
       </div>
 
       {/* Timeline */}
-      <div className="max-h-[380px] overflow-y-auto pr-1 scrollbar-hide">
+      <div className="max-h-[320px] sm:max-h-[380px] overflow-y-auto pr-1 scrollbar-hide">
         {CONFLICT_HISTORY.map((event, index) => (
           <TimelineCard
             key={event.year}
@@ -222,8 +222,8 @@ const TimelineOfChaos = () => {
 
       {/* Footer */}
       <div className="mt-1 text-center">
-        <p className="text-[8px] text-gray-500 font-comic">
-          Click cards for full story
+        <p className="text-[8px] text-gray-500 font-body">
+          Tap cards for full story
         </p>
       </div>
     </div>

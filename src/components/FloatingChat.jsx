@@ -30,7 +30,7 @@ const FloatingChat = () => {
 
   return (
     <>
-      {/* Floating Bubble Button */}
+      {/* Floating Bubble Button - Mobile Optimized */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
@@ -38,24 +38,37 @@ const FloatingChat = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={toggleChat}
-            className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-red-600 rounded-full shadow-[0_0_20px_rgba(220,38,38,0.6)] flex items-center justify-center hover:scale-110 hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all border-2 border-red-400"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[100] w-12 h-12 sm:w-14 sm:h-14 bg-red-600 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)] flex items-center justify-center hover:scale-110 transition-all border border-red-400/50"
           >
-            <span className="text-2xl">💬</span>
+            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             
             {/* Notification Badge */}
             {hasNewMessages && unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 text-black text-xs font-bold rounded-full flex items-center justify-center animate-bounce border-2 border-black">
+              <span className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-yellow-400 text-black text-[10px] sm:text-xs font-bold rounded-full flex items-center justify-center animate-bounce border-2 border-black">
                 {unreadCount}
               </span>
             )}
             
-            {/* Glow Ring */}
-            <span className="absolute inset-0 rounded-full border-2 border-red-400 animate-ping opacity-40" />
+            {/* Subtle Glow Ring */}
+            <span className="absolute inset-0 rounded-full border border-red-400/30 animate-ping opacity-30" />
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Chat Window */}
+      {/* Backdrop Blur Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[99] bg-black/40 backdrop-blur-sm sm:backdrop-blur-md"
+            onClick={toggleChat}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Chat Window - Mobile Responsive */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -63,13 +76,16 @@ const FloatingChat = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 right-6 z-[100] w-[380px] h-[500px] bg-[#0a0a0a] border-2 border-red-500/50 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.8)] overflow-hidden"
+            className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-[100] 
+                       w-auto sm:w-[400px] h-[70vh] sm:h-[520px] 
+                       bg-[#0a0a0a] border border-red-500/30 sm:border-2 sm:border-red-500/50 
+                       rounded-xl sm:rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.8)] overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10">
+            <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span className="font-bangers text-white tracking-wider">WAR ROOM</span>
+                <span className="font-heading font-semibold text-sm sm:text-base text-white tracking-wide">WAR ROOM</span>
               </div>
               <div className="flex items-center gap-1">
                 <button 
@@ -88,7 +104,7 @@ const FloatingChat = () => {
             </div>
 
             {/* Chat Content */}
-            <div className="h-[calc(100%-52px)]">
+            <div className="h-[calc(100%-48px)] sm:h-[calc(100%-52px)]">
               <LiveWarRoom />
             </div>
           </motion.div>

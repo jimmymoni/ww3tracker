@@ -19,55 +19,56 @@ import PickSideModal from './components/PickSideModal';
 // API
 import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
 
-// Header
+// Header - Mobile Optimized
 const Header = ({ isLoading, userSide }) => (
   <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
-    <div className="max-w-7xl mx-auto px-4 py-3">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center">
-            <span className="text-2xl">🦅</span>
-            <span className="text-gray-600 mx-1">vs</span>
-            <span className="text-2xl">☠️</span>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center text-lg sm:text-2xl">
+            <span>🦅</span>
+            <span className="text-gray-600 mx-0.5 sm:mx-1 text-sm sm:text-base">vs</span>
+            <span>☠️</span>
           </div>
           <div>
-            <h1 className="font-bangers text-2xl text-white tracking-wider">
-              US vs IRAN
+            <h1 className="font-heading font-bold text-lg sm:text-2xl text-white tracking-wide">
+              WW3 TRACKER
             </h1>
-            <p className="text-[10px] text-gray-500 font-impact tracking-widest uppercase">
-              Live War Tracker
+            <p className="text-[9px] sm:text-[10px] text-gray-500 font-mono tracking-wider uppercase">
+              Live Conflict Monitor
             </p>
           </div>
         </div>
 
-        {/* Status */}
-        <div className="flex items-center gap-4">
+        {/* Status - Hidden on mobile, shown on sm+ */}
+        <div className="flex items-center gap-2 sm:gap-4">
           <div className="hidden sm:flex items-center gap-1 text-yellow-500/70 text-xs">
             <Zap className="w-3 h-3" />
-            <span className="font-comic">LIVE UPDATES</span>
+            <span className="font-body">LIVE UPDATES</span>
           </div>
-          <div className="flex items-center gap-1 text-blue-400/70 text-xs">
+          <div className="hidden md:flex items-center gap-1 text-blue-400/70 text-xs">
             <Globe className="w-3 h-3" />
-            <span className="font-comic">24/7 MONITORING</span>
+            <span className="font-body">24/7 MONITORING</span>
           </div>
           <motion.div 
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="bg-red-600/20 text-red-400 border border-red-500/30 font-bangers text-xs px-3 py-1.5 rounded flex items-center gap-2"
+            className="bg-red-600/20 text-red-400 border border-red-500/30 font-heading text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded flex items-center gap-1 sm:gap-2"
           >
-            <AlertTriangle className="w-3 h-3" />
-            <span>CHAOS MODE</span>
+            <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+            <span className="hidden sm:inline">CHAOS MODE</span>
+            <span className="sm:hidden">CHAOS</span>
           </motion.div>
           {/* Subtle loading indicator */}
           {isLoading && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-1 text-blue-400 text-xs"
+              className="hidden sm:flex items-center gap-1 text-blue-400 text-xs"
             >
               <Loader2 className="w-3 h-3 animate-spin" />
-              <span className="font-comic hidden sm:inline">Syncing...</span>
+              <span className="font-body">Syncing...</span>
             </motion.div>
           )}
         </div>
@@ -76,17 +77,17 @@ const Header = ({ isLoading, userSide }) => (
   </header>
 );
 
-// Disclaimer
+// Disclaimer - Mobile Optimized
 const Disclaimer = () => (
-  <div className="border-t border-white/10 py-8 px-4">
+  <div className="border-t border-white/10 py-6 sm:py-8 px-3 sm:px-4">
     <div className="max-w-2xl mx-auto text-center">
-      <div className="text-2xl mb-3">⚠️</div>
-      <h3 className="font-bangers text-lg text-white mb-2">DISCLAIMER</h3>
-      <p className="text-gray-500 text-sm font-comic mb-2">
+      <div className="text-xl sm:text-2xl mb-2 sm:mb-3">⚠️</div>
+      <h3 className="font-heading font-bold text-base sm:text-lg text-white mb-1.5 sm:mb-2">DISCLAIMER</h3>
+      <p className="text-gray-500 text-xs sm:text-sm font-body mb-1.5 sm:mb-2">
         This is 100% satire. We don't actually want war.
       </p>
-      <p className="text-gray-600 text-xs font-comic">
-        Built with ❤️ and chaos • Data from RSS, GDELT, Polymarket & NASA FIRMS
+      <p className="text-gray-600 text-[10px] sm:text-xs font-body">
+        Built with ❤️ • Data from RSS, GDELT, Polymarket & NASA FIRMS
       </p>
     </div>
   </div>
@@ -94,12 +95,12 @@ const Disclaimer = () => (
 
 // Loading screen for initial load only
 const LoadingScreen = () => (
-  <div className="min-h-screen bg-grid flex items-center justify-center">
+  <div className="min-h-screen bg-grid flex items-center justify-center px-4">
     <div className="text-center">
-      <Loader2 className="w-12 h-12 text-blue-400 animate-spin mx-auto mb-4" />
-      <p className="font-bangers text-xl text-white tracking-wider">LOADING THE CHAOS...</p>
-      <p className="text-gray-500 text-sm font-comic mt-2">Connecting to servers...</p>
-      <p className="text-gray-600 text-xs font-comic mt-1">This may take a few seconds on first load</p>
+      <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-blue-400 animate-spin mx-auto mb-3 sm:mb-4" />
+      <p className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">LOADING THE CHAOS...</p>
+      <p className="text-gray-500 text-xs sm:text-sm font-body mt-1.5 sm:mt-2">Connecting to servers...</p>
+      <p className="text-gray-600 text-[10px] sm:text-xs font-body mt-1">This may take a few seconds on first load</p>
     </div>
   </div>
 );
@@ -257,9 +258,9 @@ function App() {
       {/* NASA FIRMS Strip */}
       <NasaFirmsStrip />
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        {/* ROW 1: Fighter Cards Side by Side - FIRST */}
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
+      <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
+        {/* ROW 1: Fighter Cards Side by Side - Always 2 columns, tighter on mobile */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

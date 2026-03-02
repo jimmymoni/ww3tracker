@@ -67,12 +67,18 @@ const FighterCard = ({
     window.open(xUrl, '_blank', 'width=550,height=420');
   };
 
-  const StatItem = ({ label, value, emoji }) => (
-    <div className={`flex items-center gap-2 ${bgClass} px-2 py-1.5 rounded border ${accentClass}`}>
-      <span className="text-base">{emoji}</span>
-      <div>
-        <div className="text-[9px] text-gray-500 font-comic uppercase">{label}</div>
-        <div className="font-impact text-white text-sm">{value}</div>
+  const StatItem = ({ label, value, emoji, shortLabel }) => (
+    <div className={`flex items-center gap-1 sm:gap-2 ${bgClass} px-1 sm:px-2 py-0.5 sm:py-1.5 rounded border ${accentClass}`}>
+      <span className="text-xs sm:text-base shrink-0">{emoji}</span>
+      <div className="min-w-0 overflow-hidden">
+        <div className="text-[7px] sm:text-[9px] text-gray-500 font-body uppercase truncate">
+          <span className="sm:hidden">{shortLabel || label}</span>
+          <span className="hidden sm:inline">{label}</span>
+        </div>
+        <div className="font-mono font-bold text-white text-[9px] sm:text-sm leading-tight">
+          <span className="sm:hidden">{value.replace('Running Out', 'Low').replace('MAXED OUT', 'MAX')}</span>
+          <span className="hidden sm:inline">{value}</span>
+        </div>
       </div>
     </div>
   );
@@ -85,10 +91,10 @@ const FighterCard = ({
       } : {}}
       transition={{ duration: 0.3 }}
     >
-      {/* BIG GIF HEADER */}
+      {/* BIG GIF HEADER - Taller to show more of the GIFs */}
       <div className="relative">
         <motion.div 
-          className={`relative w-full h-48 sm:h-56 overflow-hidden border-b-2 ${isUS ? 'border-blue-500/50' : 'border-red-500/50'}`}
+          className={`relative w-full h-36 sm:h-44 md:h-56 overflow-hidden border-b-2 ${isUS ? 'border-blue-500/50' : 'border-red-500/50'}`}
           animate={isAnimating ? { scale: [1, 1.02, 1] } : {}}
         >
           <img 
@@ -100,22 +106,19 @@ const FighterCard = ({
           
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           
-          <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div className="absolute bottom-0 left-0 right-0 p-1.5 sm:p-4">
             <div className="flex items-end justify-between">
-              <div>
-                <h2 className={`font-bangers text-3xl sm:text-4xl ${isUS ? 'text-blue-400' : 'text-red-400'} tracking-wider drop-shadow-lg`}>
-                  {name}
+              <div className="min-w-0 flex-1">
+                <h2 className={`font-heading font-bold text-[11px] sm:text-3xl ${isUS ? 'text-blue-400' : 'text-red-400'} tracking-wide drop-shadow-lg leading-tight truncate`}>
+                  {isUS ? 'TRUMP' : 'IRAN'}
                 </h2>
-                <div className={`inline-block text-xs text-gray-300 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full border ${accentClass} mt-1`}>
-                  {nickname}
-                </div>
               </div>
-              <span className="text-4xl sm:text-5xl drop-shadow-lg">{isUS ? '🇺🇸' : '🇮🇷'}</span>
+              <span className="text-lg sm:text-4xl drop-shadow-lg shrink-0 ml-1">{isUS ? '🇺🇸' : '🇮🇷'}</span>
             </div>
           </div>
           
-          <div className="absolute top-3 right-3">
-            <div className={`px-2 py-1 rounded-full text-[10px] font-comic font-bold ${isUS ? 'bg-blue-500/80' : 'bg-red-500/80'} text-white backdrop-blur-sm`}>
+          <div className="absolute top-1.5 right-1.5 sm:top-3 sm:right-3">
+            <div className={`px-1 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[10px] font-body font-medium ${isUS ? 'bg-blue-500/80' : 'bg-red-500/80'} text-white backdrop-blur-sm`}>
               GIF
             </div>
           </div>
@@ -127,44 +130,44 @@ const FighterCard = ({
               initial={{ opacity: 0, y: -10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="absolute top-3 left-3 right-16 z-10"
+              className="absolute top-2 left-2 right-12 sm:top-3 sm:left-3 sm:right-16 z-10"
             >
               <div className="speech-bubble bg-black/90 backdrop-blur-sm border-2 border-blue-500/50">
-                <p className="font-comic text-sm text-white leading-relaxed">{currentQuote}</p>
+                <p className="font-body text-[10px] sm:text-sm text-white leading-relaxed">{currentQuote}</p>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Stats Grid */}
-      <div className="p-3">
-        <div className="grid grid-cols-2 gap-2">
+      {/* Stats Grid - Always 2 cols, compact on mobile */}
+      <div className="p-1 sm:p-3">
+        <div className="grid grid-cols-2 gap-1 sm:gap-2">
           {isUS ? (
             <>
-              <StatItem emoji="💰" label="Sanctions" value={stats.sanctions || 'MAXED OUT'} />
-              <StatItem emoji="🌶️" label="Aggression" value={stats.aggression || '87/100'} />
-              <StatItem emoji="🤝" label="Allies" value={stats.allies || 'NATO + 🤷'} />
-              <StatItem emoji="📉" label="Iran's HP" value={`${Math.round(opponentHp)}%`} />
+              <StatItem emoji="💰" label="Sanctions" shortLabel="Sanc." value={stats.sanctions || 'MAXED'} />
+              <StatItem emoji="🌶️" label="Aggression" shortLabel="Aggro" value={stats.aggression || '87/100'} />
+              <StatItem emoji="🤝" label="Allies" shortLabel="Allies" value={stats.allies || 'NATO'} />
+              <StatItem emoji="📉" label="Iran's HP" shortLabel="vs HP" value={`${Math.round(opponentHp)}%`} />
             </>
           ) : (
             <>
-              <StatItem emoji="☢️" label="Nuke Status" value={stats.nukes || 'Almost™'} />
-              <StatItem emoji="🕵️" label="Proxies" value={stats.proxies || 'Active 🔥'} />
-              <StatItem emoji="😤" label="Patience" value={stats.patience || 'Running Out'} />
-              <StatItem emoji="🌍" label="World Sympathy" value={stats.sympathy || '34%'} />
+              <StatItem emoji="☢️" label="Nuke Status" shortLabel="Nukes" value={stats.nukes || 'Soon™'} />
+              <StatItem emoji="🕵️" label="Proxies" shortLabel="Proxy" value={stats.proxies || 'Active'} />
+              <StatItem emoji="😤" label="Patience" shortLabel="Rage" value={stats.patience || 'Low'} />
+              <StatItem emoji="🌍" label="World Sympathy" shortLabel="Symp." value={stats.sympathy || '34%'} />
             </>
           )}
         </div>
       </div>
 
       {/* HP Bar */}
-      <div className="px-3 pb-2">
-        <div className="flex justify-between text-[10px] text-gray-500 mb-1.5">
-          <span className="font-comic">Health</span>
-          <span className="font-impact">{Math.round(hp)}/{maxHp}</span>
+      <div className="px-1.5 sm:px-3 pb-1.5 sm:pb-2">
+        <div className="flex justify-between text-[8px] sm:text-[10px] text-gray-500 mb-0.5 sm:mb-1">
+          <span className="font-body">{isUS ? 'US HP' : 'IRAN HP'}</span>
+          <span className="font-mono font-medium">{Math.round(hp)}%</span>
         </div>
-        <div className="health-bar-container h-3">
+        <div className="health-bar-container h-1.5 sm:h-3">
           <motion.div 
             className={`health-bar-fill ${isUS ? 'bg-blue-500' : 'bg-red-500'}`}
             initial={{ width: 0 }}
@@ -174,23 +177,20 @@ const FighterCard = ({
         </div>
       </div>
 
-      {/* Share Button */}
-      <div className="px-3 pb-3">
+      {/* Share Button - Icon only on mobile */}
+      <div className="px-1.5 sm:px-3 pb-1.5 sm:pb-3">
         <motion.button
           onClick={handleShare}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg font-comic text-sm transition-all ${
+          className={`w-full flex items-center justify-center gap-1 sm:gap-2 py-1 sm:py-2 rounded-lg font-body text-xs sm:text-sm transition-all ${
             isUS 
               ? 'bg-black border border-blue-500/30 hover:bg-blue-500/10 text-white' 
               : 'bg-black border border-red-500/30 hover:bg-red-500/10 text-white'
           }`}
         >
-          <Share2 className="w-4 h-4" />
-          <span>Share on X</span>
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
+          <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Share on X</span>
         </motion.button>
       </div>
     </motion.div>

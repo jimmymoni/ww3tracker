@@ -134,46 +134,46 @@ const WW3Counter = ({ tension = 65 }) => {
             />
           )}
 
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
+          {/* Header - Mobile Optimized */}
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <motion.div 
                 animate={isCritical ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] } : { scale: [1, 1.1, 1] }}
                 transition={{ duration: isCritical ? 0.5 : 2, repeat: Infinity }}
-                className="text-3xl"
+                className="text-2xl sm:text-3xl"
               >
                 ☢️
               </motion.div>
               <div>
-                <h2 className="font-bangers text-xl text-white tracking-wider">
+                <h2 className="font-heading font-bold text-base sm:text-xl text-white tracking-wide">
                   WW3 PROBABILITY
                 </h2>
-                <p className="text-[10px] text-gray-500 font-comic uppercase tracking-wider">
+                <p className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase tracking-wider">
                   LIVE • Updates every 60s
                 </p>
               </div>
             </div>
 
             {/* Share Buttons */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-1">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={shareToX}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
                 title="Share on X"
               >
-                <Twitter className="w-4 h-4" style={{ color }} />
+                <Twitter className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color }} />
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={copyLink}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors relative"
+                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors relative"
                 title="Copy link"
               >
-                <Link className="w-4 h-4 text-gray-400 hover:text-green-400" />
+                <Link className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 hover:text-green-400" />
                 {copied && (
                   <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-10">
                     Copied! ✅
@@ -185,22 +185,22 @@ const WW3Counter = ({ tension = 65 }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={downloadCard}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
                 title="Download card"
               >
-                <Download className="w-4 h-4 text-gray-400 hover:text-purple-400" />
+                <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 hover:text-purple-400" />
               </motion.button>
             </div>
           </div>
 
           {/* Giant Probability Number */}
-          <div className="text-center mb-4">
+          <div className="text-center mb-3 sm:mb-4">
             <motion.div
               key={ww3Probability}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 200 }}
-              className="font-bangers text-6xl md:text-7xl"
+              className="font-heading font-bold text-5xl sm:text-6xl md:text-7xl"
               style={{ 
                 color,
                 textShadow: isCritical ? `0 0 40px ${color}` : 'none'
@@ -208,39 +208,39 @@ const WW3Counter = ({ tension = 65 }) => {
             >
               {ww3Probability}%
             </motion.div>
-            <p className="text-gray-400 text-sm font-comic mt-1">
-              {isCritical ? '⚠️ CRITICAL THRESHOLD REACHED' : 'LIVE RIGHT NOW'}
+            <p className="text-gray-400 text-xs sm:text-sm font-body mt-1">
+              {isCritical ? '⚠️ CRITICAL THRESHOLD' : 'LIVE RIGHT NOW'}
             </p>
           </div>
 
           {/* Data Sources Breakdown */}
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="bg-black/30 rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <div className="bg-black/30 rounded-lg p-2 sm:p-3 text-center">
+              <div className="flex items-center justify-center gap-1 mb-0.5 sm:mb-1">
                 <span className="text-xs">🎲</span>
-                <span className="text-[10px] text-gray-500 font-comic uppercase">Markets</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase">Markets</span>
               </div>
-              <div className="font-impact text-lg" style={{ color: getColor(polymarketProb) }}>
+              <div className="font-mono font-bold text-base sm:text-lg" style={{ color: getColor(polymarketProb) }}>
                 {polymarketProb}%
               </div>
             </div>
 
-            <div className="bg-black/30 rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
+            <div className="bg-black/30 rounded-lg p-2 sm:p-3 text-center">
+              <div className="flex items-center justify-center gap-1 mb-0.5 sm:mb-1">
                 <span className="text-xs">🌶️</span>
-                <span className="text-[10px] text-gray-500 font-comic uppercase">Tension</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase">Tension</span>
               </div>
-              <div className="font-impact text-lg" style={{ color: getColor(tension) }}>
+              <div className="font-mono font-bold text-base sm:text-lg" style={{ color: getColor(tension) }}>
                 {tension}%
               </div>
             </div>
 
-            <div className="bg-black/30 rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
+            <div className="bg-black/30 rounded-lg p-2 sm:p-3 text-center">
+              <div className="flex items-center justify-center gap-1 mb-0.5 sm:mb-1">
                 <span className="text-xs">📰</span>
-                <span className="text-[10px] text-gray-500 font-comic uppercase">News</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase">News</span>
               </div>
-              <div className="font-impact text-lg" style={{ color: getColor(newsProb) }}>
+              <div className="font-mono font-bold text-base sm:text-lg" style={{ color: getColor(newsProb) }}>
                 {newsProb}%
               </div>
             </div>
@@ -275,12 +275,12 @@ const WW3Counter = ({ tension = 65 }) => {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-gray-500 font-comic">
-              Based on: Polymarket odds + Tension meter + News sentiment
+          <div className="flex items-center justify-between mt-2 sm:mt-3">
+            <p className="text-[9px] sm:text-[10px] text-gray-500 font-body">
+              Based on: Polymarket + Tension + News
               {isReal ? ' • Live data' : ' • Estimated'}
             </p>
-            <p className="text-[10px] text-gray-600 font-comic">
+            <p className="text-[9px] sm:text-[10px] text-gray-600 font-body hidden sm:block">
               thestandoff.live
             </p>
           </div>
