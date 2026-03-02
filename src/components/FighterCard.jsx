@@ -99,9 +99,11 @@ const FighterCard = ({
         >
           <img 
             src={gifUrl}
-            alt={isUS ? 'Trump' : 'Supreme Leader'}
+            alt={isUS ? 'Trump GIF - Animated image of Donald Trump' : 'Iran Supreme Leader GIF - Animated image of the Supreme Leader'}
             className="w-full h-full object-cover object-center"
             onLoad={() => setGifLoaded(true)}
+            loading="lazy"
+            decoding="async"
           />
           
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

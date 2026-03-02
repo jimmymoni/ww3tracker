@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Zap, Globe, Loader2 } from 'lucide-react';
+
+// Landing Pages
+import WW3ProbabilityPage from './pages/WW3ProbabilityPage';
+import UsIranWarTrackerPage from './pages/UsIranWarTrackerPage';
+import IranConflictLivePage from './pages/IranConflictLivePage';
+import TimelinePage from './pages/TimelinePage';
 
 // Components
 import HPBar from './components/HPBar';
@@ -10,7 +18,6 @@ import TimelineOfChaos from './components/TimelineOfChaos';
 import MemeFeed from './components/MemeCard';
 import SpicyMeter from './components/SpicyMeter';
 import FloatingChat from './components/FloatingChat';
-
 import PolymarketWidget from './components/PolymarketWidget';
 import NasaFirmsStrip from './components/NasaFirmsStrip';
 import BreakingAlert from './components/BreakingAlert';
@@ -105,7 +112,8 @@ const LoadingScreen = () => (
   </div>
 );
 
-function App() {
+// Main Dashboard Component
+function MainDashboard() {
   // Try to get cached data immediately for instant render
   const cachedState = getCachedData('gameState');
   
@@ -367,6 +375,23 @@ function App() {
       </main>
 
     </div>
+  );
+}
+
+// Main App with Routing
+function App() {
+  return (
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainDashboard />} />
+          <Route path="/ww3-probability" element={<WW3ProbabilityPage />} />
+          <Route path="/us-iran-war-tracker" element={<UsIranWarTrackerPage />} />
+          <Route path="/iran-conflict-live" element={<IranConflictLivePage />} />
+          <Route path="/timeline" element={<TimelinePage />} />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

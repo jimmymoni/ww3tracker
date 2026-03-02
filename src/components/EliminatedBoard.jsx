@@ -31,6 +31,8 @@ const EliminatedCard = ({ official, index }) => {
               src={official.image} 
               alt={official.name}
               className="w-full h-full object-cover grayscale"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           

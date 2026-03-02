@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) - Load async to prevent blocking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-TV2FWQFE2E');
     </script>
     
     <meta charset="UTF-8" />
+    
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.jsx" as="script" type="module">
+    <link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
+    
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
     <link rel="shortcut icon" href="/favicon.svg" />
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+    
+    <!-- Cache control - allow caching for static assets but revalidate -->
+    <meta http-equiv="Cache-Control" content="public, max-age=3600, must-revalidate" />
+    
     <title>WW3 Tracker - Live Conflict Monitor</title>
     <meta name="description" content="Real-time satire tracker for the US vs Iran conflict. Live stats, betting odds, market data, and breaking news. Who's winning? 💰 Sanctions vs ☢️ Nukes" />
     <link rel="canonical" href="https://ww3tracker.live/" />
@@ -39,9 +54,31 @@
     <meta name="twitter:description" content="Real-time satire tracker for the US vs Iran conflict. Live stats, betting odds, market data, and breaking news. Who's winning? 💰 Sanctions vs ☢️ Nukes" />
     <meta name="twitter:image" content="https://ww3tracker.live/og-image.png?t=20260303" />
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts with font-display: swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Critical CSS inline for above-the-fold content -->
+    <style>
+      /* Critical CSS - prevent FOUC */
+      html { background-color: #0d0d12; }
+      body { 
+        margin: 0; 
+        background-color: #0d0d12; 
+        color: #ffffff;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      }
+      #root { min-height: 100vh; }
+      /* Loading state styles */
+      .initial-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #0d0d12;
+        color: #60a5fa;
+        font-family: system-ui, sans-serif;
+      }
+    </style>
     
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -60,7 +97,18 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Initial loading state - prevents FOUC and improves perceived performance -->
+      <div class="initial-loading" id="initial-loader">
+        <div style="text-align: center;">
+          <div style="width: 48px; height: 48px; border: 3px solid rgba(96, 165, 250, 0.3); border-top-color: #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+          <p style="margin: 0; font-size: 14px; opacity: 0.8;">Loading...</p>
+        </div>
+      </div>
+    </div>
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

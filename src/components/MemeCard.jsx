@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Twitter, Link, Download, MessageCircle } from 'lucide-react';
-import html2canvas from 'html2canvas';
+// html2canvas is loaded dynamically only when needed for downloads
 import { fetchMemes, getCachedData } from '../lib/api';
 
 // Default news items for fallback
@@ -88,6 +88,9 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
     if (!cardRef.current) return;
     
     try {
+      // Dynamically import html2canvas only when needed
+      const { default: html2canvas } = await import('html2canvas');
+      
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: '#0a0a0a',
         scale: 2,

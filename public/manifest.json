@@ -1,0 +1,44 @@
+{
+  "name": "WW3 Tracker - Live Conflict Monitor",
+  "short_name": "WW3 Tracker",
+  "description": "Real-time satire tracker for the US vs Iran conflict. Live stats, betting odds, market data, and breaking news.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color":="#dc2626",
+  "theme_color":="#dc2626",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["news", "politics", "entertainment"],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
