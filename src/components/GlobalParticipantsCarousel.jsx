@@ -357,9 +357,9 @@ const GlobalParticipantsCarousel = () => {
         </div>
       </div>
 
-      {/* Subtitle */}
+      {/* Subtitle - minimal */}
       <p className="text-gray-500 text-xs font-body mb-3 px-2">
-        Main combatants only • MBS & Kim in News Feed • Auto-updates every 60s
+        Swipe to see all • Updates every 60s
       </p>
 
       {/* Breaking Alert Banner */}
