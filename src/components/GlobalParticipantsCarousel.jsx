@@ -1,0 +1,429 @@
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Share2, ChevronLeft, ChevronRight, Zap, AlertTriangle, Radio } from 'lucide-react';
+
+// GIF URLs for each leader
+const LEADER_GIFS = {
+  trump: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXJvdm5mMnZoNHVuYmt5ZDFyMDJzY3M4bjdtaXJqMDZrN3V5OXkzNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xTiTnHXbRoaZ1B1Mo8/giphy.gif',
+  netanyahu: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGdvNDJxaGxhenF1ZGNhZndheXN6aTN3dTE0ZThraGk4cXZ3cjN4eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4cLPinc3th5o8ScXS6/giphy.gif',
+  iran: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3Q1eGJhODQyNzdqdGs3NDByb3FzNjNpOWt1cHdjYTg3NmtieGh0MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KdxduNi5eiR7f6DI68/giphy.gif',
+  mbs: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGtpaXVlcjM2amxxczE5NjZwcW0yZ3N3MzR4bWp0YXd6ZHl1NGFxNyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/gk18coJsC7DqIX8rez/giphy.gif',
+  kim: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWtjN3E1djVrdjE3bWo3dDg5eWNvOWtsNHdiejV2dXRhdnM5N21mZSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wUTUBrRYwxMVW/giphy.gif'
+};
+
+const SITE_URL = 'https://ww3tracker.live';
+
+// Status types for dynamic updates
+const STATUS_TYPES = {
+  STRIKING: { label: 'STRIKING', color: 'blue', icon: '⚡' },
+  UNDER_FIRE: { label: 'UNDER FIRE', color: 'red', icon: '🔥' },
+  ACTIVE: { label: 'ACTIVE OPS', color: 'indigo', icon: '🎯' },
+  RETALIATING: { label: 'RETALIATING', color: 'orange', icon: '🚀' },
+  WILDCARD: { label: 'WILDCARD', color: 'purple', icon: '🎲' },
+  HIT: { label: 'INFRASTRUCTURE HIT', color: 'yellow', icon: '💥' },
+  MONITORING: { label: 'MONITORING', color: 'emerald', icon: '👁️' }
+};
+
+// Dynamic data - MAIN COMBATANTS ONLY (3 fighters) - Iran in MIDDLE
+const getInitialLeadersData = () => [
+  {
+    id: 'trump',
+    name: 'DONALD TRUMP',
+    country: 'United States',
+    flag: '🇺🇸',
+    nickname: 'THE DEALMAKER 💰',
+    gifUrl: LEADER_GIFS.trump,
+    accentColor: 'blue',
+    status: STATUS_TYPES.STRIKING,
+    stats: [
+      { emoji: '🎯', label: 'Strikes', value: '500+ Targets' },
+      { emoji: '🚢', label: 'Naval', value: '9 Ships Sunk' },
+      { emoji: '🤝', label: 'Coalition', value: 'US-Israel' }
+    ],
+    lastUpdate: Date.now(),
+    shareText: `🇺🇸 TRUMP CARD:\n🎯 Strikes: 500+ Targets\n🚢 Naval: 9 Ships Sunk\n🤝 Coalition: US-Israel\n\nLeading the offensive 👇\n${SITE_URL}\n\n#USvsIran`
+  },
+  {
+    id: 'iran',
+    name: 'INTERIM COUNCIL',
+    country: 'Iran',
+    flag: '🇮🇷',
+    nickname: 'THE SHADOW 🕶️',
+    gifUrl: LEADER_GIFS.iran,
+    accentColor: 'red',
+    status: STATUS_TYPES.RETALIATING,
+    stats: [
+      { emoji: '🚀', label: 'Missiles', value: '300-500' },
+      { emoji: '📡', label: 'Drones', value: '270-500' },
+      { emoji: '⛔', label: 'Hormuz', value: 'BLOCKED' }
+    ],
+    lastUpdate: Date.now(),
+    shareText: `🇮🇷 IRAN CARD:\n🚀 Missiles: 300-500 Launched\n📡 Drones: 270-500 Deployed\n⛔ Hormuz: BLOCKED\n\nRetaliation mode 👇\n${SITE_URL}\n\n#USvsIran`
+  },
+  {
+    id: 'netanyahu',
+    name: 'BIBI NETANYAHU',
+    country: 'Israel',
+    flag: '🇮🇱',
+    nickname: 'THE HAWK 🦅',
+    gifUrl: LEADER_GIFS.netanyahu,
+    accentColor: 'indigo',
+    status: STATUS_TYPES.ACTIVE,
+    stats: [
+      { emoji: '🎯', label: 'Operation', value: 'Roaring Lion' },
+      { emoji: '🏴', label: 'Status', value: 'Targeted' },
+      { emoji: '🛡️', label: 'Defense', value: 'Iron Dome' }
+    ],
+    lastUpdate: Date.now(),
+    shareText: `🇮🇱 NETANYAHU CARD:\n🎯 Operation: Roaring Lion\n🏴 Status: Office Targeted\n🛡️ Defense: Iron Dome Active\n\nActive partner 👇\n${SITE_URL}\n\n#USvsIran`
+  }
+];
+
+const getAccentClasses = (color) => {
+  const classes = {
+    blue: { text: 'text-blue-400', border: 'border-blue-500/30', bg: 'bg-blue-500/10', bar: 'bg-blue-500', glow: 'shadow-blue-500/20', pulse: 'animate-pulse-blue' },
+    indigo: { text: 'text-indigo-400', border: 'border-indigo-500/30', bg: 'bg-indigo-500/10', bar: 'bg-indigo-500', glow: 'shadow-indigo-500/20', pulse: 'animate-pulse-indigo' },
+    red: { text: 'text-red-400', border: 'border-red-500/30', bg: 'bg-red-500/10', bar: 'bg-red-500', glow: 'shadow-red-500/20', pulse: 'animate-pulse-red' },
+    emerald: { text: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', bar: 'bg-emerald-500', glow: 'shadow-emerald-500/20', pulse: 'animate-pulse-emerald' },
+    purple: { text: 'text-purple-400', border: 'border-purple-500/30', bg: 'bg-purple-500/10', bar: 'bg-purple-500', glow: 'shadow-purple-500/20', pulse: 'animate-pulse-purple' },
+    orange: { text: 'text-orange-400', border: 'border-orange-500/30', bg: 'bg-orange-500/10', bar: 'bg-orange-500', glow: 'shadow-orange-500/20', pulse: 'animate-pulse-orange' },
+    yellow: { text: 'text-yellow-400', border: 'border-yellow-500/30', bg: 'bg-yellow-500/10', bar: 'bg-yellow-500', glow: 'shadow-yellow-500/20', pulse: 'animate-pulse-yellow' }
+  };
+  return classes[color] || classes.blue;
+};
+
+// Format time ago
+const getTimeAgo = (timestamp) => {
+  const seconds = Math.floor((Date.now() - timestamp) / 1000);
+  if (seconds < 60) return 'Just now';
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  return `${Math.floor(seconds / 3600)}h ago`;
+};
+
+const LeaderCard = ({ leader, isNewAlert }) => {
+  const [gifLoaded, setGifLoaded] = useState(false);
+  const accent = getAccentClasses(leader.accentColor);
+  const statusColor = getAccentClasses(leader.status.color);
+
+  const handleShare = () => {
+    const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(leader.shareText)}`;
+    window.open(xUrl, '_blank', 'width=550,height=420');
+  };
+
+  return (
+    <motion.div
+      className="flex-shrink-0 w-[280px] sm:w-[320px] snap-center"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className={`comic-panel rounded-xl overflow-hidden h-full border ${accent.border} ${accent.glow} shadow-lg relative`}>
+        {/* New Alert Flash */}
+        <AnimatePresence>
+          {isNewAlert && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 1, repeat: 3 }}
+              className="absolute inset-0 bg-red-500/20 z-20 pointer-events-none"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Status Badge - Bottom Right (doesn't block faces) */}
+        <div className="absolute bottom-16 right-3 z-10">
+          <motion.div 
+            className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-body bg-black/90 backdrop-blur-md ${statusColor.text} border ${statusColor.border} flex items-center gap-1 shadow-xl`}
+            animate={leader.status.color === 'red' || leader.status.color === 'orange' || leader.status.color === 'yellow' ? {
+              boxShadow: ['0 0 0px rgba(239, 68, 68, 0)', '0 0 12px rgba(239, 68, 68, 0.5)', '0 0 0px rgba(239, 68, 68, 0)']
+            } : {}}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <span>{leader.status.icon}</span>
+            <span className="tracking-wide">{leader.status.label}</span>
+          </motion.div>
+        </div>
+
+        {/* GIF Header */}
+        <div className="relative">
+          <div className={`relative w-full h-44 sm:h-52 overflow-hidden border-b-2 ${accent.border}`}>
+            <img
+              src={leader.gifUrl}
+              alt={`${leader.name} - Animated GIF`}
+              className="w-full h-full object-cover object-top"
+              onLoad={() => setGifLoaded(true)}
+              loading="lazy"
+              decoding="async"
+            />
+            {/* Gradient from bottom for text readability only */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            
+            {/* Flag overlay */}
+            <div className="absolute top-2 right-2">
+              <span className="text-2xl sm:text-3xl drop-shadow-lg">{leader.flag}</span>
+            </div>
+
+            {/* Name overlay - positioned left to avoid badge */}
+            <div className="absolute bottom-0 left-0 right-20 p-3">
+              <h3 className={`font-heading font-bold text-sm sm:text-lg ${accent.text} tracking-wide drop-shadow-lg truncate`}>
+                {leader.name}
+              </h3>
+              <p className="text-gray-300 text-xs font-body truncate">{leader.nickname}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="p-3">
+          <div className="grid grid-cols-3 gap-2">
+            {leader.stats.map((stat, idx) => (
+              <motion.div
+                key={idx}
+                className={`${accent.bg} px-2 py-2 rounded border ${accent.border} text-center`}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="text-lg mb-0.5">{stat.emoji}</div>
+                <div className="text-[9px] text-gray-500 font-body uppercase truncate">{stat.label}</div>
+                <div className="font-mono font-bold text-white text-xs truncate">{stat.value}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Last Updated & Share */}
+        <div className="px-3 pb-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 text-[10px] text-gray-500">
+              <Radio className="w-3 h-3" />
+              <span>{getTimeAgo(leader.lastUpdate)}</span>
+            </div>
+            {leader.status.color === 'red' || leader.status.color === 'orange' ? (
+              <div className="flex items-center gap-1 text-[10px] text-red-400">
+                <Zap className="w-3 h-3 animate-pulse" />
+                <span className="animate-pulse">LIVE</span>
+              </div>
+            ) : null}
+          </div>
+          
+          <motion.button
+            onClick={handleShare}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg font-body text-sm transition-all bg-black border ${accent.border} hover:${accent.bg} text-white`}
+          >
+            <Share2 className="w-4 h-4" />
+            <span>Share on X</span>
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const GlobalParticipantsCarousel = () => {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [leaders, setLeaders] = useState(getInitialLeadersData());
+  const [lastGlobalUpdate, setLastGlobalUpdate] = useState(Date.now());
+  const [newAlertId, setNewAlertId] = useState(null);
+
+  // Simulate real-time updates
+  const simulateLiveUpdates = useCallback(() => {
+    setLeaders(prevLeaders => {
+      return prevLeaders.map(leader => {
+        // Randomly update some stats to simulate live data
+        if (Math.random() > 0.7) {
+          const updatedLeader = { ...leader, lastUpdate: Date.now() };
+          
+          // Simulate status changes based on events
+          if (leader.id === 'mbs' && Math.random() > 0.8) {
+            updatedLeader.status = STATUS_TYPES.HIT;
+            setNewAlertId('mbs');
+            setTimeout(() => setNewAlertId(null), 3000);
+          }
+          
+          return updatedLeader;
+        }
+        return leader;
+      });
+    });
+    setLastGlobalUpdate(Date.now());
+  }, []);
+
+  // Auto-refresh every 60 seconds
+  useEffect(() => {
+    const interval = setInterval(simulateLiveUpdates, 60000);
+    return () => clearInterval(interval);
+  }, [simulateLiveUpdates]);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll);
+      return () => el.removeEventListener('scroll', checkScroll);
+    }
+  }, []);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 340;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Manual refresh function
+  const handleRefresh = () => {
+    simulateLiveUpdates();
+  };
+
+  return (
+    <section className="mb-6">
+      {/* Header with live indicator */}
+      <div className="flex items-center justify-between mb-4 px-2">
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <h2 className="font-heading font-bold text-lg sm:text-xl text-white flex items-center gap-2">
+              <span>⚔️</span>
+              <span>MAIN COMBATANTS</span>
+            </h2>
+            {/* Live pulse dot */}
+            <div className="absolute -top-1 -right-3 flex items-center gap-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+              </span>
+            </div>
+          </div>
+          <div className="hidden sm:flex items-center gap-2 text-[10px] text-gray-500 bg-white/5 px-2 py-1 rounded-full">
+            <Radio className="w-3 h-3" />
+            <span>Updated {getTimeAgo(lastGlobalUpdate)}</span>
+          </div>
+        </div>
+        
+        {/* Controls */}
+        <div className="flex items-center gap-2">
+          {/* Refresh button */}
+          <motion.button
+            onClick={handleRefresh}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-2 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 text-white transition-all"
+            title="Refresh now"
+          >
+            <Zap className="w-4 h-4" />
+          </motion.button>
+          
+          {/* Desktop arrows */}
+          <motion.button
+            onClick={() => scroll('left')}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            disabled={!canScrollLeft}
+            className={`hidden sm:flex p-2 rounded-full border border-white/20 transition-all ${
+              canScrollLeft 
+                ? 'bg-white/10 hover:bg-white/20 text-white' 
+                : 'bg-transparent text-gray-600 cursor-not-allowed'
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </motion.button>
+          <motion.button
+            onClick={() => scroll('right')}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            disabled={!canScrollRight}
+            className={`hidden sm:flex p-2 rounded-full border border-white/20 transition-all ${
+              canScrollRight 
+                ? 'bg-white/10 hover:bg-white/20 text-white' 
+                : 'bg-transparent text-gray-600 cursor-not-allowed'
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Subtitle */}
+      <p className="text-gray-500 text-xs font-body mb-3 px-2">
+        Main combatants only • MBS & Kim in News Feed • Auto-updates every 60s
+      </p>
+
+      {/* Breaking Alert Banner */}
+      <AnimatePresence>
+        {newAlertId && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mx-2 mb-3"
+          >
+            <div className="bg-red-500/20 border border-red-500/50 rounded-lg px-4 py-2 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-400" />
+              <span className="text-red-400 text-sm font-body">
+                ⚡ FLASH: New infrastructure damage reported! Status updated.
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Carousel */}
+      <div className="relative">
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 px-2"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
+          {leaders.map((leader, index) => (
+            <motion.div
+              key={leader.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <LeaderCard 
+                leader={leader} 
+                isNewAlert={newAlertId === leader.id}
+              />
+            </motion.div>
+          ))}
+          
+          {/* End spacer */}
+          <div className="flex-shrink-0 w-4" />
+        </div>
+
+        {/* Mobile swipe indicator */}
+        <div className="sm:hidden flex items-center justify-center gap-1 mt-2">
+          {leaders.map((_, idx) => (
+            <div
+              key={idx}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${
+                idx === 0 ? 'bg-white w-4' : 'bg-white/30'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default GlobalParticipantsCarousel;

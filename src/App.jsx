@@ -15,6 +15,7 @@ import TimelinePage from './pages/TimelinePage';
 import HPBar from './components/HPBar';
 import WW3Counter from './components/WW3Counter';
 import FighterCard from './components/FighterCard';
+import GlobalParticipantsCarousel from './components/GlobalParticipantsCarousel';
 import TimelineOfChaos from './components/TimelineOfChaos';
 import MemeFeed from './components/MemeCard';
 import SpicyMeter from './components/SpicyMeter';
@@ -357,53 +358,8 @@ function MainDashboard() {
       <NasaFirmsStrip />
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* ROW 1: Fighter Cards Side by Side - Always 2 columns, tighter on mobile */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-6">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <FighterCard
-              side="us"
-              name="DONALD TRUMP"
-              nickname="THE DEALMAKER 💰"
-              stats={{
-                sanctions: 'MAXED OUT',
-                aggression: '87/100',
-                allies: 'NATO + 🤷',
-              }}
-              hp={gameState.usHP}
-              maxHp={100}
-              color="bg-blue-500"
-              borderColor="border-blue-500"
-              opponentHp={gameState.iranHP}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <FighterCard
-              side="iran"
-              name="SUPREME LEADER"
-              nickname="THE SHADOW 🕶️"
-              stats={{
-                nukes: 'Almost™',
-                proxies: 'Active 🔥',
-                patience: 'Running Out',
-                sympathy: '34%',
-              }}
-              hp={gameState.iranHP}
-              maxHp={100}
-              color="bg-red-500"
-              borderColor="border-red-500"
-              opponentHp={gameState.usHP}
-            />
-          </motion.div>
-        </div>
+        {/* ROW 1: Global Participants Carousel - Scrollable war roster */}
+        <GlobalParticipantsCarousel />
 
         {/* HP Bar - SECOND */}
         <section id="hp-section" className="mb-2">
