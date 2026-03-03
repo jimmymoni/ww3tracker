@@ -12,29 +12,8 @@ const CentralTweetButton = ({ usHP = 75, iranHP = 60 }) => {
     return `☢️ WW3 STANDOFF UPDATE\n\n🇺🇸 US: ${usHP}% HP vs 🇮🇷 Iran: ${iranHP}% HP\n\nWho's winning Round 1? 👀\n\nLive tracker 👇\nww3tracker.live #WW3 #USvsIran #TheStandoff`;
   };
 
-  const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  };
-
-  const shareToX = async () => {
+  const shareToX = () => {
     const text = getShareText();
-    
-    // Try native share on mobile first (opens share sheet with X app option)
-    if (isMobile() && navigator.share) {
-      try {
-        await navigator.share({
-          title: 'WW3 Tracker',
-          text: text,
-          url: 'https://ww3tracker.live'
-        });
-        return;
-      } catch (err) {
-        // User cancelled or share failed, fall through to Twitter intent
-        console.log('Native share cancelled, falling back');
-      }
-    }
-    
-    // Desktop or fallback - use Twitter Web Intent
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
   };
 
