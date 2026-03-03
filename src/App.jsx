@@ -23,6 +23,9 @@ import PolymarketWidget from './components/PolymarketWidget';
 import NasaFirmsStrip from './components/NasaFirmsStrip';
 import BreakingAlert from './components/BreakingAlert';
 import PickSideModal from './components/PickSideModal';
+import CentralTweetButton from './components/CentralTweetButton';
+import WarRoomComments from './components/WarRoomComments';
+import DailyPoll from './components/DailyPoll';
 
 // API
 import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
@@ -403,9 +406,12 @@ function MainDashboard() {
         </div>
 
         {/* HP Bar - SECOND */}
-        <section className="mb-6">
+        <section id="hp-section" className="mb-2">
           <HPBar usHP={gameState.usHP} iranHP={gameState.iranHP} />
         </section>
+
+        {/* Central Tweet Button */}
+        <CentralTweetButton usHP={gameState.usHP} iranHP={gameState.iranHP} />
 
         {/* WW3 Probability Counter - THIRD (Progress Bar style) */}
         <WW3Counter tension={gameState.tension} />
@@ -419,6 +425,9 @@ function MainDashboard() {
         >
           <MemeFeed />
         </motion.section>
+
+        {/* War Room Comments Section */}
+        <WarRoomComments />
 
         {/* ROW 3: Spicy Meter - Compact Progress Bar Style */}
         <motion.section

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, DollarSign, Activity, Crown, ExternalLink, Twitter, Link as LinkIcon, Clock, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchPolymarketData, getCachedData } from '../lib/api';
+import DailyPoll from './DailyPoll';
 
 const DEFAULT_POLYMARKET_DATA = {
   markets: [
@@ -413,6 +414,9 @@ const PolymarketWidget = () => {
           />
         ))}
       </div>
+
+      {/* Daily Poll Widget */}
+      <DailyPoll />
 
       {/* Leaderboard & Footer */}
       <div className="mt-4 grid md:grid-cols-2 gap-4">
