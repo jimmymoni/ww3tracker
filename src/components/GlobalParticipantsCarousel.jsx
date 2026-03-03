@@ -100,6 +100,126 @@ const getTimeAgo = (timestamp) => {
   return `${Math.floor(seconds / 3600)}h ago`;
 };
 
+const LeaderCardDesktop = ({ leader, isNewAlert }) => {
+  const [gifLoaded, setGifLoaded] = useState(false);
+  const accent = getAccentClasses(leader.accentColor);
+  const statusColor = getAccentClasses(leader.status.color);
+
+  const handleShare = () => {
+    const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(leader.shareText)}`;
+    window.open(xUrl, '_blank', 'width=550,height=420');
+  };
+
+  return (
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className={`comic-panel rounded-xl overflow-hidden h-full border ${accent.border} ${accent.glow} shadow-lg relative`}>
+        {/* New Alert Flash */}
+        <AnimatePresence>
+          {isNewAlert && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 1, repeat: 3 }}
+              className="absolute inset-0 bg-red-500/20 z-20 pointer-events-none"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Status Badge - Bottom Right */}
+        <div className="absolute bottom-20 right-3 z-10">
+          <motion.div 
+            className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-body bg-black/90 backdrop-blur-md ${statusColor.text} border ${statusColor.border} flex items-center gap-1 shadow-xl`}
+            animate={leader.status.color === 'red' || leader.status.color === 'orange' ? {
+              boxShadow: ['0 0 0px rgba(239, 68, 68, 0)', '0 0 12px rgba(239, 68, 68, 0.5)', '0 0 0px rgba(239, 68, 68, 0)']
+            } : {}}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <span>{leader.status.icon}</span>
+            <span className="tracking-wide">{leader.status.label}</span>
+          </motion.div>
+        </div>
+
+        {/* GIF Header - Taller on desktop */}
+        <div className="relative">
+          <div className={`relative w-full h-52 overflow-hidden border-b-2 ${accent.border}`}>
+            <img
+              src={leader.gifUrl}
+              alt={`${leader.name} - Animated GIF`}
+              className="w-full h-full object-cover object-top"
+              onLoad={() => setGifLoaded(true)}
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            
+            {/* Flag overlay */}
+            <div className="absolute top-3 right-3">
+              <span className="text-3xl drop-shadow-lg">{leader.flag}</span>
+            </div>
+
+            {/* Name overlay */}
+            <div className="absolute bottom-0 left-0 right-20 p-4">
+              <h3 className={`font-heading font-bold text-lg ${accent.text} tracking-wide drop-shadow-lg truncate`}>
+                {leader.name}
+              </h3>
+              <p className="text-gray-300 text-sm font-body truncate">{leader.nickname}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="p-4">
+          <div className="grid grid-cols-3 gap-3">
+            {leader.stats.map((stat, idx) => (
+              <motion.div
+                key={idx}
+                className={`${accent.bg} px-2 py-3 rounded-lg border ${accent.border} text-center`}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="text-xl mb-1">{stat.emoji}</div>
+                <div className="text-[10px] text-gray-500 font-body uppercase truncate">{stat.label}</div>
+                <div className="font-mono font-bold text-white text-sm truncate">{stat.value}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Last Updated & Share */}
+        <div className="px-4 pb-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 text-xs text-gray-500">
+              <Radio className="w-3 h-3" />
+              <span>{getTimeAgo(leader.lastUpdate)}</span>
+            </div>
+            {leader.status.color === 'red' || leader.status.color === 'orange' ? (
+              <div className="flex items-center gap-1 text-xs text-red-400">
+                <Zap className="w-3 h-3 animate-pulse" />
+                <span className="animate-pulse">LIVE</span>
+              </div>
+            ) : null}
+          </div>
+          
+          <motion.button
+            onClick={handleShare}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg font-body text-sm transition-all bg-black border ${accent.border} hover:${accent.bg} text-white`}
+          >
+            <Share2 className="w-4 h-4" />
+            <span>Share on X</span>
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const LeaderCard = ({ leader, isNewAlert }) => {
   const [gifLoaded, setGifLoaded] = useState(false);
   const accent = getAccentClasses(leader.accentColor);
@@ -381,8 +501,25 @@ const GlobalParticipantsCarousel = () => {
         )}
       </AnimatePresence>
 
-      {/* Carousel */}
-      <div className="relative">
+      {/* Desktop: Grid Layout | Mobile: Horizontal Scroll */}
+      <div className="hidden md:grid md:grid-cols-3 gap-4 px-2">
+        {leaders.map((leader, index) => (
+          <motion.div
+            key={leader.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <LeaderCardDesktop 
+              leader={leader} 
+              isNewAlert={newAlertId === leader.id}
+            />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Mobile: Horizontal Scroll Carousel */}
+      <div className="md:hidden relative">
         <div
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 px-2"
@@ -411,7 +548,7 @@ const GlobalParticipantsCarousel = () => {
         </div>
 
         {/* Mobile swipe indicator */}
-        <div className="sm:hidden flex items-center justify-center gap-1 mt-2">
+        <div className="flex items-center justify-center gap-1 mt-2">
           {leaders.map((_, idx) => (
             <div
               key={idx}
