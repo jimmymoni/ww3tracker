@@ -1,120 +1,101 @@
-# WAR MARKET & POLYMARKET FIXES NEEDED
+# NEXT SESSION PROMPT
 
-## Current Issues (Screenshots: 220829.png, 220932.png)
+## Context for AI Agent
 
-### Issue 1: War Market Component Sizing/Layout
-**Problem:** The War Market widget is collapsed or not displaying content properly. Only the header/footer shows but no stock rows.
-
-**Files to check:**
-- `src/components/SpicyMeter.jsx` - The War Market component
-- `src/App.jsx` - How it's positioned in the layout (around line 327)
-
-**Current code in App.jsx:**
-```jsx
-{/* ROW 3: Spicy Meter - Compact Progress Bar Style */}
-<motion.section
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.4 }}
-  className="mb-6"
-  style={{ minHeight: '350px' }}  // Added but not working
->
-  <SpicyMeter 
-    tension={gameState.tension} 
-    usHP={gameState.usHP}
-    iranHP={gameState.iranHP}
-  />
-</motion.section>
-```
-
-**What needs fixing:**
-- Component should display 4 market rows (Oil, Gold, Defense, Iran Rial) + WW3.RISK row
-- Currently shows empty/collapsed
-- Check the API `/api/markets` IS working (returns data)
-- Check rendering logic - stocks array might not be mapping properly
+**REFER TO: `CHAOS_PEACEMAKER_PLAN.md`** - This is the bible for today's mission.
 
 ---
 
-### Issue 2: Polymarket Widget Broken Links
-**Problem:** Clicking "BET ON POLYMARKET" button goes to broken URLs that show "Oops...we didn't forecast this" error.
+## Opening Line for User
 
-**File:** `src/components/PolymarketWidget.jsx`
-
-**Current broken URLs in DEFAULT_POLYMARKET_DATA:**
-- `https://polymarket.com/event/will-ww3-break-out-before-2030` ❌
-- `https://polymarket.com/event/will-iran-conduct-a-nuclear-weapons-test-by-2026` ❌
-- `https://polymarket.com/event/will-there-be-direct-us-iran-military-conflict-in-2025` ❌
-- `https://polymarket.com/event/will-the-middle-east-war-escalate-to-regional-conflict` ❌
-
-**These events are CLOSED/RESOLVED on Polymarket.**
-
-**Fix options:**
-1. Replace with CURRENT active Polymarket events about Iran/US
-2. Just link to `https://polymarket.com` homepage (safest)
-3. Search for active markets via API and use real URLs
-
-**Current betOnPolymarket function:**
-```javascript
-const betOnPolymarket = () => {
-  if (market?.url) {
-    window.open(market.url + '?r=thestandoff', '_blank');
-  } else {
-    window.open('https://polymarket.com', '_blank');
-  }
-};
-```
+"Let's vibe code Chaos Peacemaker and deploy it TODAY. Refer to `CHAOS_PEACEMAKER_PLAN.md` for the full battle plan."
 
 ---
 
-### Issue 3: War Market Data Display
-**Expected display:**
-```
-📉 WAR MARKET ● LIVE
+## Current Site Status
 
-OIL.WAR        $75.42    ▲ +1.23%  (red)
-SAFE.HAVEN     $2,350.00 ▲ +0.50%  (yellow)
-WAR.STOCKS     $450.20   ▲ +2.10%  (red)
-USD/IRR        42K IRR   ▼ LIVE    (red)
-WW3.RISK       37%       ▼         (green/red based on value)
+**LIVE URL:** https://ww3tracker.live
 
-🔄 Updated 22:08          Real market data
-```
+**Existing Features:**
+- ✅ Main Combatants carousel (US → Iran → Israel) with GIFs
+- ✅ Live status badges (STRIKING, RETALIATING, ACTIVE OPS)
+- ✅ Breaking news feed
+- ✅ HP bars, Polymarket widget
+- ✅ NASA FIRMS strip
+- ✅ Share on X buttons
 
-**API is working:** `GET /api/markets` returns:
-```json
-{
-  "stocks": [
-    {"label": "OIL.WAR", "price": "$75.42", "change": "+1.23%", "direction": "up", "meaning": "bad"},
-    {"label": "SAFE.HAVEN", "price": "$2,350.00", "change": "+0.50%", "direction": "up", "meaning": "warning"},
-    {"label": "WAR.STOCKS", "price": "$450.20", "change": "+2.10%", "direction": "up", "meaning": "bad"},
-    {"label": "USD/IRR", "price": "42K IRR", "change": "LIVE", "direction": "down", "meaning": "bad"}
-  ]
-}
-```
+**What We Need to ADD:**
+The game should REPLACE the hero section (above the carousel), with carousel moving below as secondary content.
 
 ---
 
-## Backend Files Already Created:
-- `server/services/marketService.js` - Fetches real data from Yahoo Finance ✅
-- `server/server.js` - Has `/api/markets` endpoint ✅
+## Today's Real News Context (March 4, 2026)
 
-## Frontend Files to Fix:
-1. `src/components/SpicyMeter.jsx` - Fix rendering of stock rows
-2. `src/components/PolymarketWidget.jsx` - Fix broken URLs
-3. `src/App.jsx` - Check layout/container sizing
+Use these in scenarios:
+- Iran drones hit US Embassy in Riyadh
+- Aramco Ras Tanura refinery under threat (smoke signatures)
+- Strait of Hormuz closed/limited
+- Saudi military on full alert
+- Netanyahu office targeted by Iran
+- 4 US soldiers killed in Kuwait
+- Kim Jong-un trending "nukes ready, still no invite" memes
 
-## Test Command:
-```bash
-cd "D:\US vs IRAN"
-npm run build
-taskkill /F /IM node.exe
-npm run dev
-```
-Then go to http://localhost:5173/
+---
 
-## Success Criteria:
-- [ ] War Market shows 4 market data rows + WW3.RISK row
-- [ ] Each row shows: Label, Price, Change %, Arrow
-- [ ] Colors: Oil up=red, Gold up=yellow, Defense up=red, IRR=red
-- [ ] Clicking "BET ON POLYMARKET" goes to working page (not error)
-- [ ] Component has proper height, not collapsed
+## Technical Stack (Same as Current)
+
+- React + Vite
+- Tailwind CSS
+- Framer Motion (already installed)
+- Lucide React icons (already installed)
+- Deploy: Railway (auto-deploy on git push)
+
+---
+
+## Immediate Action Items
+
+1. Read `CHAOS_PEACEMAKER_PLAN.md` fully
+2. Check current site layout (carousel is hero right now)
+3. Build game ABOVE the carousel
+4. Use existing components where possible (meter, share buttons)
+5. Hardcode 8 scenarios based on today's news
+6. Add 4 role selection cards
+7. Build swipe/choice system
+8. Add ending screens with share
+9. Deploy
+
+---
+
+## Key Decisions Already Made
+
+- 4 roles: US Diplomat, Neutral Mediator, Iranian Backchannel, Kim Wildcard
+- 6-8 rounds per game
+- Static scenarios (hardcoded today's news) - live RSS comes later
+- Kim wildcard = meme/chaos path (this is the viral hook)
+- Mobile-first design
+- Share on X is CRITICAL for virality
+
+---
+
+## Success Criteria for Today
+
+- [ ] Game loads at ww3tracker.live
+- [ ] Can complete a full playthrough (6-8 rounds)
+- [ ] Kim wildcard path is funny/memorable
+- [ ] Share button works
+- [ ] Deployed and live
+
+---
+
+## START THE SESSION
+
+**User says:** "refer this .md file"
+
+**You say:** "Got it. Reading `CHAOS_PEACEMAKER_PLAN.md` now. We're building Chaos Peacemaker today - the swipe diplomacy game. Let me check the current site structure first, then we'll vibe code this and deploy before end of day. The Kim wildcard meme path is our viral hook. Let's go."
+
+Then immediately:
+1. Read the plan file
+2. Check localhost/current site
+3. Start building the game components
+4. Don't over-engineer - WORKING > PERFECT
+5. Deploy deploy deploy
