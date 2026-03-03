@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Zap, Globe, Loader2 } from 'lucide-react';
+import { AlertTriangle, Zap, Globe, Loader2, Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Landing Pages
 import WW3ProbabilityPage from './pages/WW3ProbabilityPage';
@@ -26,68 +27,154 @@ import PickSideModal from './components/PickSideModal';
 // API
 import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
 
-// Header - Mobile Optimized
-const Header = ({ isLoading, userSide }) => (
-  <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
-      <div className="flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="flex items-center text-lg sm:text-2xl">
-            <span>🦅</span>
-            <span className="text-gray-600 mx-0.5 sm:mx-1 text-sm sm:text-base">vs</span>
-            <span>☠️</span>
-          </div>
-          <div>
-            <h1 className="font-heading font-bold text-lg sm:text-2xl text-white tracking-wide">
-              WW3 TRACKER
-            </h1>
-            <p className="text-[9px] sm:text-[10px] text-gray-500 font-mono tracking-wider uppercase">
-              Live Conflict Monitor
-            </p>
+// Navigation Links
+const NavLinks = ({ mobile = false, onClose }) => {
+  const links = [
+    { to: '/', label: 'Home' },
+    { to: '/ww3-probability', label: 'WW3 Probability' },
+    { to: '/us-iran-war-tracker', label: 'War Tracker' },
+    { to: '/iran-conflict-live', label: 'Live Updates' },
+    { to: '/timeline', label: 'Timeline' },
+  ];
+
+  if (mobile) {
+    return (
+      <div className="flex flex-col gap-2 py-2">
+        {links.map(link => (
+          <Link
+            key={link.to}
+            to={link.to}
+            onClick={onClose}
+            className="text-gray-300 hover:text-white font-body text-sm py-2 px-3 rounded hover:bg-white/10 transition-colors"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <nav className="hidden lg:flex items-center gap-1">
+      {links.map(link => (
+        <Link
+          key={link.to}
+          to={link.to}
+          className="text-gray-400 hover:text-white font-body text-xs px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        >
+          {link.label}
+        </Link>
+      ))}
+    </nav>
+  );
+};
+
+// Header - Mobile Optimized with Navigation
+const Header = ({ isLoading, userSide }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center text-lg sm:text-2xl">
+              <span>🦅</span>
+              <span className="text-gray-600 mx-0.5 sm:mx-1 text-sm sm:text-base">vs</span>
+              <span>☠️</span>
+            </div>
+            <div>
+              <h1 className="font-heading font-bold text-lg sm:text-2xl text-white tracking-wide">
+                WW3 TRACKER
+              </h1>
+              <p className="text-[9px] sm:text-[10px] text-gray-500 font-mono tracking-wider uppercase">
+                Live Conflict Monitor
+              </p>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <NavLinks />
+
+          {/* Status & Mobile Menu */}
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="hidden sm:flex items-center gap-1 text-yellow-500/70 text-xs">
+              <Zap className="w-3 h-3" />
+              <span className="font-body">LIVE UPDATES</span>
+            </div>
+            <div className="hidden md:flex items-center gap-1 text-blue-400/70 text-xs">
+              <Globe className="w-3 h-3" />
+              <span className="font-body">24/7 MONITORING</span>
+            </div>
+            <motion.div 
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="bg-red-600/20 text-red-400 border border-red-500/30 font-heading text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded flex items-center gap-1 sm:gap-2"
+            >
+              <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              <span className="hidden sm:inline">CHAOS MODE</span>
+              <span className="sm:hidden">CHAOS</span>
+            </motion.div>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-gray-400 hover:text-white"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+
+            {/* Subtle loading indicator */}
+            {isLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="hidden sm:flex items-center gap-1 text-blue-400 text-xs"
+              >
+                <Loader2 className="w-3 h-3 animate-spin" />
+                <span className="font-body">Syncing...</span>
+              </motion.div>
+            )}
           </div>
         </div>
 
-        {/* Status - Hidden on mobile, shown on sm+ */}
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div className="hidden sm:flex items-center gap-1 text-yellow-500/70 text-xs">
-            <Zap className="w-3 h-3" />
-            <span className="font-body">LIVE UPDATES</span>
-          </div>
-          <div className="hidden md:flex items-center gap-1 text-blue-400/70 text-xs">
-            <Globe className="w-3 h-3" />
-            <span className="font-body">24/7 MONITORING</span>
-          </div>
-          <motion.div 
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="bg-red-600/20 text-red-400 border border-red-500/30 font-heading text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded flex items-center gap-1 sm:gap-2"
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden border-t border-white/10 mt-2"
           >
-            <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            <span className="hidden sm:inline">CHAOS MODE</span>
-            <span className="sm:hidden">CHAOS</span>
+            <NavLinks mobile onClose={() => setMobileMenuOpen(false)} />
           </motion.div>
-          {/* Subtle loading indicator */}
-          {isLoading && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="hidden sm:flex items-center gap-1 text-blue-400 text-xs"
-            >
-              <Loader2 className="w-3 h-3 animate-spin" />
-              <span className="font-body">Syncing...</span>
-            </motion.div>
-          )}
-        </div>
+        )}
       </div>
-    </div>
-  </header>
+    </header>
+  );
+};
+
+// Footer Navigation
+const FooterNav = () => (
+  <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-4">
+    <Link to="/" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Home</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/ww3-probability" className="text-gray-500 hover:text-white text-xs font-body transition-colors">WW3 Probability</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/us-iran-war-tracker" className="text-gray-500 hover:text-white text-xs font-body transition-colors">War Tracker</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/iran-conflict-live" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Live Updates</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
+  </div>
 );
 
 // Disclaimer - Mobile Optimized
 const Disclaimer = () => (
   <div className="border-t border-white/10 py-6 sm:py-8 px-3 sm:px-4">
     <div className="max-w-2xl mx-auto text-center">
+      <FooterNav />
       <div className="text-xl sm:text-2xl mb-2 sm:mb-3">⚠️</div>
       <h3 className="font-heading font-bold text-base sm:text-lg text-white mb-1.5 sm:mb-2">DISCLAIMER</h3>
       <p className="text-gray-500 text-xs sm:text-sm font-body mb-1.5 sm:mb-2">
