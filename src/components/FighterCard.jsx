@@ -29,6 +29,9 @@ const FighterCard = ({
   const accentClass = isUS ? 'text-blue-400 border-blue-500/30' : 'text-red-400 border-red-500/30';
   const bgClass = isUS ? 'bg-blue-500/5' : 'bg-red-500/5';
   const gifUrl = isUS ? TRUMP_GIF_URL : IRAN_GIF_URL;
+  const altText = isUS 
+    ? "Donald Trump animated GIF - US President fighter card"
+    : "Iranian Leader animated GIF - Iran fighter card";
 
   // Random quote animation
   useEffect(() => {
@@ -99,7 +102,7 @@ const FighterCard = ({
         >
           <img 
             src={gifUrl}
-            alt={isUS ? 'Trump GIF - Animated image of Donald Trump' : 'Iran Supreme Leader GIF - Animated image of the Supreme Leader'}
+            alt={altText}
             className="w-full h-full object-cover object-center"
             onLoad={() => setGifLoaded(true)}
             loading="lazy"

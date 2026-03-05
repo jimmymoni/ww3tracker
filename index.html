@@ -2,12 +2,50 @@
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) - Load async to prevent blocking -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E"></script>
+    <!-- KOCHI EXCLUSION: Analytics blocked for visitors from Kochi -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TV2FWQFE2E');
+      // Check if user is from Kochi and exclude from analytics
+      (function() {
+        // Fetch location and conditionally load GA
+        fetch('https://ipapi.co/json/')
+          .then(res => res.json())
+          .then(data => {
+            const isKochi = data.city === 'Kochi' || 
+                            data.city === 'Cochin' || 
+                            data.region === 'Kerala';
+            
+            if (!isKochi) {
+              // Load Google Analytics only for non-Kochi visitors
+              const gaScript = document.createElement('script');
+              gaScript.async = true;
+              gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E';
+              document.head.appendChild(gaScript);
+              
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-TV2FWQFE2E');
+              window.gtag = gtag;
+            } else {
+              console.log('👤 Analytics excluded: Kochi visitor detected');
+              // Set dummy gtag to prevent errors
+              window.gtag = function(){};
+            }
+          })
+          .catch(() => {
+            // If geolocation fails, load GA anyway (fail open)
+            const gaScript = document.createElement('script');
+            gaScript.async = true;
+            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E';
+            document.head.appendChild(gaScript);
+            
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TV2FWQFE2E');
+            window.gtag = gtag;
+          });
+      })();
     </script>
     
     <meta charset="UTF-8" />
