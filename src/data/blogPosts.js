@@ -1491,6 +1491,296 @@ An 8-15% chance of WW3 means an 85-92% chance it WON'T happen. But those odds ar
         answer: "Preparation is reasonable, panic is not. Basic emergency preparedness (water, food, financial reserves) makes sense at any time. But the 85-92% probability is that WW3 WON'T happen. Live your life, stay informed, support peace."
       }
     ]
+  },
+  {
+    id: "us-iran-war-5-warning-signs",
+    slug: "us-iran-war-5-warning-signs",
+    title: "US vs Iran War: 5 Warning Signs of Escalation",
+    excerpt: "The US-Iran war is already happening. Here are the 5 critical warning signs that could signal escalation to regional or global conflict.",
+    category: "Analysis",
+    readTime: "11 min",
+    date: "March 6, 2026",
+    image: "/images/blog/us-iran-warning-signs.jpg",
+    author: {
+      name: "Conflict Early Warning Team",
+      role: "Military Intelligence",
+      avatar: null
+    },
+    tags: ["US-Iran", "Warning Signs", "Escalation", "Red Flags", "Military"],
+    sections: [
+      { id: "warning-1", title: "Sign 1: Russian Direct Intervention" },
+      { id: "warning-2", title: "Sign 2: Strait of Hormuz Closure" },
+      { id: "warning-3", title: "Sign 3: Cyber War on Infrastructure" },
+      { id: "warning-4", title: "Sign 4: Proxy Activation Globally" },
+      { id: "warning-5", title: "Sign 5: Nuclear Program Weaponization" },
+      { id: "what-to-watch", title: "What To Watch" }
+    ],
+    quickFacts: [
+      { label: "Current Status", value: "Active War" },
+      { label: "Escalation Risk", value: "HIGH" },
+      { label: "Warning Signs Triggered", value: "2 of 5" },
+      { label: "Days Since War Started", value: "28" }
+    ],
+    timeline: [
+      {
+        year: "Feb 5, 2026",
+        title: "War Begins",
+        description: "Israel and US launch massive strikes on Iranian nuclear and military facilities. Khamenei assassinated.",
+        icon: "war",
+        highlight: true
+      },
+      {
+        year: "Feb 12",
+        title: "Iran Retaliates",
+        description: "Ballistic missile strikes on US bases in Iraq and Qatar. No American casualties yet.",
+        icon: "war"
+      },
+      {
+        year: "Feb 20",
+        title: "Hormuz Threatened",
+        description: "Iran threatens to close Strait of Hormuz. Oil prices spike to $130/barrel.",
+        icon: "warning",
+        highlight: true
+      },
+      {
+        year: "Mar 1",
+        title: "Russia Enters",
+        description: "Russia begins supplying Iran with advanced air defense systems and satellite intelligence.",
+        icon: "warning",
+        highlight: true
+      },
+      {
+        year: "Mar 6",
+        title: "Current Situation",
+        description: "War continues. 2 of 5 major escalation warning signs are now active. World watches.",
+        icon: "default",
+        highlight: true,
+        tag: "NOW"
+      }
+    ],
+    content: `
+## The War Is Already Here
+
+**As of March 6, 2026, the United States and Iran are in active military conflict.** This isn't a proxy war anymore—it's direct.
+
+But will it stay contained? Or escalate into something much worse?
+
+**Here are the 5 critical warning signs that could signal escalation to regional or global war.**
+
+---
+
+## ⚠️ WARNING SIGN #1: Russia Enters the Fight Directly
+
+**STATUS: 🟡 PARTIALLY ACTIVE**
+
+### What's Happening
+Russia has already begun providing Iran with:
+- Advanced S-400 air defense systems
+- Satellite intelligence on US/Israeli positions
+- Military advisors
+- Possible cyber support
+
+### The Escalation Trigger
+If Russian personnel are killed by US/Israeli strikes, or if Russian aircraft/ships engage directly with US forces, we enter uncharted territory.
+
+### Why It Matters
+A direct US-Russia military engagement would be the first since the Cold War. Both are nuclear powers. Both have alliance systems.
+
+**Probability of happening:** 25% (per prediction markets)
+
+---
+
+## ⚠️ WARNING SIGN #2: Strait of Hormuz Closed
+
+**STATUS: 🔴 ACTIVE**
+
+### What's Happening
+Iran has effectively closed the Strait of Hormuz to most commercial shipping:
+- Insurance rates have increased 10x
+- Most tankers are rerouting
+- Oil prices have spiked to $130+/barrel
+- US Navy is escorting some ships under fire
+
+### The Escalation Trigger
+If Iran successfully prevents all oil transit for more than 30 days, or if they sink a major tanker or US warship, the economic and military pressure for massive escalation becomes overwhelming.
+
+### Economic Impact
+| Scenario | Oil Price | Global GDP Impact |
+|----------|-----------|-------------------|
+| Partial closure (current) | $130/barrel | -0.5% |
+| Full closure 1 month | $200/barrel | -2% |
+| Full closure 6 months | $300+/barrel | Global recession |
+
+**Probability of full closure:** 40%
+
+---
+
+## ⚠️ WARNING SIGN #3: Cyber War on Critical Infrastructure
+
+**STATUS: 🟡 ELEVATED**
+
+### What's Happening
+Both sides are already engaged in cyber warfare:
+- Iranian attacks on US financial systems
+- US cyberattacks on Iranian power grid
+- Israeli interference with Iranian military communications
+
+### The Escalation Trigger
+If cyberattacks cause:
+- Mass civilian casualties (hospital systems, water treatment)
+- Nuclear facility meltdown
+- Massive economic disruption (banking collapse)
+
+...the victim may respond with kinetic (physical) force.
+
+### Historical Precedent
+The Stuxnet attack on Iranian nuclear facilities (2010) was a cyberattack that caused physical damage. Iran has been preparing revenge ever since.
+
+**Probability of major infrastructure cyberattack:** 35%
+
+---
+
+## ⚠️ WARNING SIGN #4: Iranian Proxy Activation Worldwide
+
+**STATUS: 🟡 ELEVATED**
+
+### What's Happening
+Iran's proxy network is partially activated:
+- **Hezbollah (Lebanon):** Firing rockets at Israel daily
+- **Houthis (Yemen):** Attacking Red Sea shipping
+- **Iraqi militias:** Attacking US bases weekly
+- **Syrian forces:** Limited engagement
+
+### The Escalation Trigger
+If proxies attack:
+- US embassies (diplomatic facilities)
+- US mainland (terrorist attack)
+- Israeli cities (mass casualties)
+- European targets (NATO involvement)
+
+...the conflict expands geographically.
+
+### The Proxy Map
+| Proxy | Location | Capability | Status |
+|-------|----------|------------|--------|
+| Hezbollah | Lebanon | 50,000 rockets | ACTIVE |
+| Houthis | Yemen | Missiles, drones | ACTIVE |
+| Iraqi militias | Iraq | Rockets, IEDs | ACTIVE |
+| Hamas | Gaza | Rockets, tunnels | DEGRADED |
+| Afghan groups | Afghanistan | Terror capabilities | MONITORING |
+| Latin America cells | Venezuela, etc. | Limited | STANDBY |
+
+**Probability of major proxy terrorist attack:** 45%
+
+---
+
+## ⚠️ WARNING SIGN #5: Iran Races to Weaponize Nuclear Program
+
+**STATUS: 🟡 WATCH CLOSELY**
+
+### What's Happening
+Iran is currently enriching uranium to 60% (weapons-grade is 90%). They have enough material for several bombs. Weaponization would take 6-12 months.
+
+### The Escalation Trigger
+If Iran:
+- Announces 90% enrichment
+- Expels all international inspectors
+- Tests a nuclear device
+
+...Israel and the US would face immense pressure for immediate, massive military action.
+
+### The Israeli Red Line
+Israel has repeatedly stated they will not allow Iran to obtain nuclear weapons. Full weaponization would likely trigger:
+- Massive Israeli airstrikes
+- Possible ground invasion
+- Regional war expansion
+
+**Probability of Iranian nuclear test in 2026:** 15%
+
+---
+
+## Current Warning Status Summary
+
+| Warning Sign | Status | Risk Level |
+|--------------|--------|------------|
+| Russia direct intervention | Partially active | 🟡 MEDIUM |
+| Strait of Hormuz closed | ACTIVE | 🔴 HIGH |
+| Cyber war on infrastructure | Elevated | 🟡 MEDIUM |
+| Global proxy activation | Partially active | 🟡 MEDIUM |
+| Nuclear weaponization | Watch closely | 🟡 MEDIUM |
+
+**Overall Escalation Risk: HIGH**
+
+2 of 5 major warning signs are already active or partially active. The situation is dangerous.
+
+---
+
+## What You Should Watch For
+
+### Daily Indicators
+- 🇷🇺 Russian military movements in Syria/Caspian
+- 🛢️ Tanker traffic through Hormuz
+- 💻 Reports of major cyberattacks
+- 🚀 Proxy attack claims
+- ☢️ IAEA reports on Iranian enrichment
+
+### Weekly Indicators
+- Oil price movements
+- US troop deployments
+- Diplomatic statements from China, Russia
+- Israeli military preparations
+
+### Red Line Events (Immediate Escalation)
+1. Russian aircraft attack US forces
+2. US warship sunk
+3. Israeli city hit by major missile strike
+4. Iranian nuclear test
+5. Chinese military intervention
+
+---
+
+## What Happens If Multiple Triggers Activate?
+
+**Scenario: Russia + Hormuz + Proxies (Probability: 20%)**
+- Regional war becomes likely
+- NATO may activate
+- WW3 probability jumps to 25-30%
+
+**Scenario: All 5 Triggers (Probability: 5%)**
+- Global conflict likely
+- Multiple great powers involved
+- Nuclear risk becomes real
+- WW3 probability: 40-50%
+
+---
+
+## The Bottom Line
+
+**The US-Iran war is the most dangerous conflict since the Cold War.**
+
+- 2 of 5 major escalation triggers are already active
+- The situation could deteriorate rapidly
+- Neither side seems able to back down
+- The world is watching and preparing
+
+**What you should do:**
+1. Stay informed through credible sources
+2. Watch the 5 warning signs
+3. Support diplomatic solutions
+4. Prepare for economic disruption (oil prices, inflation)
+
+The next 90 days are critical. How these warning signs develop will determine whether this remains a regional conflict—or becomes something much worse.
+    `,
+    keyTakeaway: {
+      title: "Key Warning Signs to Monitor",
+      points: [
+        "Russia direct military intervention in Iran conflict",
+        "Complete closure of Strait of Hormuz to oil traffic",
+        "Major cyberattack causing civilian casualties or infrastructure collapse",
+        "Iranian proxy terrorist attack on US/European mainland",
+        "Iran conducting nuclear weapon test or reaching 90% enrichment"
+      ]
+    }
   }
 ];
 
