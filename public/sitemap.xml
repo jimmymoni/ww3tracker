@@ -1,48 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage - Highest Priority -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage -->
   <url>
     <loc>https://ww3tracker.live/</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ww3tracker.live/og-image.png</image:loc>
+      <image:title>WW3 Tracker - Live Conflict Monitor</image:title>
+    </image:image>
   </url>
-  
-  <!-- Main Landing Pages - High Priority -->
+
+  <!-- WW3 Probability Page -->
   <url>
     <loc>https://ww3tracker.live/ww3-probability</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
+  <!-- US-Iran War Tracker -->
   <url>
     <loc>https://ww3tracker.live/us-iran-war-tracker</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
+  <!-- Iran Conflict Live -->
   <url>
     <loc>https://ww3tracker.live/iran-conflict-live</loc>
-    <lastmod>2026-03-05</lastmod>
-    <changefreq>always</changefreq>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
-  <url>
-    <loc>https://ww3tracker.live/timeline</loc>
-    <lastmod>2026-03-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Blog Section -->
+
+  <!-- Blog Index -->
   <url>
     <loc>https://ww3tracker.live/blog</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
+  <!-- Timeline -->
+  <url>
+    <loc>https://ww3tracker.live/timeline</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Individual Blog Posts -->
+  <url>
+    <loc>https://ww3tracker.live/blog/why-america-fighting-iran</loc>
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://ww3tracker.live/images/blog/why-america-iran.jpg</image:loc>
+      <image:title>Why is America Fighting Iran? The Complete Breakdown</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/us-vs-iran-military</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://ww3tracker.live/images/blog/us-iran-military.jpg</image:loc>
+      <image:title>US vs Iran Military: Who Would Actually Win?</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/israel-iran-war</loc>
+    <lastmod>2026-03-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/iran-nuclear-program</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/strait-hormuz-oil</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/what-happens-next</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- NEW BLOG POSTS (Day 1) -->
+  <url>
+    <loc>https://ww3tracker.live/blog/ww3-probability-2025-data</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>WW3 Tracker</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-06</news:publication_date>
+      <news:title>WW3 Probability 2025: What Data Actually Says</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/us-iran-war-5-warning-signs</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>WW3 Tracker</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-06</news:publication_date>
+      <news:title>US vs Iran War: 5 Warning Signs</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/polymarket-vs-experts-prediction-accuracy</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:news>
+        <news:name>WW3 Tracker</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-06</news:publication_date>
+      <news:title>Polymarket vs Experts: Who Predicts Better?</news:title>
+    </news:news>
+  </url>
+
+  <!-- NEW BLOG POSTS (Day 2) -->
+  <url>
+    <loc>https://ww3tracker.live/blog/iran-nuclear-timeline-1953-2025</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/blog/trump-iran-policy-what-happens-next</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- WW3 Risk Calculator -->
+  <url>
+    <loc>https://ww3tracker.live/ww3-risk-calculator</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
