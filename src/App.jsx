@@ -12,6 +12,7 @@ import IranConflictLivePage from './pages/IranConflictLivePage';
 import TimelinePage from './pages/TimelinePage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
+import WW3RiskCalculatorPage from './pages/WW3RiskCalculatorPage';
 
 // Components
 import HPBar from './components/HPBar';
@@ -446,6 +447,7 @@ function App() {
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/ww3-risk-calculator" element={<WW3RiskCalculatorPage />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
