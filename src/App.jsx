@@ -10,6 +10,8 @@ import WW3ProbabilityPage from './pages/WW3ProbabilityPage';
 import UsIranWarTrackerPage from './pages/UsIranWarTrackerPage';
 import IranConflictLivePage from './pages/IranConflictLivePage';
 import TimelinePage from './pages/TimelinePage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
 
 // Components
 import HPBar from './components/HPBar';
@@ -35,6 +37,7 @@ import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
 const NavLinks = ({ mobile = false, onClose }) => {
   const links = [
     { to: '/', label: 'Home' },
+    { to: '/blog', label: 'Blog' },
     { to: '/ww3-probability', label: 'WW3 Probability' },
     { to: '/us-iran-war-tracker', label: 'War Tracker' },
     { to: '/iran-conflict-live', label: 'Live Updates' },
@@ -441,6 +444,8 @@ function App() {
           <Route path="/us-iran-war-tracker" element={<UsIranWarTrackerPage />} />
           <Route path="/iran-conflict-live" element={<IranConflictLivePage />} />
           <Route path="/timeline" element={<TimelinePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
