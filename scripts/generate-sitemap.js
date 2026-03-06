@@ -15,7 +15,7 @@ for (const match of postMatches) {
   posts.push({ id: match[1], date: match[2] });
 }
 
-const baseUrl = process.env.SITE_URL || 'https://usvsiran.com';
+const baseUrl = process.env.SITE_URL || 'https://ww3tracker.live';
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
