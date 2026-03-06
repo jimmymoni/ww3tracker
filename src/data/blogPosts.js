@@ -1235,7 +1235,7 @@ Iran has dispersed, hardened, underground facilities. Knowledge can't be bombed.
     category: "Analysis",
     readTime: "12 min",
     date: "March 6, 2026",
-    image: "/images/blog/ww3-probability-2025.jpg",
+    image: "/images/blog/ww3-probability-2025-data.jpg",
     author: {
       name: "WW3 Tracker Data Team",
       role: "Geopolitical Analytics",
@@ -1500,7 +1500,7 @@ An 8-15% chance of WW3 means an 85-92% chance it WON'T happen. But those odds ar
     category: "Analysis",
     readTime: "11 min",
     date: "March 6, 2026",
-    image: "/images/blog/us-iran-warning-signs.jpg",
+    image: "/images/blog/us-iran-war-5-warning-signs.jpg",
     author: {
       name: "Conflict Early Warning Team",
       role: "Military Intelligence",
@@ -1790,7 +1790,7 @@ The next 90 days are critical. How these warning signs develop will determine wh
     category: "Analysis",
     readTime: "10 min",
     date: "March 6, 2026",
-    image: "/images/blog/prediction-markets-ww3.jpg",
+    image: "/images/blog/can-prediction-markets-predict-ww3.jpg",
     author: {
       name: "WW3 Data Team",
       role: "Conflict Forecasting",
@@ -2104,7 +2104,7 @@ A: Above 30% sustained for multiple days = start taking precautions seriously.
     category: "History",
     readTime: "15 min",
     date: "March 7, 2026",
-    image: "/images/blog/iran-nuclear-timeline.jpg",
+    image: "/images/blog/iran-nuclear-timeline-1953-2025.jpg",
     author: {
       name: "Nuclear History Research Team",
       role: "Non-Proliferation Studies",
@@ -2505,7 +2505,7 @@ After the US withdrawal, Iran gradually resumed nuclear activities:
     category: "Politics",
     readTime: "10 min",
     date: "March 7, 2026",
-    image: "/images/blog/trump-iran-policy.jpg",
+    image: "/images/blog/trump-iran-policy-what-happens-next.jpg",
     author: {
       name: "Policy Analysis Team",
       role: "Political Intelligence",
