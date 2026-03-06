@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -11,7 +12,23 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     
-    // Bundle analyzer for production builds
+    // Image optimization for production
+    mode === 'production' && ViteImageOptimizer({
+      png: { quality: 85 },
+      jpeg: { quality: 80 },
+      jpg: { quality: 80 },
+      webp: { quality: 80 },
+      gif: { optimizationLevel: 2 },
+      svg: {
+        multipass: true,
+        plugins: [
+          'preset-default',
+          'removeDimensions',
+        ],
+      },
+    }),
+    
+    // Bundle analyzer for production builds (only when explicitly requested)
     mode === 'analyze' && visualizer({
       open: true,
       gzipSize: true,
@@ -56,6 +73,10 @@ export default defineConfig(({ mode }) => ({
           vendor: ['react', 'react-dom', 'framer-motion'],
           // Icons chunk - separates lucide icons
           icons: ['lucide-react'],
+          // Router chunk
+          router: ['react-router-dom'],
+          // Markdown rendering (heavy)
+          markdown: ['react-markdown', 'remark-gfm'],
         },
         // Asset naming for better caching
         entryFileNames: 'assets/[name]-[hash].js',

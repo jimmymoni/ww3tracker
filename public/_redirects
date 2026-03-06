@@ -1,0 +1,12 @@
+# Netlify/Vercel redirects for SPA routing
+# This ensures all routes work correctly with client-side routing
+
+# Redirect all routes to index.html (SPA routing)
+/*    /index.html   200
+
+# API routes should not be redirected (handled by server)
+/api/*  /api/:splat  200
+
+# Static assets should not be redirected
+/assets/*  /assets/:splat  200
+/images/*  /images/:splat  200

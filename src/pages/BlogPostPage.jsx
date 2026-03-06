@@ -20,7 +20,7 @@ import QuoteBlock from '../components/Blog/QuoteBlock';
 import FAQ from '../components/Blog/FAQ';
 import NewsletterSignup from '../components/Blog/NewsletterSignup';
 import SEO from '../components/SEO';
-import { ArticleSchema, FAQSchema, BreadcrumbSchema } from '../components/StructuredData';
+import { ArticleSchema, FAQSchema, BreadcrumbSchema, SpeakableSchema } from '../components/StructuredData';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -162,6 +162,7 @@ const BlogPostPage = () => {
       <ArticleSchema post={post} />
       {post.faq && <FAQSchema faqs={post.faq} />}
       <BreadcrumbSchema items={breadcrumbItems} />
+      <SpeakableSchema cssSelectors={[".article-excerpt", ".faq-answer", ".key-takeaway-points"]} />
 
       <ReadingProgress post={post} readingTime={post.readTime} />
 
@@ -238,7 +239,7 @@ const BlogPostPage = () => {
                 </h1>
 
                 {/* Excerpt */}
-                <p className="text-lg md:text-xl text-zinc-400 mb-6">{post.excerpt}</p>
+                <p className="text-lg md:text-xl text-zinc-400 mb-6 article-excerpt">{post.excerpt}</p>
 
                 {/* Author & Meta */}
                 <div className="flex items-center gap-4 py-6 border-y border-zinc-800">
@@ -264,7 +265,15 @@ const BlogPostPage = () => {
                 className="mb-10"
               >
                 <div className="aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800">
-                  <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                  <img 
+                    src={post.image} 
+                    alt={post.title} 
+                    className="w-full h-full object-cover"
+                    width="1200"
+                    height="630"
+                    loading="eager"
+                    decoding="async"
+                  />
                 </div>
               </motion.div>
 
@@ -419,7 +428,15 @@ const BlogPostPage = () => {
                     {relatedPosts.map(relatedPost => (
                       <Link key={relatedPost.id} to={`/blog/${relatedPost.slug}`} className="group">
                         <div className="flex gap-4 bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-all">
-                          <img src={relatedPost.image} alt={relatedPost.title} className="w-24 h-24 object-cover rounded-lg" />
+                          <img 
+                          src={relatedPost.image} 
+                          alt={relatedPost.title} 
+                          className="w-24 h-24 object-cover rounded-lg"
+                          width="96"
+                          height="96"
+                          loading="lazy"
+                          decoding="async"
+                        />
                           <div>
                             <span className="text-red-400 text-xs font-medium">{relatedPost.category}</span>
                             <h4 className="text-white font-medium group-hover:text-red-400 transition-colors line-clamp-2">

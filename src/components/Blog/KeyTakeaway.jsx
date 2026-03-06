@@ -17,7 +17,7 @@ const KeyTakeaway = ({ title, points, cta }) => {
           <h3 className="text-lg font-semibold text-orange-400">{title || "Key Takeaway"}</h3>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 key-takeaway-points">
           {points.map((point, index) => (
             <motion.div
               key={index}

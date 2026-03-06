@@ -55,7 +55,7 @@ const FAQ = ({ questions, title = "Frequently Asked Questions" }) => {
                     <div className="p-4 bg-zinc-950/50 rounded-lg border border-zinc-800">
                       <div className="flex items-start gap-3">
                         <MessageCircle className="w-5 h-5 text-zinc-500 flex-shrink-0 mt-0.5" />
-                        <p className="text-zinc-400 leading-relaxed">{item.answer}</p>
+                        <p className="text-zinc-400 leading-relaxed faq-answer">{item.answer}</p>
                       </div>
                     </div>
                   </div>

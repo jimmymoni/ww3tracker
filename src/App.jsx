@@ -14,6 +14,11 @@ import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import WW3RiskCalculatorPage from './pages/WW3RiskCalculatorPage';
 
+// SEO-Optimized Pages (High Volume Keywords)
+import IsWW3HappeningPage from './pages/IsWW3HappeningPage';
+import WorldWar3NewsPage from './pages/WorldWar3NewsPage';
+import IranNuclearDealPage from './pages/IranNuclearDealPage';
+
 // Components
 import HPBar from './components/HPBar';
 import WW3Counter from './components/WW3Counter';
@@ -448,6 +453,11 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/ww3-risk-calculator" element={<WW3RiskCalculatorPage />} />
+          
+          {/* SEO Landing Pages */}
+          <Route path="/is-ww3-happening" element={<IsWW3HappeningPage />} />
+          <Route path="/world-war-3-news" element={<WorldWar3NewsPage />} />
+          <Route path="/iran-nuclear-deal" element={<IranNuclearDealPage />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

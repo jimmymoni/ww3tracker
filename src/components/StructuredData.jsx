@@ -212,6 +212,124 @@ export const ClaimReviewSchema = ({ claim, reviewRating, author = "WW3 Tracker" 
   );
 };
 
+/**
+ * Speakable Schema - For voice search optimization (AEO)
+ * Identifies content sections optimized for voice assistants
+ */
+export const SpeakableSchema = ({ cssSelectors = [".article-summary", ".key-takeaway", ".faq-answer"] }) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": cssSelectors
+    }
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
+/**
+ * VideoObject Schema - For video content
+ */
+export const VideoObjectSchema = ({ 
+  name, 
+  description, 
+  thumbnailUrl, 
+  uploadDate, 
+  duration,
+  contentUrl,
+  embedUrl 
+}) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": name,
+    "description": description,
+    "thumbnailUrl": thumbnailUrl,
+    "uploadDate": uploadDate,
+    "duration": duration,
+    ...(contentUrl && { "contentUrl": contentUrl }),
+    ...(embedUrl && { "embedUrl": embedUrl }),
+    "publisher": {
+      "@type": "Organization",
+      "name": "WW3 Tracker",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ww3tracker.live/favicon.svg",
+        "width": 512,
+        "height": 512
+      }
+    }
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
+/**
+ * Event Schema - For timeline/conflict events
+ */
+export const EventSchema = ({ name, startDate, endDate, location, description }) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": name,
+    "startDate": startDate,
+    ...(endDate && { "endDate": endDate }),
+    "location": {
+      "@type": "Place",
+      "name": location || "Middle East",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": location || "IR"
+      }
+    },
+    "description": description,
+    "organizer": {
+      "@type": "Organization",
+      "name": "WW3 Tracker",
+      "url": "https://ww3tracker.live"
+    }
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
+/**
+ * ItemList Schema - For list-based content (news feeds, rankings)
+ */
+export const ItemListSchema = ({ items, itemType = "ListItem" }) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": items.map((item, index) => ({
+      "@type": itemType,
+      "position": index + 1,
+      "name": item.name || item.title,
+      "description": item.description,
+      "url": item.url ? `https://ww3tracker.live${item.url}` : undefined
+    }))
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
 export default {
   ArticleSchema,
   FAQSchema,
@@ -219,5 +337,9 @@ export default {
   WebsiteSchema,
   OrganizationSchema,
   HowToSchema,
-  ClaimReviewSchema
+  ClaimReviewSchema,
+  SpeakableSchema,
+  VideoObjectSchema,
+  EventSchema,
+  ItemListSchema
 };
