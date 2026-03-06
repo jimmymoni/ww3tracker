@@ -396,7 +396,25 @@ This single event poisoned US-Iran relations for generations.
         "Historical precedent: US wins battles but loses long wars",
         "Most likely outcome: Prolonged conflict with no clear winner"
       ]
-    }
+    },
+    faq: [
+      {
+        question: "Who would win in a war between US and Iran?",
+        answer: "In conventional warfare, the US would win decisively with overwhelming air and naval superiority. However, occupying Iran would be catastrophic, requiring 500,000-1,000,000 troops and facing fierce resistance."
+      },
+      {
+        question: "Does Iran have a strong military?",
+        answer: "Iran's conventional military is outdated (1970s equipment), but they possess 3,000+ ballistic missiles, extensive proxy networks (200,000+ fighters), and geographic advantages that make them a formidable defensive force."
+      },
+      {
+        question: "Could the US conquer Iran?",
+        answer: "The US could destroy Iran's military infrastructure, but conquering and occupying Iran would be extremely difficult. Iran is 4x larger than Iraq with 3x the population and mountainous terrain perfect for guerrilla warfare."
+      },
+      {
+        question: "Why is Iran hard to defeat?",
+        answer: "Iran's strengths include: 3,000+ missiles capable of hitting US bases, 200,000+ proxy fighters, ability to close the Strait of Hormuz, mountainous terrain, and high national unity against foreign occupation."
+      }
+    ]
   },
   {
     id: "israel-iran-war",
@@ -578,7 +596,25 @@ This single event poisoned US-Iran relations for generations.
 - Oil prices skyrocketing
 - Recession risk
 - Nuclear proliferation fears
-    `
+    `,
+    faq: [
+      {
+        question: "Why does Israel hate Iran?",
+        answer: "Israel fears Iran's nuclear program as an existential threat (one bomb could destroy Israel), opposes Iran's regional influence, and sees Iran's proxies (Hezbollah with 50,000+ rockets) as direct threats."
+      },
+      {
+        question: "Why does Iran want to destroy Israel?",
+        answer: "Iran views Israel as Western colonialism in Muslim land, an illegitimate occupier of Palestine, and a block to Iranian regional influence. Anti-Israel rhetoric also serves domestic political purposes."
+      },
+      {
+        question: "Has Israel attacked Iran?",
+        answer: "Yes, Israel has conducted numerous attacks including: assassinating 5+ Iranian nuclear scientists, bombing Natanz facility multiple times, cyberattacks (Stuxnet), and in February 2026, launching full-scale strikes on Iranian nuclear and military sites."
+      },
+      {
+        question: "Will Israel and Iran go to war?",
+        answer: "They are already at war as of March 2026. Israel has launched massive strikes on Iran, Iran has retaliated with missiles, and Hezbollah has opened a northern front against Israel."
+      }
+    ]
   },
   {
     id: "iran-nuclear-program",
@@ -789,7 +825,25 @@ Iran has dispersed, hardened, underground facilities. Knowledge can't be bombed.
 4. **Status quo** → Continued tension → Periodic crises
 
 **Most likely:** Years of conflict, Iran eventually achieves capability or regime falls.
-    `
+    `,
+    faq: [
+      {
+        question: "How close is Iran to a nuclear weapon?",
+        answer: "Iran has reached 60% enrichment (weapons-grade is 90%). Going from 60% to 90% is the easy part. Current estimates suggest Iran could produce enough material for several bombs within 6-12 months."
+      },
+      {
+        question: "Does Iran have nuclear weapons?",
+        answer: "As of March 2026, Iran does not have nuclear weapons. They have the capability to produce weapons-grade uranium but have not yet weaponized it or conducted a test."
+      },
+      {
+        question: "Why does Iran want nuclear weapons?",
+        answer: "Iran views nuclear weapons as an insurance policy for regime survival. Historical precedents show: Iraq gave up WMDs and was invaded; North Korea kept nukes and remains safe. The lesson is clear to Iranian leaders."
+      },
+      {
+        question: "Can Israel stop Iran's nuclear program?",
+        answer: "Israel can delay but not stop Iran's program. Attacks have destroyed facilities and killed scientists, but Iran rebuilds and knowledge cannot be bombed. The 2015 nuclear deal was more effective at slowing progress than military strikes."
+      }
+    ]
   },
   {
     id: "strait-hormuz-oil",
@@ -992,7 +1046,25 @@ Iran has dispersed, hardened, underground facilities. Knowledge can't be bombed.
 - Most serious closure yet
 - Active warfare
 - Unclear how long it lasts
-    `
+    `,
+    faq: [
+      {
+        question: "Can Iran close the Strait of Hormuz?",
+        answer: "Yes, Iran has the capability to close the Strait of Hormuz using naval mines, anti-ship missiles, swarm boats, and submarines. The strait is only 33km wide at its narrowest point, making it vulnerable to closure."
+      },
+      {
+        question: "What happens if the Strait of Hormuz closes?",
+        answer: "If Hormuz closes, oil prices could spike from $80 to $200+/barrel, causing global recession. 20% of world's oil passes through the strait - about 21 million barrels daily worth $1.5 billion."
+      },
+      {
+        question: "Why is the Strait of Hormuz important?",
+        answer: "The Strait of Hormuz is the world's most important oil chokepoint. It handles 20% of global oil consumption, with major exporters Saudi Arabia, Iran, Iraq, UAE, and Kuwait all dependent on it."
+      },
+      {
+        question: "Can the US keep the Strait of Hormuz open?",
+        answer: "The US can attempt to keep it open through mine-clearing and military escorts, but Iran can re-lay mines faster than they can be cleared. Complete security is virtually impossible without eliminating all Iranian coastal missile sites."
+      }
+    ]
   },
   {
     id: "what-happens-next",
@@ -2758,7 +2830,25 @@ If the war produces a better, more stable Middle East—Trump will be vindicated
 If it produces years of conflict, thousands dead, and a nuclear-armed Iran anyway—it will be seen as one of American foreign policy's great failures.
 
 **Time will tell.**
-    `
+    `,
+    faq: [
+      {
+        question: "What happens next in US-Iran war?",
+        answer: "Most likely scenarios (in order): 45% chance of prolonged stalemate with ongoing strikes, 25% chance of Iranian regime collapse, 15% chance of negotiated settlement, 10% chance of escalation to wider war, 5% chance of quick resolution."
+      },
+      {
+        question: "Will WW3 start in 2026?",
+        answer: "Current probability is approximately 12.4% according to prediction markets. While the US-Iran conflict is serious, WW3 would require direct involvement of multiple major powers (Russia, China, NATO) which has not yet occurred."
+      },
+      {
+        question: "How will the Iran war end?",
+        answer: "Most analysts predict a prolonged stalemate: years of airstrikes, missile exchanges, and proxy wars with no clear winner. Full occupation of Iran would require 500,000-1,000,000 troops and faces fierce resistance."
+      },
+      {
+        question: "What if Iran gets nuclear weapons?",
+        answer: "If Iran acquires nuclear weapons, it would likely trigger a regional nuclear arms race with Saudi Arabia and Turkey seeking their own deterrents. Israel views Iranian nuclear weapons as an existential threat that must be prevented at all costs."
+      }
+    ]
   }
 ];
 

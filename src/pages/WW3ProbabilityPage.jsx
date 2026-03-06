@@ -3,23 +3,51 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TrendingUp, AlertTriangle, Globe, Activity, ChevronRight, Home, BarChart3 } from 'lucide-react';
+import SEO from '../components/SEO';
+import { BreadcrumbSchema, FAQSchema } from '../components/StructuredData';
 
 const WW3ProbabilityPage = () => {
   useEffect(() => {
-    // Set document title as fallback
     document.title = "WW3 Probability Tracker | Live WW3 Risk Monitor 2026";
   }, []);
 
+  // Breadcrumb data
+  const breadcrumbItems = [
+    { name: "Home", url: "/" },
+    { name: "WW3 Probability", url: "/ww3-probability" }
+  ];
+
+  // FAQ data for rich snippets
+  const faqs = [
+    {
+      question: "What is the probability of World War 3 in 2026?",
+      answer: "Current prediction markets estimate WW3 probability at approximately 12.4% for 2026. This is based on real-time data from Polymarket, geopolitical news sentiment analysis, and military tension indicators from multiple conflict zones."
+    },
+    {
+      question: "How is WW3 probability calculated?",
+      answer: "WW3 probability is calculated using a weighted combination of prediction market odds (primarily Polymarket), AI-powered news sentiment analysis, military activity indicators, diplomatic channel monitoring, and historical conflict pattern analysis."
+    },
+    {
+      question: "Is World War 3 happening now?",
+      answer: "As of March 2026, World War 3 has not started. While the US-Iran conflict has escalated significantly and regional wars are active, a global conflict involving multiple major powers has not begun."
+    },
+    {
+      question: "What are the warning signs of WW3?",
+      answer: "Key warning signs include: direct military conflict between nuclear powers, closure of major trade routes like the Strait of Hormuz, invocation of NATO Article 5, mass mobilization of reserves, and breakdown of diplomatic communications between major powers."
+    }
+  ];
+
   return (
     <>
-      <Helmet>
-        <title>WW3 Probability Tracker | Live WW3 Risk Monitor 2026</title>
-        <meta name="description" content="Track WW3 probability in real-time. Live WW3 risk percentage based on Polymarket odds, news sentiment & military tensions. Updated every 60 seconds." />
-        <meta name="keywords" content="WW3 probability, WW3 risk, World War 3 chance, WW3 tracker, global conflict risk" />
-        <meta property="og:title" content="WW3 Probability Tracker | Live WW3 Risk Monitor 2026" />
-        <meta property="og:description" content="Track WW3 probability in real-time. Live WW3 risk percentage based on Polymarket odds & military tensions." />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <SEO
+        title="WW3 Probability Tracker | Live WW3 Risk Monitor 2026"
+        description="Track WW3 probability in real-time. Live WW3 risk percentage based on Polymarket odds, news sentiment & military tensions. Updated every 60 seconds."
+        pathname="/ww3-probability"
+        ogImage="/og-image.png"
+      />
+      
+      <BreadcrumbSchema items={breadcrumbItems} />
+      <FAQSchema faqs={faqs} />
 
       <div className="min-h-screen bg-grid text-white">
         {/* Header */}
@@ -48,6 +76,15 @@ const WW3ProbabilityPage = () => {
         </header>
 
         <main className="max-w-4xl mx-auto px-4 py-8">
+          {/* Breadcrumbs */}
+          <nav className="py-4 text-sm text-gray-500">
+            <ol className="flex items-center gap-2">
+              <li><Link to="/" className="hover:text-white">Home</Link></li>
+              <li>/</li>
+              <li className="text-white">WW3 Probability</li>
+            </ol>
+          </nav>
+
           {/* Hero Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -153,11 +190,32 @@ const WW3ProbabilityPage = () => {
             </div>
           </motion.div>
 
-          {/* Related Links */}
+          {/* FAQ Section - Critical for SEO */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
+            className="comic-panel p-8 mb-12"
+          >
+            <h2 className="font-heading font-bold text-2xl text-white mb-6">
+              Frequently Asked Questions
+            </h2>
+            
+            <div className="space-y-6">
+              {faqs.map((faq, index) => (
+                <div key={index} className="border-b border-white/10 pb-6 last:border-0">
+                  <h3 className="font-bold text-white mb-2">{faq.question}</h3>
+                  <p className="text-gray-400 text-sm">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Related Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
             className="comic-panel p-6"
           >
             <h3 className="font-heading font-bold text-lg text-white mb-4">

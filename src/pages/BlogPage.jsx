@@ -11,6 +11,8 @@ import { Helmet } from 'react-helmet-async';
 import { blogPosts } from '../data/blogPosts';
 import NewsletterSignup from '../components/Blog/NewsletterSignup';
 import PollWidget from '../components/Blog/PollWidget';
+import SEO from '../components/SEO';
+import { BreadcrumbSchema, FAQSchema } from '../components/StructuredData';
 
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,12 +55,35 @@ const BlogPage = () => {
   const nextFeatured = () => setCurrentFeatured((prev) => (prev + 1) % featuredPosts.length);
   const prevFeatured = () => setCurrentFeatured((prev) => (prev - 1 + featuredPosts.length) % featuredPosts.length);
 
+  // Breadcrumb data
+  const breadcrumbItems = [
+    { name: "Home", url: "/" },
+    { name: "Blog", url: "/blog" }
+  ];
+
+  // FAQ for rich snippets
+  const faqs = [
+    {
+      question: "What is the US-Iran conflict about?",
+      answer: "The US-Iran conflict stems from the 1953 CIA coup, 1979 Islamic Revolution, hostage crisis, and ongoing disputes over Iran's nuclear program and regional influence."
+    },
+    {
+      question: "Is there a war between US and Iran?",
+      answer: "As of March 2026, active military conflict exists. Israel backed by the US has launched strikes on Iranian nuclear facilities, and Iran has retaliated with missile attacks on Israel and US bases."
+    }
+  ];
+
   return (
     <>
-      <Helmet>
-        <title>Blog | WW3 Tracker - US-Iran Conflict Analysis</title>
-        <meta name="description" content="Deep dives into US-Iran tensions, Israel conflicts, military comparisons, and the history behind the current war." />
-      </Helmet>
+      <SEO
+        title="War Room Blog | US-Iran Conflict Analysis & WW3 News"
+        description="Deep analysis of the US-Iran conflict. From the 1953 coup to today's bombings, explained with data, timelines, and expert insights."
+        pathname="/blog"
+        ogImage="/og-image.png"
+      />
+      
+      <BreadcrumbSchema items={breadcrumbItems} />
+      <FAQSchema faqs={faqs} />
 
       <div className="min-h-screen bg-zinc-950 text-white">
         {/* Header Section */}

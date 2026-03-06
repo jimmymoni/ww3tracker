@@ -1,3 +1,6 @@
+// THIS IS AN UPDATED VERSION OF BlogPostPage.jsx WITH FULL SEO IMPLEMENTATION
+// Copy this content into your existing BlogPostPage.jsx
+
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -19,8 +22,11 @@ import ComparisonTable from '../components/Blog/ComparisonTable';
 import QuoteBlock from '../components/Blog/QuoteBlock';
 import FAQ from '../components/Blog/FAQ';
 import NewsletterSignup from '../components/Blog/NewsletterSignup';
+
+// NEW: Import SEO components
 import SEO from '../components/SEO';
-import { ArticleSchema, FAQSchema, BreadcrumbSchema } from '../components/StructuredData';
+import { ArticleSchema, FAQSchema } from '../components/StructuredData';
+import Breadcrumbs, { generateBreadcrumbs } from '../components/Breadcrumbs';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -58,6 +64,13 @@ const BlogPostPage = () => {
   const relatedPosts = blogPosts
     .filter(p => p.category === post.category && p.id !== post.id)
     .slice(0, 2);
+
+  // Generate breadcrumbs
+  const breadcrumbs = generateBreadcrumbs.blogPost(post);
+
+  // Format date for SEO
+  const publishedTime = new Date(post.date).toISOString();
+  const modifiedTime = new Date(post.date).toISOString();
 
   // Custom markdown components for styling
   const markdownComponents = {
@@ -134,18 +147,9 @@ const BlogPostPage = () => {
     ),
   };
 
-  // Generate breadcrumb data
-  const breadcrumbItems = [
-    { name: "Home", url: "/" },
-    { name: "Blog", url: "/blog" },
-    { name: post.title, url: `/blog/${post.slug}` }
-  ];
-
-  // Format date for SEO
-  const publishedTime = new Date(post.date).toISOString();
-
   return (
     <>
+      {/* SEO Meta Tags */}
       <SEO
         title={post.title}
         description={post.excerpt}
@@ -153,15 +157,14 @@ const BlogPostPage = () => {
         ogImage={post.image}
         article={true}
         publishedTime={publishedTime}
-        modifiedTime={publishedTime}
+        modifiedTime={modifiedTime}
         tags={post.tags}
         author={post.author?.name || "WW3 Tracker"}
       />
-      
+
       {/* Structured Data for Rich Snippets */}
       <ArticleSchema post={post} />
       {post.faq && <FAQSchema faqs={post.faq} />}
-      <BreadcrumbSchema items={breadcrumbItems} />
 
       <ReadingProgress post={post} readingTime={post.readTime} />
 
@@ -181,12 +184,14 @@ const BlogPostPage = () => {
                   <button 
                     onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://ww3tracker.live/blog/${post.slug}`)}`, '_blank')}
                     className="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-lg transition-all"
+                    aria-label="Share on Twitter"
                   >
                     <Twitter className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://ww3tracker.live/blog/${post.slug}`)}`, '_blank')}
                     className="p-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-lg transition-all"
+                    aria-label="Share on Facebook"
                   >
                     <Facebook className="w-4 h-4" />
                   </button>
@@ -207,20 +212,31 @@ const BlogPostPage = () => {
             </aside>
 
             {/* Main Content */}
-            <article ref={contentRef} className="min-w-0">
+            <article ref={contentRef} className="min-w-0" itemScope itemType="https://schema.org/NewsArticle">
+              {/* Hidden Schema.org metadata */}
+              <meta itemProp="headline" content={post.title} />
+              <meta itemProp="description" content={post.excerpt} />
+              <meta itemProp="datePublished" content={publishedTime} />
+              <meta itemProp="dateModified" content={modifiedTime} />
+              <div itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <meta itemProp="name" content={post.author?.name || "WW3 Tracker"} />
+              </div>
+              <div itemProp="publisher" itemScope itemType="https://schema.org/Organization">
+                <meta itemProp="name" content="WW3 Tracker" />
+                <div itemProp="logo" itemScope itemType="https://schema.org/ImageObject">
+                  <meta itemProp="url" content="https://ww3tracker.live/favicon.svg" />
+                </div>
+              </div>
+
+              {/* Breadcrumbs */}
+              <Breadcrumbs items={breadcrumbs} />
+
               {/* Header */}
               <motion.header 
                 initial={{ opacity: 0, y: 20 }} 
                 animate={{ opacity: 1, y: 0 }} 
                 className="mb-8"
               >
-                {/* Breadcrumb */}
-                <div className="flex items-center gap-2 text-sm text-zinc-500 mb-4">
-                  <Link to="/blog" className="hover:text-white transition-colors">Blog</Link>
-                  <span>/</span>
-                  <span className="text-zinc-300">{post.category}</span>
-                </div>
-
                 {/* Category & Read Time */}
                 <div className="flex items-center gap-3 mb-4">
                   <span className="px-3 py-1 bg-red-500/10 text-red-400 text-sm font-medium rounded-full border border-red-500/20">
@@ -233,7 +249,7 @@ const BlogPostPage = () => {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight" itemProp="name">
                   {post.title}
                 </h1>
 
@@ -246,12 +262,12 @@ const BlogPostPage = () => {
                     {post.author?.name?.charAt(0) || 'W'}
                   </div>
                   <div className="flex-1">
-                    <p className="text-white font-medium">{post.author?.name || 'WW3 Tracker Team'}</p>
+                    <p className="text-white font-medium" itemProp="author">{post.author?.name || 'WW3 Tracker Team'}</p>
                     <p className="text-sm text-zinc-500">{post.author?.role || 'Analysis Team'}</p>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-zinc-500">
                     <Calendar className="w-4 h-4" />
-                    {post.date}
+                    <time itemProp="datePublished" dateTime={publishedTime}>{post.date}</time>
                   </div>
                 </div>
               </motion.header>
@@ -264,7 +280,13 @@ const BlogPostPage = () => {
                 className="mb-10"
               >
                 <div className="aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800">
-                  <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                  <img 
+                    src={post.image} 
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                    itemProp="image"
+                    loading="eager"
+                  />
                 </div>
               </motion.div>
 
@@ -286,6 +308,7 @@ const BlogPostPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 className="prose prose-invert prose-lg max-w-none"
+                itemProp="articleBody"
               >
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
@@ -347,13 +370,14 @@ const BlogPostPage = () => {
                 </motion.div>
               )}
 
-              {/* FAQ */}
+              {/* FAQ Section - Critical for SEO */}
               {post.faq && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   className="mt-16"
+                  id="faq"
                 >
                   <FAQ questions={post.faq} />
                 </motion.div>
@@ -375,6 +399,7 @@ const BlogPostPage = () => {
                         ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
                         : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
                     }`}
+                    aria-label="This article was helpful"
                   >
                     <ThumbsUp className="w-5 h-5" />
                     Yes
@@ -386,6 +411,7 @@ const BlogPostPage = () => {
                         ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
                         : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
                     }`}
+                    aria-label="This article was not helpful"
                   >
                     <ThumbsDown className="w-5 h-5" />
                     No
@@ -419,7 +445,12 @@ const BlogPostPage = () => {
                     {relatedPosts.map(relatedPost => (
                       <Link key={relatedPost.id} to={`/blog/${relatedPost.slug}`} className="group">
                         <div className="flex gap-4 bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-all">
-                          <img src={relatedPost.image} alt={relatedPost.title} className="w-24 h-24 object-cover rounded-lg" />
+                          <img 
+                            src={relatedPost.image} 
+                            alt={relatedPost.title}
+                            className="w-24 h-24 object-cover rounded-lg"
+                            loading="lazy"
+                          />
                           <div>
                             <span className="text-red-400 text-xs font-medium">{relatedPost.category}</span>
                             <h4 className="text-white font-medium group-hover:text-red-400 transition-colors line-clamp-2">
@@ -459,6 +490,7 @@ const BlogPostPage = () => {
                     <button 
                       onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://ww3tracker.live/blog/${post.slug}`)}`, '_blank')}
                       className="w-full flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all text-sm"
+                      aria-label="Share on Twitter"
                     >
                       <Twitter className="w-4 h-4" />
                       Twitter
@@ -466,6 +498,7 @@ const BlogPostPage = () => {
                     <button 
                       onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://ww3tracker.live/blog/${post.slug}`)}`, '_blank')}
                       className="w-full flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all text-sm"
+                      aria-label="Share on Facebook"
                     >
                       <Facebook className="w-4 h-4" />
                       Facebook
@@ -475,6 +508,7 @@ const BlogPostPage = () => {
                         navigator.clipboard.writeText(`https://ww3tracker.live/blog/${post.slug}`);
                       }}
                       className="w-full flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all text-sm"
+                      aria-label="Copy link to clipboard"
                     >
                       <Link2 className="w-4 h-4" />
                       Copy Link
@@ -492,6 +526,7 @@ const BlogPostPage = () => {
           animate={{ opacity: 1 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="fixed bottom-6 left-6 z-40 p-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-lg transition-all border border-zinc-700"
+          aria-label="Back to top"
         >
           <ChevronUp className="w-5 h-5" />
         </motion.button>

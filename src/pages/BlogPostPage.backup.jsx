@@ -19,8 +19,6 @@ import ComparisonTable from '../components/Blog/ComparisonTable';
 import QuoteBlock from '../components/Blog/QuoteBlock';
 import FAQ from '../components/Blog/FAQ';
 import NewsletterSignup from '../components/Blog/NewsletterSignup';
-import SEO from '../components/SEO';
-import { ArticleSchema, FAQSchema, BreadcrumbSchema } from '../components/StructuredData';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -134,34 +132,12 @@ const BlogPostPage = () => {
     ),
   };
 
-  // Generate breadcrumb data
-  const breadcrumbItems = [
-    { name: "Home", url: "/" },
-    { name: "Blog", url: "/blog" },
-    { name: post.title, url: `/blog/${post.slug}` }
-  ];
-
-  // Format date for SEO
-  const publishedTime = new Date(post.date).toISOString();
-
   return (
     <>
-      <SEO
-        title={post.title}
-        description={post.excerpt}
-        pathname={`/blog/${post.slug}`}
-        ogImage={post.image}
-        article={true}
-        publishedTime={publishedTime}
-        modifiedTime={publishedTime}
-        tags={post.tags}
-        author={post.author?.name || "WW3 Tracker"}
-      />
-      
-      {/* Structured Data for Rich Snippets */}
-      <ArticleSchema post={post} />
-      {post.faq && <FAQSchema faqs={post.faq} />}
-      <BreadcrumbSchema items={breadcrumbItems} />
+      <Helmet>
+        <title>{post.title} | WW3 Tracker Blog</title>
+        <meta name="description" content={post.excerpt} />
+      </Helmet>
 
       <ReadingProgress post={post} readingTime={post.readTime} />
 

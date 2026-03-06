@@ -23,3 +23,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 // Remove loader immediately as App renders
 removeInitialLoader()
+
+// Dispatch render event for prerendering (SEO)
+// This tells vite-plugin-prerender that the page is ready
+setTimeout(() => {
+  document.dispatchEvent(new Event('render-event'))
+}, 2000)
