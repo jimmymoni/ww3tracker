@@ -138,8 +138,185 @@
   </head>
   <body>
     <div id="root">
-      <!-- Initial loading state - prevents FOUC and improves perceived performance -->
-      <div class="initial-loading" id="initial-loader">
+      <!-- Static SEO Content - visible to crawlers before React hydrates -->
+      <div id="seo-static-content" style="background: #0d0d12; color: #ffffff; font-family: Inter, system-ui, sans-serif; padding: 20px; min-height: 100vh;">
+        
+        <!-- Header -->
+        <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+          <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; background: linear-gradient(135deg, #ef4444 0%, #fbbf24 50%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            WW3 Tracker - Live US vs Iran Conflict Monitor
+          </h1>
+          <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">
+            Real-time satire tracker for the US vs Iran conflict. Live stats, betting odds, market data, and breaking news. Who's winning? 💰 Sanctions vs ☢️ Nukes
+          </p>
+        </header>
+
+        <!-- Main Navigation -->
+        <nav style="display: flex; justify-content: center; gap: 16px; padding: 20px; flex-wrap: wrap;">
+          <a href="/live-updates" style="color: #60a5fa; text-decoration: none; font-weight: 600;">📡 Live Updates</a>
+          <a href="/losses" style="color: #60a5fa; text-decoration: none; font-weight: 600;">💀 Casualty Tracker</a>
+          <a href="/ww3" style="color: #60a5fa; text-decoration: none; font-weight: 600;">☢️ WW3 Probability</a>
+          <a href="/blog" style="color: #60a5fa; text-decoration: none; font-weight: 600;">📰 Analysis</a>
+        </nav>
+
+        <!-- Main Content -->
+        <main style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+          
+          <!-- H2 Section 1 -->
+          <section style="margin-bottom: 48px;">
+            <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 24px; color: #fbbf24;">
+              Current US vs Iran War Status
+            </h2>
+            <p style="font-size: 16px; line-height: 1.8; color: #d1d5db; margin-bottom: 16px;">
+              The US vs Iran war tracker provides real-time monitoring of the escalating conflict between the United States and Iran. 
+              Track military casualties, economic impacts, WW3 probability predictions, and breaking news updates as tensions continue to rise in the Middle East.
+            </p>
+            <p style="font-size: 16px; line-height: 1.8; color: #d1d5db; margin-bottom: 16px;">
+              With military strikes ongoing and proxy conflicts expanding across the region, understanding the true cost of war 
+              has never been more critical. Our tracker combines official reports with crowdsourced verification to present 
+              the most accurate picture of the US-Iran conflict available.
+            </p>
+          </section>
+
+          <!-- H2 Section 2 -->
+          <section style="margin-bottom: 48px;">
+            <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 24px; color: #fbbf24;">
+              WW3 Probability Tracker 2025-2026
+            </h2>
+            <p style="font-size: 16px; line-height: 1.8; color: #d1d5db; margin-bottom: 16px;">
+              Will WW3 start in 2026? Our WW3 prediction tracker uses real-time data including prediction markets, 
+              military escalations, diplomatic signals, and economic indicators to calculate the probability of global conflict.
+            </p>
+            <p style="font-size: 16px; line-height: 1.8; color: #d1d5db; margin-bottom: 16px;">
+              Current WW3 probability stands at approximately 12.4% based on multiple factors including direct US-Iran hostilities, 
+              regional proxy conflicts, nuclear program developments, and involvement of other major powers like Russia and China.
+            </p>
+            <h3 style="font-size: 20px; font-weight: 600; margin: 24px 0 16px; color: #60a5fa;">
+              What Could Trigger WW3?
+            </h3>
+            <ul style="color: #d1d5db; line-height: 1.8; padding-left: 24px;">
+              <li>Iran successfully developing nuclear weapons</li>
+              <li>Direct US strikes on Iranian nuclear facilities</li>
+              <li>Iranian blockade of the Strait of Hormuz</li>
+              <li>Russia or China entering the conflict directly</li>
+              <li>Major terrorist attack attributed to Iran</li>
+            </ul>
+          </section>
+
+          <!-- H2 Section 3 -->
+          <section style="margin-bottom: 48px;">
+            <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 24px; color: #fbbf24;">
+              Military Losses and Casualty Tracker
+            </h2>
+            <p style="font-size: 16px; line-height: 1.8; color: #d1d5db; margin-bottom: 16px;">
+              Track confirmed military casualties, equipment losses, and civilian impact from the ongoing US-Iran conflict. 
+              Our tracker aggregates data from official military sources, independent observers, and verified media reports 
+              to provide transparent accounting of the war's human cost.
+            </p>
+            <h3 style="font-size: 20px; font-weight: 600; margin: 24px 0 16px; color: #60a5fa;">
+              Categories Tracked
+            </h3>
+            <ul style="color: #d1d5db; line-height: 1.8; padding-left: 24px;">
+              <li>US Military Personnel Casualties</li>
+              <li>Iranian Military and IRGC Losses</li>
+              <li>Israeli Defense Forces (IDF) Casualties</li>
+              <li>Civilian Casualties in Conflict Zones</li>
+              <li>Military Equipment and Vehicle Losses</li>
+            </ul>
+          </section>
+
+          <!-- H2 Section 4 - FAQ -->
+          <section style="margin-bottom: 48px;">
+            <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 24px; color: #fbbf24;">
+              Frequently Asked Questions About US-Iran War
+            </h2>
+            
+            <div style="margin-bottom: 24px;">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 8px; color: #60a5fa;">
+                What happens next in US-Iran war?
+              </h3>
+              <p style="font-size: 15px; line-height: 1.7; color: #d1d5db; margin: 0;">
+                Most likely scenarios include prolonged stalemate with ongoing strikes (45% probability), 
+                Iranian regime collapse (25%), negotiated settlement (15%), escalation to wider war (10%), 
+                or quick resolution (5%).
+              </p>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 8px; color: #60a5fa;">
+                Will WW3 start in 2026?
+              </h3>
+              <p style="font-size: 15px; line-height: 1.7; color: #d1d5db; margin: 0;">
+                Current probability is approximately 12.4% according to prediction markets. 
+                WW3 would require direct involvement of multiple major powers which has not yet occurred.
+              </p>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 8px; color: #60a5fa;">
+                How will the Iran war end?
+              </h3>
+              <p style="font-size: 15px; line-height: 1.7; color: #d1d5db; margin: 0;">
+                Most analysts predict a prolonged stalemate: years of airstrikes, missile exchanges, 
+                and proxy wars with no clear winner. Full occupation of Iran would face fierce resistance.
+              </p>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 8px; color: #60a5fa;">
+                What if Iran gets nuclear weapons?
+              </h3>
+              <p style="font-size: 15px; line-height: 1.7; color: #d1d5db; margin: 0;">
+                If Iran acquires nuclear weapons, it would likely trigger a regional nuclear arms race 
+                with Saudi Arabia and Turkey seeking their own deterrents. Israel views Iranian nuclear 
+                weapons as an existential threat.
+              </p>
+            </div>
+          </section>
+
+          <!-- H2 Section 5 -->
+          <section style="margin-bottom: 48px;">
+            <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 24px; color: #fbbf24;">
+              Latest Analysis and Blog Posts
+            </h2>
+            <p style="font-size: 16px; line-height: 1.8; color: #d1d5db; margin-bottom: 16px;">
+              Explore in-depth analysis of the US vs Iran conflict, including military capabilities comparison, 
+              historical context, prediction market analysis, and expert opinions on what comes next.
+            </p>
+            <div style="display: grid; gap: 12px; margin-top: 20px;">
+              <a href="/blog/why-america-fighting-iran" style="color: #60a5fa; text-decoration: none; font-weight: 500;">
+                → Why America is Fighting Iran: The Real Reasons Behind the Conflict
+              </a>
+              <a href="/blog/us-vs-iran-military" style="color: #60a5fa; text-decoration: none; font-weight: 500;">
+                → US vs Iran Military Comparison: Who Would Win?
+              </a>
+              <a href="/blog/israel-iran-war" style="color: #60a5fa; text-decoration: none; font-weight: 500;">
+                → Israel-Iran War: Latest Updates and Analysis
+              </a>
+              <a href="/blog/iran-nuclear-program" style="color: #60a5fa; text-decoration: none; font-weight: 500;">
+                → Iran Nuclear Program Timeline: From 1953 to Present
+              </a>
+              <a href="/blog/ww3-probability-2025-data" style="color: #60a5fa; text-decoration: none; font-weight: 500;">
+                → WW3 Probability 2025: Data and Predictions
+              </a>
+            </div>
+          </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer style="text-align: center; padding: 40px 20px; border-top: 1px solid #1f2937; color: #6b7280; font-size: 14px;">
+          <p>WW3 Tracker - Live Conflict Monitor</p>
+          <p style="margin-top: 8px;">Tracking the US vs Iran War in Real-Time</p>
+          <p style="margin-top: 16px; font-size: 12px;">
+            © 2025-2026 WW3 Tracker. Satirical content for educational purposes.
+          </p>
+        </footer>
+
+      </div>
+
+      <!-- Loading spinner that shows during hydration -->
+      <div class="initial-loading" id="initial-loader" style="display: none;">
         <div style="text-align: center;">
           <div style="width: 48px; height: 48px; border: 3px solid rgba(96, 165, 250, 0.3); border-top-color: #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
           <p style="margin: 0; font-size: 14px; opacity: 0.8;">Loading...</p>
@@ -150,5 +327,23 @@
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Hide static SEO content when React hydrates -->
+    <script>
+      // Hide static content once React loads
+      window.addEventListener('load', function() {
+        var seoContent = document.getElementById('seo-static-content');
+        if (seoContent) {
+          seoContent.style.display = 'none';
+        }
+      });
+      // Fallback: hide after 3 seconds even if React hasn't signaled
+      setTimeout(function() {
+        var seoContent = document.getElementById('seo-static-content');
+        if (seoContent && document.getElementById('root').children.length > 1) {
+          seoContent.style.display = 'none';
+        }
+      }, 3000);
+    </script>
   </body>
 </html>
