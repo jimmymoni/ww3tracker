@@ -117,12 +117,12 @@ export default function ConflictMap() {
     const update = () => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        // Different heights: mobile = 380px, desktop with side panel = 500px
         const height = window.innerWidth < 1024 ? 380 : 500;
-        setDimensions({ width: rect.width, height });
+        setDimensions({ width: rect.width || window.innerWidth - 32, height });
       }
     };
     update();
+    setTimeout(update, 100);
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
@@ -394,7 +394,7 @@ export default function ConflictMap() {
 
         {/* MOBILE LAYOUT: Stack vertically */}
         <div className="lg:hidden">
-          <div ref={containerRef} className="relative bg-[#020617]" style={{ height: '380px' }}>
+          <div ref={containerRef} className="relative bg-[#020617] w-full" style={{ height: '380px' }}>
             {renderMap()}
           </div>
           
