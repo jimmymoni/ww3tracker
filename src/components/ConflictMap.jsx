@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, Plus, Minus, RotateCcw, Globe } from 'lucide-react';
+import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, X } from 'lucide-react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 
@@ -30,23 +30,6 @@ const LABELS = [
   { name: 'OMAN', lat: 21, lng: 57, type: 'country' },
   { name: 'YEMEN', lat: 15.5, lng: 48, type: 'country' },
   { name: 'EGYPT', lat: 26.5, lng: 30, type: 'country' },
-  { name: 'Tehran', lat: 35.6892, lng: 51.3890, type: 'city' },
-  { name: 'Baghdad', lat: 33.3152, lng: 44.3661, type: 'city' },
-  { name: 'Jerusalem', lat: 31.7683, lng: 35.2137, type: 'city' },
-  { name: 'Riyadh', lat: 24.7136, lng: 46.6753, type: 'city' },
-  { name: 'Dubai', lat: 25.2048, lng: 55.2708, type: 'city' },
-  { name: 'Damascus', lat: 33.5138, lng: 36.2765, type: 'city' },
-  { name: 'Beirut', lat: 33.8938, lng: 35.5018, type: 'city' },
-  { name: 'Amman', lat: 31.9454, lng: 35.9284, type: 'city' },
-  { name: 'Kuwait City', lat: 29.3759, lng: 47.9774, type: 'city' },
-  { name: 'Doha', lat: 25.2854, lng: 51.5310, type: 'city' },
-  { name: 'Muscat', lat: 23.5859, lng: 58.4059, type: 'city' },
-  { name: 'Sanaa', lat: 15.3694, lng: 44.1910, type: 'city' },
-  { name: 'Cairo', lat: 30.0444, lng: 31.2357, type: 'city' },
-  { name: 'Ankara', lat: 39.9334, lng: 32.8597, type: 'city' },
-  { name: 'Mediterranean Sea', lat: 34, lng: 32, type: 'water' },
-  { name: 'Persian Gulf', lat: 26.5, lng: 52, type: 'water' },
-  { name: 'Red Sea', lat: 20, lng: 38, type: 'water' },
 ];
 
 const SEVERITY_CONFIG = {
@@ -69,14 +52,21 @@ export default function ConflictMap() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [hoveredEvent, setHoveredEvent] = useState(null);
-  const [showLabels, setShowLabels] = useState(true);
-  const [showHeatmap, setShowHeatmap] = useState(true);
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   const svgRef = useRef(null);
   const gRef = useRef(null);
   const containerRef = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: 800, height: 550 });
+  const [dimensions, setDimensions] = useState({ width: 800, height: 400 });
+
+  // Check mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Fetch world map data
   useEffect(() => {
@@ -94,7 +84,9 @@ export default function ConflictMap() {
     const update = () => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        setDimensions({ width: rect.width, height: 550 });
+        // Smaller height on mobile
+        const height = window.innerWidth < 768 ? 350 : 450;
+        setDimensions({ width: rect.width, height });
       }
     };
     update();
@@ -102,134 +94,111 @@ export default function ConflictMap() {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  // Setup D3 zoom
+  // Setup D3 zoom - disable on mobile
   useEffect(() => {
     if (!svgRef.current || !worldData) return;
     
     const zoom = d3.zoom()
-      .scaleExtent([0.8, 8])
+      .scaleExtent([0.8, 4])
       .on('zoom', (e) => {
-        setZoomLevel(e.transform.k);
         if (gRef.current) {
           d3.select(gRef.current).attr('transform', e.transform);
         }
       });
     
     const svg = d3.select(svgRef.current);
-    svg.call(zoom);
+    
+    // Only enable zoom on desktop
+    if (!isMobile) {
+      svg.call(zoom);
+    }
     
     // Initial transform - centered on Middle East
     const { width, height } = dimensions;
+    const scale = isMobile ? 1.2 : 1.8;
     const initialTransform = d3.zoomIdentity
       .translate(width / 2, height / 2)
-      .scale(1.8)
-      .translate(-width / 2, -height / 2 + 50);
+      .scale(scale)
+      .translate(-width / 2, -height / 2 + (isMobile ? 30 : 50));
     
     svg.call(zoom.transform, initialTransform);
+    if (gRef.current) {
+      d3.select(gRef.current).attr('transform', initialTransform);
+    }
     
-  }, [worldData, dimensions.width, dimensions.height]);
+  }, [worldData, dimensions.width, dimensions.height, isMobile]);
 
   // Base projection
   const projection = useCallback(() => {
+    const scale = isMobile ? dimensions.width * 0.5 : dimensions.width * 0.7;
     return d3.geoMercator()
       .center([45, 30])
-      .scale(dimensions.width * 0.7 * zoomLevel)
-      .translate([
-        dimensions.width / 2, 
-        dimensions.height / 2
-      ]);
-  }, [dimensions, zoomLevel]);
+      .scale(scale)
+      .translate([dimensions.width / 2, dimensions.height / 2]);
+  }, [dimensions, isMobile]);
 
   const proj = projection();
   const path = d3.geoPath().projection(proj);
 
-  // Zoom controls
-  const zoomIn = () => {
-    if (svgRef.current) {
-      const svg = d3.select(svgRef.current);
-      svg.transition().duration(300).call(
-        d3.zoom().transform, 
-        d3.zoomIdentity.scale(zoomLevel * 1.5)
-      );
-    }
-  };
-
-  const zoomOut = () => {
-    if (svgRef.current) {
-      const svg = d3.select(svgRef.current);
-      svg.transition().duration(300).call(
-        d3.zoom().transform, 
-        d3.zoomIdentity.scale(zoomLevel / 1.5)
-      );
-    }
-  };
-
-  const resetZoom = () => {
-    if (svgRef.current) {
-      const { width, height } = dimensions;
-      const svg = d3.select(svgRef.current);
-      const t = d3.zoomIdentity
-        .translate(width / 2, height / 2)
-        .scale(1.8)
-        .translate(-width / 2, -height / 2 + 50);
-      
-      svg.transition().duration(500).call(d3.zoom().transform, t);
-    }
-  };
-
   // Check if point is visible
   const isVisible = (lat, lng) => {
     const [x, y] = proj([lng, lat]) || [-1000, -1000];
-    return x > -100 && x < dimensions.width + 100 && y > -100 && y < dimensions.height + 100;
+    return x > -50 && x < dimensions.width + 50 && y > -50 && y < dimensions.height + 50;
+  };
+
+  // Handle event click
+  const handleEventClick = (event) => {
+    setSelectedEvent(event);
+    if (isMobile) {
+      setShowDrawer(true);
+    }
   };
 
   return (
     <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
       <div className="bg-black/60 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
         
-        {/* Header */}
-        <div className="p-4 border-b border-white/10 bg-gradient-to-r from-black/60 to-black/40">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30 flex items-center justify-center">
-                <Globe className="w-5 h-5 text-red-400" />
+        {/* Header - Compact on mobile */}
+        <div className="p-3 md:p-4 border-b border-white/10 bg-gradient-to-r from-black/60 to-black/40">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30 flex items-center justify-center">
+                <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-400" />
               </div>
               <div>
-                <h2 className="font-heading font-bold text-lg text-white">Live Conflict Monitor</h2>
-                <p className="text-xs text-gray-500">Middle East • {CONFLICT_EVENTS.length} active events</p>
+                <h2 className="font-heading font-bold text-sm md:text-lg text-white">Live Conflict Monitor</h2>
+                <p className="text-[10px] md:text-xs text-gray-500">{CONFLICT_EVENTS.length} active events • Middle East</p>
               </div>
             </div>
 
-            <div className="flex-1 flex items-center justify-end gap-2">
-              <button onClick={() => setShowLabels(!showLabels)} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${showLabels ? 'bg-purple-500/20 text-purple-400' : 'text-gray-500 hover:text-gray-300'}`}>
-                Labels
-              </button>
-              <button onClick={() => setShowHeatmap(!showHeatmap)} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${showHeatmap ? 'bg-orange-500/20 text-orange-400' : 'text-gray-500 hover:text-gray-300'}`}>
-                Heatmap
-              </button>
-              <div className="w-px h-6 bg-white/10 mx-1" />
-              <button onClick={zoomOut} className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
-                <Minus className="w-4 h-4" />
-              </button>
-              <button onClick={resetZoom} className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-gray-400 hover:text-white flex items-center gap-1">
-                <RotateCcw className="w-3 h-3" />
-                Reset
-              </button>
-              <button onClick={zoomIn} className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white">
-                <Plus className="w-4 h-4" />
-              </button>
+            {/* Quick stats - hide on small mobile */}
+            <div className="hidden sm:flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-red-500" />
+                <span className="text-xs text-gray-400">{CONFLICT_EVENTS.filter(e => e.severity === 'high').length}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-orange-500" />
+                <span className="text-xs text-gray-400">{CONFLICT_EVENTS.filter(e => e.severity === 'medium').length}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Map Container */}
-        <div ref={containerRef} className="relative bg-[#020617]" style={{ height: '550px' }}>
+        {/* Map Container - Fixed height */}
+        <div ref={containerRef} className="relative bg-[#020617] overflow-hidden" style={{ height: `${dimensions.height}px` }}>
           {isLoading ? (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-10 h-10 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
             </div>
           ) : (
-            <svg ref={svgRef} width={dimensions.width} height={dimensions.height} className="absolute inset-0 cursor-move">
+            <svg 
+              ref={svgRef} 
+              width={dimensions.width} 
+              height={dimensions.height} 
+              className={`absolute inset-0 ${isMobile ? '' : 'cursor-move'}`}
+              style={{ touchAction: 'pan-y' }} // Allow page scroll on mobile
+            >
               <defs>
                 <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
                   <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="0.5"/>
@@ -253,55 +222,44 @@ export default function ConflictMap() {
                           d={d}
                           fill="rgba(30, 41, 59, 0.6)"
                           stroke="rgba(100, 116, 139, 0.4)"
-                          strokeWidth={0.5 / zoomLevel}
+                          strokeWidth={0.5}
                         />
                       );
                     })}
                   </g>
                 )}
 
-                {/* Heatmap */}
-                {showHeatmap && CONFLICT_EVENTS.map(event => {
-                  const [x, y] = proj([event.lng, event.lat]) || [0, 0];
-                  if (!isVisible(event.lat, event.lng)) return null;
-                  const config = SEVERITY_CONFIG[event.severity];
-                  const r = event.severity === 'high' ? 50 : event.severity === 'medium' ? 35 : 20;
-                  return (
-                    <circle key={`heat-${event.id}`} cx={x} cy={y} r={r} fill={config.color} opacity={0.15} style={{ mixBlendMode: 'screen' }} />
-                  );
-                })}
-
-                {/* Labels */}
-                {showLabels && LABELS.map(label => {
+                {/* Country Labels - simplified on mobile */}
+                {LABELS.map(label => {
                   const [x, y] = proj([label.lng, label.lat]) || [0, 0];
                   if (!isVisible(label.lat, label.lng)) return null;
                   
-                  if (label.type === 'country') {
-                    return (
-                      <text key={label.name} x={x} y={y} textAnchor="middle" fill="rgba(148, 163, 184, 0.4)" fontSize={11} fontWeight="700" letterSpacing="1" style={{ textShadow: '0 0 4px rgba(0,0,0,0.8)' }}>
-                        {label.name}
-                      </text>
-                    );
-                  }
-                  if (label.type === 'city') {
-                    const hasConflict = CONFLICT_EVENTS.some(e => e.city === label.name);
-                    return (
-                      <g key={label.name}>
-                        <circle cx={x} cy={y} r={2} fill={hasConflict ? 'rgba(255,255,255,0.8)' : 'rgba(148,163,184,0.3)'} />
-                        <text x={x + 5} y={y + 3} fill={hasConflict ? 'rgba(255,255,255,0.9)' : 'rgba(148,163,184,0.5)'} fontSize={9} fontWeight={hasConflict ? '600' : '400'}>
-                          {label.name}
-                        </text>
-                      </g>
-                    );
-                  }
-                  if (label.type === 'water') {
-                    return (
-                      <text key={label.name} x={x} y={y} textAnchor="middle" fill="rgba(59, 130, 246, 0.3)" fontSize={12} fontStyle="italic">
-                        {label.name}
-                      </text>
-                    );
-                  }
-                  return null;
+                  return (
+                    <text 
+                      key={label.name} 
+                      x={x} 
+                      y={y} 
+                      textAnchor="middle" 
+                      fill="rgba(148, 163, 184, 0.35)" 
+                      fontSize={isMobile ? 8 : 10} 
+                      fontWeight="700" 
+                      letterSpacing="1"
+                      style={{ textShadow: '0 0 4px rgba(0,0,0,0.8)' }}
+                    >
+                      {label.name}
+                    </text>
+                  );
+                })}
+
+                {/* Heatmap circles */}
+                {CONFLICT_EVENTS.map(event => {
+                  const [x, y] = proj([event.lng, event.lat]) || [0, 0];
+                  if (!isVisible(event.lat, event.lng)) return null;
+                  const config = SEVERITY_CONFIG[event.severity];
+                  const r = isMobile ? 30 : (event.severity === 'high' ? 50 : event.severity === 'medium' ? 35 : 20);
+                  return (
+                    <circle key={`heat-${event.id}`} cx={x} cy={y} r={r} fill={config.color} opacity={0.12} style={{ mixBlendMode: 'screen' }} />
+                  );
                 })}
 
                 {/* Conflict Markers */}
@@ -312,26 +270,34 @@ export default function ConflictMap() {
                   const config = SEVERITY_CONFIG[event.severity];
                   const isHovered = hoveredEvent?.id === event.id;
                   const isSelected = selectedEvent?.id === event.id;
+                  const radius = isMobile ? 5 : 6;
 
                   return (
-                    <g key={event.id} className="cursor-pointer" onClick={() => setSelectedEvent(event)}>
-                      <circle cx={x} cy={y} r={isHovered ? 25 : 18} fill="none" stroke={config.color} strokeWidth="2" opacity={0.4}>
-                        <animate attributeName="r" values="10;30;10" dur="2s" repeatCount="indefinite" />
+                    <g key={event.id} className="cursor-pointer" onClick={() => handleEventClick(event)}>
+                      {/* Pulse */}
+                      <circle cx={x} cy={y} r={isMobile ? 12 : 18} fill="none" stroke={config.color} strokeWidth="2" opacity={0.4}>
+                        <animate attributeName="r" values={`${radius};${radius * 3};${radius}`} dur="2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx={x} cy={y} r={12} fill={config.color} opacity={0.3} />
+                      
+                      {/* Glow */}
+                      <circle cx={x} cy={y} r={radius * 2} fill={config.color} opacity={0.2} />
+                      
+                      {/* Marker */}
                       <circle
-                        cx={x} cy={y} r={isHovered || isSelected ? 8 : 6}
+                        cx={x} cy={y} r={isHovered || isSelected ? radius + 2 : radius}
                         fill={config.color} stroke="white" strokeWidth="2"
-                        style={{ filter: `drop-shadow(0 0 10px ${config.color})` }}
+                        style={{ filter: `drop-shadow(0 0 8px ${config.color})` }}
                         onMouseEnter={() => setHoveredEvent(event)}
                         onMouseLeave={() => setHoveredEvent(null)}
                       />
-                      {(isHovered || isSelected || event.severity === 'high') && (
+
+                      {/* Label on hover/selected - desktop only */}
+                      {!isMobile && (isHovered || isSelected) && (
                         <g>
-                          <rect x={x - 45} y={y + 12} width="90" height="16" rx="3" fill="rgba(0,0,0,0.9)" stroke={config.color} strokeWidth="0.5" />
-                          <text x={x} y={y + 23} textAnchor="middle" fill="white" fontSize="8" fontWeight="600">
-                            {event.city} • {config.label}
+                          <rect x={x - 40} y={y - 30} width="80" height="16" rx="3" fill="rgba(0,0,0,0.9)" stroke={config.color} strokeWidth="0.5" />
+                          <text x={x} y={y - 19} textAnchor="middle" fill="white" fontSize="8" fontWeight="600">
+                            {event.city}
                           </text>
                         </g>
                       )}
@@ -342,104 +308,192 @@ export default function ConflictMap() {
             </svg>
           )}
 
-          {/* Legend */}
-          <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl p-4">
-            <h4 className="text-xs font-bold text-white mb-3 flex items-center gap-2">
-              <AlertTriangle className="w-3 h-3 text-red-400" />
-              Threat Level
-            </h4>
-            <div className="space-y-2">
+          {/* Legend - compact */}
+          <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md border border-white/10 rounded-lg p-2.5">
+            <div className="space-y-1.5">
               {Object.entries(SEVERITY_CONFIG).map(([key, config]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <span className={`w-3 h-3 rounded-full ${config.bg}`} />
-                  <span className="text-[11px] text-gray-400">{config.label}</span>
-                  <span className="text-[10px] text-gray-600 ml-auto">{CONFLICT_EVENTS.filter(e => e.severity === key).length}</span>
+                <div key={key} className="flex items-center gap-1.5">
+                  <span className={`w-2 h-2 rounded-full ${config.bg}`} />
+                  <span className="text-[10px] text-gray-400">{config.label}</span>
                 </div>
               ))}
             </div>
-            <p className="text-[10px] text-gray-600 mt-3 pt-2 border-t border-white/10">Scroll to zoom • Drag to pan</p>
           </div>
 
-          {/* Stats */}
-          <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3">
-            <div className="flex items-center gap-4">
-              <div className="text-center">
-                <div className="text-xl font-bold text-red-400">{CONFLICT_EVENTS.filter(e => e.severity === 'high').length}</div>
-                <div className="text-[9px] text-gray-500 uppercase">Critical</div>
-              </div>
-              <div className="w-px h-8 bg-white/10" />
-              <div className="text-center">
-                <div className="text-xl font-bold text-orange-400">{CONFLICT_EVENTS.filter(e => e.severity === 'medium').length}</div>
-                <div className="text-[9px] text-gray-500 uppercase">Elevated</div>
-              </div>
-              <div className="w-px h-8 bg-white/10" />
-              <div className="text-center">
-                <div className="text-xl font-bold text-white">{CONFLICT_EVENTS.length}</div>
-                <div className="text-[9px] text-gray-500 uppercase">Total</div>
-              </div>
+          {/* Mobile: Tap hint */}
+          {isMobile && (
+            <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1.5">
+              <span className="text-[10px] text-gray-400">Tap dots for info</span>
             </div>
-          </div>
+          )}
 
-          {/* Selected Event Panel */}
-          <AnimatePresence>
-            {selectedEvent && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                className="absolute top-4 right-4 w-72 bg-black/90 border border-white/20 rounded-xl p-4 backdrop-blur-md shadow-2xl"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded-lg ${SEVERITY_CONFIG[selectedEvent.severity].bg} flex items-center justify-center`}>
-                      {EVENT_ICONS[selectedEvent.icon]}
-                    </div>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${SEVERITY_CONFIG[selectedEvent.severity].bg} text-white`}>
-                      {SEVERITY_CONFIG[selectedEvent.severity].label}
-                    </span>
+          {/* Desktop: Selected Event Panel */}
+          {!isMobile && selectedEvent && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
+              className="absolute top-3 right-3 w-64 bg-black/90 border border-white/20 rounded-xl p-3 backdrop-blur-md"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className={`w-7 h-7 rounded-lg ${SEVERITY_CONFIG[selectedEvent.severity].bg} flex items-center justify-center`}>
+                    {EVENT_ICONS[selectedEvent.icon]}
                   </div>
-                  <button onClick={() => setSelectedEvent(null)} className="w-6 h-6 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-500 hover:text-white">✕</button>
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[selectedEvent.severity].bg} text-white`}>
+                    {SEVERITY_CONFIG[selectedEvent.severity].label}
+                  </span>
                 </div>
-                <h3 className="font-bold text-lg text-white mb-1">{selectedEvent.city}</h3>
-                <p className="text-xs text-gray-400 mb-2">{selectedEvent.country}</p>
-                <p className="text-sm text-gray-300 mb-3">{selectedEvent.description}</p>
-                <div className="flex items-center justify-between text-xs text-gray-500 border-t border-white/10 pt-3">
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{selectedEvent.time}</span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <button onClick={() => setSelectedEvent(null)} className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-white text-xs">✕</button>
+              </div>
+              <h3 className="font-bold text-white text-sm mb-0.5">{selectedEvent.city}</h3>
+              <p className="text-[10px] text-gray-400 mb-1.5">{selectedEvent.country}</p>
+              <p className="text-xs text-gray-300 mb-2 leading-relaxed">{selectedEvent.description}</p>
+              <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                <Clock className="w-3 h-3" />{selectedEvent.time}
+              </div>
+            </motion.div>
+          )}
         </div>
 
-        {/* Events List */}
-        <div className="border-t border-white/10 bg-black/40">
-          <div className="p-4">
-            <h3 className="text-xs font-bold text-gray-400 uppercase mb-3">Recent Events</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Desktop: Events List */}
+        {!isMobile && (
+          <div className="border-t border-white/10 bg-black/40 p-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {CONFLICT_EVENTS.map(event => (
                 <button
                   key={event.id}
-                  onClick={() => setSelectedEvent(event)}
+                  onClick={() => handleEventClick(event)}
                   onMouseEnter={() => setHoveredEvent(event)}
                   onMouseLeave={() => setHoveredEvent(null)}
                   className={`text-left p-3 rounded-xl border transition-all ${selectedEvent?.id === event.id ? 'bg-red-500/10 border-red-500/50' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                  <div className="flex items-start gap-2.5">
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
                       {EVENT_ICONS[event.icon]}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-1.5 mb-0.5">
                         <span className="font-bold text-white text-sm">{event.city}</span>
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>{SEVERITY_CONFIG[event.severity].label}</span>
                       </div>
-                      <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
-                      <p className="text-[10px] text-gray-600 mt-1">{event.time}</p>
+                      <span className={`text-[8px] px-1 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                        {SEVERITY_CONFIG[event.severity].label}
+                      </span>
+                      <p className="text-[10px] text-gray-500 mt-1 truncate">{event.description}</p>
                     </div>
                   </div>
                 </button>
               ))}
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Mobile: Bottom Sheet Drawer */}
+        <AnimatePresence>
+          {isMobile && showDrawer && (
+            <>
+              {/* Backdrop */}
+              <motion.div 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/60 z-40"
+                onClick={() => setShowDrawer(false)}
+              />
+              {/* Drawer */}
+              <motion.div
+                initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50 max-h-[70vh] overflow-y-auto"
+              >
+                {/* Handle */}
+                <div className="flex justify-center pt-3 pb-2">
+                  <div className="w-12 h-1 bg-white/20 rounded-full" />
+                </div>
+                
+                {selectedEvent ? (
+                  <div className="p-4">
+                    {/* Selected Event Detail */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl ${SEVERITY_CONFIG[selectedEvent.severity].bg} flex items-center justify-center`}>
+                          {EVENT_ICONS[selectedEvent.icon]}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-lg text-white">{selectedEvent.city}</h3>
+                          <p className="text-xs text-gray-400">{selectedEvent.country}</p>
+                        </div>
+                      </div>
+                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${SEVERITY_CONFIG[selectedEvent.severity].bg} text-white`}>
+                        {SEVERITY_CONFIG[selectedEvent.severity].label}
+                      </span>
+                    </div>
+                    
+                    <p className="text-sm text-gray-300 mb-4 leading-relaxed">{selectedEvent.description}</p>
+                    
+                    <div className="flex items-center justify-between text-xs text-gray-500 border-t border-white/10 pt-3 mb-4">
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{selectedEvent.time}</span>
+                      <span>{selectedEvent.type}</span>
+                    </div>
+                    
+                    <button 
+                      onClick={() => {setSelectedEvent(null); setShowDrawer(true);}}
+                      className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl text-sm text-gray-400"
+                    >
+                      View All Events
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-4">
+                    <h3 className="font-bold text-white mb-3 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-red-400" />
+                      Active Conflicts ({CONFLICT_EVENTS.length})
+                    </h3>
+                    <div className="space-y-2">
+                      {CONFLICT_EVENTS.map(event => (
+                        <button
+                          key={event.id}
+                          onClick={() => setSelectedEvent(event)}
+                          className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all flex items-center gap-3"
+                        >
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                            {EVENT_ICONS[event.icon]}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-white text-sm">{event.city}</span>
+                              <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                                {SEVERITY_CONFIG[event.severity].label}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <button 
+                  onClick={() => setShowDrawer(false)}
+                  className="w-full py-4 border-t border-white/10 flex items-center justify-center gap-1 text-gray-500 text-sm"
+                >
+                  <ChevronDown className="w-4 h-4" /> Close
+                </button>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Mobile: Quick Access Button */}
+        {isMobile && !showDrawer && (
+          <div className="border-t border-white/10 bg-black/40 p-3">
+            <button 
+              onClick={() => setShowDrawer(true)}
+              className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
+            >
+              <AlertTriangle className="w-4 h-4" />
+              View {CONFLICT_EVENTS.length} Active Conflicts
+              <ChevronUp className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
       </div>
     </motion.section>
