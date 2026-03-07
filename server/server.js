@@ -7,8 +7,6 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
-
 // Services
 import { fetchAllRSSFeeds, startAutoRefresh, getCachedNews } from './services/rssService.js';
 import { fetchGDELTNews, mergeNewsSources } from './services/gdeltService.js';
@@ -18,27 +16,13 @@ import { fetchIranFires } from './services/nasaFirmsService.js';
 import { getTrumpGif } from './services/giphyService.js';
 import { updateGameStateFromAnalysis, getGameState, resetBreakingAlert, initGameState } from './services/gameStateService.js';
 import { getMarkets, isWarMode } from './services/marketService.js';
-import { 
-  setSocketIO, 
-  setAddMessageFn, 
-  startBotMessageLoop, 
-  sendBotMessage, 
-  triggerBotMessage,
-  recordUserMessage,
-  updateLiveDataCache
-} from './services/botMessageService.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
-});
 const PORT = process.env.PORT || 3001;
 
 // Verify env vars are loaded
@@ -54,150 +38,7 @@ console.log('=====================================\n');
 app.use(cors());
 app.use(express.json());
 
-// ==================== SOCKET.IO LIVE CHAT ====================
-const connectedUsers = new Map();
-let usWinPercent = 73; // Starting percentage
 
-// Realistic viewer count simulation
-let currentViewerCount = 800 + Math.floor(Math.random() * 200); // Start 800-1000
-let viewerCountInterval = null;
-
-// Initialize realistic viewer count fluctuations
-const startViewerCountSimulation = () => {
-  // Update viewer count every 5-15 seconds with small realistic changes
-  const updateCount = () => {
-    const delay = 5000 + Math.random() * 10000; // 5-15 seconds
-    
-    setTimeout(() => {
-      // Small realistic fluctuation (-15 to +20 viewers)
-      const change = Math.floor(Math.random() * 36) - 15;
-      currentViewerCount = Math.max(600, Math.min(1500, currentViewerCount + change));
-      
-      // Broadcast to all clients
-      io.emit('viewerUpdate', { count: currentViewerCount });
-      
-      updateCount();
-    }, delay);
-  };
-  
-  updateCount();
-};
-
-// Get current viewer count
-const getFakeViewerCount = () => currentViewerCount;
-
-// Generate bot usernames (fallback)
-const generateBotName = () => {
-  const prefixes = ['Chaos', 'Doom', 'War', 'Nuke', 'Shadow', 'Spy', 'Agent', 'Rogue'];
-  const suffixes = ['99', '007', '42', 'X', 'Prime', 'Elite', 'Dark', 'Stealth'];
-  return `${prefixes[Math.floor(Math.random() * prefixes.length)]}${suffixes[Math.floor(Math.random() * suffixes.length)]}_${Math.floor(Math.random() * 999)}`;
-};
-
-// Socket.io connection handling
-io.on('connection', (socket) => {
-  const userId = socket.id;
-  const username = generateBotName();
-  const side = Math.random() > 0.5 ? 'us' : 'iran';
-  
-  connectedUsers.set(userId, { username, side, joinTime: Date.now() });
-  
-  // Send initial data (with FAKE viewer count)
-  socket.emit('init', {
-    username,
-    viewerCount: getFakeViewerCount(),
-    usWinPercent,
-    messages: recentMessages.slice(-20)
-  });
-  
-  // Broadcast user joined (with FAKE count)
-  io.emit('userJoined', {
-    count: getFakeViewerCount(),
-    message: `${username} joined the war room`
-  });
-  
-  // Send welcome bot message occasionally (30% chance)
-  if (Math.random() < 0.3) {
-    setTimeout(() => {
-      const welcomeTexts = [
-        `yo ${username} just joined, got any hot tips? 🎰`,
-        `new trader ${username} in the war room 📈`,
-        `${username} pulled up, whats your position? 📊`,
-        `welcome ${username}, YOLO or nothing here 🚀`,
-      ];
-      const text = welcomeTexts[Math.floor(Math.random() * welcomeTexts.length)];
-      sendBotMessage('random', text);
-    }, 3000);
-  }
-  
-  // Handle chat messages
-  socket.on('chatMessage', (data) => {
-    const user = connectedUsers.get(userId);
-    if (!user) return;
-    
-    // Rate limiting check (handled client-side too, but double check here)
-    const now = Date.now();
-    if (user.lastMessage && now - user.lastMessage < 5000) {
-      socket.emit('error', { message: 'Rate limit: Wait 5 seconds' });
-      return;
-    }
-    
-    // Profanity filter (basic)
-    const filtered = data.text
-      .replace(/fuck/gi, 'f***')
-      .replace(/shit/gi, 's***')
-      .replace(/bitch/gi, 'b****')
-      .substring(0, 150); // Max 150 chars
-    
-    const message = {
-      id: Date.now(),
-      username: user.username,
-      side: user.side,
-      text: filtered,
-      timestamp: now
-    };
-    
-    addMessage(message);
-    user.lastMessage = now;
-    recordUserMessage(); // Track for bot timing
-    
-    io.emit('newMessage', message);
-    
-    // Sometimes respond to user messages (20% chance, after 8 second delay)
-    if (Math.random() < 0.2) {
-      setTimeout(() => {
-        const responses = [
-          `${user.username} with the alpha 📈`,
-          `^ this guy's DD is solid 👆`,
-          `${user.username} speaking the language of gods 💰`,
-          `someone follow ${user.username}'s trades 📊`,
-          `${user.username} trying to front-run the news 🏃`,
-        ];
-        const text = responses[Math.floor(Math.random() * responses.length)];
-        sendBotMessage('random', text);
-      }, 8000);
-    }
-  });
-  
-  // Handle disconnect
-  socket.on('disconnect', () => {
-    connectedUsers.delete(userId);
-    io.emit('userLeft', { count: getFakeViewerCount() });
-  });
-});
-
-// Recent messages buffer
-const recentMessages = [];
-const MAX_MESSAGES = 50;
-
-const addMessage = (msg) => {
-  recentMessages.push(msg);
-  if (recentMessages.length > MAX_MESSAGES) {
-    recentMessages.shift();
-  }
-};
-
-// Export triggerBotMessage for use by other services
-export { triggerBotMessage };
 
 // Cache for merged news with TTL
 let cachedMergedNews = [];
@@ -751,15 +592,8 @@ const startServer = async () => {
   // Start RSS auto-refresh
   startAutoRefresh();
   
-  // Initialize bot message service
-  setSocketIO(io);
-  setAddMessageFn(addMessage);
-  startBotMessageLoop();
-  console.log('[Server] Bot message loop started');
-  
-  // Start realistic viewer count simulation
-  startViewerCountSimulation();
-  console.log(`[Server] Viewer count simulation started (${currentViewerCount} viewers)`);
+  // Chat features removed - focusing on conflict monitoring
+  console.log('[Server] Chat features disabled - focusing on conflict monitoring');
   
   // Start server IMMEDIATELY (don't wait for data fetch)
   server.listen(PORT, () => {
@@ -771,7 +605,7 @@ const startServer = async () => {
 ║     Server running on http://localhost:${PORT}                 ║
 ║                                                              ║
 ║     Features:                                                ║
-║     • Live Chat with fake user bots                          ║
+║     • Live Conflict Monitoring                               ║
 ║     • Real-time market data (Oil, Gold, Defense)             ║
 ║     • Polymarket betting odds                                ║
 ║     • AI-powered news analysis                               ║

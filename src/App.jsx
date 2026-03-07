@@ -20,21 +20,15 @@ import WorldWar3NewsPage from './pages/WorldWar3NewsPage';
 import IranNuclearDealPage from './pages/IranNuclearDealPage';
 
 // Components
-import HPBar from './components/HPBar';
 import WW3Counter from './components/WW3Counter';
-import FighterCard from './components/FighterCard';
+import ConflictMap from './components/ConflictMap';
 import GlobalParticipantsCarousel from './components/GlobalParticipantsCarousel';
 import TimelineOfChaos from './components/TimelineOfChaos';
 import MemeFeed from './components/MemeCard';
 import SpicyMeter from './components/SpicyMeter';
-import FloatingChat from './components/FloatingChat';
 import PolymarketWidget from './components/PolymarketWidget';
 import NasaFirmsStrip from './components/NasaFirmsStrip';
 import BreakingAlert from './components/BreakingAlert';
-import PickSideModal from './components/PickSideModal';
-import CentralTweetButton from './components/CentralTweetButton';
-import WarRoomComments from './components/WarRoomComments';
-import DailyPoll from './components/DailyPoll';
 
 // API
 import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
@@ -83,7 +77,7 @@ const NavLinks = ({ mobile = false, onClose }) => {
 };
 
 // Header - Mobile Optimized with Navigation
-const Header = ({ isLoading, userSide }) => {
+const Header = ({ isLoading }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -228,8 +222,7 @@ function MainDashboard() {
   const [initialLoading, setInitialLoading] = useState(!cachedState);
   const [backgroundLoading, setBackgroundLoading] = useState(!!cachedState);
   const [serverFailed, setServerFailed] = useState(false);
-  const [userSide, setUserSide] = useState(null);
-  const [showContent, setShowContent] = useState(false);
+
 
   // Load initial game state with retry logic
   useEffect(() => {
@@ -339,11 +332,7 @@ function MainDashboard() {
     setGameState(prev => ({ ...prev, breakingAlert: null }));
   };
 
-  // Handle side selection
-  const handleSideSelected = (side) => {
-    setUserSide(side);
-    setShowContent(true);
-  };
+
 
   // Show loading screen only on initial load when no cached data
   if (initialLoading) {
@@ -352,10 +341,7 @@ function MainDashboard() {
 
   return (
     <div className="min-h-screen bg-grid text-white pb-16">
-      {/* Pick Side Modal - only shows on first visit */}
-      <PickSideModal onComplete={handleSideSelected} />
-      
-      <Header isLoading={backgroundLoading} userSide={userSide} />
+      <Header isLoading={backgroundLoading} />
 
       {/* Breaking Alert Overlay */}
       <BreakingAlert 
@@ -367,19 +353,16 @@ function MainDashboard() {
       <NasaFirmsStrip />
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* ROW 1: Global Participants Carousel - Scrollable war roster */}
-        <GlobalParticipantsCarousel />
+        {/* ROW 1: Conflict Map - NEW HERO */}
+        <ConflictMap />
 
-        {/* HP Bar - SECOND */}
-        <section id="hp-section" className="mb-2">
-          <HPBar usHP={gameState.usHP} iranHP={gameState.iranHP} />
+        {/* ROW 2: WW3 Probability Counter */}
+        <section className="mb-6">
+          <WW3Counter tension={gameState.tension} />
         </section>
 
-        {/* Central Tweet Button */}
-        <CentralTweetButton usHP={gameState.usHP} iranHP={gameState.iranHP} />
-
-        {/* WW3 Probability Counter - THIRD (Progress Bar style) */}
-        <WW3Counter tension={gameState.tension} />
+        {/* ROW 3: Global Participants Carousel */}
+        <GlobalParticipantsCarousel />
 
         {/* ROW 2: Meme Feed - Full Width Below */}
         <motion.section
@@ -391,10 +374,7 @@ function MainDashboard() {
           <MemeFeed />
         </motion.section>
 
-        {/* War Room Comments Section */}
-        <WarRoomComments />
-
-        {/* ROW 3: Spicy Meter - Compact Progress Bar Style */}
+        {/* ROW 3: Spicy Meter */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -428,9 +408,6 @@ function MainDashboard() {
         >
           <TimelineOfChaos />
         </motion.section>
-
-        {/* Floating Chat Bubble */}
-        <FloatingChat />
 
         <Disclaimer />
       </main>

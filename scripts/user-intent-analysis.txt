@@ -1,0 +1,135 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║              🎯 HOW USERS FIND YOU + THEIR INTENTIONS               ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+📍 ENTRY POINTS - Where They First Land (Kochi Excluded)
+═══════════════════════════════════════════════════════════════════════
+
+🏠 HOMEPAGE (/) .......................................... 158 sessions (78%)
+   → This is the MAIN entry point
+   → 143 are NEW users (91%)
+   → 75% bounce rate - most leave immediately
+   → Intent: Curiosity / Top of funnel
+
+🔢 WW3 PROBABILITY (/ww3-probability) .................... 9 sessions (4%)
+   → 5 new users (56%)
+   → 78% bounce rate
+   → Intent: Specific question - "What's the actual % chance of WW3?"
+
+🎲 WW3 RISK CALCULATOR (/ww3-risk-calculator) ............ 9 sessions (4%) 
+   → 9 new users (100%) - ALL are first-timers
+   → 100% bounce rate - they use it and leave
+   → Intent: Tool usage - want to calculate risk
+
+🇮🇷 US-IRAN TRACKER (/us-iran-war-tracker) ............... 7 sessions (3%)
+   → 5 new users
+   → 100% bounce rate
+   → Intent: Specific conflict interest
+
+📝 BLOG POSTS ............................................ 7 sessions (3%)
+   → "ww3-probability-2025-data" (6 sessions) - want data/research
+   → "us-iran-war-5-warning-signs" (1 session) - want warning signals
+   → Intent: Deep research / information gathering
+
+═══════════════════════════════════════════════════════════════════════
+🚪 HOW THEY GET THERE (Acquisition Channels)
+═══════════════════════════════════════════════════════════════════════
+
+🔍 1. GOOGLE SEARCH (106 sessions = 52%)
+    └─ These users typed something into Google
+    └─ Average time: 1m 45s (they actually read!)
+    
+    What they're searching for:
+    • "ww3 monitor" (9 clicks) - monitoring/live updates intent
+    • "ww3 tracker" (7 impressions, 0 clicks - opportunity!)
+    • "ww3 probability tracker" (1 click) - data/analytics intent
+    • "world war 3 tracker" (1 click) - general tracking intent
+    • "monitor ww3" (19 impressions, 0 clicks - you're #3.3!)
+
+🔗 2. DIRECT (69 sessions = 34%)
+    └─ Type URL directly, bookmarks, or untracked links
+    └─ BUT: Only 11 seconds avg time - SUSPICIOUS
+    
+    Likely breakdown:
+    • ~40% Real bookmarks/shares (~30 sessions)
+    • ~30% ChatGPT opening links (~20 sessions)
+    • ~30% Bots/crawlers (~20 sessions)
+
+🤖 3. CHATGPT REFERRALS (9 sessions = 4%)
+    └─ chatgpt.com/referral = 5 sessions, 2m 44s avg time
+    └─ These are HIGH INTENT users!
+    
+    What happened: Someone asked ChatGPT about WW3 probability,
+    and ChatGPT recommended your site. They stayed 2+ minutes!
+
+📱 4. SOCIAL MEDIA (8 sessions = 4%)
+    └─ m.facebook.com = 6 sessions (mobile Facebook)
+    └─ facebook.com = 2 sessions
+    └─ t.co (Twitter/X) was in first report but may be zero now
+    └─ Average: 0 seconds (click and bounce)
+
+❓ 5. NOT SET (46 sessions = 23%)
+    └─ Tracking issues / iOS 14+ privacy / ad blockers
+
+═══════════════════════════════════════════════════════════════════════
+🧠 USER INTENT ANALYSIS
+═══════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  INTENT TYPE          │ % of Traffic │ Behavior                     │
+├─────────────────────────────────────────────────────────────────────┤
+│  🎯 "Just Curious"    │    ~78%      │ Land on homepage, browse,    │
+│                       │              │ 75% leave within seconds     │
+├─────────────────────────────────────────────────────────────────────┤
+│  📊 "Need Data"       │    ~12%      │ Go to probability/calculator │
+│                       │              │ Use tool, 100% leave after   │
+├─────────────────────────────────────────────────────────────────────┤
+│  🔬 "Deep Research"   │    ~3%       │ Find blog posts via search   │
+│                       │              │ May actually read content    │
+├─────────────────────────────────────────────────────────────────────┤
+│  🤖 "AI Recommended"  │    ~4%       │ ChatGPT sent them            │
+│                       │              │ High engagement (2m 44s)     │
+└─────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════
+💡 THE TRUTH ABOUT YOUR USERS
+═══════════════════════════════════════════════════════════════════════
+
+1. MOST ARE "DRIVE-BY" VISITORS
+   → 78% land on homepage with no specific intent
+   → They saw "WW3 Tracker" in search results, got curious, clicked
+   → 75% bounce because there's no immediate "hook"
+
+2. TOOL USERS ARE TRANSACTIONAL  
+   → They come for the calculator/probability
+   → Use it, get their answer, leave (100% bounce)
+   → This is NORMAL for utility pages
+
+3. CHATGPT IS YOUR BEST REFERRAL
+   → Only 4% of traffic but highest engagement
+   → These users have a QUESTION and ChatGPT trusts your answer
+   → OPPORTUNITY: Optimize for more AI referrals
+
+4. SEO IS WORKING BUT...
+   → "ww3 monitor" has 1,083 impressions, only 9 clicks
+   → You're ranking #6.5 - people don't scroll that far
+   → Your title/description isn't compelling enough
+
+═══════════════════════════════════════════════════════════════════════
+🔥 ACTIONABLE INSIGHTS
+═══════════════════════════════════════════════════════════════════════
+
+IMMEDIATE FIXES:
+• Homepage needs a HOOK above the fold - "Live WW3 Risk: 23%" 
+• Calculator pages need "Share Your Results" or "Learn More" CTAs
+• Add internal links from tools back to blog content
+
+SEO OPPORTUNITIES:
+• Optimize title tag for "ww3 monitor" - currently losing 1,074 impressions!
+• Create content targeting "monitor ww3" (19 impressions, #3.3 position)
+• Your position #6.5 needs to be #3-4 for real traffic
+
+CONTENT GAPS:
+• Users want: live monitoring, probability data, risk calculation
+• You have: All of these! But they're buried/not promoted
+• Fix: Make the "Live Risk Score" front and center on homepage
