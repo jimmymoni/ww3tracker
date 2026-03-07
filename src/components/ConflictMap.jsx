@@ -93,11 +93,12 @@ export default function ConflictMap() {
   
   const svgRef = useRef(null);
   const gRef = useRef(null);
-  const containerRef = useRef(null);
+  const mobileContainerRef = useRef(null);
+  const desktopContainerRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 400 });
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -113,11 +114,13 @@ export default function ConflictMap() {
       .catch(() => setIsLoading(false));
   }, []);
 
+  // Update dimensions based on active container
   useEffect(() => {
     const update = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const height = window.innerWidth < 1024 ? 380 : 500;
+      const container = isMobile ? mobileContainerRef.current : desktopContainerRef.current;
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        const height = isMobile ? 380 : 500;
         setDimensions({ width: rect.width || window.innerWidth - 32, height });
       }
     };
@@ -125,13 +128,14 @@ export default function ConflictMap() {
     setTimeout(update, 100);
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
-  }, []);
+  }, [isMobile]);
 
+  // Setup D3 zoom - enable touch for mobile pinch
   useEffect(() => {
     if (!svgRef.current || !worldData) return;
     
     const zoom = d3.zoom()
-      .scaleExtent([1.2, 6])
+      .scaleExtent([1, 6])
       .on('zoom', (e) => {
         if (gRef.current) {
           d3.select(gRef.current).attr('transform', e.transform);
@@ -142,7 +146,7 @@ export default function ConflictMap() {
     svg.call(zoom);
     
     const { width, height } = dimensions;
-    const scale = isMobile ? 1.9 : 2.4;
+    const scale = isMobile ? 1.8 : 2.4;
     const initialTransform = d3.zoomIdentity
       .translate(width / 2, height / 2)
       .scale(scale)
@@ -203,8 +207,7 @@ export default function ConflictMap() {
           ref={svgRef} 
           width={dimensions.width} 
           height={dimensions.height} 
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
-          style={{ touchAction: 'none' }}
+          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none"
         >
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -347,7 +350,6 @@ export default function ConflictMap() {
         </svg>
       )}
 
-      {/* Legend */}
       <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md border border-white/10 rounded-lg p-2.5">
         <div className="space-y-1.5">
           {Object.entries(SEVERITY_CONFIG).map(([key, config]) => (
@@ -392,13 +394,12 @@ export default function ConflictMap() {
           </div>
         </div>
 
-        {/* MOBILE LAYOUT: Stack vertically */}
+        {/* MOBILE LAYOUT */}
         <div className="lg:hidden">
-          <div ref={containerRef} className="relative bg-[#020617] w-full" style={{ height: '380px' }}>
+          <div ref={mobileContainerRef} className="relative bg-[#020617] w-full" style={{ height: '380px' }}>
             {renderMap()}
           </div>
           
-          {/* Mobile bottom button */}
           <div className="border-t border-white/10 bg-black/40 p-3">
             <button 
               onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
@@ -411,13 +412,12 @@ export default function ConflictMap() {
           </div>
         </div>
 
-        {/* DESKTOP LAYOUT: Side by side */}
+        {/* DESKTOP LAYOUT */}
         <div className="hidden lg:flex">
-          <div ref={containerRef} className="relative bg-[#020617] flex-1" style={{ height: '500px' }}>
+          <div ref={desktopContainerRef} className="relative bg-[#020617] flex-1" style={{ height: '500px' }}>
             {renderMap()}
           </div>
 
-          {/* Desktop Side Panel */}
           <div className="w-80 border-l border-white/10 bg-black/40 flex flex-col" style={{ height: '500px' }}>
             <div className="p-4 border-b border-white/10">
               <h3 className="font-bold text-white flex items-center gap-2">
@@ -461,7 +461,7 @@ export default function ConflictMap() {
           </div>
         </div>
 
-        {/* Mobile: Bottom Sheet Drawer */}
+        {/* MOBILE: Bottom Sheet - FIXED SCROLLING */}
         <AnimatePresence>
           {isMobile && showDrawer && (
             <>
@@ -473,29 +473,33 @@ export default function ConflictMap() {
               <motion.div
                 initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50 max-h-[85vh] overflow-y-auto"
+                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50"
+                style={{ maxHeight: '80vh' }}
               >
                 <div className="flex justify-center pt-3 pb-2">
                   <div className="w-12 h-1 bg-white/20 rounded-full" />
                 </div>
                 
-                {selectedEvent && showTimeline ? (
-                  <TimelineView 
-                    event={selectedEvent} 
-                    onBack={() => setShowTimeline(false)}
-                    onClose={() => {setShowDrawer(false); setSelectedEvent(null); setShowTimeline(false);}}
-                  />
-                ) : (
-                  <EventsList 
-                    events={CONFLICT_EVENTS}
-                    selectedEvent={selectedEvent}
-                    onSelect={(e) => {setSelectedEvent(e); setShowTimeline(true);}}
-                  />
-                )}
+                {/* Scrollable content area */}
+                <div className="overflow-y-auto" style={{ maxHeight: 'calc(80vh - 60px)' }}>
+                  {selectedEvent && showTimeline ? (
+                    <TimelineView 
+                      event={selectedEvent} 
+                      onBack={() => setShowTimeline(false)}
+                      onClose={() => {setShowDrawer(false); setSelectedEvent(null); setShowTimeline(false);}}
+                    />
+                  ) : (
+                    <EventsList 
+                      events={CONFLICT_EVENTS}
+                      selectedEvent={selectedEvent}
+                      onSelect={(e) => {setSelectedEvent(e); setShowTimeline(true);}}
+                    />
+                  )}
+                </div>
                 
                 <button 
                   onClick={() => setShowDrawer(false)}
-                  className="w-full py-4 border-t border-white/10 flex items-center justify-center gap-1 text-gray-500 text-sm"
+                  className="w-full py-4 border-t border-white/10 flex items-center justify-center gap-1 text-gray-500 text-sm bg-black/95"
                 >
                   <ChevronDown className="w-4 h-4" /> Close
                 </button>
@@ -504,7 +508,7 @@ export default function ConflictMap() {
           )}
         </AnimatePresence>
 
-        {/* Desktop: Timeline Modal */}
+        {/* DESKTOP: Timeline Modal */}
         {!isMobile && showTimeline && selectedEvent && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/70" onClick={() => setShowTimeline(false)} />
@@ -530,13 +534,13 @@ function TimelineView({ event, onBack, onClose }) {
   const timeline = CITY_TIMELINES[event.city] || [];
   
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 pb-20">
       <div className="flex items-center gap-3 mb-4">
         <button onClick={onBack} className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10">
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
-          <h3 className="font-bold text-lg md:text-xl text-white">{event.city}</h3>
+          <h3 className="font-bold text-lg text-white">{event.city}</h3>
           <p className="text-xs text-gray-400">Conflict Timeline</p>
         </div>
         <span className={`ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
@@ -589,7 +593,7 @@ function TimelineView({ event, onBack, onClose }) {
 
 function EventsList({ events, selectedEvent, onSelect }) {
   return (
-    <div className="p-4">
+    <div className="p-4 pb-20">
       <h3 className="font-bold text-white mb-3 flex items-center gap-2">
         <AlertTriangle className="w-4 h-4 text-red-400" />
         Active Conflicts ({events.length})
