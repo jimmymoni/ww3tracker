@@ -631,7 +631,7 @@ export default function ConflictMap({ mobile = false }) {
           </div>
         </div>
 
-        {/* MOBILE: Bottom Sheet - FIXED SCROLLING */}
+        {/* MOBILE: Bottom Sheet - FIXED */}
         <AnimatePresence>
           {isMobile && showDrawer && (
             <>
@@ -643,15 +643,26 @@ export default function ConflictMap({ mobile = false }) {
               <motion.div
                 initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50"
-                style={{ maxHeight: '80vh' }}
+                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50 flex flex-col"
+                style={{ maxHeight: '85vh' }}
               >
-                <div className="flex justify-center pt-3 pb-2">
-                  <div className="w-12 h-1 bg-white/20 rounded-full" />
+                {/* Sticky Header with Close Button */}
+                <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 sticky top-0 z-10">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                    <h3 className="font-bold text-white">Active Conflicts</h3>
+                    <span className="text-sm text-gray-500">({events.length})</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowDrawer(false)}
+                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white flex items-center gap-1"
+                  >
+                    Close <ChevronDown className="w-4 h-4" />
+                  </button>
                 </div>
                 
-                {/* Scrollable content area */}
-                <div className="overflow-y-auto" style={{ maxHeight: 'calc(80vh - 60px)' }}>
+                {/* Scrollable content - no inner scroll, whole drawer scrolls */}
+                <div className="flex-1 overflow-y-auto p-4 pb-8">
                   {selectedEvent && showTimeline ? (
                     <TimelineView 
                       event={selectedEvent} 
@@ -667,13 +678,6 @@ export default function ConflictMap({ mobile = false }) {
                     />
                   )}
                 </div>
-                
-                <button 
-                  onClick={() => setShowDrawer(false)}
-                  className="w-full py-4 border-t border-white/10 flex items-center justify-center gap-1 text-gray-500 text-sm bg-black/95"
-                >
-                  <ChevronDown className="w-4 h-4" /> Close
-                </button>
               </motion.div>
             </>
           )}
@@ -714,7 +718,8 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
     }));
   
   return (
-    <div className="p-4 pb-20">
+    <div>
+      {/* Back button row - header is now in sticky drawer header */}
       <div className="flex items-center gap-3 mb-4">
         <button onClick={onBack} className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10">
           <ArrowLeft className="w-4 h-4" />
@@ -764,20 +769,14 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
         ))}
       </div>
       
-      <button onClick={onClose} className="w-full mt-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl text-sm text-gray-400">
-        Close
-      </button>
     </div>
   );
 }
 
 function EventsList({ events, selectedEvent, onSelect }) {
   return (
-    <div className="p-4 pb-20">
-      <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-        <AlertTriangle className="w-4 h-4 text-red-400" />
-        Active Conflicts ({events.length})
-      </h3>
+    <div>
+      {/* Title removed - now in sticky header */}
       <div className="space-y-2">
         {events.map(event => (
           <button
