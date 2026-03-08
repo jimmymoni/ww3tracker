@@ -576,8 +576,15 @@ export default function ConflictMap({ mobile = false }) {
             </div>
             
             <button 
-              onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[ConflictMap] Opening drawer, events:', events.length);
+                setShowDrawer(true);
+                setShowTimeline(false);
+              }}
               className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
+              type="button"
             >
               <AlertTriangle className="w-4 h-4" />
               View All {events.length} Conflicts
@@ -642,7 +649,10 @@ export default function ConflictMap({ mobile = false }) {
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 className="fixed inset-0 bg-black/60 z-40"
-                onClick={() => setShowDrawer(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowDrawer(false);
+                }}
               />
               <motion.div
                 initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
@@ -658,8 +668,14 @@ export default function ConflictMap({ mobile = false }) {
                     <span className="text-sm text-gray-500">({events.length})</span>
                   </div>
                   <button 
-                    onClick={() => setShowDrawer(false)}
-                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white flex items-center gap-1"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log('[ConflictMap] Closing drawer');
+                      setShowDrawer(false);
+                    }}
+                    type="button"
+                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 active:bg-white/30 rounded-lg text-sm text-white flex items-center gap-1"
                   >
                     Close <ChevronDown className="w-4 h-4" />
                   </button>
@@ -725,7 +741,11 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
     <div>
       {/* Back button row - header is now in sticky drawer header */}
       <div className="flex items-center gap-3 mb-4">
-        <button onClick={onBack} className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10">
+        <button 
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onBack(); }}
+          type="button"
+          className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10 active:bg-white/20"
+        >
           <ArrowLeft className="w-4 h-4" />
         </button>
         <div>
@@ -785,8 +805,14 @@ function EventsList({ events, selectedEvent, onSelect }) {
         {events.map(event => (
           <button
             key={event.id}
-            onClick={() => onSelect(event)}
-            className={`w-full text-left p-3 rounded-xl border transition-all flex items-center gap-3 ${
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('[EventsList] Selected:', event.city);
+              onSelect(event);
+            }}
+            type="button"
+            className={`w-full text-left p-3 rounded-xl border transition-all flex items-center gap-3 active:scale-95 ${
               selectedEvent?.id === event.id 
                 ? 'bg-red-500/10 border-red-500/50' 
                 : 'bg-white/5 border-white/5 hover:bg-white/10'
