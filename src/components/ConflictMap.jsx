@@ -117,20 +117,23 @@ export default function ConflictMap({ mobile = false }) {
           const data = await response.json();
           console.log('[ConflictMap] API response:', { fallback: data.fallback, items: data.items?.length });
           
-          if (data.items && data.items.length > 0 && !data.fallback) {
-            // Got real data!
+          if (data.items && data.items.length > 0) {
             const mapEvents = convertNewsToEvents(data.items);
             if (mapEvents.length > 0) {
               setEvents(mapEvents);
               setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-              setIsLoadingRealData(false);
-            }
-          } else if (data.fallback) {
-            // Still using fallback/dummy data
-            setIsLoadingRealData(true);
-            if (!isRetry) {
-              console.log('[ConflictMap] Using fallback data, retrying in 3s...');
-              setTimeout(() => fetchRealEvents(true), 3000);
+              
+              if (data.fallback) {
+                // Using fallback data - will retry for real data
+                setIsLoadingRealData(true);
+                if (!isRetry) {
+                  console.log('[ConflictMap] Using fallback data, retrying in 3s...');
+                  setTimeout(() => fetchRealEvents(true), 3000);
+                }
+              } else {
+                // Got real data!
+                setIsLoadingRealData(false);
+              }
             }
           }
         }
