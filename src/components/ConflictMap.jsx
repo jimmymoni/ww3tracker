@@ -5,12 +5,12 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getCachedData } from '../lib/api';
 
-// DEFAULT EVENTS - Monitored locations (always shown as baseline)
+// DEFAULT EVENTS - Loading state while real news fetches
 const DEFAULT_EVENTS = [
-  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'low', type: 'Monitoring', time: 'Ongoing', description: 'Regional tensions monitored. No active conflict reported.', icon: 'alert', source: 'Monitor' },
-  { id: 2, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'medium', type: 'Tensions', time: 'Ongoing', description: 'Diplomatic tensions persist. No military action reported.', icon: 'alert', source: 'Monitor' },
-  { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Monitoring', time: 'Ongoing', description: 'Security situation stable. Routine monitoring active.', icon: 'shield', source: 'Monitor' },
-  { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Monitoring', time: 'Ongoing', description: 'Coalition presence ongoing. No incidents reported.', icon: 'troop', source: 'Monitor' },
+  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'low', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'alert', source: 'Loading' },
+  { id: 2, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'medium', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'alert', source: 'Loading' },
+  { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'shield', source: 'Loading' },
+  { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'troop', source: 'Loading' },
 ];
 
 // City timelines are generated dynamically from news data
@@ -272,11 +272,15 @@ export default function ConflictMap({ mobile = false }) {
     
     // Set initial transform
     const { width, height } = dimensions;
-    const scale = isMobile ? 1.8 : 2.4;
+    // Higher zoom on mobile (3.2) focused on conflict zone, desktop (2.4)
+    const scale = isMobile ? 3.2 : 2.4;
+    // Center on Middle East conflict zone (Iran/Iraq/Israel area)
+    const centerX = width / 2;
+    const centerY = height / 2;
     const initialTransform = d3.zoomIdentity
-      .translate(width / 2, height / 2)
+      .translate(centerX, centerY)
       .scale(scale)
-      .translate(-width / 2, -height / 2 + 20);
+      .translate(-width / 2 + (isMobile ? 0 : 0), -height / 2 + (isMobile ? -30 : 20));
     
     svg.call(zoom.transform, initialTransform);
     if (gRef.current) {
@@ -493,7 +497,7 @@ export default function ConflictMap({ mobile = false }) {
 
       {isMobile && (
         <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1.5">
-          <span className="text-[10px] text-gray-400">Pinch zoom • Tap for info</span>
+          <span className="text-[10px] text-gray-400">Tap markers for details</span>
         </div>
       )}
     </>
@@ -516,19 +520,16 @@ export default function ConflictMap({ mobile = false }) {
               </div>
             </div>
 
-            <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
+            {/* Desktop: Show zoom buttons / Mobile: Hide (they don't work) */}
+            <div className="hidden md:flex items-center gap-1 bg-white/5 rounded-lg p-1">
               <button 
                 onClick={zoomOut} 
-                onTouchStart={(e) => { e.preventDefault(); zoomOut(); }}
-                className="w-7 h-7 md:w-8 md:h-8 rounded hover:bg-white/10 active:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white text-xs md:text-sm select-none"
-                style={{ WebkitTapHighlightColor: 'transparent' }}
+                className="w-8 h-8 rounded hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white text-sm"
               >−</button>
-              <span className="text-[10px] text-gray-500 px-1 hidden sm:inline">Zoom</span>
+              <span className="text-[10px] text-gray-500 px-1">Zoom</span>
               <button 
                 onClick={zoomIn} 
-                onTouchStart={(e) => { e.preventDefault(); zoomIn(); }}
-                className="w-7 h-7 md:w-8 md:h-8 rounded hover:bg-white/10 active:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white text-xs md:text-sm select-none"
-                style={{ WebkitTapHighlightColor: 'transparent' }}
+                className="w-8 h-8 rounded hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white text-sm"
               >+</button>
             </div>
           </div>
