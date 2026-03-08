@@ -356,13 +356,25 @@ function MainDashboard() {
       <NasaFirmsStrip />
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* ROW 1: Conflict Map - NEW HERO */}
-        <ConflictMap />
-
-        {/* ROW 2: WW3 Probability Counter - Full version */}
-        <section className="mb-6">
+        {/* MOBILE: WW3 Probability FIRST (above fold) */}
+        <div className="lg:hidden mb-4">
           <WW3Counter tension={gameState.tension} />
-        </section>
+        </div>
+
+        {/* DESKTOP: Map first */}
+        <div className="hidden lg:block mb-6">
+          <ConflictMap />
+        </div>
+
+        {/* MOBILE: Map second (smaller) */}
+        <div className="lg:hidden mb-4">
+          <ConflictMap mobile />
+        </div>
+
+        {/* DESKTOP: WW3 Counter after map */}
+        <div className="hidden lg:block mb-6">
+          <WW3Counter tension={gameState.tension} />
+        </div>
 
         {/* ROW 3: Global Participants Carousel */}
         <GlobalParticipantsCarousel />

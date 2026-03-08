@@ -55,7 +55,7 @@ const EVENT_ICONS = {
   economic: <Flame className="w-3 h-3" />
 };
 
-export default function ConflictMap() {
+export default function ConflictMap({ mobile = false }) {
   const [worldData, setWorldData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -235,17 +235,17 @@ export default function ConflictMap() {
       const container = isMobile ? mobileContainerRef.current : desktopContainerRef.current;
       if (container) {
         const rect = container.getBoundingClientRect();
-        const height = isMobile ? 320 : 500;
+        // If mobile prop is passed, use compact height (200px), otherwise use standard mobile (320px)
+        const height = isMobile ? (mobile ? 200 : 320) : 500;
         const newDimensions = { width: Math.max(rect.width, 300), height };
         setDimensions(newDimensions);
-        console.log('[ConflictMap] Dimensions updated:', newDimensions, 'isMobile:', isMobile);
       }
     };
     update();
     setTimeout(update, 200);
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
-  }, [isMobile]);
+  }, [isMobile, mobile]);
 
   // Setup D3 zoom - enable touch for mobile pinch
   useEffect(() => {
@@ -537,8 +537,8 @@ export default function ConflictMap() {
         <div className="lg:hidden">
           <div 
             ref={mobileContainerRef} 
-            className="relative bg-[#020617] w-full overflow-hidden" 
-            style={{ height: '320px', touchAction: 'none' }}
+            className="relative bg-[#020617] w-full overflow-hidden rounded-t-xl" 
+            style={{ height: mobile ? '200px' : '320px', touchAction: 'none' }}
           >
             {renderMap()}
           </div>
