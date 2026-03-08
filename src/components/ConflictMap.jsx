@@ -235,12 +235,14 @@ export default function ConflictMap() {
       const container = isMobile ? mobileContainerRef.current : desktopContainerRef.current;
       if (container) {
         const rect = container.getBoundingClientRect();
-        const height = isMobile ? 380 : 500;
-        setDimensions({ width: rect.width || window.innerWidth - 32, height });
+        const height = isMobile ? 320 : 500;
+        const newDimensions = { width: Math.max(rect.width, 300), height };
+        setDimensions(newDimensions);
+        console.log('[ConflictMap] Dimensions updated:', newDimensions, 'isMobile:', isMobile);
       }
     };
     update();
-    setTimeout(update, 100);
+    setTimeout(update, 200);
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, [isMobile]);
@@ -249,31 +251,26 @@ export default function ConflictMap() {
   useEffect(() => {
     if (!svgRef.current || !worldData) return;
     
+    const svg = d3.select(svgRef.current);
+    
+    // Create zoom behavior
     const zoom = d3.zoom()
-      .scaleExtent([1, 6])
-      .filter((event) => {
-        // Allow zoom on: mouse events, touch events (1 or 2 fingers), wheel
-        return (!event.ctrlKey || event.type === 'wheel') && 
-               (event.type === 'wheel' || 
-                event.type === 'mousedown' || 
-                event.type === 'mousemove' || 
-                event.type === 'mouseup' ||
-                event.type === 'touchstart' || 
-                event.type === 'touchmove' || 
-                event.type === 'touchend');
-      })
-      .on('zoom', (e) => {
+      .scaleExtent([0.5, 8])
+      .extent([[0, 0], [dimensions.width, dimensions.height]])
+      .translateExtent([[-dimensions.width, -dimensions.height], [dimensions.width * 2, dimensions.height * 2]])
+      .on('zoom', (event) => {
         if (gRef.current) {
-          d3.select(gRef.current).attr('transform', e.transform);
+          d3.select(gRef.current).attr('transform', event.transform);
         }
       });
     
     // Store zoom behavior for button controls
     zoomRef.current = zoom;
     
-    const svg = d3.select(svgRef.current);
+    // Apply zoom to SVG
     svg.call(zoom);
     
+    // Set initial transform
     const { width, height } = dimensions;
     const scale = isMobile ? 1.8 : 2.4;
     const initialTransform = d3.zoomIdentity
@@ -285,21 +282,6 @@ export default function ConflictMap() {
     if (gRef.current) {
       d3.select(gRef.current).attr('transform', initialTransform);
     }
-    
-    // Prevent default touch behaviors on the SVG
-    const svgElement = svgRef.current;
-    const preventDefault = (e) => {
-      if (e.touches.length > 1) {
-        e.preventDefault();
-      }
-    };
-    svgElement.addEventListener('touchstart', preventDefault, { passive: false });
-    svgElement.addEventListener('touchmove', preventDefault, { passive: false });
-    
-    return () => {
-      svgElement.removeEventListener('touchstart', preventDefault);
-      svgElement.removeEventListener('touchmove', preventDefault);
-    };
     
   }, [worldData, dimensions.width, dimensions.height, isMobile]);
 
@@ -353,8 +335,8 @@ export default function ConflictMap() {
           ref={svgRef} 
           width={dimensions.width} 
           height={dimensions.height} 
-          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-auto"
-          style={{ touchAction: 'none' }}
+          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          style={{ touchAction: 'none', WebkitUserSelect: 'none', userSelect: 'none' }}
         >
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -553,7 +535,11 @@ export default function ConflictMap() {
 
         {/* MOBILE LAYOUT */}
         <div className="lg:hidden">
-          <div ref={mobileContainerRef} className="relative bg-[#020617] w-full overflow-hidden" style={{ height: '320px' }}>
+          <div 
+            ref={mobileContainerRef} 
+            className="relative bg-[#020617] w-full overflow-hidden" 
+            style={{ height: '320px', touchAction: 'none' }}
+          >
             {renderMap()}
           </div>
           
