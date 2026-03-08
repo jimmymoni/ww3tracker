@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, Loader2 } from 'lucide-react';
+import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb } from 'lucide-react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getCachedData } from '../lib/api';
@@ -12,18 +12,6 @@ const DEFAULT_EVENTS = [
   { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'shield', source: 'Loading' },
   { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'troop', source: 'Loading' },
 ];
-
-// City timelines are generated dynamically from news data
-// Each city's timeline shows recent events for that location
-const generateCityTimeline = (cityName, allEvents) => {
-  const cityEvents = allEvents.filter(e => e.city === cityName);
-  return cityEvents.map(e => ({
-    time: e.time,
-    event: e.description,
-    type: e.severity === 'high' ? 'attack' : 'alert',
-    severity: e.severity
-  }));
-};
 
 const LABELS = [
   { name: 'IRAN', lat: 32, lng: 54, type: 'country' },
@@ -90,11 +78,27 @@ export default function ConflictMap({ mobile = false }) {
       .catch(() => setIsLoading(false));
   }, []);
 
+  // Update dimensions based on active container
+  useEffect(() => {
+    const update = () => {
+      const container = isMobile ? mobileContainerRef.current : desktopContainerRef.current;
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        const height = isMobile ? (mobile ? 200 : 320) : 500;
+        const newDimensions = { width: Math.max(rect.width, 300), height };
+        setDimensions(newDimensions);
+      }
+    };
+    update();
+    setTimeout(update, 200);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [isMobile, mobile]);
+
   // Fetch real news and convert to map events
   useEffect(() => {
     const fetchRealEvents = async (isRetry = false) => {
       try {
-        // Try to get cached news data
         const cachedNews = getCachedData('memes');
         if (cachedNews?.items && cachedNews.items.length > 0 && !cachedNews.isFallback) {
           const mapEvents = convertNewsToEvents(cachedNews.items);
@@ -104,11 +108,9 @@ export default function ConflictMap({ mobile = false }) {
           }
         }
 
-        // Also try to fetch fresh data
         const response = await fetch('/api/news');
         if (response.ok) {
           const data = await response.json();
-          // Check if it's real data (not fallback)
           if (data.items && data.items.length > 0 && !data.fallback) {
             const mapEvents = convertNewsToEvents(data.items);
             if (mapEvents.length > 0) {
@@ -116,8 +118,6 @@ export default function ConflictMap({ mobile = false }) {
               setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
             }
           } else if (data.fallback && !isRetry) {
-            // Server returned fallback, retry in 3 seconds
-            console.log('[ConflictMap] Got fallback data, retrying...');
             setTimeout(() => fetchRealEvents(true), 3000);
           }
         }
@@ -127,7 +127,6 @@ export default function ConflictMap({ mobile = false }) {
     };
 
     fetchRealEvents();
-    // Refresh every 30 seconds initially (faster while waiting for real data)
     const interval = setInterval(fetchRealEvents, 30 * 1000);
     return () => clearInterval(interval);
   }, []);
@@ -173,11 +172,9 @@ export default function ConflictMap({ mobile = false }) {
       const desc = (item.description || item.summary || '').toLowerCase();
       const text = title + ' ' + desc;
 
-      // Find matching city/country
       let matched = false;
       for (const [placeName, coords] of Object.entries(cityMapping)) {
         if (text.includes(placeName)) {
-          // Determine severity based on keywords
           let severity = 'low';
           if (text.includes('strike') || text.includes('attack') || text.includes('hit') || text.includes('missile') || text.includes('war') || text.includes('kill')) {
             severity = 'high';
@@ -185,7 +182,6 @@ export default function ConflictMap({ mobile = false }) {
             severity = 'medium';
           }
 
-          // Determine icon
           let icon = 'alert';
           if (text.includes('missile') || text.includes('rocket')) icon = 'missile';
           else if (text.includes('strike') || text.includes('bomb')) icon = 'bomb';
@@ -208,11 +204,10 @@ export default function ConflictMap({ mobile = false }) {
             source: item.source || 'News'
           });
           matched = true;
-          break; // Only take first matching location per news item
+          break;
         }
       }
       
-      // If no city matched but it's a relevant news item, add to Tehran (center of conflict)
       if (!matched && (text.includes('trump') || text.includes('nuclear') || text.includes('deal'))) {
         events.push({
           id: id++,
@@ -233,31 +228,12 @@ export default function ConflictMap({ mobile = false }) {
     return events.length > 0 ? events : DEFAULT_EVENTS;
   };
 
-  // Update dimensions based on active container
-  useEffect(() => {
-    const update = () => {
-      const container = isMobile ? mobileContainerRef.current : desktopContainerRef.current;
-      if (container) {
-        const rect = container.getBoundingClientRect();
-        // If mobile prop is passed, use compact height (200px), otherwise use standard mobile (320px)
-        const height = isMobile ? (mobile ? 200 : 320) : 500;
-        const newDimensions = { width: Math.max(rect.width, 300), height };
-        setDimensions(newDimensions);
-      }
-    };
-    update();
-    setTimeout(update, 200);
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [isMobile, mobile]);
-
   // Setup D3 zoom - enable touch for mobile pinch
   useEffect(() => {
     if (!svgRef.current || !worldData) return;
     
     const svg = d3.select(svgRef.current);
     
-    // Create zoom behavior
     const zoom = d3.zoom()
       .scaleExtent([0.5, 8])
       .extent([[0, 0], [dimensions.width, dimensions.height]])
@@ -268,17 +244,11 @@ export default function ConflictMap({ mobile = false }) {
         }
       });
     
-    // Store zoom behavior for button controls
     zoomRef.current = zoom;
-    
-    // Apply zoom to SVG
     svg.call(zoom);
     
-    // Set initial transform
     const { width, height } = dimensions;
-    // Higher zoom on mobile (3.2) focused on conflict zone, desktop (2.4)
     const scale = isMobile ? 3.2 : 2.4;
-    // Center on Middle East conflict zone (Iran/Iraq/Israel area)
     const centerX = width / 2;
     const centerY = height / 2;
     const initialTransform = d3.zoomIdentity
@@ -417,7 +387,6 @@ export default function ConflictMap({ mobile = false }) {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
               if (!isVisible(event.lat, event.lng)) return null;
               const config = SEVERITY_CONFIG[event.severity];
-              // Much smaller heat circles - was too big before
               const baseR = isMobile ? 8 : 12;
               const r = event.severity === 'high' ? baseR * 2 : event.severity === 'medium' ? baseR * 1.5 : baseR;
               const opacity = event.severity === 'high' ? 0.3 : event.severity === 'medium' ? 0.2 : 0.1;
@@ -520,11 +489,10 @@ export default function ConflictMap({ mobile = false }) {
               </div>
               <div>
                 <h2 className="font-heading font-bold text-sm md:text-lg text-white">Live Conflict Monitor</h2>
-                <p className="text-[10px] md:text-xs text-gray-500">{events.length} active events • Updated {lastUpdated || 'Loading...'}</p>
+                <p className="text-[10px] md:text-xs text-gray-500">{events.length} active events - Updated {lastUpdated || 'Loading...'}</p>
               </div>
             </div>
 
-            {/* Desktop: Show zoom buttons / Mobile: Hide (they don't work) */}
             <div className="hidden md:flex items-center gap-1 bg-white/5 rounded-lg p-1">
               <button 
                 onClick={zoomOut} 
@@ -576,15 +544,8 @@ export default function ConflictMap({ mobile = false }) {
             </div>
             
             <button 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('[ConflictMap] Opening drawer, events:', events.length);
-                setShowDrawer(true);
-                setShowTimeline(false);
-              }}
+              onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
               className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
-              type="button"
             >
               <AlertTriangle className="w-4 h-4" />
               View All {events.length} Conflicts
@@ -642,47 +603,38 @@ export default function ConflictMap({ mobile = false }) {
           </div>
         </div>
 
-        {/* MOBILE: Bottom Sheet - FIXED */}
+        {/* MOBILE: Bottom Sheet */}
         <AnimatePresence>
           {isMobile && showDrawer && (
             <>
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 className="fixed inset-0 bg-black/60 z-40"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowDrawer(false);
-                }}
+                onClick={() => setShowDrawer(false)}
               />
               <motion.div
                 initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50 flex flex-col"
-                style={{ maxHeight: '85vh' }}
+                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50"
+                style={{ maxHeight: '80vh', overflowY: 'auto' }}
               >
-                {/* Sticky Header with Close Button */}
-                <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 sticky top-0 z-10">
+                {/* Simple Header */}
+                <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5 text-red-400" />
                     <h3 className="font-bold text-white">Active Conflicts</h3>
                     <span className="text-sm text-gray-500">({events.length})</span>
                   </div>
                   <button 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      console.log('[ConflictMap] Closing drawer');
-                      setShowDrawer(false);
-                    }}
-                    type="button"
-                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 active:bg-white/30 rounded-lg text-sm text-white flex items-center gap-1"
+                    onClick={() => setShowDrawer(false)}
+                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white flex items-center gap-1"
                   >
                     Close <ChevronDown className="w-4 h-4" />
                   </button>
                 </div>
                 
-                {/* Scrollable content - no inner scroll, whole drawer scrolls */}
-                <div className="flex-1 overflow-y-auto p-4 pb-8">
+                {/* Content */}
+                <div className="p-4">
                   {selectedEvent && showTimeline ? (
                     <TimelineView 
                       event={selectedEvent} 
@@ -727,7 +679,6 @@ export default function ConflictMap({ mobile = false }) {
 }
 
 function TimelineView({ event, onBack, onClose, allEvents = [] }) {
-  // Generate timeline from events for this city
   const timeline = allEvents
     .filter(e => e.city === event.city)
     .map(e => ({
@@ -739,12 +690,10 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
   
   return (
     <div>
-      {/* Back button row - header is now in sticky drawer header */}
       <div className="flex items-center gap-3 mb-4">
         <button 
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onBack(); }}
-          type="button"
-          className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10 active:bg-white/20"
+          onClick={onBack}
+          className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
@@ -792,48 +741,38 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
           </div>
         ))}
       </div>
-      
     </div>
   );
 }
 
 function EventsList({ events, selectedEvent, onSelect }) {
   return (
-    <div>
-      {/* Title removed - now in sticky header */}
-      <div className="space-y-2">
-        {events.map(event => (
-          <button
-            key={event.id}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('[EventsList] Selected:', event.city);
-              onSelect(event);
-            }}
-            type="button"
-            className={`w-full text-left p-3 rounded-xl border transition-all flex items-center gap-3 active:scale-95 ${
-              selectedEvent?.id === event.id 
-                ? 'bg-red-500/10 border-red-500/50' 
-                : 'bg-white/5 border-white/5 hover:bg-white/10'
-            }`}
-          >
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
-              {EVENT_ICONS[event.icon]}
+    <div className="space-y-2">
+      {events.map((event) => (
+        <button
+          key={event.id}
+          onClick={() => onSelect(event)}
+          className={`w-full text-left p-3 rounded-xl border transition-all flex items-center gap-3 ${
+            selectedEvent?.id === event.id 
+              ? 'bg-red-500/10 border-red-500/50' 
+              : 'bg-white/5 border-white/5 hover:bg-white/10'
+          }`}
+        >
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+            {EVENT_ICONS[event.icon]}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-white text-sm">{event.city}</span>
+              <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                {SEVERITY_CONFIG[event.severity].label}
+              </span>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-white text-sm">{event.city}</span>
-                <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
-                  {SEVERITY_CONFIG[event.severity].label}
-                </span>
-              </div>
-              <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
-              <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
-            </div>
-          </button>
-        ))}
-      </div>
+            <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
+            <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
+          </div>
+        </button>
+      ))}
     </div>
   );
 }
