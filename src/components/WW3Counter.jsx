@@ -139,7 +139,7 @@ const WW3Counter = ({ tension = 65 }) => {
             <div className="flex items-center gap-2">
               <span className="text-xl">☢️</span>
               <div>
-                <p className="text-[10px] text-gray-500 uppercase">WW3 Probability</p>
+                <p className="text-[10px] text-gray-500 uppercase">World War 3 Risk</p>
                 <p className={`font-heading font-bold text-3xl ${color}`} style={{ color }}>
                   {ww3Probability}%
                 </p>
@@ -174,7 +174,7 @@ const WW3Counter = ({ tension = 65 }) => {
                 </motion.div>
                 <div>
                   <h2 className="font-heading font-bold text-xl text-white tracking-wide">
-                    WW3 PROBABILITY
+                    World War 3 Probability
                   </h2>
                   <p className="text-[10px] text-gray-500 font-body uppercase tracking-wider">
                     LIVE • Updates every 60s
