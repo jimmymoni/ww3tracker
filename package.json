@@ -9,7 +9,7 @@
     "server": "node server/server.js",
     "vite": "vite --port 5173",
     "build": "vite build",
-    "postbuild": "node scripts/prerender.js && node scripts/generate-sitemap.js",
+    "postbuild": "node scripts/prerender.js && node scripts/verify-prerender.js && node scripts/generate-sitemap.js",
     "preview": "vite preview"
   },
   "dependencies": {

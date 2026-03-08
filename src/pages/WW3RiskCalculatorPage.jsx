@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, AlertTriangle, Share2, RefreshCw, Info, ChevronRight } from 'lucide-react';
+import { Calculator, AlertTriangle, Share2, RefreshCw, Info, ChevronRight, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 // Risk questions and their impact on WW3 probability
 const riskQuestions = [
@@ -161,7 +162,14 @@ export default function WW3RiskCalculatorPage() {
   const progress = ((currentQuestion + 1) / riskQuestions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-grid text-white">
+    <>
+      <SEO
+        title="WW3 Risk Calculator | Calculate Your WW3 Probability"
+        description="Interactive WW3 risk calculator. Calculate your personal or regional World War 3 probability based on current geopolitical factors including military conflict, nuclear talks, and economic stress."
+        pathname="/ww3-risk-calculator"
+        ogImage="/og-image.png"
+      />
+      <div className="min-h-screen bg-grid text-white">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-3xl mx-auto px-4 py-3">
@@ -170,13 +178,42 @@ export default function WW3RiskCalculatorPage() {
               <span className="text-xl">🦅vs☠️</span>
               <span className="font-heading font-bold text-lg">WW3 Tracker</span>
             </Link>
-            <div className="flex items-center gap-2 text-yellow-500/70 text-sm">
-              <Calculator className="w-4 h-4" />
-              <span>Risk Calculator</span>
+            <div className="flex items-center gap-4">
+              <Link 
+                to="/" 
+                className="hidden sm:flex text-sm text-gray-400 hover:text-white transition-colors items-center gap-1"
+              >
+                <span>←</span>
+                <span>Back to Dashboard</span>
+              </Link>
+              <div className="flex items-center gap-2 text-yellow-500/70 text-sm border-l border-white/10 pl-4">
+                <Calculator className="w-4 h-4" />
+                <span>Risk Calculator</span>
+              </div>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Notice for users coming from Google search */}
+      <div className="bg-blue-500/10 border-b border-blue-500/20">
+        <div className="max-w-3xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-sm">
+              <Home className="w-4 h-4 text-blue-400" />
+              <span className="text-gray-300">
+                Looking for the main WW3 Tracker dashboard?
+              </span>
+              <Link 
+                to="/" 
+                className="text-blue-400 hover:text-blue-300 font-medium underline"
+              >
+                Go to Live Monitor →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         {!showResults ? (
@@ -379,5 +416,6 @@ export default function WW3RiskCalculatorPage() {
         </div>
       </footer>
     </div>
+    </>
   );
 }

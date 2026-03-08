@@ -396,17 +396,42 @@ export default function ConflictMap() {
 
         {/* MOBILE LAYOUT */}
         <div className="lg:hidden">
-          <div ref={mobileContainerRef} className="relative bg-[#020617] w-full" style={{ height: '380px' }}>
+          <div ref={mobileContainerRef} className="relative bg-[#020617] w-full" style={{ height: '320px' }}>
             {renderMap()}
           </div>
           
+          {/* MOBILE: Show top 2 conflicts immediately */}
           <div className="border-t border-white/10 bg-black/40 p-3">
+            <div className="space-y-2 mb-3">
+              {CONFLICT_EVENTS.slice(0, 2).map(event => (
+                <button
+                  key={event.id}
+                  onClick={() => handleEventClick(event)}
+                  className="w-full text-left p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3"
+                >
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                    {EVENT_ICONS[event.icon]}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white text-sm">{event.city}</span>
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                        {SEVERITY_CONFIG[event.severity].label}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
+                    <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+            
             <button 
               onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
-              className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
             >
               <AlertTriangle className="w-4 h-4" />
-              View {CONFLICT_EVENTS.length} Conflicts
+              View All {CONFLICT_EVENTS.length} Conflicts
               <ChevronUp className="w-4 h-4" />
             </button>
           </div>

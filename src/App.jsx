@@ -42,6 +42,7 @@ const NavLinks = ({ mobile = false, onClose }) => {
     { to: '/us-iran-war-tracker', label: 'War Tracker' },
     { to: '/iran-conflict-live', label: 'Live Updates' },
     { to: '/timeline', label: 'Timeline' },
+    { to: '/ww3-risk-calculator', label: 'Risk Calculator' },
   ];
 
   if (mobile) {
@@ -174,8 +175,57 @@ const FooterNav = () => (
     <Link to="/iran-conflict-live" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Live Updates</Link>
     <span className="text-gray-700">•</span>
     <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/ww3-risk-calculator" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Risk Calculator</Link>
   </div>
 );
+
+// Mobile Quick Stats Banner - Shows WW3 % immediately on mobile
+const MobileQuickStats = ({ tension = 35 }) => {
+  const [probability, setProbability] = useState(tension);
+  
+  useEffect(() => {
+    // Quick calc same as WW3Counter (simplified)
+    setProbability(Math.round((28 + tension + 35) / 3));
+  }, [tension]);
+
+  const getColor = (prob) => {
+    if (prob >= 70) return 'text-red-500';
+    if (prob >= 50) return 'text-orange-500';
+    if (prob >= 30) return 'text-yellow-500';
+    return 'text-green-500';
+  };
+
+  return (
+    <div className="lg:hidden mb-3">
+      <div className="bg-black/60 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">☢️</span>
+          <div>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider">WW3 Probability</p>
+            <p className={`font-heading font-bold text-2xl ${getColor(probability)}`}>
+              {probability}%
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 text-[10px] text-gray-400">
+          <div className="text-center">
+            <p className="text-gray-600">Markets</p>
+            <p className="font-mono text-white">28%</p>
+          </div>
+          <div className="text-center">
+            <p className="text-gray-600">Tension</p>
+            <p className="font-mono text-white">{tension}%</p>
+          </div>
+          <div className="text-center">
+            <p className="text-gray-600">News</p>
+            <p className="font-mono text-white">35%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Disclaimer - Mobile Optimized
 const Disclaimer = () => (
@@ -353,10 +403,13 @@ function MainDashboard() {
       <NasaFirmsStrip />
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
+        {/* MOBILE: Quick Stats Banner (above fold) */}
+        <MobileQuickStats tension={gameState.tension} />
+
         {/* ROW 1: Conflict Map - NEW HERO */}
         <ConflictMap />
 
-        {/* ROW 2: WW3 Probability Counter */}
+        {/* ROW 2: WW3 Probability Counter - Full version */}
         <section className="mb-6">
           <WW3Counter tension={gameState.tension} />
         </section>
@@ -410,6 +463,20 @@ function MainDashboard() {
         </motion.section>
 
         <Disclaimer />
+        
+        {/* Scroll indicator for mobile */}
+        <div className="lg:hidden flex flex-col items-center py-4 text-gray-600">
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="flex flex-col items-center gap-1"
+          >
+            <span className="text-[10px] uppercase tracking-wider">Scroll for more</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+          </motion.div>
+        </div>
       </main>
 
     </div>

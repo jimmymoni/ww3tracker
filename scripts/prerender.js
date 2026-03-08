@@ -54,9 +54,32 @@ routes.forEach(route => {
     `<title>${routeMeta.title}</title>`
   );
   
+  // Replace description (handle multiline with [\s\S]*? instead of .*?)
   routeHtml = routeHtml.replace(
-    /<meta name="description" content=".*?">/,
+    /<meta name="description" content="[\s\S]*?">/,
     `<meta name="description" content="${routeMeta.description}">`
+  );
+  
+  // Also update OG and Twitter descriptions
+  routeHtml = routeHtml.replace(
+    /<meta property="og:description" content="[\s\S]*?">/,
+    `<meta property="og:description" content="${routeMeta.description}">`
+  );
+  
+  routeHtml = routeHtml.replace(
+    /<meta name="twitter:description" content="[\s\S]*?">/,
+    `<meta name="twitter:description" content="${routeMeta.description}">`
+  );
+  
+  // Update OG and Twitter titles too
+  routeHtml = routeHtml.replace(
+    /<meta property="og:title" content="[\s\S]*?">/,
+    `<meta property="og:title" content="${routeMeta.title}">`
+  );
+  
+  routeHtml = routeHtml.replace(
+    /<meta name="twitter:title" content="[\s\S]*?">/,
+    `<meta name="twitter:title" content="${routeMeta.title}">`
   );
   
   // Add canonical link
