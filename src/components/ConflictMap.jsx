@@ -92,11 +92,11 @@ export default function ConflictMap({ mobile = false }) {
 
   // Fetch real news and convert to map events
   useEffect(() => {
-    const fetchRealEvents = async () => {
+    const fetchRealEvents = async (isRetry = false) => {
       try {
         // Try to get cached news data
         const cachedNews = getCachedData('memes');
-        if (cachedNews?.items && cachedNews.items.length > 0) {
+        if (cachedNews?.items && cachedNews.items.length > 0 && !cachedNews.isFallback) {
           const mapEvents = convertNewsToEvents(cachedNews.items);
           if (mapEvents.length > 0) {
             setEvents(mapEvents);
@@ -108,23 +108,27 @@ export default function ConflictMap({ mobile = false }) {
         const response = await fetch('/api/news');
         if (response.ok) {
           const data = await response.json();
-          if (data.items && data.items.length > 0) {
+          // Check if it's real data (not fallback)
+          if (data.items && data.items.length > 0 && !data.fallback) {
             const mapEvents = convertNewsToEvents(data.items);
             if (mapEvents.length > 0) {
               setEvents(mapEvents);
               setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
             }
+          } else if (data.fallback && !isRetry) {
+            // Server returned fallback, retry in 3 seconds
+            console.log('[ConflictMap] Got fallback data, retrying...');
+            setTimeout(() => fetchRealEvents(true), 3000);
           }
         }
       } catch (err) {
         console.error('Failed to fetch real events:', err);
-        // Keep default events on error
       }
     };
 
     fetchRealEvents();
-    // Refresh every 5 minutes
-    const interval = setInterval(fetchRealEvents, 5 * 60 * 1000);
+    // Refresh every 30 seconds initially (faster while waiting for real data)
+    const interval = setInterval(fetchRealEvents, 30 * 1000);
     return () => clearInterval(interval);
   }, []);
 
