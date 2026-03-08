@@ -116,11 +116,11 @@ const WW3Counter = ({ tension = 65 }) => {
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full mb-6"
+        className="w-full mb-4"
       >
         <div 
           ref={cardRef}
-          className={`comic-panel rounded-xl p-5 relative overflow-hidden ${isCritical ? 'border-red-500/50 shadow-red-500/20' : ''}`}
+          className={`comic-panel rounded-xl p-3 sm:p-5 relative overflow-hidden ${isCritical ? 'border-red-500/50 shadow-red-500/20' : ''}`}
           style={{
             boxShadow: isCritical ? '0 0 30px rgba(220, 38, 38, 0.3)' : undefined
           }}
@@ -134,155 +134,182 @@ const WW3Counter = ({ tension = 65 }) => {
             />
           )}
 
-          {/* Header - Mobile Optimized */}
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <motion.div 
-                animate={isCritical ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] } : { scale: [1, 1.1, 1] }}
-                transition={{ duration: isCritical ? 0.5 : 2, repeat: Infinity }}
-                className="text-2xl sm:text-3xl"
-              >
-                ☢️
-              </motion.div>
+          {/* MOBILE: Compact horizontal layout */}
+          <div className="flex items-center justify-between sm:hidden">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">☢️</span>
               <div>
-                <h2 className="font-heading font-bold text-base sm:text-xl text-white tracking-wide">
-                  WW3 PROBABILITY
-                </h2>
-                <p className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase tracking-wider">
-                  LIVE • Updates every 60s
+                <p className="text-[10px] text-gray-500 uppercase">WW3 Probability</p>
+                <p className={`font-heading font-bold text-3xl ${color}`} style={{ color }}>
+                  {ww3Probability}%
                 </p>
               </div>
             </div>
-
-            {/* Share Buttons */}
-            <div className="flex items-center gap-0.5 sm:gap-1">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={shareToX}
-                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
-                title="Share on X"
-              >
-                <Twitter className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color }} />
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={copyLink}
-                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors relative"
-                title="Copy link"
-              >
-                <Link className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 hover:text-green-400" />
+            <div className="flex items-center gap-1">
+              <button onClick={shareToX} className="p-2 rounded-lg hover:bg-white/10">
+                <Twitter className="w-4 h-4" style={{ color }} />
+              </button>
+              <button onClick={copyLink} className="p-2 rounded-lg hover:bg-white/10 relative">
+                <Link className="w-4 h-4 text-gray-400" />
                 {copied && (
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-10">
-                    Copied! ✅
+                  <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] bg-green-500 text-white px-1.5 py-0.5 rounded z-10">
+                    Copied!
                   </span>
                 )}
-              </motion.button>
+              </button>
+            </div>
+          </div>
 
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={downloadCard}
-                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
-                title="Download card"
+          {/* DESKTOP: Full layout */}
+          <div className="hidden sm:block">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <motion.div 
+                  animate={isCritical ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] } : { scale: [1, 1.1, 1] }}
+                  transition={{ duration: isCritical ? 0.5 : 2, repeat: Infinity }}
+                  className="text-3xl"
+                >
+                  ☢️
+                </motion.div>
+                <div>
+                  <h2 className="font-heading font-bold text-xl text-white tracking-wide">
+                    WW3 PROBABILITY
+                  </h2>
+                  <p className="text-[10px] text-gray-500 font-body uppercase tracking-wider">
+                    LIVE • Updates every 60s
+                  </p>
+                </div>
+              </div>
+
+              {/* Share Buttons */}
+              <div className="flex items-center gap-1">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={shareToX}
+                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  title="Share on X"
+                >
+                  <Twitter className="w-4 h-4" style={{ color }} />
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={copyLink}
+                  className="p-2 rounded-lg hover:bg-white/10 transition-colors relative"
+                  title="Copy link"
+                >
+                  <Link className="w-4 h-4 text-gray-400 hover:text-green-400" />
+                  {copied && (
+                    <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-10">
+                      Copied! ✅
+                    </span>
+                  )}
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={downloadCard}
+                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  title="Download card"
+                >
+                  <Download className="w-4 h-4 text-gray-400 hover:text-purple-400" />
+                </motion.button>
+              </div>
+            </div>
+
+            {/* Giant Probability Number */}
+            <div className="text-center mb-4">
+              <motion.div
+                key={ww3Probability}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200 }}
+                className="font-heading font-bold text-6xl md:text-7xl"
+                style={{ 
+                  color,
+                  textShadow: isCritical ? `0 0 40px ${color}` : 'none'
+                }}
               >
-                <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 hover:text-purple-400" />
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Giant Probability Number */}
-          <div className="text-center mb-3 sm:mb-4">
-            <motion.div
-              key={ww3Probability}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 200 }}
-              className="font-heading font-bold text-5xl sm:text-6xl md:text-7xl"
-              style={{ 
-                color,
-                textShadow: isCritical ? `0 0 40px ${color}` : 'none'
-              }}
-            >
-              {ww3Probability}%
-            </motion.div>
-            <p className="text-gray-400 text-xs sm:text-sm font-body mt-1">
-              {isCritical ? '⚠️ CRITICAL THRESHOLD' : 'LIVE RIGHT NOW'}
-            </p>
-          </div>
-
-          {/* Data Sources Breakdown */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4">
-            <div className="bg-black/30 rounded-lg p-2 sm:p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-0.5 sm:mb-1">
-                <span className="text-xs">🎲</span>
-                <span className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase">Markets</span>
-              </div>
-              <div className="font-mono font-bold text-base sm:text-lg" style={{ color: getColor(polymarketProb) }}>
-                {polymarketProb}%
-              </div>
+                {ww3Probability}%
+              </motion.div>
+              <p className="text-gray-400 text-sm font-body mt-1">
+                {isCritical ? '⚠️ CRITICAL THRESHOLD' : 'LIVE RIGHT NOW'}
+              </p>
             </div>
 
-            <div className="bg-black/30 rounded-lg p-2 sm:p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-0.5 sm:mb-1">
-                <span className="text-xs">🌶️</span>
-                <span className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase">Tension</span>
+            {/* Data Sources Breakdown */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="bg-black/30 rounded-lg p-3 text-center">
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <span className="text-xs">🎲</span>
+                  <span className="text-[10px] text-gray-500 font-body uppercase">Markets</span>
+                </div>
+                <div className="font-mono font-bold text-lg" style={{ color: getColor(polymarketProb) }}>
+                  {polymarketProb}%
+                </div>
               </div>
-              <div className="font-mono font-bold text-base sm:text-lg" style={{ color: getColor(tension) }}>
-                {tension}%
+
+              <div className="bg-black/30 rounded-lg p-3 text-center">
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <span className="text-xs">🌶️</span>
+                  <span className="text-[10px] text-gray-500 font-body uppercase">Tension</span>
+                </div>
+                <div className="font-mono font-bold text-lg" style={{ color: getColor(tension) }}>
+                  {tension}%
+                </div>
+              </div>
+
+              <div className="bg-black/30 rounded-lg p-3 text-center">
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <span className="text-xs">📰</span>
+                  <span className="text-[10px] text-gray-500 font-body uppercase">News</span>
+                </div>
+                <div className="font-mono font-bold text-lg" style={{ color: getColor(newsProb) }}>
+                  {newsProb}%
+                </div>
               </div>
             </div>
 
-            <div className="bg-black/30 rounded-lg p-2 sm:p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-0.5 sm:mb-1">
-                <span className="text-xs">📰</span>
-                <span className="text-[9px] sm:text-[10px] text-gray-500 font-body uppercase">News</span>
-              </div>
-              <div className="font-mono font-bold text-base sm:text-lg" style={{ color: getColor(newsProb) }}>
-                {newsProb}%
-              </div>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="relative h-4 bg-gray-800 rounded-full overflow-hidden">
-            <motion.div
-              className="absolute inset-y-0 left-0 rounded-full"
-              style={{
-                background: `linear-gradient(90deg, #4ade80 0%, #fbbf24 33%, #f97316 66%, #dc2626 100%)`,
-                width: `${ww3Probability}%`
-              }}
-              initial={{ width: 0 }}
-              animate={{ width: `${ww3Probability}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-            />
-            {/* Glow effect for critical */}
-            {isCritical && (
-              <motion.div 
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="absolute inset-y-0 left-0 rounded-full bg-red-500/50 blur-sm"
-                style={{ width: `${ww3Probability}%` }}
+            {/* Progress Bar */}
+            <div className="relative h-4 bg-gray-800 rounded-full overflow-hidden">
+              <motion.div
+                className="absolute inset-y-0 left-0 rounded-full"
+                style={{
+                  background: `linear-gradient(90deg, #4ade80 0%, #fbbf24 33%, #f97316 66%, #dc2626 100%)`,
+                  width: `${ww3Probability}%`
+                }}
+                initial={{ width: 0 }}
+                animate={{ width: `${ww3Probability}%` }}
+                transition={{ duration: 1, ease: 'easeOut' }}
               />
-            )}
-            {/* 50% marker */}
-            <div 
-              className="absolute top-0 bottom-0 w-0.5 bg-white/30"
-              style={{ left: '50%' }}
-            />
-          </div>
+              {isCritical && (
+                <motion.div 
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                  className="absolute inset-y-0 left-0 rounded-full bg-red-500/50 blur-sm"
+                  style={{ width: `${ww3Probability}%` }}
+                />
+              )}
+              <div 
+                className="absolute top-0 bottom-0 w-0.5 bg-white/30"
+                style={{ left: '50%' }}
+              />
+            </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-2 sm:mt-3">
-            <p className="text-[9px] sm:text-[10px] text-gray-500 font-body">
-              Based on: Polymarket + Tension + News
-              {isReal ? ' • Live data' : ' • Estimated'}
-            </p>
-            <p className="text-[9px] sm:text-[10px] text-gray-600 font-body hidden sm:block">
-              ww3tracker.live
-            </p>
+            {/* Footer */}
+            <div className="flex items-center justify-between mt-3">
+              <p className="text-[10px] text-gray-500 font-body">
+                Based on: Polymarket + Tension + News
+                {isReal ? ' • Live data' : ' • Estimated'}
+              </p>
+              <p className="text-[10px] text-gray-600 font-body hidden sm:block">
+                ww3tracker.live
+              </p>
+            </div>
           </div>
         </div>
       </motion.section>
