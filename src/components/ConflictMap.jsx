@@ -409,9 +409,10 @@ export default function ConflictMap({ mobile = false }) {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
               if (!isVisible(event.lat, event.lng)) return null;
               const config = SEVERITY_CONFIG[event.severity];
-              const baseR = isMobile ? 25 : 40;
-              const r = event.severity === 'high' ? baseR * 1.8 : event.severity === 'medium' ? baseR : baseR * 0.7;
-              const opacity = event.severity === 'high' ? 0.25 : event.severity === 'medium' ? 0.15 : 0.08;
+              // Much smaller heat circles - was too big before
+              const baseR = isMobile ? 8 : 12;
+              const r = event.severity === 'high' ? baseR * 2 : event.severity === 'medium' ? baseR * 1.5 : baseR;
+              const opacity = event.severity === 'high' ? 0.3 : event.severity === 'medium' ? 0.2 : 0.1;
               
               return (
                 <circle 
@@ -442,13 +443,13 @@ export default function ConflictMap({ mobile = false }) {
                   <circle 
                     cx={x} 
                     cy={y} 
-                    r={isMobile ? (event.severity === 'high' ? 15 : 10) : (event.severity === 'high' ? 22 : 14)} 
+                    r={isMobile ? (event.severity === 'high' ? 8 : 5) : (event.severity === 'high' ? 12 : 8)} 
                     fill="none" 
                     stroke={config.color} 
                     strokeWidth={event.severity === 'high' ? 2 : 1} 
                     opacity={event.severity === 'high' ? 0.6 : 0.3}
                   >
-                    <animate attributeName="r" values={`${radius};${radius * (event.severity === 'high' ? 4 : 3)};${radius}`} dur={event.severity === 'high' ? '1.5s' : '2.5s'} repeatCount="indefinite" />
+                    <animate attributeName="r" values={`${radius};${radius * (event.severity === 'high' ? 2.5 : 2)};${radius}`} dur={event.severity === 'high' ? '1.5s' : '2.5s'} repeatCount="indefinite" />
                     <animate attributeName="opacity" values={`${event.severity === 'high' ? 0.8 : 0.4};0;${event.severity === 'high' ? 0.8 : 0.4}`} dur={event.severity === 'high' ? '1.5s' : '2.5s'} repeatCount="indefinite" />
                   </circle>
                   
