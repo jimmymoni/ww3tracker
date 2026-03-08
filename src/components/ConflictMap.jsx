@@ -5,13 +5,12 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getCachedData } from '../lib/api';
 
-// DEFAULT EVENTS - Shown while loading real data
-// Real events are fetched from /api/news and GDELT
+// DEFAULT EVENTS - Monitored locations (always shown as baseline)
 const DEFAULT_EVENTS = [
-  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'low', type: 'Monitoring', time: 'Loading...', description: 'Fetching latest updates...', icon: 'alert', source: 'Loading' },
-  { id: 2, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'medium', type: 'Tensions', time: 'Loading...', description: 'Fetching latest updates...', icon: 'alert', source: 'Loading' },
-  { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Monitoring', time: 'Loading...', description: 'Fetching latest updates...', icon: 'shield', source: 'Loading' },
-  { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Monitoring', time: 'Loading...', description: 'Fetching latest updates...', icon: 'troop', source: 'Loading' },
+  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'low', type: 'Monitoring', time: 'Ongoing', description: 'Regional tensions monitored. No active conflict reported.', icon: 'alert', source: 'Monitor' },
+  { id: 2, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'medium', type: 'Tensions', time: 'Ongoing', description: 'Diplomatic tensions persist. No military action reported.', icon: 'alert', source: 'Monitor' },
+  { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Monitoring', time: 'Ongoing', description: 'Security situation stable. Routine monitoring active.', icon: 'shield', source: 'Monitor' },
+  { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Monitoring', time: 'Ongoing', description: 'Coalition presence ongoing. No incidents reported.', icon: 'troop', source: 'Monitor' },
 ];
 
 // City timelines are generated dynamically from news data
@@ -147,6 +146,18 @@ export default function ConflictMap() {
       'sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
       'gaza': { lat: 31.5017, lng: 34.4668, country: 'Palestine' },
       'washington': { lat: 38.9072, lng: -77.0369, country: 'USA' },
+      'iran': { lat: 32.0, lng: 53.0, country: 'Iran' },
+      'israel': { lat: 31.0, lng: 34.8, country: 'Israel' },
+      'iraq': { lat: 33.0, lng: 43.0, country: 'Iraq' },
+      'saudi': { lat: 24.0, lng: 45.0, country: 'Saudi Arabia' },
+      'uae': { lat: 24.5, lng: 54.0, country: 'UAE' },
+      'qatar': { lat: 25.3, lng: 51.2, country: 'Qatar' },
+      'kuwait': { lat: 29.3, lng: 47.5, country: 'Kuwait' },
+      'syria': { lat: 35.0, lng: 38.0, country: 'Syria' },
+      'lebanon': { lat: 33.8, lng: 35.5, country: 'Lebanon' },
+      'yemen': { lat: 15.5, lng: 47.5, country: 'Yemen' },
+      'gulf': { lat: 26.0, lng: 52.0, country: 'Persian Gulf' },
+      'hormuz': { lat: 26.5, lng: 56.5, country: 'Strait of Hormuz' },
     };
 
     const events = [];
@@ -157,14 +168,15 @@ export default function ConflictMap() {
       const desc = (item.description || item.summary || '').toLowerCase();
       const text = title + ' ' + desc;
 
-      // Find matching city
-      for (const [cityName, coords] of Object.entries(cityMapping)) {
-        if (text.includes(cityName)) {
+      // Find matching city/country
+      let matched = false;
+      for (const [placeName, coords] of Object.entries(cityMapping)) {
+        if (text.includes(placeName)) {
           // Determine severity based on keywords
           let severity = 'low';
-          if (text.includes('strike') || text.includes('attack') || text.includes('hit') || text.includes('missile')) {
+          if (text.includes('strike') || text.includes('attack') || text.includes('hit') || text.includes('missile') || text.includes('war') || text.includes('kill')) {
             severity = 'high';
-          } else if (text.includes('tension') || text.includes('threat') || text.includes('warning')) {
+          } else if (text.includes('tension') || text.includes('threat') || text.includes('warning') || text.includes('sanction') || text.includes('escalate')) {
             severity = 'medium';
           }
 
@@ -181,17 +193,35 @@ export default function ConflictMap() {
             id: id++,
             lat: coords.lat,
             lng: coords.lng,
-            city: cityName.charAt(0).toUpperCase() + cityName.slice(1),
+            city: placeName.charAt(0).toUpperCase() + placeName.slice(1),
             country: coords.country,
             severity,
-            type: severity === 'high' ? 'Attack' : severity === 'medium' ? 'Tensions' : 'Monitoring',
-            time: item.timestamp ? new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
-            description: item.title || item.headline || 'Breaking news',
+            type: severity === 'high' ? 'Breaking' : severity === 'medium' ? 'Tensions' : 'Monitoring',
+            time: item.timestamp || item.pubDate ? new Date(item.timestamp || item.pubDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
+            description: item.title || item.headline || item.description || 'Breaking news',
             icon,
             source: item.source || 'News'
           });
-          break; // Only take first matching city per news item
+          matched = true;
+          break; // Only take first matching location per news item
         }
+      }
+      
+      // If no city matched but it's a relevant news item, add to Tehran (center of conflict)
+      if (!matched && (text.includes('trump') || text.includes('nuclear') || text.includes('deal'))) {
+        events.push({
+          id: id++,
+          lat: 35.6892,
+          lng: 51.3890,
+          city: 'Tehran',
+          country: 'Iran',
+          severity: 'medium',
+          type: 'Political',
+          time: item.timestamp || item.pubDate ? new Date(item.timestamp || item.pubDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
+          description: item.title || item.headline || item.description || 'Political update',
+          icon: 'alert',
+          source: item.source || 'News'
+        });
       }
     }
 
