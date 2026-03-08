@@ -68,6 +68,7 @@ export default function ConflictMap() {
   
   const svgRef = useRef(null);
   const gRef = useRef(null);
+  const zoomRef = useRef(null);
   const mobileContainerRef = useRef(null);
   const desktopContainerRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 400 });
@@ -250,11 +251,25 @@ export default function ConflictMap() {
     
     const zoom = d3.zoom()
       .scaleExtent([1, 6])
+      .filter((event) => {
+        // Allow zoom on: mouse events, touch events (1 or 2 fingers), wheel
+        return (!event.ctrlKey || event.type === 'wheel') && 
+               (event.type === 'wheel' || 
+                event.type === 'mousedown' || 
+                event.type === 'mousemove' || 
+                event.type === 'mouseup' ||
+                event.type === 'touchstart' || 
+                event.type === 'touchmove' || 
+                event.type === 'touchend');
+      })
       .on('zoom', (e) => {
         if (gRef.current) {
           d3.select(gRef.current).attr('transform', e.transform);
         }
       });
+    
+    // Store zoom behavior for button controls
+    zoomRef.current = zoom;
     
     const svg = d3.select(svgRef.current);
     svg.call(zoom);
@@ -270,6 +285,21 @@ export default function ConflictMap() {
     if (gRef.current) {
       d3.select(gRef.current).attr('transform', initialTransform);
     }
+    
+    // Prevent default touch behaviors on the SVG
+    const svgElement = svgRef.current;
+    const preventDefault = (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+    svgElement.addEventListener('touchstart', preventDefault, { passive: false });
+    svgElement.addEventListener('touchmove', preventDefault, { passive: false });
+    
+    return () => {
+      svgElement.removeEventListener('touchstart', preventDefault);
+      svgElement.removeEventListener('touchmove', preventDefault);
+    };
     
   }, [worldData, dimensions.width, dimensions.height, isMobile]);
 
@@ -298,15 +328,17 @@ export default function ConflictMap() {
   };
 
   const zoomIn = () => {
+    if (!svgRef.current || !zoomRef.current) return;
     const svg = d3.select(svgRef.current);
     const currentTransform = d3.zoomTransform(svgRef.current);
-    svg.transition().duration(300).call(d3.zoom().transform, currentTransform.scale(1.4));
+    svg.transition().duration(300).call(zoomRef.current.transform, currentTransform.scale(1.4));
   };
 
   const zoomOut = () => {
+    if (!svgRef.current || !zoomRef.current) return;
     const svg = d3.select(svgRef.current);
     const currentTransform = d3.zoomTransform(svgRef.current);
-    svg.transition().duration(300).call(d3.zoom().transform, currentTransform.scale(0.7));
+    svg.transition().duration(300).call(zoomRef.current.transform, currentTransform.scale(0.7));
   };
 
   // Render the map content
@@ -321,7 +353,8 @@ export default function ConflictMap() {
           ref={svgRef} 
           width={dimensions.width} 
           height={dimensions.height} 
-          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none"
+          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-auto"
+          style={{ touchAction: 'none' }}
         >
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -501,9 +534,19 @@ export default function ConflictMap() {
             </div>
 
             <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
-              <button onClick={zoomOut} className="w-7 h-7 md:w-8 md:h-8 rounded hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white text-xs md:text-sm">−</button>
+              <button 
+                onClick={zoomOut} 
+                onTouchStart={(e) => { e.preventDefault(); zoomOut(); }}
+                className="w-7 h-7 md:w-8 md:h-8 rounded hover:bg-white/10 active:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white text-xs md:text-sm select-none"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
+              >−</button>
               <span className="text-[10px] text-gray-500 px-1 hidden sm:inline">Zoom</span>
-              <button onClick={zoomIn} className="w-7 h-7 md:w-8 md:h-8 rounded hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white text-xs md:text-sm">+</button>
+              <button 
+                onClick={zoomIn} 
+                onTouchStart={(e) => { e.preventDefault(); zoomIn(); }}
+                className="w-7 h-7 md:w-8 md:h-8 rounded hover:bg-white/10 active:bg-white/20 flex items-center justify-center text-gray-400 hover:text-white text-xs md:text-sm select-none"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
+              >+</button>
             </div>
           </div>
         </div>
