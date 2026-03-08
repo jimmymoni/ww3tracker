@@ -480,12 +480,12 @@ export default function ConflictMap() {
 
         {/* MOBILE LAYOUT */}
         <div className="lg:hidden">
-          <div ref={mobileContainerRef} className="relative bg-[#020617] w-full" style={{ height: '320px' }}>
+          <div ref={mobileContainerRef} className="relative bg-[#020617] w-full overflow-hidden" style={{ height: '320px' }}>
             {renderMap()}
           </div>
           
           {/* MOBILE: Show top 2 conflicts immediately */}
-          <div className="border-t border-white/10 bg-black/40 p-3">
+          <div className="relative z-10 border-t border-white/10 bg-black/40 p-3">
             <div className="space-y-2 mb-3">
               {events.slice(0, 2).map(event => (
                 <button
