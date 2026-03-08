@@ -1,55 +1,29 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb } from 'lucide-react';
+import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, Loader2 } from 'lucide-react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { getCachedData } from '../lib/api';
 
-// REAL RECENT EVENTS
-const CONFLICT_EVENTS = [
-  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'high', type: 'Airport Attack', time: '3 hours ago', description: 'Dubai Airport hit by ballistic missiles. Emirates flights suspended. Runway damaged.', icon: 'bomb', source: 'Multiple Reports' },
-  { id: 2, lat: 25.2854, lng: 51.5310, city: 'Doha', country: 'Qatar', severity: 'high', type: 'Missile Intercept', time: '4 hours ago', description: 'Qatar intercepts 15 ballistic missiles, 119 drones. Air defense activated.', icon: 'shield', source: 'Hindustan Times' },
-  { id: 3, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'high', type: 'Missile Launch', time: '5 hours ago', description: 'Iran launches missile barrage at Gulf targets. Retaliation for US strikes.', icon: 'missile', source: 'Reuters' },
-  { id: 4, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'high', type: 'Airstrike', time: '2 hours ago', description: 'Israeli airstrikes on Iranian positions in Syria. Retaliatory operations ongoing.', icon: 'strike', source: 'IDF' },
-  { id: 5, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'medium', type: 'Proxy Activity', time: '6 hours ago', description: 'Iran-backed militias launch drone attacks on US bases. Green Zone on alert.', icon: 'troop', source: 'Security Sources' },
-  { id: 6, lat: 24.7136, lng: 46.6753, city: 'Riyadh', country: 'Saudi Arabia', severity: 'medium', type: 'Air Defense', time: '8 hours ago', description: 'Saudi air defense intercepts Houthi missiles. Oil facilities secured.', icon: 'shield', source: 'Saudi Defense' },
-  { id: 7, lat: 29.3759, lng: 47.9774, city: 'Kuwait City', country: 'Kuwait', severity: 'low', type: 'Border Alert', time: '12 hours ago', description: 'Kuwait closes airspace temporarily. Border security on high alert.', icon: 'alert', source: 'Civil Aviation' },
-  { id: 8, lat: 21.2854, lng: 39.2376, city: 'Jeddah', country: 'Saudi Arabia', severity: 'low', type: 'Naval Patrol', time: '1 day ago', description: 'US Navy increases Red Sea patrols. Coalition forces on standby.', icon: 'ship', source: 'US Navy' },
+// DEFAULT EVENTS - Shown while loading real data
+// Real events are fetched from /api/news and GDELT
+const DEFAULT_EVENTS = [
+  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'low', type: 'Monitoring', time: 'Loading...', description: 'Fetching latest updates...', icon: 'alert', source: 'Loading' },
+  { id: 2, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'medium', type: 'Tensions', time: 'Loading...', description: 'Fetching latest updates...', icon: 'alert', source: 'Loading' },
+  { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Monitoring', time: 'Loading...', description: 'Fetching latest updates...', icon: 'shield', source: 'Loading' },
+  { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Monitoring', time: 'Loading...', description: 'Fetching latest updates...', icon: 'troop', source: 'Loading' },
 ];
 
-const CITY_TIMELINES = {
-  'Dubai': [
-    { time: '3 hours ago', event: 'Dubai Airport hit by ballistic missiles', type: 'attack', severity: 'high' },
-    { time: '4 hours ago', event: 'Emirates suspends all flight operations', type: 'alert', severity: 'high' },
-    { time: '5 hours ago', event: 'Runway reported damaged, airspace closed', type: 'damage', severity: 'high' },
-    { time: '6 hours ago', event: 'UAE air defense activated', type: 'defense', severity: 'medium' },
-  ],
-  'Doha': [
-    { time: '4 hours ago', event: 'Qatar intercepts 15 ballistic missiles', type: 'defense', severity: 'high' },
-    { time: '4 hours ago', event: '119 drones shot down by air defense', type: 'defense', severity: 'high' },
-    { time: '6 hours ago', event: 'Qatar Airways suspends regional flights', type: 'alert', severity: 'medium' },
-  ],
-  'Tehran': [
-    { time: '5 hours ago', event: 'Iran launches missile barrage at Gulf targets', type: 'attack', severity: 'high' },
-    { time: '6 hours ago', event: 'IRGC claims responsibility for strikes', type: 'political', severity: 'high' },
-    { time: '12 hours ago', event: 'Supreme Leader orders retaliation', type: 'political', severity: 'high' },
-  ],
-  'Jerusalem': [
-    { time: '2 hours ago', event: 'Israeli airstrikes on Iranian positions', type: 'strike', severity: 'high' },
-    { time: '4 hours ago', event: 'Iron Dome intercepts incoming rockets', type: 'defense', severity: 'high' },
-  ],
-  'Baghdad': [
-    { time: '6 hours ago', event: 'Iran-backed militias launch drone attacks', type: 'attack', severity: 'medium' },
-    { time: '10 hours ago', event: 'Green Zone locked down', type: 'alert', severity: 'high' },
-  ],
-  'Riyadh': [
-    { time: '8 hours ago', event: 'Saudi air defense intercepts missiles', type: 'defense', severity: 'medium' },
-  ],
-  'Kuwait City': [
-    { time: '12 hours ago', event: 'Kuwait closes airspace temporarily', type: 'alert', severity: 'low' },
-  ],
-  'Jeddah': [
-    { time: '1 day ago', event: 'US Navy increases Red Sea patrols', type: 'naval', severity: 'low' },
-  ],
+// City timelines are generated dynamically from news data
+// Each city's timeline shows recent events for that location
+const generateCityTimeline = (cityName, allEvents) => {
+  const cityEvents = allEvents.filter(e => e.city === cityName);
+  return cityEvents.map(e => ({
+    time: e.time,
+    event: e.description,
+    type: e.severity === 'high' ? 'attack' : 'alert',
+    severity: e.severity
+  }));
 };
 
 const LABELS = [
@@ -90,6 +64,8 @@ export default function ConflictMap() {
   const [showDrawer, setShowDrawer] = useState(false);
   const [showTimeline, setShowTimeline] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [events, setEvents] = useState(DEFAULT_EVENTS);
+  const [lastUpdated, setLastUpdated] = useState('Loading...');
   
   const svgRef = useRef(null);
   const gRef = useRef(null);
@@ -113,6 +89,114 @@ export default function ConflictMap() {
       })
       .catch(() => setIsLoading(false));
   }, []);
+
+  // Fetch real news and convert to map events
+  useEffect(() => {
+    const fetchRealEvents = async () => {
+      try {
+        // Try to get cached news data
+        const cachedNews = getCachedData('memes');
+        if (cachedNews?.items && cachedNews.items.length > 0) {
+          const mapEvents = convertNewsToEvents(cachedNews.items);
+          if (mapEvents.length > 0) {
+            setEvents(mapEvents);
+            setLastUpdated('Just now');
+          }
+        }
+
+        // Also try to fetch fresh data
+        const response = await fetch('/api/news');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.items && data.items.length > 0) {
+            const mapEvents = convertNewsToEvents(data.items);
+            if (mapEvents.length > 0) {
+              setEvents(mapEvents);
+              setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch real events:', err);
+        // Keep default events on error
+      }
+    };
+
+    fetchRealEvents();
+    // Refresh every 5 minutes
+    const interval = setInterval(fetchRealEvents, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Convert news items to map events
+  const convertNewsToEvents = (newsItems) => {
+    const cityMapping = {
+      'dubai': { lat: 25.2048, lng: 55.2708, country: 'UAE' },
+      'abu dhabi': { lat: 24.4539, lng: 54.3773, country: 'UAE' },
+      'tehran': { lat: 35.6892, lng: 51.3890, country: 'Iran' },
+      'jerusalem': { lat: 31.7683, lng: 35.2137, country: 'Israel' },
+      'tel aviv': { lat: 32.0853, lng: 34.7818, country: 'Israel' },
+      'baghdad': { lat: 33.3152, lng: 44.3661, country: 'Iraq' },
+      'basra': { lat: 30.5156, lng: 47.7804, country: 'Iraq' },
+      'riyadh': { lat: 24.7136, lng: 46.6753, country: 'Saudi Arabia' },
+      'jeddah': { lat: 21.2854, lng: 39.2376, country: 'Saudi Arabia' },
+      'doha': { lat: 25.2854, lng: 51.5310, country: 'Qatar' },
+      'kuwait city': { lat: 29.3759, lng: 47.9774, country: 'Kuwait' },
+      'damascus': { lat: 33.5138, lng: 36.2765, country: 'Syria' },
+      'beirut': { lat: 33.8938, lng: 35.5018, country: 'Lebanon' },
+      'sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
+      'gaza': { lat: 31.5017, lng: 34.4668, country: 'Palestine' },
+      'washington': { lat: 38.9072, lng: -77.0369, country: 'USA' },
+    };
+
+    const events = [];
+    let id = 1;
+
+    for (const item of newsItems.slice(0, 8)) {
+      const title = (item.title || item.headline || '').toLowerCase();
+      const desc = (item.description || item.summary || '').toLowerCase();
+      const text = title + ' ' + desc;
+
+      // Find matching city
+      for (const [cityName, coords] of Object.entries(cityMapping)) {
+        if (text.includes(cityName)) {
+          // Determine severity based on keywords
+          let severity = 'low';
+          if (text.includes('strike') || text.includes('attack') || text.includes('hit') || text.includes('missile')) {
+            severity = 'high';
+          } else if (text.includes('tension') || text.includes('threat') || text.includes('warning')) {
+            severity = 'medium';
+          }
+
+          // Determine icon
+          let icon = 'alert';
+          if (text.includes('missile') || text.includes('rocket')) icon = 'missile';
+          else if (text.includes('strike') || text.includes('bomb')) icon = 'bomb';
+          else if (text.includes('shield') || text.includes('defense') || text.includes('intercept')) icon = 'shield';
+          else if (text.includes('ship') || text.includes('naval')) icon = 'ship';
+          else if (text.includes('drone')) icon = 'drone';
+          else if (text.includes('troop') || text.includes('force')) icon = 'troop';
+
+          events.push({
+            id: id++,
+            lat: coords.lat,
+            lng: coords.lng,
+            city: cityName.charAt(0).toUpperCase() + cityName.slice(1),
+            country: coords.country,
+            severity,
+            type: severity === 'high' ? 'Attack' : severity === 'medium' ? 'Tensions' : 'Monitoring',
+            time: item.timestamp ? new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
+            description: item.title || item.headline || 'Breaking news',
+            icon,
+            source: item.source || 'News'
+          });
+          break; // Only take first matching city per news item
+        }
+      }
+    }
+
+    return events.length > 0 ? events : DEFAULT_EVENTS;
+  };
 
   // Update dimensions based on active container
   useEffect(() => {
@@ -276,7 +360,7 @@ export default function ConflictMap() {
               );
             })}
 
-            {CONFLICT_EVENTS.map(event => {
+            {events.map(event => {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
               if (!isVisible(event.lat, event.lng)) return null;
               const config = SEVERITY_CONFIG[event.severity];
@@ -297,7 +381,7 @@ export default function ConflictMap() {
               );
             })}
 
-            {CONFLICT_EVENTS.map(event => {
+            {events.map(event => {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
               if (!isVisible(event.lat, event.lng)) return null;
               
@@ -382,7 +466,7 @@ export default function ConflictMap() {
               </div>
               <div>
                 <h2 className="font-heading font-bold text-sm md:text-lg text-white">Live Conflict Monitor</h2>
-                <p className="text-[10px] md:text-xs text-gray-500">{CONFLICT_EVENTS.length} active events • Updated 2 min ago</p>
+                <p className="text-[10px] md:text-xs text-gray-500">{events.length} active events • Updated {lastUpdated || 'Loading...'}</p>
               </div>
             </div>
 
@@ -403,7 +487,7 @@ export default function ConflictMap() {
           {/* MOBILE: Show top 2 conflicts immediately */}
           <div className="border-t border-white/10 bg-black/40 p-3">
             <div className="space-y-2 mb-3">
-              {CONFLICT_EVENTS.slice(0, 2).map(event => (
+              {events.slice(0, 2).map(event => (
                 <button
                   key={event.id}
                   onClick={() => handleEventClick(event)}
@@ -431,7 +515,7 @@ export default function ConflictMap() {
               className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
             >
               <AlertTriangle className="w-4 h-4" />
-              View All {CONFLICT_EVENTS.length} Conflicts
+              View All {events.length} Conflicts
               <ChevronUp className="w-4 h-4" />
             </button>
           </div>
@@ -449,11 +533,11 @@ export default function ConflictMap() {
                 <AlertTriangle className="w-4 h-4 text-red-400" />
                 Active Conflicts
               </h3>
-              <p className="text-xs text-gray-500 mt-1">{CONFLICT_EVENTS.length} events tracked</p>
+              <p className="text-xs text-gray-500 mt-1">{events.length} events tracked</p>
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
-              {CONFLICT_EVENTS.map(event => (
+              {events.map(event => (
                 <button
                   key={event.id}
                   onClick={() => handleEventClick(event)}
@@ -510,12 +594,13 @@ export default function ConflictMap() {
                   {selectedEvent && showTimeline ? (
                     <TimelineView 
                       event={selectedEvent} 
+                      allEvents={events}
                       onBack={() => setShowTimeline(false)}
                       onClose={() => {setShowDrawer(false); setSelectedEvent(null); setShowTimeline(false);}}
                     />
                   ) : (
                     <EventsList 
-                      events={CONFLICT_EVENTS}
+                      events={events}
                       selectedEvent={selectedEvent}
                       onSelect={(e) => {setSelectedEvent(e); setShowTimeline(true);}}
                     />
@@ -543,6 +628,7 @@ export default function ConflictMap() {
             >
               <TimelineView 
                 event={selectedEvent} 
+                allEvents={events}
                 onBack={() => setShowTimeline(false)}
                 onClose={() => {setShowTimeline(false); setSelectedEvent(null);}}
               />
@@ -555,8 +641,16 @@ export default function ConflictMap() {
   );
 }
 
-function TimelineView({ event, onBack, onClose }) {
-  const timeline = CITY_TIMELINES[event.city] || [];
+function TimelineView({ event, onBack, onClose, allEvents = [] }) {
+  // Generate timeline from events for this city
+  const timeline = allEvents
+    .filter(e => e.city === event.city)
+    .map(e => ({
+      time: e.time,
+      event: e.description,
+      type: e.severity === 'high' ? 'attack' : 'alert',
+      severity: e.severity
+    }));
   
   return (
     <div className="p-4 pb-20">

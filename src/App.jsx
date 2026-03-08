@@ -180,53 +180,6 @@ const FooterNav = () => (
   </div>
 );
 
-// Mobile Quick Stats Banner - Shows WW3 % immediately on mobile
-const MobileQuickStats = ({ tension = 35 }) => {
-  const [probability, setProbability] = useState(tension);
-  
-  useEffect(() => {
-    // Quick calc same as WW3Counter (simplified)
-    setProbability(Math.round((28 + tension + 35) / 3));
-  }, [tension]);
-
-  const getColor = (prob) => {
-    if (prob >= 70) return 'text-red-500';
-    if (prob >= 50) return 'text-orange-500';
-    if (prob >= 30) return 'text-yellow-500';
-    return 'text-green-500';
-  };
-
-  return (
-    <div className="lg:hidden mb-3">
-      <div className="bg-black/60 border border-white/10 rounded-xl p-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">☢️</span>
-          <div>
-            <p className="text-[10px] text-gray-500 uppercase tracking-wider">WW3 Probability</p>
-            <p className={`font-heading font-bold text-2xl ${getColor(probability)}`}>
-              {probability}%
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 text-[10px] text-gray-400">
-          <div className="text-center">
-            <p className="text-gray-600">Markets</p>
-            <p className="font-mono text-white">28%</p>
-          </div>
-          <div className="text-center">
-            <p className="text-gray-600">Tension</p>
-            <p className="font-mono text-white">{tension}%</p>
-          </div>
-          <div className="text-center">
-            <p className="text-gray-600">News</p>
-            <p className="font-mono text-white">35%</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // Disclaimer - Mobile Optimized
 const Disclaimer = () => (
   <div className="border-t border-white/10 py-6 sm:py-8 px-3 sm:px-4">
@@ -403,9 +356,6 @@ function MainDashboard() {
       <NasaFirmsStrip />
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* MOBILE: Quick Stats Banner (above fold) */}
-        <MobileQuickStats tension={gameState.tension} />
-
         {/* ROW 1: Conflict Map - NEW HERO */}
         <ConflictMap />
 
