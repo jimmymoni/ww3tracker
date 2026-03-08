@@ -639,26 +639,35 @@ export default function ConflictMap({ mobile = false }) {
               <motion.div
                 initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50 flex flex-col"
-                style={{ height: '85vh', maxHeight: '85vh' }}
+                className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black to-gray-900 border-t border-white/20 rounded-t-3xl z-50 flex flex-col shadow-2xl"
+                style={{ height: '90vh', maxHeight: '90vh' }}
               >
+                {/* Handle Bar */}
+                <div className="flex justify-center pt-3 pb-1">
+                  <div className="w-12 h-1 bg-white/20 rounded-full" />
+                </div>
+                
                 {/* Fixed Header - Always visible at top */}
-                <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 flex-shrink-0">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-red-400" />
-                    <h3 className="font-bold text-white">Active Conflicts</h3>
-                    <span className="text-sm text-gray-500">({events.length})</span>
+                <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-black/50 flex-shrink-0">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+                      <AlertTriangle className="w-5 h-5 text-red-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-lg">Active Conflicts</h3>
+                      <p className="text-sm text-gray-500">{events.length} events tracked</p>
+                    </div>
                   </div>
                   <button 
                     onClick={() => setShowDrawer(false)}
-                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white flex items-center gap-1"
+                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
                   >
-                    Close <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className="w-6 h-6" />
                   </button>
                 </div>
                 
                 {/* Scrollable Content Area */}
-                <div className="flex-1 overflow-y-auto p-4 min-h-0">
+                <div className="flex-1 overflow-y-auto px-5 py-4 min-h-0">
                   {selectedEvent && showTimeline ? (
                     <TimelineView 
                       event={selectedEvent} 
@@ -714,60 +723,76 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
   
   return (
     <div className="h-full flex flex-col">
-      {/* Fixed Sub-header */}
-      <div className="flex items-center gap-3 mb-4 flex-shrink-0">
-        <button 
-          onClick={onBack}
-          className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </button>
-        <div>
-          <h3 className="font-bold text-lg text-white">{event.city}</h3>
-          <p className="text-xs text-gray-400">Conflict Timeline</p>
+      {/* Fixed Header - Desktop Style */}
+      <div className="flex items-center justify-between mb-4 flex-shrink-0 pb-3 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={onBack}
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <div>
+            <h3 className="font-bold text-xl text-white">{event.city}</h3>
+            <p className="text-xs text-gray-400">Conflict Timeline</p>
+          </div>
         </div>
-        <span className={`ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+        <span className={`text-[10px] font-bold px-3 py-1.5 rounded-full ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
           {SEVERITY_CONFIG[event.severity].label}
         </span>
       </div>
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto min-h-0">
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4">
-          <div className="flex items-start gap-3">
-            <div className={`w-10 h-10 rounded-xl ${SEVERITY_CONFIG[event.severity].bg} flex items-center justify-center flex-shrink-0`}>
+        {/* Main Event Card - Styled like desktop */}
+        <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-4 mb-5 shadow-lg">
+          <div className="flex items-start gap-4">
+            <div className={`w-12 h-12 rounded-xl ${SEVERITY_CONFIG[event.severity].bg} flex items-center justify-center flex-shrink-0 shadow-lg`}>
               {EVENT_ICONS[event.icon]}
             </div>
-            <div>
-              <p className="text-sm text-gray-300 mb-1">{event.description}</p>
-              <p className="text-xs text-gray-500">Source: {event.source}</p>
-              <div className="flex items-center gap-2 text-xs text-gray-500 mt-2">
-                <Clock className="w-3.5 h-3.5" />
-                {event.time}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-white font-medium leading-relaxed mb-2">{event.description}</p>
+              <div className="flex items-center gap-3 text-xs text-gray-400">
+                <span>Source: {event.source}</span>
+                <span className="text-gray-600">•</span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  {event.time}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <h4 className="text-xs font-bold text-gray-500 uppercase mb-3 flex items-center gap-2">
-          <History className="w-3.5 h-3.5" />
-          Recent History
-        </h4>
-        
-        <div className="space-y-3 pb-4">
-          {timeline.map((item, i) => (
-            <div key={i} className="flex gap-3">
-              <div className="flex flex-col items-center">
-                <div className={`w-2 h-2 rounded-full ${SEVERITY_CONFIG[item.severity]?.bg || 'bg-gray-500'}`} />
-                {i < timeline.length - 1 && <div className="w-px h-full bg-white/10 mt-1" />}
+        {/* Recent History Section */}
+        <div className="mb-3">
+          <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <History className="w-4 h-4" />
+            Recent History
+          </h4>
+          
+          <div className="space-y-4">
+            {timeline.length > 0 ? timeline.map((item, i) => (
+              <div key={i} className="flex gap-4">
+                <div className="flex flex-col items-center pt-1">
+                  <div className={`w-2.5 h-2.5 rounded-full ${SEVERITY_CONFIG[item.severity]?.bg || 'bg-gray-500'} ring-4 ring-black`} />
+                  {i < timeline.length - 1 && <div className="w-0.5 flex-1 bg-gradient-to-b from-white/20 to-transparent mt-2" />}
+                </div>
+                <div className="pb-2 flex-1">
+                  <p className="text-xs text-gray-500 mb-1 font-mono">{item.time}</p>
+                  <p className="text-sm text-gray-300 leading-relaxed">{item.event}</p>
+                </div>
               </div>
-              <div className="pb-4">
-                <p className="text-xs text-gray-500 mb-0.5">{item.time}</p>
-                <p className="text-sm text-gray-300">{item.event}</p>
+            )) : (
+              <div className="text-center py-6 text-gray-500">
+                <p className="text-sm">No recent history available</p>
               </div>
-            </div>
-          ))}
+            )}
+          </div>
         </div>
+        
+        {/* Bottom padding for scroll */}
+        <div className="h-4" />
       </div>
     </div>
   );
@@ -782,29 +807,32 @@ function EventsList({ events, selectedEvent, onSelect }) {
           <p className="text-sm">No active conflicts</p>
         </div>
       ) : (
-        <div className="space-y-2 pb-4">
+        <div className="space-y-3 pb-4">
           {events.map((event) => (
             <button
               key={event.id}
               onClick={() => onSelect(event)}
-              className={`w-full text-left p-3 rounded-xl border transition-all flex items-center gap-3 ${
+              className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-4 ${
                 selectedEvent?.id === event.id 
                   ? 'bg-red-500/10 border-red-500/50' 
-                  : 'bg-white/5 border-white/5 hover:bg-white/10'
+                  : 'bg-gradient-to-br from-white/10 to-white/5 border-white/10 hover:border-white/20'
               }`}
             >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ${SEVERITY_CONFIG[event.severity].bg}`}>
                 {EVENT_ICONS[event.icon]}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white text-sm">{event.city}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="font-bold text-white">{event.city}</span>
+                  <span className={`text-[9px] px-2 py-1 rounded-full ${SEVERITY_CONFIG[event.severity].bg} text-white font-medium`}>
                     {SEVERITY_CONFIG[event.severity].label}
                   </span>
                 </div>
-                <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
-                <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
+                <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{event.description}</p>
+                <p className="text-xs text-gray-600 mt-2 flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  {event.time}
+                </p>
               </div>
             </button>
           ))}
