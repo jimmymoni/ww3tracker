@@ -53,6 +53,7 @@ export default function ConflictMap({ mobile = false }) {
   const [isMobile, setIsMobile] = useState(false);
   const [events, setEvents] = useState(DEFAULT_EVENTS);
   const [lastUpdated, setLastUpdated] = useState('Loading...');
+  const [isLoadingRealData, setIsLoadingRealData] = useState(true);
   
   const svgRef = useRef(null);
   const gRef = useRef(null);
@@ -99,30 +100,43 @@ export default function ConflictMap({ mobile = false }) {
   useEffect(() => {
     const fetchRealEvents = async (isRetry = false) => {
       try {
+        // Try cached data first
         const cachedNews = getCachedData('memes');
         if (cachedNews?.items && cachedNews.items.length > 0 && !cachedNews.isFallback) {
           const mapEvents = convertNewsToEvents(cachedNews.items);
           if (mapEvents.length > 0) {
             setEvents(mapEvents);
             setLastUpdated('Just now');
+            setIsLoadingRealData(false);
           }
         }
 
+        // Fetch from API
         const response = await fetch('/api/news');
         if (response.ok) {
           const data = await response.json();
+          console.log('[ConflictMap] API response:', { fallback: data.fallback, items: data.items?.length });
+          
           if (data.items && data.items.length > 0 && !data.fallback) {
+            // Got real data!
             const mapEvents = convertNewsToEvents(data.items);
             if (mapEvents.length > 0) {
               setEvents(mapEvents);
               setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+              setIsLoadingRealData(false);
             }
-          } else if (data.fallback && !isRetry) {
-            setTimeout(() => fetchRealEvents(true), 3000);
+          } else if (data.fallback) {
+            // Still using fallback/dummy data
+            setIsLoadingRealData(true);
+            if (!isRetry) {
+              console.log('[ConflictMap] Using fallback data, retrying in 3s...');
+              setTimeout(() => fetchRealEvents(true), 3000);
+            }
           }
         }
       } catch (err) {
         console.error('Failed to fetch real events:', err);
+        setIsLoadingRealData(false);
       }
     };
 
@@ -489,7 +503,14 @@ export default function ConflictMap({ mobile = false }) {
               </div>
               <div>
                 <h2 className="font-heading font-bold text-sm md:text-lg text-white">Live Conflict Monitor</h2>
-                <p className="text-[10px] md:text-xs text-gray-500">{events.length} active events - Updated {lastUpdated || 'Loading...'}</p>
+                <p className="text-[10px] md:text-xs text-gray-500">
+                  {events.length} active events
+                  {isLoadingRealData ? (
+                    <span className="text-yellow-500 ml-1">• Loading real news...</span>
+                  ) : (
+                    <span className="text-green-500 ml-1">• Live data</span>
+                  )}
+                </p>
               </div>
             </div>
 
