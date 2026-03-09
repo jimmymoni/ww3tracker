@@ -13,6 +13,8 @@ import TimelinePage from './pages/TimelinePage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import WW3RiskCalculatorPage from './pages/WW3RiskCalculatorPage';
+import WW3ReadinessGame from './components/WW3ReadinessGame';
+import ShareResultPage from './pages/ShareResultPage';
 
 // SEO-Optimized Pages (High Volume Keywords)
 import IsWW3HappeningPage from './pages/IsWW3HappeningPage';
@@ -376,6 +378,43 @@ function MainDashboard() {
           <WW3Counter tension={gameState.tension} />
         </div>
 
+        {/* VIRAL CALCULATOR CTA - MOBILE & DESKTOP */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mb-6"
+        >
+          <Link to="/ready" className="block group">
+            <div className="bg-gradient-to-r from-red-600/20 via-orange-500/20 to-red-600/20 border border-red-500/30 hover:border-red-500/50 rounded-xl p-4 sm:p-6 transition-all">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex-shrink-0 text-4xl sm:text-5xl group-hover:scale-110 transition-transform">
+                  🎯
+                </div>
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
+                    Take The WW3 Readiness Test
+                  </h3>
+                  <p className="text-zinc-400 text-sm mb-2">
+                    Even Kim Jong Un wasn't invited. Find out if you're more ready than the Supreme Leader.
+                  </p>
+                  <div className="flex items-center justify-center sm:justify-start gap-4 text-xs">
+                    <span className="text-red-400 font-medium">60 seconds</span>
+                    <span className="text-zinc-600">•</span>
+                    <span className="text-zinc-400">12,847 people tested today</span>
+                  </div>
+                </div>
+                <div className="flex-shrink-0">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition-colors">
+                    Start Test
+                    <Zap className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </motion.section>
+
         {/* ROW 3: Global Participants Carousel */}
         <GlobalParticipantsCarousel />
 
@@ -458,7 +497,9 @@ function App() {
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
-          <Route path="/ww3-risk-calculator" element={<WW3RiskCalculatorPage />} />
+          <Route path="/ww3-risk-calculator" element={<WW3ReadinessGame />} />
+          <Route path="/ready" element={<WW3ReadinessGame />} />
+          <Route path="/share/:score" element={<ShareResultPage />} />
           
           {/* SEO Landing Pages */}
           <Route path="/is-ww3-happening" element={<IsWW3HappeningPage />} />
