@@ -5,6 +5,7 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 // Services
@@ -523,8 +524,37 @@ app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/robots.txt'));
 });
 
-// Serve index.html for all other routes (SPA routing)
+// Serve prerendered HTML files for specific routes
+const prerenderedRoutes = [
+  '/blog',
+  '/ww3-probability',
+  '/us-iran-war-tracker', 
+  '/iran-conflict-live',
+  '/timeline',
+  '/ww3-risk-calculator',
+  '/ready',
+  '/share',
+  '/is-ww3-happening',
+  '/world-war-3-news',
+  '/iran-nuclear-deal'
+];
+
+// Check for prerendered HTML files before falling back to index.html
 app.get('*', (req, res) => {
+  const route = req.path;
+  
+  // Check if this is a known route with a prerendered HTML file
+  const hasPrerendered = prerenderedRoutes.some(r => route === r || route.startsWith(r + '/'));
+  
+  if (hasPrerendered && !route.includes('.')) {
+    // Try to serve the prerendered index.html for this route
+    const prerenderedPath = path.join(__dirname, '../dist', route, 'index.html');
+    if (fs.existsSync(prerenderedPath)) {
+      return res.sendFile(prerenderedPath);
+    }
+  }
+  
+  // Fall back to the main index.html for SPA routing
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
