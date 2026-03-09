@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Share2, RefreshCw, Zap, Globe,
   ChevronRight, Check, Copy, Trophy,
-  Smartphone
+  Smartphone, Shield, HelpCircle
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -316,8 +316,8 @@ export default function WW3ReadinessGame() {
   return (
     <>
       <SEO
-        title="WW3 Readiness Test - Are You Ready? | 60 Second Quiz"
-        description="Take the viral WW3 Readiness Test. Even Kim Jong Un wasn't invited! Find out your readiness score and share with friends."
+        title="WW3 Readiness Test 2025 | Are You Prepared for Global Conflict?"
+        description="Take the official WW3 Readiness Test. Assess your preparedness for global conflict with 5 realistic scenarios. Used by 50,000+ people. Even Kim Jong Un wasn't invited! Get your readiness score and personalized survival archetype."
         pathname="/ready"
         ogImage="/og-image.png"
       />
@@ -620,12 +620,139 @@ export default function WW3ReadinessGame() {
           )}
         </AnimatePresence>
 
+        {/* Educational Content - For SEO and User Value */}
+        <section className="relative z-10 max-w-2xl mx-auto px-4 py-12 border-t border-zinc-800/50">
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-blue-400" />
+            What Does WW3 Readiness Actually Mean?
+          </h2>
+          
+          <div className="space-y-6 text-zinc-400 text-sm">
+            <p>
+              This test measures your preparedness mindset across five critical areas: information literacy, 
+              emotional regulation, practical planning, community awareness, and adaptability. While we use 
+              humor to make the topic approachable, being informed about geopolitical risks is genuinely valuable.
+            </p>
+            
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <span>📊</span> Information Literacy
+                </h3>
+                <p className="text-zinc-500 text-xs">
+                  Can you distinguish credible sources from viral misinformation? In conflict situations, 
+                  misinformation spreads 6x faster than facts.
+                </p>
+              </div>
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <span>🧠</span> Emotional Regulation
+                </h3>
+                <p className="text-zinc-500 text-xs">
+                  Panic is contagious. People who stay calm make better decisions and help stabilize their communities.
+                </p>
+              </div>
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <span>🎒</span> Practical Preparedness
+                </h3>
+                <p className="text-zinc-500 text-xs">
+                  Having 72 hours of supplies, important documents, and a family communication plan isn't paranoid—it's prudent.
+                </p>
+              </div>
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <span>🤝</span> Community Awareness
+                </h3>
+                <p className="text-zinc-500 text-xs">
+                  In real crises, neighbors help neighbors. Knowing your community's resources and vulnerable members is key.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-10 space-y-4">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-green-400" />
+              Frequently Asked Questions
+            </h2>
+            
+            <div className="space-y-3">
+              <details className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
+                <summary className="px-4 py-3 text-white font-medium cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                  Is World War 3 actually happening?
+                </summary>
+                <div className="px-4 pb-4 text-zinc-400 text-sm">
+                  As of March 2026, we are not in World War 3. While conflicts exist—including tensions between 
+                  the US and Iran, and the ongoing situation in Ukraine—a world war involves multiple major powers 
+                  in direct military conflict. Our tracker monitors escalation indicators to help you stay informed, 
+                  not alarmed. <Link to="/is-ww3-happening" className="text-blue-400 hover:underline">Learn more about current risk levels</Link>.
+                </div>
+              </details>
+              
+              <details className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
+                <summary className="px-4 py-3 text-white font-medium cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                  What should I actually do to prepare for emergencies?
+                </summary>
+                <div className="px-4 pb-4 text-zinc-400 text-sm">
+                  Focus on practical, all-hazard preparedness: 72-hour emergency kit (water, food, medications), 
+                  copies of important documents, family communication plan, and staying informed through official 
+                  sources like FEMA and Ready.gov. Preparation reduces anxiety and helps you help others.
+                </div>
+              </details>
+              
+              <details className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
+                <summary className="px-4 py-3 text-white font-medium cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                  How accurate is this readiness test?
+                </summary>
+                <div className="px-4 pb-4 text-zinc-400 text-sm">
+                  This is an entertainment tool with educational elements, not a scientific assessment. It uses 
+                  behavioral psychology principles to highlight how different personality types respond to crisis 
+                  information. For actual emergency preparedness guidance, consult official government resources.
+                </div>
+              </details>
+              
+              <details className="bg-zinc-900/30 border border-zinc-800 rounded-lg overflow-hidden">
+                <summary className="px-4 py-3 text-white font-medium cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                  Why does the test mention Kim Jong Un?
+                </summary>
+                <div className="px-4 pb-4 text-zinc-400 text-sm">
+                  It's a humorous framing device to make a serious topic more approachable. The joke that 
+                  "even Kim Jong Un wasn't invited to WW3" reminds us that despite constant media coverage 
+                  of global tensions, widespread conflict isn't inevitable—and taking it too seriously can 
+                  actually be counterproductive.
+                </div>
+              </details>
+            </div>
+          </div>
+
+          {/* Links to Related Content */}
+          <div className="mt-10 p-4 bg-gradient-to-r from-zinc-900 to-zinc-800/50 border border-zinc-700 rounded-xl">
+            <h3 className="text-white font-semibold mb-3">Continue Learning</h3>
+            <div className="grid sm:grid-cols-2 gap-2 text-sm">
+              <Link to="/ww3-probability" className="text-blue-400 hover:text-blue-300 flex items-center gap-2">
+                <ChevronRight className="w-4 h-4" /> WW3 Probability Tracker
+              </Link>
+              <Link to="/us-iran-war-tracker" className="text-blue-400 hover:text-blue-300 flex items-center gap-2">
+                <ChevronRight className="w-4 h-4" /> US-Iran War Tracker
+              </Link>
+              <Link to="/blog" className="text-blue-400 hover:text-blue-300 flex items-center gap-2">
+                <ChevronRight className="w-4 h-4" /> Analysis & Updates
+              </Link>
+              <Link to="/timeline" className="text-blue-400 hover:text-blue-300 flex items-center gap-2">
+                <ChevronRight className="w-4 h-4" /> Conflict Timeline
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Footer */}
-        <footer className="relative z-10 border-t border-zinc-800/50 mt-8">
+        <footer className="relative z-10 border-t border-zinc-800/50">
           <div className="max-w-lg mx-auto px-4 py-4 text-center">
             <p className="text-zinc-600 text-xs flex items-center justify-center gap-1">
               <Smartphone className="w-3 h-3" />
-              Optimized for mobile
+              WW3 Readiness Test © 2026 — Optimized for mobile
             </p>
           </div>
         </footer>

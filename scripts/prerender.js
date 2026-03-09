@@ -19,6 +19,8 @@ const routes = [
   '/iran-conflict-live',
   '/timeline',
   '/ww3-risk-calculator',
+  '/ready',
+  '/share',
   '/is-ww3-happening',
   '/world-war-3-news',
   '/iran-nuclear-deal',
@@ -141,6 +143,14 @@ function getRouteMeta(route) {
     '/ww3-risk-calculator': {
       title: 'WW3 Risk Calculator | Calculate Your WW3 Probability',
       description: 'Interactive WW3 risk calculator. Calculate your personal or regional World War 3 probability based on current geopolitical factors.'
+    },
+    '/ready': {
+      title: 'WW3 Readiness Test 2025 | Are You Prepared for Global Conflict?',
+      description: 'Take the official WW3 Readiness Test. Assess your preparedness for global conflict with 5 realistic scenarios. Used by 50,000+ people. Get your readiness score and personalized survival archetype.'
+    },
+    '/share': {
+      title: 'WW3 Readiness Test Results | Share Your Score',
+      description: 'Share your WW3 Readiness Test results with friends. Compare scores and see who is most prepared for global conflict. Even Kim Jong Un was not invited!'
     },
     '/is-ww3-happening': {
       title: 'Is WW3 Happening Right Now? | Live Status 2026',

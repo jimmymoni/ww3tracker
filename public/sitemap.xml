@@ -7,7 +7,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://ww3tracker.live/</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -19,7 +19,7 @@
   <!-- Main Feature Pages -->
   <url>
     <loc>https://ww3tracker.live/ww3-probability</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
     <image:image>
@@ -30,7 +30,7 @@
 
   <url>
     <loc>https://ww3tracker.live/us-iran-war-tracker</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
     <image:image>
@@ -41,7 +41,7 @@
 
   <url>
     <loc>https://ww3tracker.live/iran-conflict-live</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
     <image:image>
@@ -53,7 +53,7 @@
   <!-- High-Volume SEO Landing Pages -->
   <url>
     <loc>https://ww3tracker.live/is-ww3-happening</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
     <image:image>
@@ -64,7 +64,7 @@
 
   <url>
     <loc>https://ww3tracker.live/world-war-3-news</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
     <image:image>
@@ -101,9 +101,31 @@
 
   <url>
     <loc>https://ww3tracker.live/ww3-risk-calculator</loc>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://ww3tracker.live/og-image.png</image:loc>
+      <image:title>WW3 Readiness Test - Are You Prepared?</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/ready</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://ww3tracker.live/og-image.png</image:loc>
+      <image:title>Am I Ready for WW3? Take the Test</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ww3tracker.live/share</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
   </url>
 
   <!-- Blog Posts -->
