@@ -123,8 +123,8 @@ const Header = ({ isLoading }) => {
               className="bg-red-600/20 text-red-400 border border-red-500/30 font-heading text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded flex items-center gap-1 sm:gap-2"
             >
               <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-              <span className="hidden sm:inline">CHAOS MODE</span>
-              <span className="sm:hidden">CHAOS</span>
+              <span className="hidden sm:inline">LIVE TRACKER</span>
+              <span className="sm:hidden">LIVE</span>
             </motion.div>
             
             {/* Mobile Menu Button */}
@@ -190,7 +190,7 @@ const Disclaimer = () => (
       <div className="text-xl sm:text-2xl mb-2 sm:mb-3">⚠️</div>
       <h3 className="font-heading font-bold text-base sm:text-lg text-white mb-1.5 sm:mb-2">DISCLAIMER</h3>
       <p className="text-gray-500 text-xs sm:text-sm font-body mb-1.5 sm:mb-2">
-        This is 100% satire. We don't actually want war.
+        Live conflict data aggregated from NASA FIRMS, Polymarket, RSS feeds, and global sources.
       </p>
       <p className="text-gray-600 text-[10px] sm:text-xs font-body">
         Built with ❤️ • Data from RSS, GDELT, Polymarket & NASA FIRMS

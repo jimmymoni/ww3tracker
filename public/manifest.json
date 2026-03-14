@@ -1,7 +1,7 @@
 {
   "name": "WW3 Tracker - Live Conflict Monitor",
   "short_name": "WW3 Tracker",
-  "description": "Real-time satire tracker for the US vs Iran conflict. Live stats, betting odds, market data, and breaking news.",
+  "description": "Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#dc2626",

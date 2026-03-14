@@ -11,6 +11,19 @@ let gameState = {
   breakingAlert: null
 };
 
+// Tension decay - slowly reduce tension over time to prevent permanent 100%
+const TENSION_DECAY_RATE = 2; // Decay 2% per update cycle
+const TENSION_DECAY_INTERVAL = 10 * 60 * 1000; // Every 10 minutes
+
+// Start tension decay interval
+setInterval(() => {
+  if (gameState.tension > 35) { // Don't go below baseline
+    gameState.tension = Math.max(35, gameState.tension - TENSION_DECAY_RATE);
+    gameState.lastUpdate = new Date().toISOString();
+    console.log(`[GameState] Tension decayed to ${gameState.tension}%`);
+  }
+}, TENSION_DECAY_INTERVAL);
+
 // Track previous state for change detection
 let lastUSHP = 75;
 let lastIranHP = 60;

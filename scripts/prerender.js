@@ -118,7 +118,7 @@ function getRouteMeta(route) {
   const metas = {
     '/': {
       title: 'WW3 Tracker - Live Conflict Monitor | US vs Iran War Tracker',
-      description: 'Real-time satire tracker for the US vs Iran conflict. Live stats, betting odds, market data, and breaking news. Who\'s winning? 💰 Sanctions vs ☢️ Nukes'
+      description: 'Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news. Monitor the war with NASA FIRMS, Polymarket odds, and global news aggregation.'
     },
     '/blog': {
       title: 'WW3 Tracker Blog | Analysis & News',

@@ -14,7 +14,8 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
   const [warMode, setWarMode] = useState(false);
   const cardRef = useRef(null);
 
-  const isCircuitBreaker = tension >= 95;
+  // Only trigger circuit breaker at extreme tension (99+) and not permanently
+  const isCircuitBreaker = tension >= 99;
 
   // Fetch WW3 probability from Polymarket
   useEffect(() => {

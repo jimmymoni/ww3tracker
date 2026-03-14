@@ -14,7 +14,7 @@ const distDir = path.join(__dirname, '../dist');
 const expectedMeta = {
   '/': {
     title: 'WW3 Tracker - Live Conflict Monitor',
-    description: 'Real-time satire tracker for the US vs Iran conflict'
+    description: 'Live US-Iran conflict tracker with real-time data'
   },
   '/ww3-risk-calculator': {
     title: 'WW3 Risk Calculator',

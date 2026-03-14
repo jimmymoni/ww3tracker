@@ -103,7 +103,7 @@ export const WebsiteSchema = () => {
     "@type": "WebSite",
     "name": "WW3 Tracker",
     "url": "https://ww3tracker.live",
-    "description": "Real-time satire tracker for the US vs Iran conflict with live stats, betting odds, and breaking news.",
+    "description": "Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -146,7 +146,7 @@ export const OrganizationSchema = () => {
     "sameAs": [
       "https://twitter.com/ww3tracker"
     ],
-    "description": "Real-time satire tracker for the US vs Iran conflict."
+    "description": "Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news."
   };
 
   return (
