@@ -2,15 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  Clock, ArrowLeft, Calendar, Twitter, Facebook, 
-  BookOpen, ChevronUp, ThumbsUp, ThumbsDown,
-  Share2, Link2, Check
+  Clock, ArrowLeft, Twitter, Facebook, 
+  ChevronUp, ThumbsUp, ThumbsDown,
+  Link2, Check
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { blogPosts } from '../data/blogPosts';
-import TableOfContents from '../components/TableOfContents';
 import ReadingProgress from '../components/ReadingProgress';
 import QuickFacts from '../components/Blog/QuickFacts';
 import Timeline from '../components/Blog/Timeline';
@@ -197,16 +196,9 @@ const BlogPostPage = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-[280px_1fr_200px] gap-8">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid lg:grid-cols-[1fr_280px] gap-12">
             
-            {/* Left Sidebar - Table of Contents */}
-            <aside className="hidden lg:block">
-              <div className="sticky top-24">
-                {post.sections && <TableOfContents sections={post.sections} activeSection={activeSection} />}
-              </div>
-            </aside>
-
             {/* Main Content */}
             <article ref={contentRef} className="min-w-0">
               {/* Header */}
@@ -452,52 +444,29 @@ const BlogPostPage = () => {
               )}
             </article>
 
-            {/* Right Sidebar - Reading Stats & Share */}
+            {/* Right Sidebar - Table of Contents */}
             <aside className="hidden lg:block">
-              <div className="sticky top-24 space-y-4">
-                {/* Reading Progress Card */}
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
-                  <h4 className="text-sm font-medium text-zinc-400 mb-3">Reading Progress</h4>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full border-2 border-zinc-700 flex items-center justify-center">
-                      <span className="text-xs text-zinc-400">0%</span>
-                    </div>
-                    <div>
-                      <p className="text-sm text-zinc-300">{post.readTime}</p>
-                      <p className="text-xs text-zinc-500">Estimated time</p>
-                    </div>
+              <div className="sticky top-24">
+                {post.sections && (
+                  <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+                    <h4 className="text-sm font-medium text-zinc-400 mb-3">In This Article</h4>
+                    <nav className="space-y-1">
+                      {post.sections.map((section) => (
+                        <a
+                          key={section.id}
+                          href={`#${section.id}`}
+                          className={`block text-sm py-1.5 px-2 rounded transition-colors ${
+                            activeSection === section.id
+                              ? 'text-red-400 bg-red-500/10'
+                              : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50'
+                          }`}
+                        >
+                          {section.title}
+                        </a>
+                      ))}
+                    </nav>
                   </div>
-                </div>
-
-                {/* Share Card */}
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
-                  <h4 className="text-sm font-medium text-zinc-400 mb-3">Share</h4>
-                  <div className="space-y-2">
-                    <button 
-                      onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://ww3tracker.live/blog/${post.slug}`)}`, '_blank')}
-                      className="w-full flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all text-sm"
-                    >
-                      <Twitter className="w-4 h-4" />
-                      Twitter
-                    </button>
-                    <button 
-                      onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://ww3tracker.live/blog/${post.slug}`)}`, '_blank')}
-                      className="w-full flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all text-sm"
-                    >
-                      <Facebook className="w-4 h-4" />
-                      Facebook
-                    </button>
-                    <button 
-                      onClick={() => {
-                        navigator.clipboard.writeText(`https://ww3tracker.live/blog/${post.slug}`);
-                      }}
-                      className="w-full flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all text-sm"
-                    >
-                      <Link2 className="w-4 h-4" />
-                      Copy Link
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
             </aside>
           </div>
