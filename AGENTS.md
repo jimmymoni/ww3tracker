@@ -62,9 +62,10 @@
 ```
 RSS Feeds → Replicate AI Analysis → Game State Service → /api/state → Frontend
 ```
-- **Update frequency:** Every 5 minutes
+- **Update frequency:** Every 5 minutes (RSS refresh)
 - **Data stored:** `usHP`, `iranHP`, `tension`, `breakingAlert`
 - **Location:** `server/services/gameStateService.js`
+- **Note:** AI analysis via Replicate API (or mock if not configured)
 
 ### 2. News/Memes
 ```
@@ -107,6 +108,28 @@ NASA API → /api/fires → NasaFirmsStrip
 | **TimelineOfChaos** | `components/TimelineOfChaos.jsx` | Historical timeline | Static data |
 | **BreakingAlert** | `components/BreakingAlert.jsx` | Full-screen alerts | Game state |
 
+### Additional Components
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| **Breadcrumbs** | `components/Breadcrumbs.jsx` | Navigation breadcrumbs |
+| **CentralTweetButton** | `components/CentralTweetButton.jsx` | Share button |
+| **ComicTicker** | `components/ComicTicker.jsx` | News ticker strip |
+| **ConflictGlobe** | `components/ConflictGlobe.jsx` | 3D globe visualization |
+| **DailyPoll** | `components/DailyPoll.jsx` | User polling widget |
+| **DisqusComments** | `components/DisqusComments.jsx` | Comments integration |
+| **EliminatedBoard** | `components/EliminatedBoard.jsx` | Shows defeated entities |
+| **FloatingChat** | `components/FloatingChat.jsx` | AI chat interface |
+| **GenZAnalyst** | `components/GenZAnalyst.jsx` | AI persona commentary |
+| **LiveWarRoom** | `components/LiveWarRoom.jsx` | Live updates feed |
+| **PickSideModal** | `components/PickSideModal.jsx` | US vs Iran selector |
+| **ReadingProgress** | `components/ReadingProgress.jsx` | Blog reading indicator |
+| **SEO** | `components/SEO.jsx` | Meta tag management |
+| **SocialEnergyBar** | `components/SocialEnergyBar.jsx` | Social media sentiment |
+| **StructuredData** | `components/StructuredData.jsx` | JSON-LD schema |
+| **TableOfContents** | `components/TableOfContents.jsx` | Blog TOC sidebar |
+| **WarRoomComments** | `components/WarRoomComments.jsx` | Comment system |
+
 ### Page Components
 
 | Page | File | Route | SEO Priority |
@@ -124,6 +147,8 @@ NASA API → /api/fires → NasaFirmsStrip
 | **IsWW3HappeningPage** | `pages/IsWW3HappeningPage.jsx` | `/is-ww3-happening` | SEO Landing |
 | **WorldWar3NewsPage** | `pages/WorldWar3NewsPage.jsx` | `/world-war-3-news` | SEO Landing |
 | **IranNuclearDealPage** | `pages/IranNuclearDealPage.jsx` | `/iran-nuclear-deal` | SEO Landing |
+
+> **Note:** Also includes backup files: `BlogPostPage.backup.jsx`, `BlogPostPage-SEO-Updated.jsx`
 
 ---
 
@@ -287,5 +312,6 @@ npm start            # Serves built app from dist/
 ## Contact/Notes
 
 - Created: 2026-03-14
+- Updated: 2026-03-14
 - Status: Reverted to pre-redesign state
-- Current commit: `6a62d5f`
+- Current commit: `b80dd0d`
