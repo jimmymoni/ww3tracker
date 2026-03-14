@@ -728,24 +728,19 @@ export default function ConflictMap({ mobile = false }) {
                 {/* Fixed Header - Always visible at top */}
                 <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 flex-shrink-0">
                   {selectedEvent && showTimeline ? (
-                    <>
-                      <button 
-                        onClick={() => {setShowTimeline(false); setSelectedEvent(null);}}
-                        className="flex items-center gap-2 text-gray-400 hover:text-white"
-                      >
-                        <ArrowLeft className="w-5 h-5" />
-                        <span className="text-sm">Back to List</span>
-                      </button>
-                      <h3 className="font-bold text-white">Strike Details</h3>
-                    </>
+                    <button 
+                      onClick={() => {setShowTimeline(false); setSelectedEvent(null);}}
+                      className="flex items-center gap-2 text-gray-400 hover:text-white"
+                    >
+                      <ArrowLeft className="w-5 h-5" />
+                      <span className="text-sm">Back to List</span>
+                    </button>
                   ) : (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="w-5 h-5 text-red-400" />
-                        <h3 className="font-bold text-white">Confirmed Strikes</h3>
-                        <span className="text-sm text-gray-500">({events.length})</span>
-                      </div>
-                    </>
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-red-400" />
+                      <h3 className="font-bold text-white">Confirmed Strikes</h3>
+                      <span className="text-sm text-gray-500">({events.length})</span>
+                    </div>
                   )}
                   <button 
                     onClick={() => {setShowDrawer(false); setShowTimeline(false); setSelectedEvent(null);}}
@@ -756,7 +751,7 @@ export default function ConflictMap({ mobile = false }) {
                 </div>
                 
                 {/* Scrollable Content Area */}
-                <div className="flex-1 overflow-y-auto p-4 min-h-0 pb-20">
+                <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch' }}>
                   {selectedEvent && showTimeline ? (
                     <TimelineView 
                       event={selectedEvent} 
@@ -801,19 +796,10 @@ export default function ConflictMap({ mobile = false }) {
 }
 
 function TimelineView({ event, onBack, onClose, allEvents = [] }) {
-  const timeline = allEvents
-    .filter(e => e.city === event.city)
-    .map(e => ({
-      time: e.time,
-      event: e.description,
-      type: e.severity === 'high' ? 'attack' : 'alert',
-      severity: e.severity
-    }));
-  
   return (
-    <div className="flex flex-col">
+    <div className="pb-20">
       {/* Location Header */}
-      <div className="flex items-center gap-3 mb-4 pt-2">
+      <div className="flex items-center gap-3 mb-4">
         <div className={`w-12 h-12 rounded-xl ${SEVERITY_CONFIG[event.severity].bg} flex items-center justify-center flex-shrink-0`}>
           {EVENT_ICONS[event.icon]}
         </div>
@@ -827,7 +813,7 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
       </div>
 
       {/* Main Event Card */}
-      <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6">
+      <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4">
         <h4 className="text-xs font-bold text-gray-500 uppercase mb-2">Latest Incident</h4>
         <p className="text-sm text-gray-200 mb-3 leading-relaxed">{event.description}</p>
         <div className="flex items-center justify-between text-xs">
@@ -838,43 +824,20 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
           </div>
         </div>
       </div>
-
-      {/* Recent History */}
-      {timeline.length > 1 && (
-        <>
-          <h4 className="text-xs font-bold text-gray-500 uppercase mb-3 flex items-center gap-2">
-            <History className="w-3.5 h-3.5" />
-            Recent History in {event.city}
-          </h4>
-          
-          <div className="space-y-3">
-            {timeline.slice(1).map((item, i) => (
-              <div key={i} className="flex gap-3">
-                <div className="flex flex-col items-center">
-                  <div className={`w-2 h-2 rounded-full ${SEVERITY_CONFIG[item.severity]?.bg || 'bg-gray-500'}`} />
-                  {i < timeline.length - 2 && <div className="w-px h-full bg-white/10 mt-1" />}
-                </div>
-                <div className="pb-4">
-                  <p className="text-xs text-gray-500 mb-0.5">{item.time}</p>
-                  <p className="text-sm text-gray-300">{item.event}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
       
-      {/* Bottom padding for safe area */}
-      <div className="h-8" />
+      {/* Instructions */}
+      <div className="text-center py-4">
+        <p className="text-xs text-gray-500">Click "Back to List" to see all strikes</p>
+      </div>
     </div>
   );
 }
 
 function EventsList({ events, selectedEvent, onSelect }) {
   return (
-    <div>
+    <div className="pb-20">
       {events.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full text-gray-500 py-8 px-4 text-center">
+        <div className="flex flex-col items-center justify-center text-gray-500 py-8 px-4 text-center">
           <AlertTriangle className="w-8 h-8 mb-2 opacity-50" />
           <p className="text-sm">No confirmed military strikes</p>
           <p className="text-xs text-gray-600 mt-1">Only verified attacks from the last 24 hours are shown</p>
@@ -906,8 +869,6 @@ function EventsList({ events, selectedEvent, onSelect }) {
               </div>
             </button>
           ))}
-          {/* Bottom padding for safe area */}
-          <div className="h-8" />
         </div>
       )}
     </div>
