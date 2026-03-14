@@ -14,7 +14,7 @@ const DEFAULT_NEWS_ITEMS = [
     analysis: {
       side: "IRAN",
       badge: "OOF 💀",
-      memeCaption: "Iran said hold my tea, things getting spicy 🍵💀"
+      analysis: "Iranian forces escalate presence in Strait of Hormuz amid rising tensions"
     }
   },
   {
@@ -25,7 +25,7 @@ const DEFAULT_NEWS_ITEMS = [
     analysis: {
       side: "US",
       badge: "OOF 💀",
-      memeCaption: "US hitting them where it hurts - the bag 💰 no cap"
+      analysis: "US sanctions target Iranian oil exports, significantly impacting economy"
     }
   },
   {
@@ -36,7 +36,7 @@ const DEFAULT_NEWS_ITEMS = [
     analysis: {
       side: "NEUTRAL",
       badge: "YIKES 😬",
-      memeCaption: "The whole region is giving main character energy rn 🎭"
+      analysis: "Regional tensions increase as proxy conflicts expand across Middle East"
     }
   },
   {
@@ -47,7 +47,7 @@ const DEFAULT_NEWS_ITEMS = [
     analysis: {
       side: "IRAN",
       badge: "SUS 👀",
-      memeCaption: "Nuclear program looking kinda sus ngl 👀☢️"
+      analysis: "Iran's uranium enrichment program advances beyond previous limits"
     }
   }
 ];
@@ -57,8 +57,8 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
   const [tooltip, setTooltip] = useState(null);
 
   const getShareText = () => {
-    if (meme?.analysis?.memeCaption) {
-      return `${meme.analysis.badge} ${meme.analysis.memeCaption}\n☢️ WW3 tracker is LIVE\nww3tracker.live #WW3 #USvsIran #TheStandoff`;
+    if (meme?.analysis?.analysis) {
+      return `${meme.analysis.badge}: ${meme.analysis.analysis}\n\nLive US-Iran conflict updates | ww3tracker.live`;
     }
     return `☢️ WW3: ${ww3Data?.probability || 50}% likely right now ww3tracker.live #WW3 #TheStandoff`;
   };
@@ -68,8 +68,8 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
   };
 
   const shareToReddit = () => {
-    const title = meme?.analysis?.memeCaption 
-      ? `${meme.analysis.memeCaption} [ww3tracker.live]`
+    const title = meme?.analysis?.analysis 
+      ? `${meme.analysis.analysis} | ww3tracker.live`
       : `WW3 Probability: ${ww3Data?.probability || 50}% - Live Tracker`;
     window.open(`https://reddit.com/submit?url=${encodeURIComponent('https://ww3tracker.live')}&title=${encodeURIComponent(title)}`, '_blank');
   };
@@ -199,15 +199,15 @@ const SkeletonCard = ({ index }) => (
 const Card = ({ meme, index }) => {
   const cardRef = useRef(null);
   const badgeColors = {
-    'BREAKING 💥': 'bg-red-500/20 text-red-400 border-red-500/30',
-    'YIKES 😬': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    'SUS 👀': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    'OOF 💀': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
-    'W 🏆': 'bg-green-500/20 text-green-400 border-green-500/30',
-    'L 💀': 'bg-red-700/20 text-red-500 border-red-700/30',
+    'BREAKING': 'bg-red-500/20 text-red-400 border-red-500/30',
+    'ESCALATION': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+    'INTELLIGENCE': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    'CASUALTIES': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+    'CONFIRMED': 'bg-green-500/20 text-green-400 border-green-500/30',
+    'DISPUTED': 'bg-red-700/20 text-red-500 border-red-700/30',
   };
 
-  const badge = meme.analysis?.badge || 'SUS 👀';
+  const badge = meme.analysis?.badge || 'INTELLIGENCE';
   const side = meme.analysis?.side || 'NEUTRAL';
   
   return (
@@ -235,7 +235,7 @@ const Card = ({ meme, index }) => {
 
       {/* Caption */}
       <p className="text-[10px] text-gray-400 font-body mb-1.5 sm:mb-2 italic leading-relaxed">
-        "{meme.analysis?.memeCaption}"
+        {meme.analysis?.analysis}
       </p>
 
       {/* Source & Share Buttons */}

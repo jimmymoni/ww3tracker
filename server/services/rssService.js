@@ -3,7 +3,7 @@ import { parseStringPromise } from 'xml2js';
 
 // RSS Feed sources - ONLY approved sources
 const RSS_FEEDS = [
-  { name: 'BBC', url: 'https://feeds.bbci.co.uk/news/world/rss.xml', priority: 1 },
+  { name: 'BBC', url: 'https://feeds.bbci.co.uk/news/world/middle_east/rss.xml', priority: 1 },
   { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', priority: 2 },
   { name: 'The Guardian', url: 'https://www.theguardian.com/world/iran/rss', priority: 3 },
   { name: 'France24', url: 'https://www.france24.com/en/rss', priority: 4 },

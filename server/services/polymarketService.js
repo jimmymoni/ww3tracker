@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { updateLiveDataCache } from './botMessageService.js';
 
 const POLYMARKET_CLOB_URL = 'https://clob.polymarket.com';
 const POLYMARKET_GAMMA_URL = 'https://gamma-api.polymarket.com';
@@ -370,8 +369,7 @@ export const getEscalationProbability = async () => {
   
   const avgProbability = count > 0 ? Math.round(totalProb / count) : 34;
   
-  // Update bot service with WW3 risk
-  updateLiveDataCache({ ww3Risk: avgProbability });
+  // WW3 risk tracked for analytics
   
   return {
     probability: avgProbability,

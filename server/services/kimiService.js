@@ -10,29 +10,29 @@ const getKimiKey = () => process.env.KIMI_API_KEY;
 const getBadgeFromHeadline = (headline) => {
   const lower = headline.toLowerCase();
   
-  // BREAKING 💥 - violent/attack keywords
+  // BREAKING - violent/attack keywords
   if (/\b(killed|struck|missiles|attack|strikes|bombed|explosion|casualties|death|dead)\b/.test(lower)) {
-    return 'BREAKING 💥';
+    return 'BREAKING';
   }
   
-  // YIKES 😬 - warning/threat keywords
+  // ESCALATION - warning/threat keywords
   if (/\b(warns|threatens|threat|warning|retaliation|revenge|promises|vows)\b/.test(lower)) {
-    return 'YIKES 😬';
+    return 'ESCALATION';
   }
   
-  // SUS 👀 - diplomatic/talks keywords
+  // INTELLIGENCE - diplomatic/talks keywords
   if (/\b(talks|diplomatic|diplomacy|negotiations|peace|meeting|discuss|agreement)\b/.test(lower)) {
-    return 'SUS 👀';
+    return 'INTELLIGENCE';
   }
   
-  // Default OOF 💀
-  return 'OOF 💀';
+  // Default
+  return 'CONFIRMED';
 };
 
-const BADGES = ['BREAKING 💥', 'YIKES 😬', 'SUS 👀', 'OOF 💀', 'W 🏆', 'L 💀'];
+const BADGES = ['BREAKING', 'ESCALATION', 'INTELLIGENCE', 'CASUALTIES', 'CONFIRMED', 'DISPUTED'];
 
 const analyzeHeadlinePrompt = (headline, description) => `
-You are a Gen-Z war analyst who analyzes US-Iran conflict news.
+You are a military intelligence analyst analyzing US-Iran conflict news.
 
 Headline: "${headline}"
 ${description ? `Description: "${description}"` : ''}
@@ -42,38 +42,35 @@ Analyze this news and respond with ONLY a JSON object in this exact format:
   "side": "US" | "IRAN" | "NEUTRAL",
   "score": number between -5 and 5 (negative favors Iran, positive favors US, 0 is neutral),
   "severity": "low" | "medium" | "high",
-  "badge": one of ["BREAKING 💥", "YIKES 😬", "SUS 👀", "OOF 💀", "W 🏆", "L 💀"],
-  "memeCaption": "funny gen-z reaction",
-  "tickerText": "short funny version (max 8 words)"
+  "badge": one of ["BREAKING", "ESCALATION", "INTELLIGENCE", "CASUALTIES", "CONFIRMED", "DISPUTED"],
+  "analysis": "professional military assessment of this development",
+  "tickerText": "concise factual summary (max 10 words)"
 }
 
-CRITICAL RULES FOR MEME CAPTION:
-- Write a UNIQUE funny Gen-Z reaction to THIS specific headline
-- NEVER repeat the same caption twice - make it original!
-- Max 8 words
-- No full sentences
-- Use slang: fr fr, no cap, caught an L, slay, bestie, 💀🔥😭
-- Be creative and specific to this headline
+CRITICAL RULES FOR ANALYSIS:
+- Write a professional military intelligence assessment
+- Focus on tactical and strategic implications
+- Maximum 20 words
+- No slang or informal language
+- Be objective and factual
 
-Examples of UNIQUE captions:
-- "Iran caught an L fr fr 💀"
-- "US said no cap we bussin 🦅"
-- "Bestie this is literally giving anxiety 😭"
-- "They really hit the griddy on em 🕺"
-- "Ayatollah caught lacking mid fr fr 📸"
+Examples of professional analysis:
+- "Iranian military infrastructure sustaining significant damage from precision strikes"
+- "US carrier deployment signals elevated readiness posture in region"
+- "Proxy escalation risks drawing in additional regional actors"
+- "Sanctions impact reducing Iranian operational capacity"
 
 Rules:
 - "side": Which side benefits or is affected more by this news
 - "score": How much this impacts the conflict (-5 = big win for Iran, 5 = big win for US)
 - "severity": How serious/escalatory this news is
 - "badge": ${getBadgeFromHeadline(headline)} (use this pre-selected badge based on headline keywords)
-- Meme caption: MUST BE UNIQUE - never repeat captions
+- Analysis: MUST BE PROFESSIONAL - no slang, no emojis
 - Return ONLY valid JSON, no markdown, no explanation
 `;
 
-const chatSystemPrompt = `You are a Gen-Z war analyst who speaks only in brainrot slang.
-Use: fr fr, no cap, bussin, caught an L, slay, it's giving, bestie, 💀🔥😭🦅, mid, rizz, gyatt, skibidi, sigma, ohio, fanum tax
-Max 3 sentences. Be funny. Explain Iran/US news in slang only.`;
+const chatSystemPrompt = `You are a military intelligence analyst providing brief, factual assessments of US-Iran conflict developments.
+Maximum 3 sentences. Objective tone. No speculation. Focus on verified facts and tactical implications.`;
 
 export const analyzeHeadline = async (headline, description = '') => {
   const apiKey = getKimiKey();
@@ -127,8 +124,8 @@ export const analyzeHeadline = async (headline, description = '') => {
       score: Math.max(-5, Math.min(5, analysis.score || 0)),
       severity: ['low', 'medium', 'high'].includes(analysis.severity) ? analysis.severity : 'medium',
       badge: determinedBadge, // Use keyword-based badge selection
-      memeCaption: analysis.memeCaption || 'Bestie, something happened fr fr 💀',
-      tickerText: analysis.tickerText || 'News dropped, no cap 📰'
+      analysis: analysis.analysis || 'Military development requires monitoring',
+      tickerText: analysis.tickerText || 'Conflict update'
     };
   } catch (error) {
     console.error('[Kimi] Analysis error:', error.message);
@@ -188,8 +185,8 @@ const getMockAnalysis = (headline) => {
       score: Math.floor(Math.random() * 3) + 2,
       severity: 'medium',
       badge: badge,
-      memeCaption: 'US out here catching dubs fr fr, no cap 🦅💪',
-      tickerText: 'US secured the bag 💰'
+      analysis: 'US military or diplomatic advantage gained in region',
+      tickerText: 'US operational success reported'
     };
   } else if (lower.includes('iran') && (lower.includes('threat') || lower.includes('warn'))) {
     return {
@@ -197,8 +194,8 @@ const getMockAnalysis = (headline) => {
       score: -(Math.floor(Math.random() * 3) + 2),
       severity: 'high',
       badge: badge,
-      memeCaption: 'Iran really said "hold my tea" and went off 🍵💀',
-      tickerText: 'Iran cooking something fr 🔥'
+      analysis: 'Iranian forces conducting offensive operations',
+      tickerText: 'Iranian military action confirmed'
     };
   }
   
@@ -213,20 +210,136 @@ const getMockAnalysis = (headline) => {
 };
 
 const MOCK_QUIPS = [
-  "bro iran just caught an L fr fr 💀",
-  "US said no cap we bussin today 🦅",
-  "this ain't it chief 😭",
-  "the plot thickens bestie 🍵",
-  "iran is literally giving main character energy rn 🎭",
-  "yooo did they just hit the griddy on em? 🕺",
-  "mid take from the ayatollah ngl 💤",
-  "US out here ratioing iran hard 📊",
-  "someone's about to get cancelled irl 💥",
-  "the way they're beefing rn... unhinged behavior 🎪",
+  "Escalation in the Gulf region continues to concern international observers",
+  "Sanctions pressure mounting on Iranian economy with measurable impact",
+  "Military posture suggests preparation for extended conflict duration",
+  "Diplomatic channels remain technically open but severely strained",
+  "Regional allies monitoring situation closely for expansion indicators",
 ];
 
 const getMockChatResponse = () => {
   return MOCK_QUIPS[Math.floor(Math.random() * MOCK_QUIPS.length)];
+};
+
+// NEW: Analyze headline for map display - extracts attack details
+const analyzeForMapPrompt = (headline, description) => `
+You are a military intelligence analyst. Determine if this news describes a CONFIRMED military strike/attack.
+
+Headline: "${headline}"
+${description ? `Description: "${description}"` : ''}
+
+Respond with ONLY a JSON object:
+{
+  "isAttack": true | false,
+  "attackType": "airstrike" | "missile" | "drone" | "bombing" | "shelling" | "none",
+  "location": "city or region name",
+  "severity": "high" | "medium" | "low",
+  "description": "brief factual description of the attack"
+}
+
+RULES:
+- isAttack: ONLY true if a military strike/attack already happened (not threats, warnings, analysis)
+- attackType: classify the weapon/method used
+- location: extract the city/region where it happened
+- severity: high = casualties/infrastructure damage, medium = confirmed strike no casualties, low = minor damage
+- Return ONLY JSON, no markdown
+`;
+
+export const analyzeForMap = async (headline, description = '') => {
+  const apiKey = getKimiKey();
+  
+  // Quick keyword pre-check for performance
+  const lower = (headline + ' ' + description).toLowerCase();
+  const hasAttackKeyword = /\b(strike|struck|bombed|attack|hit|airstrike|missile|drone|explosion|shelling)\b/.test(lower);
+  const hasExcludeKeyword = /\b(warns|threatens|pledges|plans|considering|may|might|could|analysis|opinion|why|what if)\b/.test(lower);
+  
+  // Fast path: if no attack keywords or has exclude keywords, skip AI
+  if (!hasAttackKeyword || hasExcludeKeyword) {
+    return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
+  }
+  
+  if (!apiKey) {
+    // Fallback: basic keyword matching
+    return getMockMapAnalysis(headline, description);
+  }
+
+  try {
+    const response = await fetch(`${KIMI_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: KIMI_MODEL,
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant that outputs only valid JSON.' },
+          { role: 'user', content: analyzeForMapPrompt(headline, description) }
+        ],
+        temperature: 0.3,
+        max_tokens: 200
+      })
+    });
+
+    if (!response.ok) {
+      return getMockMapAnalysis(headline, description);
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || '';
+    
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      return getMockMapAnalysis(headline, description);
+    }
+
+    const analysis = JSON.parse(jsonMatch[0]);
+    return {
+      isAttack: analysis.isAttack || false,
+      attackType: analysis.attackType || 'none',
+      location: analysis.location || '',
+      severity: analysis.severity || 'low',
+      description: analysis.description || ''
+    };
+  } catch (error) {
+    return getMockMapAnalysis(headline, description);
+  }
+};
+
+// Mock map analysis when AI unavailable
+const getMockMapAnalysis = (headline, description) => {
+  const lower = (headline + ' ' + description).toLowerCase();
+  
+  // Confirmed attacks
+  if (lower.includes('strike') || lower.includes('struck') || lower.includes('bombed') || lower.includes('hit by')) {
+    let type = 'strike';
+    if (lower.includes('missile')) type = 'missile';
+    else if (lower.includes('drone')) type = 'drone';
+    else if (lower.includes('bomb')) type = 'bombing';
+    
+    let location = '';
+    if (lower.includes('baghdad')) location = 'Baghdad';
+    else if (lower.includes('tehran')) location = 'Tehran';
+    else if (lower.includes('kharg')) location = 'Kharg Island';
+    else if (lower.includes('jerusalem')) location = 'Jerusalem';
+    else if (lower.includes('beirut')) location = 'Beirut';
+    else if (lower.includes('damascus')) location = 'Damascus';
+    else if (lower.includes('gaza')) location = 'Gaza';
+    else if (lower.includes('basra')) location = 'Basra';
+    
+    let severity = 'medium';
+    if (lower.includes('killed') || lower.includes('casualties') || lower.includes('destroyed')) severity = 'high';
+    
+    return {
+      isAttack: true,
+      attackType: type,
+      location: location,
+      severity: severity,
+      description: headline
+    };
+  }
+  
+  return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
 };
 
 // Batch analyze multiple headlines
@@ -249,6 +362,30 @@ export const analyzeHeadlinesBatch = async (items) => {
         ...item,
         analysis: getMockAnalysis(item.headline)
       });
+    }
+  }
+  
+  return results;
+};
+
+// Batch analyze for map display
+export const analyzeForMapBatch = async (items) => {
+  const results = [];
+  
+  for (const item of items.slice(0, 15)) { // Analyze top 15 for map
+    try {
+      const mapAnalysis = await analyzeForMap(item.headline, item.description);
+      if (mapAnalysis.isAttack) {
+        results.push({
+          ...item,
+          mapAnalysis
+        });
+      }
+      
+      // Small delay to avoid rate limiting
+      await new Promise(r => setTimeout(r, 50));
+    } catch (error) {
+      console.error('[Kimi] Map analysis error:', error);
     }
   }
   

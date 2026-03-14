@@ -1,5 +1,4 @@
 import { analyzeHeadlinesBatch } from './replicateService.js';
-import { triggerBotMessage, updateLiveDataCache } from './botMessageService.js';
 
 // Game state
 let gameState = {
@@ -105,36 +104,20 @@ export const updateGameStateFromAnalysis = async (newsItems) => {
   
   console.log(`[GameState] US: ${Math.round(gameState.usHP)}%, Iran: ${Math.round(gameState.iranHP)}%, Tension: ${Math.round(gameState.tension)}%`);
   
-  // Update live data cache
-  updateLiveDataCache({
-    usHP: gameState.usHP,
-    iranHP: gameState.iranHP,
-    spicyMeter: gameState.tension,
-    latestHeadline: gameState.breakingAlert?.headline || lastHeadline
-  });
-  
-  // Trigger bot reactions to state changes
+  // Track state changes for future analytics
   if (Math.abs(gameState.usHP - lastUSHP) >= 2) {
-    triggerBotMessage('hp', { side: 'us', newValue: gameState.usHP, oldValue: lastUSHP });
     lastUSHP = gameState.usHP;
   }
   
   if (Math.abs(gameState.iranHP - lastIranHP) >= 2) {
-    triggerBotMessage('hp', { side: 'iran', newValue: gameState.iranHP, oldValue: lastIranHP });
     lastIranHP = gameState.iranHP;
   }
   
   if (Math.abs(gameState.tension - lastTension) >= 5) {
-    triggerBotMessage('spicy', { level: gameState.tension });
     lastTension = gameState.tension;
   }
   
   if (gameState.breakingAlert && gameState.breakingAlert.headline !== lastHeadline) {
-    const side = gameState.breakingAlert.caption?.includes('Iran') ? 'iran' : 'us';
-    triggerBotMessage('meme', { 
-      headline: gameState.breakingAlert.headline, 
-      side: side 
-    });
     lastHeadline = gameState.breakingAlert.headline;
   }
   

@@ -21,26 +21,26 @@ const DEFAULT_MODEL = CHEAP_MODELS.llama3;
 const getBadgeFromHeadline = (headline) => {
   const lower = headline.toLowerCase();
   
-  // BREAKING 💥 - violent/attack keywords
+  // BREAKING - violent/attack keywords
   if (/\b(killed|struck|missiles|attack|strikes|bombed|explosion|casualties|death|dead)\b/.test(lower)) {
-    return 'BREAKING 💥';
+    return 'BREAKING';
   }
   
-  // YIKES 😬 - warning/threat keywords
+  // ESCALATION - warning/threat keywords
   if (/\b(warns|threatens|threat|warning|retaliation|revenge|promises|vows)\b/.test(lower)) {
-    return 'YIKES 😬';
+    return 'ESCALATION';
   }
   
-  // SUS 👀 - diplomatic/talks keywords
+  // INTELLIGENCE - diplomatic/talks keywords
   if (/\b(talks|diplomatic|diplomacy|negotiations|peace|meeting|discuss|agreement)\b/.test(lower)) {
-    return 'SUS 👀';
+    return 'INTELLIGENCE';
   }
   
-  // Default OOF 💀
-  return 'OOF 💀';
+  // Default
+  return 'CONFIRMED';
 };
 
-const BADGES = ['BREAKING 💥', 'YIKES 😬', 'SUS 👀', 'OOF 💀', 'W 🏆', 'L 💀'];
+const BADGES = ['BREAKING', 'ESCALATION', 'INTELLIGENCE', 'CASUALTIES', 'CONFIRMED', 'DISPUTED'];
 
 // Rate limiting state
 let lastRequestTime = 0;
@@ -177,7 +177,7 @@ export const analyzeHeadline = async (headline, description = '') => {
 
     const determinedBadge = getBadgeFromHeadline(headline);
     
-    const prompt = `You are a Gen-Z war analyst. Analyze this news about US-Iran conflict.
+    const prompt = `You are a military intelligence analyst. Analyze this US-Iran conflict news.
 
 Headline: "${headline}"
 ${description ? `Description: "${description}"` : ''}
@@ -188,22 +188,24 @@ Respond with ONLY a JSON object in this exact format:
   "score": number between -5 and 5 (negative favors Iran, positive favors US),
   "severity": "low" or "medium" or "high",
   "badge": "${determinedBadge}",
-  "memeCaption": "funny gen-z reaction",
-  "tickerText": "short funny version (max 8 words)"
+  "analysis": "professional military assessment",
+  "tickerText": "concise factual summary (max 10 words)"
 }
 
-CRITICAL RULES FOR MEME CAPTION:
-- Write a UNIQUE funny Gen-Z reaction to THIS specific headline
-- NEVER repeat the same caption twice - make it original!
-- Max 8 words
-- No full sentences
-- Use slang: fr fr, no cap, caught an L, slay, bestie, 💀🔥😭
-- Be creative and specific to this headline
+CRITICAL RULES FOR ANALYSIS:
+- Write a professional military intelligence assessment
+- Focus on tactical and strategic implications
+- Maximum 20 words
+- No slang or informal language
+- Be objective and factual
+
+Examples of professional analysis:
+- "Iranian military infrastructure sustaining significant damage from precision strikes"
+- "US carrier deployment signals elevated readiness posture in region"
+- "Proxy escalation risks drawing in additional regional actors"
 
 Rules:
-- Use Gen-Z slang: fr fr, no cap, bussin, caught an L, slay, bestie, 💀🔥😭🦅
 - Badge is pre-selected as "${determinedBadge}" based on headline keywords
-- Be funny but informative
 - Return ONLY valid JSON, no markdown`;
 
     // Create prediction
@@ -261,8 +263,8 @@ Rules:
       score: Math.max(-5, Math.min(5, analysis.score || 0)),
       severity: ['low', 'medium', 'high'].includes(analysis.severity) ? analysis.severity : 'medium',
       badge: getBadgeFromHeadline(headline), // Use keyword-based badge selection
-      memeCaption: (analysis.memeCaption || 'Bestie something happened fr fr 💀').replace(/[.!?]+$/g, ''),
-      tickerText: analysis.tickerText || 'News dropped, no cap 📰'
+      analysis: (analysis.analysis || 'Military development requires monitoring').replace(/[.!?]+$/g, ''),
+      tickerText: analysis.tickerText || 'Conflict update'
     };
     
     // Cache the successful response
@@ -290,9 +292,8 @@ export const getChatResponse = async (userMessage, context = '') => {
     // Apply rate limiting
     await waitForRateLimit();
 
-    const systemPrompt = `You are a Gen-Z war analyst who speaks only in brainrot slang.
-Use: fr fr, no cap, bussin, caught an L, slay, it's giving, bestie, 💀🔥😭🦅, mid, rizz, gyatt, skibidi, sigma
-Max 3 sentences. Be funny. Explain Iran/US news in slang only.`;
+    const systemPrompt = `You are a military intelligence analyst providing brief, factual assessments of US-Iran conflict developments.
+Maximum 3 sentences. Objective tone. No speculation. Focus on verified facts and tactical implications.`;
 
     const fullPrompt = context 
       ? `${systemPrompt}\n\nContext: ${context}\n\nUser: ${userMessage}`
@@ -409,8 +410,8 @@ const getMockAnalysis = (headline) => {
       score: Math.floor(Math.random() * 3) + 2,
       severity: 'medium',
       badge: badge,
-      memeCaption: 'US out here catching dubs fr fr, no cap 🦅💪',
-      tickerText: 'US secured the bag 💰',
+      analysis: 'US military or diplomatic advantage gained in region',
+      tickerText: 'US operational success reported',
       _mock: true
     };
   } else if (lower.includes('iran') && (lower.includes('threat') || lower.includes('warn'))) {
@@ -419,8 +420,8 @@ const getMockAnalysis = (headline) => {
       score: -(Math.floor(Math.random() * 3) + 2),
       severity: 'high',
       badge: badge,
-      memeCaption: 'Iran really said "hold my tea" and went off 🍵💀',
-      tickerText: 'Iran cooking something fr 🔥',
+      analysis: 'Iranian forces conducting offensive operations',
+      tickerText: 'Iranian military action confirmed',
       _mock: true
     };
   }
@@ -437,18 +438,176 @@ const getMockAnalysis = (headline) => {
 };
 
 const MOCK_QUIPS = [
-  "bro iran just caught an L fr fr 💀",
-  "US said no cap we bussin today 🦅",
-  "this ain't it chief 😭",
-  "the plot thickens bestie 🍵",
-  "iran is literally giving main character energy rn 🎭",
-  "yooo did they just hit the griddy on em? 🕺",
-  "mid take from the ayatollah ngl 💤",
-  "US out here ratioing iran hard 📊",
-  "someone's about to get cancelled irl 💥",
-  "the way they're beefing rn... unhinged behavior 🎪",
+  "Escalation in the Gulf region continues to concern international observers",
+  "Sanctions pressure mounting on Iranian economy with measurable impact",
+  "Military posture suggests preparation for extended conflict duration",
+  "Diplomatic channels remain technically open but severely strained",
+  "Regional allies monitoring situation closely for expansion indicators",
 ];
 
 const getMockChatResponse = () => {
   return MOCK_QUIPS[Math.floor(Math.random() * MOCK_QUIPS.length)];
+};
+
+// ========== MAP ATTACK ANALYSIS ==========
+
+const analyzeForMapPrompt = (headline, description) => `
+You are a military intelligence analyst. Determine if this news describes a CONFIRMED military strike/attack.
+
+Headline: "${headline}"
+${description ? `Description: "${description}"` : ''}
+
+Respond with ONLY a JSON object:
+{
+  "isAttack": true | false,
+  "attackType": "airstrike" | "missile" | "drone" | "bombing" | "shelling" | "none",
+  "location": "city or region name",
+  "severity": "high" | "medium" | "low",
+  "description": "brief factual description"
+}
+
+RULES:
+- isAttack: ONLY true if a military strike/attack already happened
+- attackType: classify the weapon/method
+- location: extract city/region (Baghdad, Tehran, Kharg Island, etc.)
+- severity: high = casualties, medium = confirmed strike, low = minor
+- Return ONLY JSON
+`;
+
+export const analyzeForMap = async (headline, description = '') => {
+  const token = getToken();
+  
+  // Fast keyword pre-check
+  const lower = (headline + ' ' + description).toLowerCase();
+  const hasAttackKeyword = /\b(strike|struck|bombed|attack|hit|airstrike|missile|drone|explosion|shelling)\b/.test(lower);
+  const hasExcludeKeyword = /\b(warns|threatens|pledges|plans|considering|may|might|could|analysis|opinion|why|what if)\b/.test(lower);
+  
+  if (!hasAttackKeyword || hasExcludeKeyword) {
+    return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
+  }
+  
+  if (!token) {
+    return getMockMapAnalysis(headline, description);
+  }
+
+  try {
+    await waitForRateLimit();
+    
+    const response = await fetch(REPLICATE_API_URL, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        version: DEFAULT_MODEL,
+        input: {
+          prompt: analyzeForMapPrompt(headline, description),
+          max_tokens: 200,
+          temperature: 0.3,
+        }
+      }),
+      timeout: 30000
+    });
+
+    if (!response.ok) {
+      return getMockMapAnalysis(headline, description);
+    }
+
+    const prediction = await response.json();
+    const output = await waitForPrediction(prediction.urls.get);
+    
+    const rawText = Array.isArray(output) ? output.join('') : output;
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    
+    if (!jsonMatch) {
+      return getMockMapAnalysis(headline, description);
+    }
+
+    const analysis = JSON.parse(jsonMatch[0]);
+    return {
+      isAttack: analysis.isAttack || false,
+      attackType: analysis.attackType || 'none',
+      location: analysis.location || '',
+      severity: analysis.severity || 'low',
+      description: analysis.description || ''
+    };
+  } catch (error) {
+    return getMockMapAnalysis(headline, description);
+  }
+};
+
+const getMockMapAnalysis = (headline, description) => {
+  const lower = (headline + ' ' + description).toLowerCase();
+  
+  if (lower.includes('strike') || lower.includes('struck') || lower.includes('bombed') || lower.includes('hit by') || lower.includes('attacked')) {
+    let type = 'strike';
+    if (lower.includes('missile')) type = 'missile';
+    else if (lower.includes('drone')) type = 'drone';
+    else if (lower.includes('bomb')) type = 'bombing';
+    else if (lower.includes('airstrike')) type = 'airstrike';
+    
+    let location = '';
+    if (lower.includes('baghdad')) location = 'Baghdad';
+    else if (lower.includes('tehran')) location = 'Tehran';
+    else if (lower.includes('kharg')) location = 'Kharg Island';
+    else if (lower.includes('jerusalem')) location = 'Jerusalem';
+    else if (lower.includes('tel aviv')) location = 'Tel Aviv';
+    else if (lower.includes('beirut')) location = 'Beirut';
+    else if (lower.includes('southern lebanon')) location = 'southern Lebanon';
+    else if (lower.includes('lebanon') && !lower.includes('southern')) location = 'Beirut';
+    else if (lower.includes('damascus')) location = 'Damascus';
+    else if (lower.includes('gaza')) location = 'Gaza';
+    else if (lower.includes('basra')) location = 'Basra';
+    else if (lower.includes('dubai')) location = 'Dubai';
+    else if (lower.includes('sanaa')) location = 'Sanaa';
+    else if (lower.includes('aleppo')) location = 'Aleppo';
+    else if (lower.includes('homs')) location = 'Homs';
+    
+    let severity = 'medium';
+    if (lower.includes('killed') || lower.includes('casualties') || lower.includes('destroyed') || lower.includes('dead')) severity = 'high';
+    else if (lower.includes('injured') || lower.includes('wounded')) severity = 'medium';
+    
+    if (location) {
+      return {
+        isAttack: true,
+        attackType: type,
+        location: location,
+        severity: severity,
+        description: headline
+      };
+    }
+  }
+  
+  return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
+};
+
+export const analyzeForMapBatch = async (items) => {
+  const results = [];
+  const MAX_ITEMS = 10; // Process more items to find all strikes
+  let apiCalls = 0;
+  const MAX_API_CALLS = 3; // Limit expensive AI calls
+  
+  for (const item of items.slice(0, MAX_ITEMS)) {
+    try {
+      // Use mock analysis for most items, only use AI for top 3
+      let mapAnalysis;
+      if (apiCalls < MAX_API_CALLS && consecutiveErrors < MAX_CONSECUTIVE_ERRORS) {
+        mapAnalysis = await analyzeForMap(item.headline, item.description);
+        apiCalls++;
+      } else {
+        // Use fast mock analysis
+        mapAnalysis = getMockMapAnalysis(item.headline, item.description);
+      }
+      
+      if (mapAnalysis.isAttack && mapAnalysis.location) {
+        results.push({
+          ...item,
+          mapAnalysis
+        });
+      }
+    } catch (error) {
+      console.error('[Replicate] Map analysis error:', error);
+    }
+  }
+  
+  console.log(`[MapAnalysis] Processed ${Math.min(items.length, MAX_ITEMS)} items, ${apiCalls} AI calls, found ${results.length} attacks`);
+  return results;
 };

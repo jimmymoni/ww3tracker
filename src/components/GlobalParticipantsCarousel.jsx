@@ -37,59 +37,49 @@ const fetchLiveStats = async () => {
   }
 };
 
-// Dynamic data - MAIN COMBATANTS ONLY (3 fighters) - Iran in MIDDLE
-const getInitialLeadersData = (liveData = null) => {
-  // Calculate dynamic stats based on live data or use current date-based rotation
-  const now = new Date();
-  const dayOfMonth = now.getDate();
-  
-  // Generate dynamic but realistic numbers that change daily
-  const trumpStrikes = liveData?.usStrikes || (450 + dayOfMonth * 2);
-  const shipsSunk = liveData?.shipsSunk || (7 + Math.floor(dayOfMonth / 5));
-  const iranMissiles = liveData?.iranMissiles || (280 + dayOfMonth * 3);
-  const iranDrones = liveData?.iranDrones || (250 + dayOfMonth * 4);
-  
+// Key participants - showing current status, not fake game stats
+const getInitialLeadersData = () => {
   return [
     {
       id: 'trump',
       name: 'DONALD TRUMP',
       country: 'United States',
       flag: '🇺🇸',
-      nickname: 'THE DEALMAKER 💰',
+      nickname: 'US PRESIDENT',
       gifUrl: LEADER_GIFS.trump,
       accentColor: 'blue',
       status: STATUS_TYPES.STRIKING,
       stats: [
-        { emoji: '🎯', label: 'Strikes', value: `${trumpStrikes}+ Targets` },
-        { emoji: '🚢', label: 'Naval', value: `${shipsSunk} Ships Sunk` },
-        { emoji: '🤝', label: 'Coalition', value: 'US-Israel' }
+        { emoji: '🎯', label: 'Policy', value: 'Maximum Pressure' },
+        { emoji: '🚢', label: 'Forces', value: 'Gulf Deployed' },
+        { emoji: '🤝', label: 'Alliance', value: 'US-Israel' }
       ],
       lastUpdate: Date.now(),
-      shareText: `🇺🇸 TRUMP CARD:\n🎯 Strikes: ${trumpStrikes}+ Targets\n🚢 Naval: ${shipsSunk} Ships Sunk\n🤝 Coalition: US-Israel\n\nLeading the offensive 👇\n${SITE_URL}\n\n#USvsIran`
+      shareText: `🇺🇸 US Position:\n🎯 Policy: Maximum Pressure Campaign\n🚢 Forces: Deployed to Persian Gulf\n🤝 Alliance: Coordinating with Israel\n\nLive updates: ${SITE_URL}\n\n#USvsIran`
     },
     {
       id: 'iran',
       name: 'AYATOLLAH MOJTABA KHAMENEI',
       country: 'Iran',
       flag: '🇮🇷',
-      nickname: 'THE SUPREME LEADER ☪️',
+      nickname: 'SUPREME LEADER',
       gifUrl: LEADER_GIFS.iran,
       accentColor: 'red',
       status: STATUS_TYPES.RETALIATING,
       stats: [
-        { emoji: '🚀', label: 'Missiles', value: `${iranMissiles}-${iranMissiles + 200}` },
-        { emoji: '📡', label: 'Drones', value: `${iranDrones}-${iranDrones + 230}` },
-        { emoji: '⛔', label: 'Hormuz', value: 'BLOCKED' }
+        { emoji: '🚀', label: 'Posture', value: 'Retaliatory' },
+        { emoji: '📡', label: 'Proxy', value: 'Regional Active' },
+        { emoji: '⛔', label: 'Hormuz', value: 'Contested' }
       ],
       lastUpdate: Date.now(),
-      shareText: `🇮🇷 IRAN CARD:\n🚀 Missiles: ${iranMissiles}-${iranMissiles + 200} Launched\n📡 Drones: ${iranDrones}-${iranDrones + 230} Deployed\n⛔ Hormuz: BLOCKED\n\nRetaliation mode 👇\n${SITE_URL}\n\n#USvsIran`
+      shareText: `🇮🇷 Iran Position:\n🚀 Posture: Retaliatory Operations\n📡 Proxy Forces: Active Regionally\n⛔ Strait: Contested Status\n\nLive updates: ${SITE_URL}\n\n#USvsIran`
     },
     {
       id: 'netanyahu',
       name: 'BIBI NETANYAHU',
       country: 'Israel',
       flag: '🇮🇱',
-      nickname: 'THE HAWK 🦅',
+      nickname: 'ISRAELI PM',
       gifUrl: LEADER_GIFS.netanyahu,
       accentColor: 'indigo',
       status: STATUS_TYPES.ACTIVE,

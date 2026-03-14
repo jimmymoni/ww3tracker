@@ -5,13 +5,8 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getCachedData } from '../lib/api';
 
-// DEFAULT EVENTS - Loading state while real news fetches
-const DEFAULT_EVENTS = [
-  { id: 1, lat: 25.2048, lng: 55.2708, city: 'Dubai', country: 'UAE', severity: 'low', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'alert', source: 'Loading' },
-  { id: 2, lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran', severity: 'medium', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'alert', source: 'Loading' },
-  { id: 3, lat: 31.7683, lng: 35.2137, city: 'Jerusalem', country: 'Israel', severity: 'medium', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'shield', source: 'Loading' },
-  { id: 4, lat: 33.3152, lng: 44.3661, city: 'Baghdad', country: 'Iraq', severity: 'low', type: 'Loading', time: '...', description: 'Loading latest news...', icon: 'troop', source: 'Loading' },
-];
+// No default events - only show real confirmed strikes
+const DEFAULT_EVENTS = [];
 
 const LABELS = [
   { name: 'IRAN', lat: 32, lng: 54, type: 'country' },
@@ -51,8 +46,8 @@ export default function ConflictMap({ mobile = false }) {
   const [showDrawer, setShowDrawer] = useState(false);
   const [showTimeline, setShowTimeline] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [events, setEvents] = useState(DEFAULT_EVENTS);
-  const [lastUpdated, setLastUpdated] = useState('Loading...');
+  const [events, setEvents] = useState([]);
+  const [lastUpdated, setLastUpdated] = useState('');
   const [isLoadingRealData, setIsLoadingRealData] = useState(true);
   
   const svgRef = useRef(null);
@@ -96,59 +91,115 @@ export default function ConflictMap({ mobile = false }) {
     return () => window.removeEventListener('resize', update);
   }, [isMobile, mobile]);
 
-  // Fetch real news and convert to map events
+  // Fetch AI-analyzed attacks from API
   useEffect(() => {
-    const fetchRealEvents = async (isRetry = false) => {
+    const fetchAttacks = async () => {
       try {
-        // Try cached data first
-        const cachedNews = getCachedData('memes');
-        if (cachedNews?.items && cachedNews.items.length > 0 && !cachedNews.isFallback) {
-          const mapEvents = convertNewsToEvents(cachedNews.items);
-          if (mapEvents.length > 0) {
-            setEvents(mapEvents);
-            setLastUpdated('Just now');
-            setIsLoadingRealData(false);
-          }
-        }
-
-        // Fetch from API
-        const response = await fetch('/api/news');
+        setIsLoadingRealData(true);
+        const response = await fetch('/api/attacks');
         if (response.ok) {
           const data = await response.json();
-          console.log('[ConflictMap] API response:', { fallback: data.fallback, items: data.items?.length });
+          console.log('[ConflictMap] Attacks received:', data.count);
           
-          if (data.items && data.items.length > 0) {
-            const mapEvents = convertNewsToEvents(data.items);
-            if (mapEvents.length > 0) {
-              setEvents(mapEvents);
-              setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-              
-              if (data.fallback) {
-                // Using fallback data - will retry for real data
-                setIsLoadingRealData(true);
-                if (!isRetry) {
-                  console.log('[ConflictMap] Using fallback data, retrying in 3s...');
-                  setTimeout(() => fetchRealEvents(true), 3000);
-                }
-              } else {
-                // Got real data!
-                setIsLoadingRealData(false);
-              }
-            }
+          if (data.attacks && data.attacks.length > 0) {
+            // Convert AI-analyzed attacks to map events
+            const mapEvents = data.attacks.map((item, idx) => ({
+              id: idx + 1,
+              lat: getLocationCoords(item.mapAnalysis.location).lat,
+              lng: getLocationCoords(item.mapAnalysis.location).lng,
+              city: item.mapAnalysis.location || 'Unknown',
+              country: getLocationCoords(item.mapAnalysis.location).country,
+              severity: item.mapAnalysis.severity,
+              type: item.mapAnalysis.attackType.toUpperCase(),
+              time: new Date(item.pubDate || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              description: item.headline,
+              icon: item.mapAnalysis.attackType,
+              source: item.source
+            }));
+            setEvents(mapEvents);
+            setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+          } else {
+            setEvents([]);
           }
         }
       } catch (err) {
-        console.error('Failed to fetch real events:', err);
+        console.error('[ConflictMap] Failed to fetch attacks:', err);
+      } finally {
         setIsLoadingRealData(false);
       }
     };
 
-    fetchRealEvents();
-    const interval = setInterval(fetchRealEvents, 30 * 1000);
+    fetchAttacks();
+    const interval = setInterval(fetchAttacks, 60 * 1000); // Refresh every minute
     return () => clearInterval(interval);
   }, []);
+  
+  // Helper to get coordinates for location
+  const getLocationCoords = (location) => {
+    const coords = {
+      'Baghdad': { lat: 33.3152, lng: 44.3661, country: 'Iraq' },
+      'Tehran': { lat: 35.6892, lng: 51.3890, country: 'Iran' },
+      'Kharg Island': { lat: 29.25, lng: 50.33, country: 'Iran' },
+      'Jerusalem': { lat: 31.7683, lng: 35.2137, country: 'Israel' },
+      'Tel Aviv': { lat: 32.0853, lng: 34.7818, country: 'Israel' },
+      'Beirut': { lat: 33.8938, lng: 35.5018, country: 'Lebanon' },
+      'southern Lebanon': { lat: 33.2, lng: 35.3, country: 'Lebanon' },
+      'southern lebanon': { lat: 33.2, lng: 35.3, country: 'Lebanon' },
+      'Lebanon': { lat: 33.8547, lng: 35.8623, country: 'Lebanon' },
+      'lebanon': { lat: 33.8547, lng: 35.8623, country: 'Lebanon' },
+      'Damascus': { lat: 33.5138, lng: 36.2765, country: 'Syria' },
+      'Dubai': { lat: 25.2048, lng: 55.2708, country: 'UAE' },
+      'Riyadh': { lat: 24.7136, lng: 46.6753, country: 'Saudi Arabia' },
+      'Basra': { lat: 30.5156, lng: 47.7804, country: 'Iraq' },
+      'Gaza': { lat: 31.5017, lng: 34.4668, country: 'Gaza Strip' },
+      'gaza': { lat: 31.5017, lng: 34.4668, country: 'Gaza Strip' },
+      'Sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
+      'sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
+      'Aleppo': { lat: 36.2021, lng: 37.1343, country: 'Syria' },
+      'aleppo': { lat: 36.2021, lng: 37.1343, country: 'Syria' },
+      'Homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' },
+      'homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' }
+    };
+    return coords[location] || { lat: 32.0, lng: 53.0, country: 'Unknown' };
+  };
 
-  // Convert news items to map events
+  // ULTRA-STRICT: Only confirmed military strikes/attacks
+  // Must have explicit military action in active voice
+  const CONFIRMED_STRIKE_KEYWORDS = [
+    'airstrike', 'air strike', 'air-strike',
+    'missile strike', 'rocket strike', 'ballistic missile',
+    'drone attack', 'drone strike', 'suicide drone',
+    'bombing', 'bombed', 'car bomb', 'truck bomb',
+    'explosion rocks', 'blast hits', 'detonated',
+    'struck', 'targeted strike', 'precision strike',
+    'shelling', 'artillery fire', 'mortar attack',
+    'exchange of fire', 'clash between', 'firefight'
+  ];
+
+  // STRICT exclusion - any of these makes it NOT a confirmed strike
+  const EXCLUDE_KEYWORDS = [
+    // Diplomatic/Humanitarian (not strikes)
+    'envoy visits', 'diplomat', 'ambassador', 'humanitarian', 'aid worker',
+    'red cross', 'red crescent', 'unicef', 'un envoy',
+    
+    // Analysis/Questions (not confirmed events)
+    'why did', 'what if', 'how will', 'analysis', 'opinion', 'editorial',
+    'what happens', 'what next', 'explained', 'q&a',
+    
+    // Statements/Warnings (not actual strikes)
+    'warns', 'threatens', 'pledges', 'promises', 'vows', 'condemns',
+    'calls for', 'urges', 'demands', 'appeals',
+    
+    // Diplomatic processes
+    'sanctions', 'diplomatic', 'negotiations', 'talks', 'summit', 'conference',
+    'statement', 'announces', 'plans to', 'considering', 'agreement', 'treaty',
+    
+    // Aftermath/Consequences (not the strike itself)
+    'aftermath', 'cleanup', 'investigation', 'probe', 'inquiry',
+    'memorial', 'funeral', 'mourning', 'visit site'
+  ];
+
+  // Convert news items to map events - ATTACKS ONLY
   const convertNewsToEvents = (newsItems) => {
     const cityMapping = {
       'dubai': { lat: 25.2048, lng: 55.2708, country: 'UAE' },
@@ -189,23 +240,43 @@ export default function ConflictMap({ mobile = false }) {
       const desc = (item.description || item.summary || '').toLowerCase();
       const text = title + ' ' + desc;
 
+      // ULTRA-STRICT filtering for confirmed military strikes only
+      const hasStrikeKeyword = CONFIRMED_STRIKE_KEYWORDS.some(keyword => text.includes(keyword));
+      const hasExcludeKeyword = EXCLUDE_KEYWORDS.some(keyword => text.includes(keyword));
+      const isQuestion = title.includes('?');
+      const isAnalysis = text.includes('why') && text.includes('did'); // "Why did X happen" = analysis
+      const isDiplomaticVisit = text.includes('visit') && (text.includes('envoy') || text.includes('diplomat') || text.includes('minister'));
+      const isHumanitarian = text.includes('aid') || text.includes('relief') || text.includes('humanitarian');
+      const isAftermath = text.includes('after') && (text.includes('visit') || text.includes('inspect') || text.includes('survey'));
+      
+      // Only show if:
+      // 1. Has explicit strike keyword (airstrike, missile strike, etc.)
+      // 2. NO exclude keywords (diplomatic, humanitarian, etc.)
+      // 3. NOT a question
+      // 4. NOT analysis
+      // 5. NOT a diplomatic visit
+      // 6. NOT humanitarian
+      // 7. NOT aftermath reporting
+      if (!hasStrikeKeyword || hasExcludeKeyword || isQuestion || isAnalysis || isDiplomaticVisit || isHumanitarian || isAftermath) {
+        continue;
+      }
+
       let matched = false;
       for (const [placeName, coords] of Object.entries(cityMapping)) {
         if (text.includes(placeName)) {
-          let severity = 'low';
-          if (text.includes('strike') || text.includes('attack') || text.includes('hit') || text.includes('missile') || text.includes('war') || text.includes('kill')) {
+          // Severity based on actual damage reported
+          let severity = 'medium'; // Default to medium for attacks
+          if (text.includes('killed') || text.includes('casualties') || text.includes('death toll') || text.includes('destroyed')) {
             severity = 'high';
-          } else if (text.includes('tension') || text.includes('threat') || text.includes('warning') || text.includes('sanction') || text.includes('escalate')) {
+          } else if (text.includes('damaged') || text.includes('hit') || text.includes('struck')) {
             severity = 'medium';
           }
 
-          let icon = 'alert';
+          let icon = 'strike';
           if (text.includes('missile') || text.includes('rocket')) icon = 'missile';
-          else if (text.includes('strike') || text.includes('bomb')) icon = 'bomb';
-          else if (text.includes('shield') || text.includes('defense') || text.includes('intercept')) icon = 'shield';
-          else if (text.includes('ship') || text.includes('naval')) icon = 'ship';
+          else if (text.includes('bomb') || text.includes('explosion')) icon = 'bomb';
           else if (text.includes('drone')) icon = 'drone';
-          else if (text.includes('troop') || text.includes('force')) icon = 'troop';
+          else if (text.includes('shell') || text.includes('artillery')) icon = 'bomb';
 
           events.push({
             id: id++,
@@ -225,7 +296,8 @@ export default function ConflictMap({ mobile = false }) {
         }
       }
       
-      if (!matched && (text.includes('trump') || text.includes('nuclear') || text.includes('deal'))) {
+      // Only add unmatched items if they explicitly mention attacks with location
+      if (!matched && text.includes('iran') && isAttack) {
         events.push({
           id: id++,
           lat: 35.6892,
@@ -233,12 +305,13 @@ export default function ConflictMap({ mobile = false }) {
           city: 'Tehran',
           country: 'Iran',
           severity: 'medium',
-          type: 'Political',
+          type: 'Confirmed Strike',
           time: item.timestamp || item.pubDate ? new Date(item.timestamp || item.pubDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
-          description: item.title || item.headline || item.description || 'Political update',
-          icon: 'alert',
+          description: item.title || item.headline || item.description || 'Attack reported',
+          icon: 'strike',
           source: item.source || 'News'
         });
+        matched = true;
       }
     }
 
@@ -505,13 +578,13 @@ export default function ConflictMap({ mobile = false }) {
                 <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-red-400" />
               </div>
               <div>
-                <h2 className="font-heading font-bold text-sm md:text-lg text-white">Live Conflict Monitor</h2>
+                <h2 className="font-heading font-bold text-sm md:text-lg text-white">Confirmed Military Strikes</h2>
                 <p className="text-[10px] md:text-xs text-gray-500">
-                  {events.length} active events
+                  {events.length === 0 ? 'No confirmed strikes in last 24h' : `${events.length} verified attacks`}
                   {isLoadingRealData ? (
-                    <span className="text-yellow-500 ml-1">• Loading real news...</span>
+                    <span className="text-yellow-500 ml-1">• Loading...</span>
                   ) : (
-                    <span className="text-green-500 ml-1">• Live data</span>
+                    <span className="text-green-500 ml-1">• Live</span>
                   )}
                 </p>
               </div>
@@ -541,40 +614,50 @@ export default function ConflictMap({ mobile = false }) {
             {renderMap()}
           </div>
           
-          {/* MOBILE: Show top 2 conflicts immediately */}
+          {/* MOBILE: Show confirmed strikes or empty state */}
           <div className="relative z-10 border-t border-white/10 bg-black/40 p-3">
-            <div className="space-y-2 mb-3">
-              {events.slice(0, 2).map(event => (
-                <button
-                  key={event.id}
-                  onClick={() => handleEventClick(event)}
-                  className="w-full text-left p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3"
+            {events.length === 0 ? (
+              <div className="text-center py-4">
+                <AlertTriangle className="w-6 h-6 text-gray-500 mx-auto mb-2" />
+                <p className="text-sm text-gray-400">No confirmed strikes</p>
+                <p className="text-xs text-gray-600 mt-1">Verified attacks appear here</p>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-2 mb-3">
+                  {events.slice(0, 2).map(event => (
+                    <button
+                      key={event.id}
+                      onClick={() => handleEventClick(event)}
+                      className="w-full text-left p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3"
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                        {EVENT_ICONS[event.icon]}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-white text-sm">{event.city}</span>
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                            {SEVERITY_CONFIG[event.severity].label}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
+                        <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                
+                <button 
+                  onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
+                  className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
                 >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
-                    {EVENT_ICONS[event.icon]}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-sm">{event.city}</span>
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
-                        {SEVERITY_CONFIG[event.severity].label}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
-                    <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
-                  </div>
+                  <AlertTriangle className="w-4 h-4" />
+                  View All {events.length} Strikes
+                  <ChevronUp className="w-4 h-4" />
                 </button>
-              ))}
-            </div>
-            
-            <button 
-              onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
-              className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
-            >
-              <AlertTriangle className="w-4 h-4" />
-              View All {events.length} Conflicts
-              <ChevronUp className="w-4 h-4" />
-            </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -588,9 +671,9 @@ export default function ConflictMap({ mobile = false }) {
             <div className="p-4 border-b border-white/10">
               <h3 className="font-bold text-white flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-red-400" />
-                Active Conflicts
+                Confirmed Strikes
               </h3>
-              <p className="text-xs text-gray-500 mt-1">{events.length} events tracked</p>
+              <p className="text-xs text-gray-500 mt-1">{events.length} attacks verified</p>
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
@@ -646,7 +729,7 @@ export default function ConflictMap({ mobile = false }) {
                 <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 flex-shrink-0">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5 text-red-400" />
-                    <h3 className="font-bold text-white">Active Conflicts</h3>
+                    <h3 className="font-bold text-white">Confirmed Strikes</h3>
                     <span className="text-sm text-gray-500">({events.length})</span>
                   </div>
                   <button 
@@ -777,9 +860,10 @@ function EventsList({ events, selectedEvent, onSelect }) {
   return (
     <div className="h-full">
       {events.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-full text-gray-500 py-8">
+        <div className="flex flex-col items-center justify-center h-full text-gray-500 py-8 px-4 text-center">
           <AlertTriangle className="w-8 h-8 mb-2 opacity-50" />
-          <p className="text-sm">No active conflicts</p>
+          <p className="text-sm">No confirmed military strikes</p>
+          <p className="text-xs text-gray-600 mt-1">Only verified attacks from the last 24 hours are shown</p>
         </div>
       ) : (
         <div className="space-y-2 pb-4">

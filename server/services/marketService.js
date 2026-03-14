@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { updateLiveDataCache } from './botMessageService.js';
 
 // Cache for market data
 let marketCache = null;
@@ -271,13 +270,10 @@ export const getMarkets = async () => {
     lastFetch = now;
     console.log('[MarketService] Market data refreshed successfully');
     
-    // Update bot service with oil data
+    // Oil data tracking for analytics
     const oilStock = stocks.find(s => s.label === 'OIL.WAR');
     if (oilStock) {
-      updateLiveDataCache({
-        oilPrice: oilStock.price,
-        oilChange: oilStock.change
-      });
+      // Future: Log to analytics
     }
   }
   

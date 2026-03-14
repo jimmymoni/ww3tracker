@@ -9,9 +9,9 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 // Services
-import { fetchAllRSSFeeds, startAutoRefresh, getCachedNews } from './services/rssService.js';
+import { refreshNews, startAutoRefresh, getCachedNews } from './services/rssService.js';
 import { fetchGDELTNews, mergeNewsSources } from './services/gdeltService.js';
-import { analyzeHeadline, getChatResponse } from './services/replicateService.js';
+import { analyzeHeadline, getChatResponse, analyzeForMapBatch } from './services/replicateService.js';
 import { fetchIranMarkets, getEscalationProbability } from './services/polymarketService.js';
 import { fetchIranFires } from './services/nasaFirmsService.js';
 import { getTrumpGif } from './services/giphyService.js';
@@ -80,9 +80,9 @@ const FALLBACK_NEWS = [
       side: "US",
       score: 4,
       severity: "medium",
-      badge: "W 🏆",
-      memeCaption: "US hitting them where it hurts - the bag 💰 no cap",
-      tickerText: "Sanctions go brrr 📉"
+      badge: "CONFIRMED",
+      analysis: "US sanctions target Iranian oil exports, significantly impacting economy",
+      tickerText: "Sanctions impacting Iranian oil exports"
     }
   },
   {
@@ -96,9 +96,9 @@ const FALLBACK_NEWS = [
       side: "NEUTRAL",
       score: 0,
       severity: "high",
-      badge: "BREAKING 💥",
-      memeCaption: "The whole region is giving main character energy rn 🎭",
-      tickerText: "Proxy wars popping off 📢"
+      badge: "BREAKING",
+      analysis: "Regional tensions increase as proxy conflicts expand across Middle East",
+      tickerText: "Regional proxy conflict escalation"
     }
   },
   {
@@ -112,9 +112,9 @@ const FALLBACK_NEWS = [
       side: "IRAN",
       score: -2,
       severity: "medium",
-      badge: "SUS 👀",
-      memeCaption: "Nuclear program looking kinda sus ngl 👀☢️",
-      tickerText: "Uranium levels rising 📈"
+      badge: "INTELLIGENCE",
+      analysis: "Iran's uranium enrichment program advances beyond previous limits",
+      tickerText: "Iranian uranium enrichment increasing"
     }
   }
 ];
@@ -272,27 +272,40 @@ app.get('/api/news', async (req, res) => {
       return;
     }
     
-    // No cache - return fallback immediately, then populate cache
-    console.log('[News] No cache, returning fallback immediately');
-    res.json({
-      items: FALLBACK_NEWS.slice(0, limit),
-      total: FALLBACK_NEWS.length,
-      lastUpdated: new Date().toISOString(),
-      fallback: true,
-      responseTime: Date.now() - startTime
-    });
+    // No cache - check if we have RSS data to return immediately
+    const rssNews = getCachedNews();
+    if (rssNews.length > 0) {
+      console.log('[News] Using RSS data while GDELT loads...');
+      res.json({
+        items: rssNews.slice(0, limit),
+        total: rssNews.length,
+        lastUpdated: new Date().toISOString(),
+        cached: false,
+        rssOnly: true,
+        responseTime: Date.now() - startTime
+      });
+    } else {
+      // Truly no data - return fallback
+      console.log('[News] No cache, returning fallback immediately');
+      res.json({
+        items: FALLBACK_NEWS.slice(0, limit),
+        total: FALLBACK_NEWS.length,
+        lastUpdated: new Date().toISOString(),
+        fallback: true,
+        responseTime: Date.now() - startTime
+      });
+    }
     
-    // Populate cache in background
+    // Populate merged cache in background (with GDELT)
     (async () => {
       try {
-        const rssNews = getCachedNews();
         if (rssNews.length === 0) {
-          await fetchAllRSSFeeds();
+          await refreshNews();
         }
         const gdeltNews = await fetchGDELTNews();
         cachedMergedNews = mergeNewsSources(getCachedNews(), gdeltNews);
         cacheTimestamp = Date.now();
-        console.log('[News] Cache populated, items:', cachedMergedNews.length);
+        console.log('[News] Cache populated with GDELT, items:', cachedMergedNews.length);
       } catch (error) {
         console.error('[News] Failed to populate cache:', error.message);
       }
@@ -310,6 +323,106 @@ app.get('/api/news', async (req, res) => {
     });
   }
 });
+
+// Get confirmed attacks for map display - AI analyzed
+app.get('/api/attacks', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    // Get cached news only (skip GDELT to save time and avoid rate limits)
+    const allNews = getCachedNews();
+    
+    // Limit to top 15 most recent news items for speed
+    const recentNews = allNews.slice(0, 15);
+    
+    // Use AI to identify confirmed attacks
+    let attacks = [];
+    try {
+      attacks = await analyzeForMapBatch(recentNews);
+    } catch (analysisError) {
+      console.log('[Attacks] AI analysis failed, using fallback');
+      // Fallback to keyword-based detection
+      attacks = getMockAttacks(recentNews);
+    }
+    
+    res.json({
+      attacks,
+      count: attacks.length,
+      lastUpdated: new Date().toISOString(),
+      responseTime: Date.now() - startTime
+    });
+  } catch (error) {
+    console.error('[API] /api/attacks error:', error);
+    res.status(500).json({ 
+      error: 'Failed to analyze attacks',
+      attacks: [],
+      count: 0
+    });
+  }
+});
+
+// Fallback attack detection using keywords
+function getMockAttacks(newsItems) {
+  const attacks = [];
+  
+  for (const item of newsItems) {
+    const text = (item.headline + ' ' + (item.description || '')).toLowerCase();
+    
+    // Check for attack keywords
+    const isAttack = /\b(strike|struck|bombed|hit|attacked|missile|drone|explosion|airstrike)\b/.test(text);
+    if (!isAttack) continue;
+    
+    // Determine attack type
+    let attackType = 'strike';
+    if (text.includes('airstrike')) attackType = 'airstrike';
+    else if (text.includes('missile')) attackType = 'missile';
+    else if (text.includes('drone')) attackType = 'drone';
+    else if (text.includes('bomb')) attackType = 'bombing';
+    
+    // Extract location
+    let location = '';
+    if (text.includes('baghdad')) location = 'Baghdad';
+    else if (text.includes('tehran')) location = 'Tehran';
+    else if (text.includes('kharg')) location = 'Kharg Island';
+    else if (text.includes('damascus')) location = 'Damascus';
+    else if (text.includes('beirut')) location = 'Beirut';
+    else if (text.includes('southern lebanon')) location = 'southern Lebanon';
+    else if (text.includes('lebanon') && !text.includes('southern')) location = 'Beirut';
+    else if (text.includes('gaza')) location = 'Gaza';
+    else if (text.includes('jerusalem')) location = 'Jerusalem';
+    else if (text.includes('tel aviv')) location = 'Tel Aviv';
+    else if (text.includes('basra')) location = 'Basra';
+    else if (text.includes('sanaa')) location = 'Sanaa';
+    else if (text.includes('aleppo')) location = 'Aleppo';
+    else if (text.includes('homs')) location = 'Homs';
+    else if (text.includes('dubai')) location = 'Dubai';
+    else if (text.includes('riyadh')) location = 'Riyadh';
+    else continue; // Skip if no location found
+    
+    // Determine severity
+    let severity = 'medium';
+    if (text.includes('killed') || text.includes('casualties') || text.includes('destroyed') || text.includes('dead')) severity = 'high';
+    else if (text.includes('injured') || text.includes('wounded') || text.includes('damage')) severity = 'medium';
+    else severity = 'low';
+    
+    // Return consistent structure with mapAnalysis nested object
+    attacks.push({
+      headline: item.headline,
+      description: item.description,
+      pubDate: item.published || new Date().toISOString(),
+      source: item.source,
+      mapAnalysis: {
+        isAttack: true,
+        attackType,
+        location,
+        severity,
+        description: item.headline
+      }
+    });
+  }
+  
+  return attacks;
+}
 
 // Analyze a headline with Kimi AI
 app.post('/api/analyze', async (req, res) => {
@@ -598,7 +711,7 @@ app.get('/api/ticker', async (req, res) => {
     });
     
     // Background refresh
-    fetchAllRSSFeeds().catch(err => console.error('[Ticker] Background fetch failed:', err));
+    refreshNews().catch(err => console.error('[Ticker] Background fetch failed:', err));
     
   } catch (error) {
     console.error('[API] /api/ticker error:', error);
@@ -662,7 +775,7 @@ const startServer = async () => {
       console.log('[Server] Starting background data fetch...');
       
       // Fetch RSS feeds first (usually fast)
-      await fetchAllRSSFeeds();
+      await refreshNews();
       
       // Then fetch GDELT
       const gdeltNews = await fetchGDELTNews();
