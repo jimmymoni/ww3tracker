@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb } from 'lucide-react';
+import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, X } from 'lucide-react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getCachedData } from '../lib/api';
@@ -45,6 +45,7 @@ export default function ConflictMap({ mobile = false }) {
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
   const [showTimeline, setShowTimeline] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [events, setEvents] = useState([]);
   const [lastUpdated, setLastUpdated] = useState('');
@@ -604,18 +605,18 @@ export default function ConflictMap({ mobile = false }) {
           </div>
         </div>
 
-        {/* MOBILE LAYOUT */}
+        {/* MOBILE LAYOUT - Horizontal Scrolling Cards */}
         <div className="lg:hidden">
           <div 
             ref={mobileContainerRef} 
             className="relative bg-[#020617] w-full overflow-hidden rounded-t-xl" 
-            style={{ height: mobile ? '200px' : '320px', touchAction: 'none' }}
+            style={{ height: mobile ? '240px' : '360px', touchAction: 'none' }}
           >
             {renderMap()}
           </div>
           
-          {/* MOBILE: Show confirmed strikes or empty state */}
-          <div className="relative z-10 border-t border-white/10 bg-black/40 p-3">
+          {/* MOBILE: Horizontal scrolling strike cards */}
+          <div className="relative z-10 border-t border-white/10 bg-black/60 backdrop-blur-sm">
             {events.length === 0 ? (
               <div className="text-center py-4">
                 <AlertTriangle className="w-6 h-6 text-gray-500 mx-auto mb-2" />
@@ -623,40 +624,42 @@ export default function ConflictMap({ mobile = false }) {
                 <p className="text-xs text-gray-600 mt-1">Verified attacks appear here</p>
               </div>
             ) : (
-              <>
-                <div className="space-y-2 mb-3">
-                  {events.slice(0, 2).map(event => (
+              <div className="p-3">
+                <div className="flex items-center justify-between mb-2 px-1">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Confirmed Strikes</span>
+                  <span className="text-xs text-gray-500">{events.length} attacks</span>
+                </div>
+                
+                {/* Horizontal scroll container */}
+                <div 
+                  className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  {events.map(event => (
                     <button
                       key={event.id}
-                      onClick={() => handleEventClick(event)}
-                      className="w-full text-left p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all flex items-center gap-3"
+                      onClick={() => {setSelectedEvent(event); setShowDetailModal(true);}}
+                      className="flex-shrink-0 w-[280px] snap-start text-left p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
                     >
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
-                        {EVENT_ICONS[event.icon]}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-white text-sm">{event.city}</span>
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
-                            {SEVERITY_CONFIG[event.severity].label}
-                          </span>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                          {EVENT_ICONS[event.icon]}
                         </div>
-                        <p className="text-[11px] text-gray-500 truncate">{event.description}</p>
-                        <p className="text-[10px] text-gray-600 mt-0.5">{event.time}</p>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-white text-sm">{event.city}</span>
+                            <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                              {SEVERITY_CONFIG[event.severity].label}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-gray-400 line-clamp-2 mt-1">{event.description}</p>
+                          <p className="text-[10px] text-gray-600 mt-1">{event.time}</p>
+                        </div>
                       </div>
                     </button>
                   ))}
                 </div>
-                
-                <button 
-                  onClick={() => {setShowDrawer(true); setShowTimeline(false);}}
-                  className="w-full py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl text-sm font-medium text-red-400 flex items-center justify-center gap-2"
-                >
-                  <AlertTriangle className="w-4 h-4" />
-                  View All {events.length} Strikes
-                  <ChevronUp className="w-4 h-4" />
-                </button>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -710,69 +713,69 @@ export default function ConflictMap({ mobile = false }) {
           </div>
         </div>
 
-        {/* MOBILE: Bottom Sheet */}
+        {/* MOBILE: Strike Detail Modal */}
         <AnimatePresence>
-          {isMobile && showDrawer && (
+          {isMobile && showDetailModal && selectedEvent && (
             <>
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/60 z-40"
-                onClick={() => setShowDrawer(false)}
+                className="fixed inset-0 bg-black/80 z-40"
+                onClick={() => setShowDetailModal(false)}
               />
               <motion.div
-                initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                className="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/10 rounded-t-2xl z-50"
-                style={{ height: '85vh', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+                initial={{ opacity: 0, scale: 0.95 }} 
+                animate={{ opacity: 1, scale: 1 }} 
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="fixed inset-x-4 top-[10vh] bottom-[10vh] bg-black/95 border border-white/10 rounded-2xl z-50 overflow-hidden"
               >
-                {/* Fixed Header - Always visible at top */}
-                <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95 flex-shrink-0" style={{ height: '60px' }}>
-                  {selectedEvent && showTimeline ? (
-                    <button 
-                      onClick={() => {setShowTimeline(false); setSelectedEvent(null);}}
-                      className="flex items-center gap-2 text-gray-400 hover:text-white"
-                    >
-                      <ArrowLeft className="w-5 h-5" />
-                      <span className="text-sm">Back</span>
-                    </button>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-red-400" />
-                      <h3 className="font-bold text-white">Confirmed Strikes</h3>
-                      <span className="text-sm text-gray-500">({events.length})</span>
-                    </div>
-                  )}
+                {/* Header with close button */}
+                <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95">
+                  <h3 className="font-bold text-white">Strike Details</h3>
                   <button 
-                    onClick={() => {setShowDrawer(false); setShowTimeline(false); setSelectedEvent(null);}}
-                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white flex items-center gap-1"
+                    onClick={() => {setShowDetailModal(false); setSelectedEvent(null);}}
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white"
                   >
-                    Close <ChevronDown className="w-4 h-4" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
                 
-                {/* Scrollable Content Area */}
-                <div 
-                  className="flex-1 overflow-y-auto px-4 pt-4" 
-                  style={{ 
-                    WebkitOverflowScrolling: 'touch',
-                    height: 'calc(85vh - 60px)',
-                    paddingBottom: '100px'
-                  }}
-                >
-                  {selectedEvent && showTimeline ? (
-                    <TimelineView 
-                      event={selectedEvent} 
-                      allEvents={events}
-                      onBack={() => {setShowTimeline(false); setSelectedEvent(null);}}
-                      onClose={() => {setShowDrawer(false); setSelectedEvent(null); setShowTimeline(false);}}
-                    />
-                  ) : (
-                    <EventsList 
-                      events={events}
-                      selectedEvent={selectedEvent}
-                      onSelect={(e) => {setSelectedEvent(e); setShowTimeline(true);}}
-                    />
-                  )}
+                {/* Scrollable Content */}
+                <div className="overflow-y-auto p-4" style={{ height: 'calc(80vh - 70px)', WebkitOverflowScrolling: 'touch' }}>
+                  {/* Location Header */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className={`w-14 h-14 rounded-xl ${SEVERITY_CONFIG[selectedEvent.severity].bg} flex items-center justify-center flex-shrink-0`}>
+                      {EVENT_ICONS[selectedEvent.icon]}
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="font-bold text-2xl text-white">{selectedEvent.city}</h2>
+                      <p className="text-sm text-gray-400">{selectedEvent.country}</p>
+                    </div>
+                    <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${SEVERITY_CONFIG[selectedEvent.severity].bg} text-white`}>
+                      {SEVERITY_CONFIG[selectedEvent.severity].label}
+                    </span>
+                  </div>
+
+                  {/* Main Event Card */}
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-4">
+                    <h4 className="text-sm font-bold text-gray-500 uppercase mb-3">Incident Details</h4>
+                    <p className="text-base text-gray-200 mb-4 leading-relaxed">{selectedEvent.description}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500">Source: {selectedEvent.source}</span>
+                      <div className="flex items-center gap-1 text-gray-400">
+                        <Clock className="w-4 h-4" />
+                        {selectedEvent.time}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Close button at bottom */}
+                  <button 
+                    onClick={() => {setShowDetailModal(false); setSelectedEvent(null);}}
+                    className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white font-medium"
+                  >
+                    Close
+                  </button>
                 </div>
               </motion.div>
             </>
