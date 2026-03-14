@@ -102,6 +102,7 @@ NASA API → /api/fires → NasaFirmsStrip
 | **SpicyMeter** | `components/SpicyMeter.jsx` | Tension/war market data | Markets API |
 | **PolymarketWidget** | `components/PolymarketWidget.jsx` | Prediction markets | Polymarket API |
 | **MemeFeed** | `components/MemeCard.jsx` | Breaking news cards | News API |
+| **FighterCard** | `components/FighterCard.jsx` | US vs Iran fighter cards | Static GIFs |
 | **NasaFirmsStrip** | `components/NasaFirmsStrip.jsx` | Satellite fire data | NASA API |
 | **TimelineOfChaos** | `components/TimelineOfChaos.jsx` | Historical timeline | Static data |
 | **BreakingAlert** | `components/BreakingAlert.jsx` | Full-screen alerts | Game state |
@@ -200,9 +201,8 @@ Response: { fires: [...], count, lastUpdated }
 │   ├── images/            # Image assets
 │   └── _redirects         # SPA routing (Railway)
 ├── server/                 # Backend
-│   ├── server.js          # Express entry point
-│   ├── routes/            # API routes
-│   └── services/          # Business logic
+│   ├── server.js          # Express entry point (routes + logic)
+│   └── services/          # Business logic modules
 ├── src/
 │   ├── App.jsx            # Main app + router
 │   ├── main.jsx           # React entry
