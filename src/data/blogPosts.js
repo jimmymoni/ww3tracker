@@ -393,7 +393,7 @@ Now it's out in the open.
     category: "Nuclear",
     readTime: "6 min",
     date: "February 28, 2026",
-    image: "/images/blog/iran-nuclear-program.jpg",
+    image: "/images/blog/iran-nuclear.jpg",
     author: {
       name: "WW3 Tracker",
       role: "Nuclear Analysis",
@@ -513,7 +513,7 @@ Privately: "Please don't start a war that drags us in."
     category: "Economics",
     readTime: "5 min",
     date: "February 25, 2026",
-    image: "/images/blog/strait-hormuz-oil.jpg",
+    image: "/images/blog/strait-hormuz.jpg",
     author: {
       name: "WW3 Tracker",
       role: "Economic Analysis",
