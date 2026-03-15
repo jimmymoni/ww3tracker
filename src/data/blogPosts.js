@@ -162,7 +162,7 @@ This isn't about nuclear weapons. That's just the excuse. It's about America wan
     category: "Military",
     readTime: "6 min",
     date: "March 3, 2026",
-    image: "/images/blog/us-vs-iran-military.jpg",
+    image: "/images/blog/us-iran-military.jpg",
     author: {
       name: "WW3 Tracker",
       role: "Military Analysis",
