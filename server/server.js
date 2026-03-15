@@ -792,6 +792,62 @@ app.post('/api/alert/dismiss', (req, res) => {
   res.json({ dismissed: true });
 });
 
+// PageSpeed Insights API - Analyze site performance
+app.get('/api/pagespeed', async (req, res) => {
+  const url = req.query.url || 'https://ww3tracker.live';
+  const strategy = req.query.strategy || 'mobile'; // mobile or desktop
+  
+  try {
+    const apiKey = process.env.PAGESPEED_API_KEY; // Optional: for higher quota
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=${strategy}${apiKey ? `&key=${apiKey}` : ''}`;
+    
+    const response = await fetch(apiUrl, { timeout: 30000 });
+    
+    if (!response.ok) {
+      throw new Error(`PageSpeed API returned ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract key metrics
+    const lighthouse = data.lighthouseResult;
+    const categories = lighthouse.categories;
+    const metrics = lighthouse.audits;
+    
+    res.json({
+      url,
+      strategy,
+      timestamp: new Date().toISOString(),
+      scores: {
+        performance: Math.round(categories.performance.score * 100),
+        accessibility: Math.round(categories.accessibility.score * 100),
+        bestPractices: Math.round(categories['best-practices'].score * 100),
+        seo: Math.round(categories.seo.score * 100),
+      },
+      metrics: {
+        firstContentfulPaint: metrics['first-contentful-paint'].displayValue,
+        largestContentfulPaint: metrics['largest-contentful-paint']?.displayValue || 'N/A',
+        timeToInteractive: metrics['interactive'].displayValue,
+        totalBlockingTime: metrics['total-blocking-time']?.displayValue || 'N/A',
+        cumulativeLayoutShift: metrics['cumulative-layout-shift']?.displayValue || 'N/A',
+        speedIndex: metrics['speed-index'].displayValue,
+      },
+      diagnostics: {
+        resourceSummary: metrics['resource-summary']?.details?.items || [],
+        serverResponseTime: metrics['server-response-time']?.displayValue,
+        renderBlockingResources: metrics['render-blocking-resources']?.displayValue,
+      }
+    });
+  } catch (error) {
+    console.error('[API] /api/pagespeed error:', error.message);
+    res.status(500).json({ 
+      error: 'Failed to fetch PageSpeed data',
+      message: error.message,
+      tip: 'PageSpeed API has rate limits. Try again in a few minutes.'
+    });
+  }
+});
+
 // Serve static files from dist folder (production build)
 app.use(express.static(path.join(__dirname, '../dist')));
 
@@ -929,6 +985,7 @@ const startServer = async () => {
 ║     • GET  /api/fires       - NASA FIRMS satellite data      ║
 ║     • GET  /api/ticker      - Comic ticker text              ║
 ║     • GET  /api/markets     - Real financial market data     ║
+║     • GET  /api/pagespeed   - PageSpeed Insights analysis    ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
     `);
