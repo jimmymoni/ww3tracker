@@ -180,7 +180,7 @@ This is a satirical project. Please keep it fun and respectful.
 
 ## ⚠️ Disclaimer
 
-This dashboard is 100% satire. We don't actually want war. The gamification of serious geopolitical events is purely for entertainment purposes. Stay informed through proper news sources.
+This dashboard provides real-time data aggregation for informational purposes. Data sources include NASA FIRMS, Polymarket prediction markets, and global news RSS feeds. For critical decisions, consult official sources.
 
 ## 📄 License
 

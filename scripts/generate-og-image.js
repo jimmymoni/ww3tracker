@@ -77,7 +77,7 @@ ctx.fillText('🥷 Proxies: Active 🩸', 1080, 390);
 ctx.textAlign = 'center';
 ctx.fillStyle = '#666666';
 ctx.font = '28px Arial';
-ctx.fillText('ww3tracker.live | Real-time satire tracker', 600, 570);
+ctx.fillText('ww3tracker.live | Live Conflict Monitor', 600, 570);
 
 // Border
 ctx.strokeStyle = '#333333';
