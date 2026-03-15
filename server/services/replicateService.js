@@ -452,7 +452,7 @@ const getMockChatResponse = () => {
 // ========== MAP ATTACK ANALYSIS ==========
 
 const analyzeForMapPrompt = (headline, description) => `
-You are a military intelligence analyst. Determine if this news describes a CONFIRMED military strike/attack.
+You are a military intelligence analyst. Determine if this news describes a CONFIRMED military strike/attack that ALREADY HAPPENED.
 
 Headline: "${headline}"
 ${description ? `Description: "${description}"` : ''}
@@ -466,23 +466,55 @@ Respond with ONLY a JSON object:
   "description": "brief factual description"
 }
 
-RULES:
-- isAttack: ONLY true if a military strike/attack already happened
-- attackType: classify the weapon/method
-- location: extract city/region (Baghdad, Tehran, Kharg Island, etc.)
-- severity: high = casualties, medium = confirmed strike, low = minor
-- Return ONLY JSON
+CRITICAL RULES - isAttack MUST be FALSE if:
+- Headline starts with "What is happening", "Why did", "How will" (analysis/explainer)
+- Contains "says it has", "claims", "reports" (unconfirmed statements)
+- Contains "live updates", "crisis live", "as it happened" (rolling coverage)
+- Contains "what we know", "explained", "analysis", "Q&A"
+- Is about diplomatic talks, negotiations, or political statements
+- Is a retrospective/summary piece ("day 16 of", "week 3 of")
+
+isAttack ONLY TRUE if:
+- Explicit confirmed strike ALREADY occurred (not planned, not threatened)
+- Uses active voice: "struck", "hit", "bombed", "destroyed", "damaged"
+- Mentions specific casualties or physical damage
+- Reports actual explosions/military action, not statements about action
+
+Examples of FALSE (not attacks):
+- "What is happening on day 16" - ANALYSIS
+- "Israel says it has launched strikes" - STATEMENT/UNCONFIRMED
+- "Crisis live: Latest updates" - ROLLING COVERAGE
+- "Why did Iran attack?" - EXPLAINER
+
+Examples of TRUE (confirmed attacks):
+- "Missile strikes hit Tehran military base, 12 killed" - CONFIRMED
+- "Explosions rock Isfahan nuclear facility" - CONFIRMED
+- "US warplanes destroy Iranian radar installations" - CONFIRMED
+
+Return ONLY JSON.
 `;
 
 export const analyzeForMap = async (headline, description = '') => {
   const token = getToken();
-  
-  // Fast keyword pre-check
   const lower = (headline + ' ' + description).toLowerCase();
-  const hasAttackKeyword = /\b(strike|struck|bombed|attack|hit|airstrike|missile|drone|explosion|shelling)\b/.test(lower);
-  const hasExcludeKeyword = /\b(warns|threatens|pledges|plans|considering|may|might|could|analysis|opinion|why|what if)\b/.test(lower);
   
-  if (!hasAttackKeyword || hasExcludeKeyword) {
+  // STRICT pre-filter: Skip analysis, explainers, statements, live blogs, humanitarian
+  const analysisKeywords = /\b(what is happening|what we know|explained|analysis|why did|how will|day \d+ of|week \d+ of|live updates|as it happened|crisis live|q&A|podcast|video|opinion|editorial)\b/;
+  const statementKeywords = /\b(says it has|claims to have|reports that|allegedly|reportedly)\b/;
+  const diplomaticKeywords = /\b(talks|negotiations|diplomatic|peace deal|ceasefire talks|foreign minister|envoy|embassy)\b/;
+  const humanitarianKeywords = /\b(humanitarian crisis|deepening the crisis|aid|relief|humanitarian|refugees|displaced|civilians suffer)\b/;
+  const aftermathKeywords = /\b(aftermath|cleanup|recovery|rebuilding|funeral|mourning|memorial|probe|investigation)\b/;
+  
+  if (analysisKeywords.test(lower) || statementKeywords.test(lower) || diplomaticKeywords.test(lower) || 
+      humanitarianKeywords.test(lower) || aftermathKeywords.test(lower)) {
+    console.log(`[MapAnalysis] Skipped (analysis/statement/humanitarian): "${headline.substring(0, 60)}..."`);
+    return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
+  }
+  
+  // Must have concrete attack keywords in active voice
+  const hasActiveAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion|exploded|fired on|launched (missile|strike|attack)|was attacked)\b/.test(lower);
+  if (!hasActiveAttack) {
+    console.log(`[MapAnalysis] Skipped (no active attack keywords): "${headline.substring(0, 60)}..."`);
     return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
   }
   
@@ -508,6 +540,7 @@ export const analyzeForMap = async (headline, description = '') => {
     });
 
     if (!response.ok) {
+      console.log(`[MapAnalysis] AI API error ${response.status}, using fallback`);
       return getMockMapAnalysis(headline, description);
     }
 
@@ -537,7 +570,19 @@ export const analyzeForMap = async (headline, description = '') => {
 const getMockMapAnalysis = (headline, description) => {
   const lower = (headline + ' ' + description).toLowerCase();
   
-  if (lower.includes('strike') || lower.includes('struck') || lower.includes('bombed') || lower.includes('hit by') || lower.includes('attacked')) {
+  // STRICT: Skip analysis pieces, statements, humanitarian coverage
+  const analysisKeywords = /\b(what is happening|what we know|explained|analysis|why did|how will|day \d+ of|week \d+ of|live updates|as it happened|crisis live|q&A)\b/;
+  const statementKeywords = /\b(says it has|claims to have|reports that|allegedly|reportedly)\b/;
+  const humanitarianKeywords = /\b(humanitarian crisis|deepening the crisis|aid|relief|humanitarian|refugees|displaced)\b/;
+  
+  if (analysisKeywords.test(lower) || statementKeywords.test(lower) || humanitarianKeywords.test(lower)) {
+    return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
+  }
+  
+  // Must have ACTIVE voice attack keywords (not passive, not statements)
+  const hasActiveAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion rocked|exploded|fired on|was attacked)\b/.test(lower);
+  
+  if (hasActiveAttack) {
     let type = 'strike';
     if (lower.includes('missile')) type = 'missile';
     else if (lower.includes('drone')) type = 'drone';
@@ -560,6 +605,17 @@ const getMockMapAnalysis = (headline, description) => {
     else if (lower.includes('sanaa')) location = 'Sanaa';
     else if (lower.includes('aleppo')) location = 'Aleppo';
     else if (lower.includes('homs')) location = 'Homs';
+    // Current conflict locations (March 2026)
+    else if (lower.includes('isfahan')) location = 'Isfahan';
+    else if (lower.includes('natanz')) location = 'Natanz';
+    else if (lower.includes('kashan')) location = 'Kashan';
+    else if (lower.includes('qom')) location = 'Qom';
+    else if (lower.includes('bushehr')) location = 'Bushehr';
+    else if (lower.includes('bandar abbas')) location = 'Bandar Abbas';
+    else if (lower.includes('shiraz')) location = 'Shiraz';
+    else if (lower.includes('tabriz')) location = 'Tabriz';
+    else if (lower.includes('mashhad')) location = 'Mashhad';
+    else if (lower.includes('ahvaz')) location = 'Ahvaz';
     
     let severity = 'medium';
     if (lower.includes('killed') || lower.includes('casualties') || lower.includes('destroyed') || lower.includes('dead')) severity = 'high';

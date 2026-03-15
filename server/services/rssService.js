@@ -17,7 +17,12 @@ const KEYWORDS = [
   'trump iran', 'tehran', 'pentagon', 'strike', 'missile',
   'us-iran', 'war', 'conflict', 'qasem', 'soleimani',
   'ayatollah', 'khamenei', 'proxy', 'houthis', 'hezbollah',
-  'israel', 'gaza', 'hamas', 'netanyahu', 'hormuz'
+  'israel', 'gaza', 'hamas', 'netanyahu', 'hormuz',
+  // Current conflict keywords (March 2026)
+  'airstrike', 'air strike', 'bombed', 'attack', 'hit', 'struck',
+  'isfahan', 'natanz', 'kharg', 'drone', 'explosion', 'retaliation',
+  'killed', 'casualties', 'destroyed', 'damaged', 'fire', 'blast',
+  'military', 'base', 'facility', 'infrastructure', 'oil'
 ];
 
 // Simple language detection - check if text contains non-Latin characters

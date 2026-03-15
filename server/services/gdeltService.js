@@ -8,7 +8,15 @@ const GDELT_QUERIES = [
   'iran nuclear deal',
   'middle east tensions',
   'iran military',
-  'us iran relations'
+  'us iran relations',
+  // Current conflict queries (March 2026)
+  'isfahan strike',
+  'iran airstrike',
+  'iran missile attack',
+  'israel iran strike',
+  'kharg island',
+  'tehran attack',
+  'iran retaliation'
 ];
 
 // Retry configuration

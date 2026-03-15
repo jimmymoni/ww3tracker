@@ -17,12 +17,45 @@ const LABELS = [
   { name: 'UAE', lat: 24.5, lng: 54, type: 'country' },
   { name: 'QATAR', lat: 25.3, lng: 51.2, type: 'country' },
   { name: 'KUWAIT', lat: 29.3, lng: 47.5, type: 'country' },
+  // Current conflict hotspots (March 2026)
+  { name: 'ISFAHAN', lat: 32.65, lng: 51.67, type: 'city' },
+  { name: 'NATANZ', lat: 33.91, lng: 51.72, type: 'city' },
 ];
 
 const SEVERITY_CONFIG = {
   high: { color: '#ef4444', bg: 'bg-red-500', label: 'CRITICAL' },
   medium: { color: '#f97316', bg: 'bg-orange-500', label: 'ELEVATED' },
   low: { color: '#eab308', bg: 'bg-yellow-500', label: 'MONITORING' }
+};
+
+// Time window config
+const HOURS_WINDOW = 48;
+const NEW_THRESHOLD_HOURS = 6;  // Show "NEW" badge
+const RECENT_THRESHOLD_HOURS = 12; // Pulsing animation
+
+// Helper to format relative time
+const getRelativeTime = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return `${diffDays}d ago`;
+};
+
+// Check if attack is very recent
+const isNewAttack = (dateString) => {
+  const hoursAgo = (Date.now() - new Date(dateString).getTime()) / 3600000;
+  return hoursAgo < NEW_THRESHOLD_HOURS;
+};
+
+const isRecentAttack = (dateString) => {
+  const hoursAgo = (Date.now() - new Date(dateString).getTime()) / 3600000;
+  return hoursAgo < RECENT_THRESHOLD_HOURS;
 };
 
 const EVENT_ICONS = {
@@ -100,7 +133,7 @@ export default function ConflictMap({ mobile = false }) {
         const response = await fetch('/api/attacks');
         if (response.ok) {
           const data = await response.json();
-          console.log('[ConflictMap] Attacks received:', data.count);
+          console.log('[ConflictMap] Attacks received:', data.count, data.loading ? '(loading fresh data)' : '(cached)');
           
           if (data.attacks && data.attacks.length > 0) {
             // Convert AI-analyzed attacks to map events
@@ -113,6 +146,10 @@ export default function ConflictMap({ mobile = false }) {
               severity: item.mapAnalysis.severity,
               type: item.mapAnalysis.attackType.toUpperCase(),
               time: new Date(item.pubDate || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              relativeTime: getRelativeTime(item.pubDate),
+              isNew: isNewAttack(item.pubDate),
+              isRecent: isRecentAttack(item.pubDate),
+              pubDate: item.pubDate,
               description: item.headline,
               icon: item.mapAnalysis.attackType,
               source: item.source
@@ -122,10 +159,16 @@ export default function ConflictMap({ mobile = false }) {
           } else {
             setEvents([]);
           }
+          
+          // If server is still loading fresh data, keep loading indicator for a bit
+          if (data.loading) {
+            setTimeout(() => setIsLoadingRealData(false), 2000);
+          } else {
+            setIsLoadingRealData(false);
+          }
         }
       } catch (err) {
         console.error('[ConflictMap] Failed to fetch attacks:', err);
-      } finally {
         setIsLoadingRealData(false);
       }
     };
@@ -159,45 +202,36 @@ export default function ConflictMap({ mobile = false }) {
       'Aleppo': { lat: 36.2021, lng: 37.1343, country: 'Syria' },
       'aleppo': { lat: 36.2021, lng: 37.1343, country: 'Syria' },
       'Homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' },
-      'homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' }
+      'homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' },
+      // Current conflict locations (March 2026)
+      'Isfahan': { lat: 32.6539, lng: 51.6660, country: 'Iran' },
+      'isfahan': { lat: 32.6539, lng: 51.6660, country: 'Iran' },
+      'Natanz': { lat: 33.9061, lng: 51.7198, country: 'Iran' },
+      'natanz': { lat: 33.9061, lng: 51.7198, country: 'Iran' },
+      'Kashan': { lat: 33.9850, lng: 51.4100, country: 'Iran' },
+      'kashan': { lat: 33.9850, lng: 51.4100, country: 'Iran' },
+      'Qom': { lat: 34.6401, lng: 50.8764, country: 'Iran' },
+      'qom': { lat: 34.6401, lng: 50.8764, country: 'Iran' },
+      'Bushehr': { lat: 28.9684, lng: 50.8385, country: 'Iran' },
+      'bushehr': { lat: 28.9684, lng: 50.8385, country: 'Iran' },
+      'Bandar Abbas': { lat: 27.1833, lng: 56.2666, country: 'Iran' },
+      'bandar abbas': { lat: 27.1833, lng: 56.2666, country: 'Iran' },
+      'Shiraz': { lat: 29.5926, lng: 52.5836, country: 'Iran' },
+      'shiraz': { lat: 29.5926, lng: 52.5836, country: 'Iran' },
+      'Tabriz': { lat: 38.0962, lng: 46.2738, country: 'Iran' },
+      'tabriz': { lat: 38.0962, lng: 46.2738, country: 'Iran' },
+      'Mashhad': { lat: 36.2605, lng: 59.6168, country: 'Iran' },
+      'mashhad': { lat: 36.2605, lng: 59.6168, country: 'Iran' },
+      'Ahvaz': { lat: 31.3183, lng: 48.6706, country: 'Iran' },
+      'ahvaz': { lat: 31.3183, lng: 48.6706, country: 'Iran' }
     };
     return coords[location] || { lat: 32.0, lng: 53.0, country: 'Unknown' };
   };
 
-  // ULTRA-STRICT: Only confirmed military strikes/attacks
-  // Must have explicit military action in active voice
-  const CONFIRMED_STRIKE_KEYWORDS = [
-    'airstrike', 'air strike', 'air-strike',
-    'missile strike', 'rocket strike', 'ballistic missile',
-    'drone attack', 'drone strike', 'suicide drone',
-    'bombing', 'bombed', 'car bomb', 'truck bomb',
-    'explosion rocks', 'blast hits', 'detonated',
-    'struck', 'targeted strike', 'precision strike',
-    'shelling', 'artillery fire', 'mortar attack',
-    'exchange of fire', 'clash between', 'firefight'
-  ];
-
-  // STRICT exclusion - any of these makes it NOT a confirmed strike
+  // Trust AI analysis from backend - minimal client-side filtering
+  // Only filter out obvious non-conflict content
   const EXCLUDE_KEYWORDS = [
-    // Diplomatic/Humanitarian (not strikes)
-    'envoy visits', 'diplomat', 'ambassador', 'humanitarian', 'aid worker',
-    'red cross', 'red crescent', 'unicef', 'un envoy',
-    
-    // Analysis/Questions (not confirmed events)
-    'why did', 'what if', 'how will', 'analysis', 'opinion', 'editorial',
-    'what happens', 'what next', 'explained', 'q&a',
-    
-    // Statements/Warnings (not actual strikes)
-    'warns', 'threatens', 'pledges', 'promises', 'vows', 'condemns',
-    'calls for', 'urges', 'demands', 'appeals',
-    
-    // Diplomatic processes
-    'sanctions', 'diplomatic', 'negotiations', 'talks', 'summit', 'conference',
-    'statement', 'announces', 'plans to', 'considering', 'agreement', 'treaty',
-    
-    // Aftermath/Consequences (not the strike itself)
-    'aftermath', 'cleanup', 'investigation', 'probe', 'inquiry',
-    'memorial', 'funeral', 'mourning', 'visit site'
+    'opinion', 'editorial', 'column', 'essay', 'podcast', 'video'
   ];
 
   // Convert news items to map events - ATTACKS ONLY
@@ -231,6 +265,17 @@ export default function ConflictMap({ mobile = false }) {
       'yemen': { lat: 15.5, lng: 47.5, country: 'Yemen' },
       'gulf': { lat: 26.0, lng: 52.0, country: 'Persian Gulf' },
       'hormuz': { lat: 26.5, lng: 56.5, country: 'Strait of Hormuz' },
+      // Current conflict locations (March 2026)
+      'isfahan': { lat: 32.6539, lng: 51.6660, country: 'Iran' },
+      'natanz': { lat: 33.9061, lng: 51.7198, country: 'Iran' },
+      'kashan': { lat: 33.9850, lng: 51.4100, country: 'Iran' },
+      'qom': { lat: 34.6401, lng: 50.8764, country: 'Iran' },
+      'bushehr': { lat: 28.9684, lng: 50.8385, country: 'Iran' },
+      'bandar abbas': { lat: 27.1833, lng: 56.2666, country: 'Iran' },
+      'shiraz': { lat: 29.5926, lng: 52.5836, country: 'Iran' },
+      'tabriz': { lat: 38.0962, lng: 46.2738, country: 'Iran' },
+      'mashhad': { lat: 36.2605, lng: 59.6168, country: 'Iran' },
+      'ahvaz': { lat: 31.3183, lng: 48.6706, country: 'Iran' },
     };
 
     const events = [];
@@ -241,24 +286,9 @@ export default function ConflictMap({ mobile = false }) {
       const desc = (item.description || item.summary || '').toLowerCase();
       const text = title + ' ' + desc;
 
-      // ULTRA-STRICT filtering for confirmed military strikes only
-      const hasStrikeKeyword = CONFIRMED_STRIKE_KEYWORDS.some(keyword => text.includes(keyword));
+      // Trust AI analysis - minimal filtering
       const hasExcludeKeyword = EXCLUDE_KEYWORDS.some(keyword => text.includes(keyword));
-      const isQuestion = title.includes('?');
-      const isAnalysis = text.includes('why') && text.includes('did'); // "Why did X happen" = analysis
-      const isDiplomaticVisit = text.includes('visit') && (text.includes('envoy') || text.includes('diplomat') || text.includes('minister'));
-      const isHumanitarian = text.includes('aid') || text.includes('relief') || text.includes('humanitarian');
-      const isAftermath = text.includes('after') && (text.includes('visit') || text.includes('inspect') || text.includes('survey'));
-      
-      // Only show if:
-      // 1. Has explicit strike keyword (airstrike, missile strike, etc.)
-      // 2. NO exclude keywords (diplomatic, humanitarian, etc.)
-      // 3. NOT a question
-      // 4. NOT analysis
-      // 5. NOT a diplomatic visit
-      // 6. NOT humanitarian
-      // 7. NOT aftermath reporting
-      if (!hasStrikeKeyword || hasExcludeKeyword || isQuestion || isAnalysis || isDiplomaticVisit || isHumanitarian || isAftermath) {
+      if (hasExcludeKeyword) {
         continue;
       }
 
@@ -297,8 +327,8 @@ export default function ConflictMap({ mobile = false }) {
         }
       }
       
-      // Only add unmatched items if they explicitly mention attacks with location
-      if (!matched && text.includes('iran') && isAttack) {
+      // Only add unmatched items if they mention Iran attacks
+      if (!matched && text.includes('iran') && (text.includes('strike') || text.includes('attack') || text.includes('hit'))) {
         events.push({
           id: id++,
           lat: 35.6892,
@@ -478,9 +508,10 @@ export default function ConflictMap({ mobile = false }) {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
               if (!isVisible(event.lat, event.lng)) return null;
               const config = SEVERITY_CONFIG[event.severity];
-              const baseR = isMobile ? 8 : 12;
+              // Bigger heat radius for new/recent attacks
+              const baseR = isMobile ? (event.isNew ? 12 : event.isRecent ? 10 : 8) : (event.isNew ? 16 : event.isRecent ? 14 : 12);
               const r = event.severity === 'high' ? baseR * 2 : event.severity === 'medium' ? baseR * 1.5 : baseR;
-              const opacity = event.severity === 'high' ? 0.3 : event.severity === 'medium' ? 0.2 : 0.1;
+              const opacity = event.severity === 'high' ? 0.4 : event.severity === 'medium' ? 0.25 : 0.15;
               
               return (
                 <circle 
@@ -502,42 +533,60 @@ export default function ConflictMap({ mobile = false }) {
               const config = SEVERITY_CONFIG[event.severity];
               const isHovered = hoveredEvent?.id === event.id;
               const isSelected = selectedEvent?.id === event.id;
-              const radius = isMobile ? 4 : 5;
+              const radius = isMobile ? (event.isNew ? 6 : 4) : (event.isNew ? 7 : 5);
               const glowFilter = event.severity === 'high' ? 'url(#glow-red)' : 
                                 event.severity === 'medium' ? 'url(#glow-orange)' : 'url(#glow-yellow)';
+              
+              // Faster pulse for new attacks
+              const pulseDuration = event.isNew ? '0.8s' : event.isRecent ? '1.2s' : event.severity === 'high' ? '1.5s' : '2.5s';
+              const pulseRadius = event.isNew ? radius * 3 : event.isRecent ? radius * 2.5 : radius * (event.severity === 'high' ? 2.5 : 2);
+              const pulseOpacity = event.isNew ? 0.9 : event.isRecent ? 0.7 : event.severity === 'high' ? 0.8 : 0.4;
 
               return (
                 <g key={event.id} className="cursor-pointer" onClick={() => handleEventClick(event)}>
+                  {/* Outer pulse ring - faster for recent attacks */}
                   <circle 
                     cx={x} 
                     cy={y} 
-                    r={isMobile ? (event.severity === 'high' ? 8 : 5) : (event.severity === 'high' ? 12 : 8)} 
+                    r={isMobile ? (event.severity === 'high' ? 10 : 6) : (event.severity === 'high' ? 14 : 8)} 
                     fill="none" 
-                    stroke={config.color} 
-                    strokeWidth={event.severity === 'high' ? 2 : 1} 
-                    opacity={event.severity === 'high' ? 0.6 : 0.3}
+                    stroke={event.isNew ? '#ef4444' : event.isRecent ? '#f97316' : config.color} 
+                    strokeWidth={event.isNew ? 3 : event.isRecent ? 2 : event.severity === 'high' ? 2 : 1} 
+                    opacity={pulseOpacity}
                   >
-                    <animate attributeName="r" values={`${radius};${radius * (event.severity === 'high' ? 2.5 : 2)};${radius}`} dur={event.severity === 'high' ? '1.5s' : '2.5s'} repeatCount="indefinite" />
-                    <animate attributeName="opacity" values={`${event.severity === 'high' ? 0.8 : 0.4};0;${event.severity === 'high' ? 0.8 : 0.4}`} dur={event.severity === 'high' ? '1.5s' : '2.5s'} repeatCount="indefinite" />
+                    <animate attributeName="r" values={`${radius};${pulseRadius};${radius}`} dur={pulseDuration} repeatCount="indefinite" />
+                    <animate attributeName="opacity" values={`${pulseOpacity};0;${pulseOpacity}`} dur={pulseDuration} repeatCount="indefinite" />
                   </circle>
                   
+                  {/* Core dot */}
                   <circle
                     cx={x} 
                     cy={y} 
-                    r={isHovered || isSelected ? radius + 1.5 : radius}
-                    fill={config.color}
+                    r={isHovered || isSelected ? radius + 2 : radius}
+                    fill={event.isNew ? '#ef4444' : event.isRecent ? '#f97316' : config.color}
                     stroke="white"
-                    strokeWidth={1.5}
+                    strokeWidth={event.isNew ? 2.5 : 1.5}
                     style={{ filter: glowFilter, transition: 'all 0.2s ease' }}
                     onMouseEnter={() => setHoveredEvent(event)}
                     onMouseLeave={() => setHoveredEvent(null)}
                   />
+                  
+                  {/* NEW badge on map for very recent */}
+                  {event.isNew && (
+                    <g>
+                      <rect x={x - 14} y={y - 22} width="28" height="10" rx="2" fill="#ef4444" />
+                      <text x={x} y={y - 15} textAnchor="middle" fill="white" fontSize="6" fontWeight="700">NEW</text>
+                    </g>
+                  )}
 
                   {(isHovered || isSelected) && (
                     <g>
-                      <rect x={x - 40} y={y - 28} width="80" height="16" rx="3" fill="rgba(0,0,0,0.95)" stroke={config.color} strokeWidth="0.5" />
-                      <text x={x} y={y - 17} textAnchor="middle" fill="white" fontSize="8" fontWeight="600">
+                      <rect x={x - 45} y={y - 32} width="90" height="20" rx="3" fill="rgba(0,0,0,0.95)" stroke={config.color} strokeWidth="0.5" />
+                      <text x={x} y={y - 22} textAnchor="middle" fill="white" fontSize="8" fontWeight="600">
                         {event.city}
+                      </text>
+                      <text x={x} y={y - 12} textAnchor="middle" fill={event.isNew ? '#ef4444' : event.isRecent ? '#f97316' : '#9ca3af'} fontSize="7">
+                        {event.relativeTime}
                       </text>
                     </g>
                   )}
@@ -556,6 +605,15 @@ export default function ConflictMap({ mobile = false }) {
               <span className="text-[10px] text-gray-400">{config.label}</span>
             </div>
           ))}
+          {/* Time indicators */}
+          <div className="flex items-center gap-1.5 pt-1 border-t border-white/10 mt-1">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-[10px] text-gray-400">&lt; 6h (NEW)</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-orange-500" />
+            <span className="text-[10px] text-gray-400">&lt; 12h</span>
+          </div>
         </div>
       </div>
 
@@ -581,9 +639,9 @@ export default function ConflictMap({ mobile = false }) {
               <div>
                 <h2 className="font-heading font-bold text-sm md:text-lg text-white">Confirmed Military Strikes</h2>
                 <p className="text-[10px] md:text-xs text-gray-500">
-                  {events.length === 0 ? 'No confirmed strikes in last 24h' : `${events.length} verified attacks`}
+                  {events.length === 0 ? `No confirmed strikes in last ${HOURS_WINDOW}h` : `${events.length} verified attacks in last ${HOURS_WINDOW}h`}
                   {isLoadingRealData ? (
-                    <span className="text-yellow-500 ml-1">• Loading...</span>
+                    <span className="text-yellow-500 ml-1">• Updating...</span>
                   ) : (
                     <span className="text-green-500 ml-1">• Live</span>
                   )}
@@ -639,21 +697,34 @@ export default function ConflictMap({ mobile = false }) {
                     <button
                       key={event.id}
                       onClick={() => {setSelectedEvent(event); setShowDetailModal(true);}}
-                      className="flex-shrink-0 w-[280px] snap-start text-left p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+                      className={`flex-shrink-0 w-[280px] snap-start text-left p-3 rounded-xl border transition-all ${
+                        event.isNew 
+                          ? 'border-red-500/50 bg-red-500/5' 
+                          : event.isRecent 
+                            ? 'border-orange-500/30 bg-orange-500/5' 
+                            : 'border-white/10 bg-white/5 hover:bg-white/10'
+                      }`}
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg} ${event.isRecent ? 'animate-pulse' : ''}`}>
                           {EVENT_ICONS[event.icon]}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-white text-sm">{event.city}</span>
+                            <span className="font-bold text-white text-sm flex items-center gap-2">
+                              {event.city}
+                              {event.isNew && (
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
+                              )}
+                            </span>
                             <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
                               {SEVERITY_CONFIG[event.severity].label}
                             </span>
                           </div>
                           <p className="text-[11px] text-gray-400 line-clamp-2 mt-1">{event.description}</p>
-                          <p className="text-[10px] text-gray-600 mt-1">{event.time}</p>
+                          <p className={`text-[10px] mt-1 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
+                            {event.relativeTime}
+                          </p>
                         </div>
                       </div>
                     </button>
@@ -689,22 +760,33 @@ export default function ConflictMap({ mobile = false }) {
                   className={`w-full text-left p-3 rounded-xl border transition-all ${
                     selectedEvent?.id === event.id 
                       ? 'bg-red-500/10 border-red-500/50' 
-                      : 'bg-white/5 border-white/5 hover:bg-white/10'
+                      : event.isNew 
+                        ? 'bg-red-500/5 border-red-500/30 hover:bg-red-500/10'
+                        : event.isRecent 
+                          ? 'bg-orange-500/5 border-orange-500/20 hover:bg-orange-500/10'
+                          : 'bg-white/5 border-white/5 hover:bg-white/10'
                   }`}
                 >
                   <div className="flex items-start gap-2.5">
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg} ${event.isRecent ? 'animate-pulse' : ''}`}>
                       {EVENT_ICONS[event.icon]}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white text-sm">{event.city}</span>
+                        <span className="font-bold text-white text-sm flex items-center gap-2">
+                          {event.city}
+                          {event.isNew && (
+                            <span className="text-[8px] px-1.5 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
+                          )}
+                        </span>
                         <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
                           {SEVERITY_CONFIG[event.severity].label}
                         </span>
                       </div>
                       <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-2">{event.description}</p>
-                      <p className="text-[9px] text-gray-600 mt-1">{event.time}</p>
+                      <p className={`text-[9px] mt-1 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
+                        {event.relativeTime}
+                      </p>
                     </div>
                   </div>
                 </button>
@@ -744,11 +826,16 @@ export default function ConflictMap({ mobile = false }) {
                 <div className="overflow-y-auto p-4" style={{ height: 'calc(80vh - 70px)', WebkitOverflowScrolling: 'touch' }}>
                   {/* Location Header */}
                   <div className="flex items-center gap-3 mb-5">
-                    <div className={`w-14 h-14 rounded-xl ${SEVERITY_CONFIG[selectedEvent.severity].bg} flex items-center justify-center flex-shrink-0`}>
+                    <div className={`w-14 h-14 rounded-xl ${SEVERITY_CONFIG[selectedEvent.severity].bg} flex items-center justify-center flex-shrink-0 ${selectedEvent.isRecent ? 'animate-pulse' : ''}`}>
                       {EVENT_ICONS[selectedEvent.icon]}
                     </div>
                     <div className="flex-1">
-                      <h2 className="font-bold text-2xl text-white">{selectedEvent.city}</h2>
+                      <h2 className="font-bold text-2xl text-white flex items-center gap-2">
+                        {selectedEvent.city}
+                        {selectedEvent.isNew && (
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
+                        )}
+                      </h2>
                       <p className="text-sm text-gray-400">{selectedEvent.country}</p>
                     </div>
                     <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${SEVERITY_CONFIG[selectedEvent.severity].bg} text-white`}>
@@ -762,9 +849,9 @@ export default function ConflictMap({ mobile = false }) {
                     <p className="text-base text-gray-200 mb-4 leading-relaxed">{selectedEvent.description}</p>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">Source: {selectedEvent.source}</span>
-                      <div className="flex items-center gap-1 text-gray-400">
+                      <div className={`flex items-center gap-1 ${selectedEvent.isNew ? 'text-red-400 font-medium' : selectedEvent.isRecent ? 'text-orange-400' : 'text-gray-400'}`}>
                         <Clock className="w-4 h-4" />
-                        {selectedEvent.time}
+                        {selectedEvent.relativeTime}
                       </div>
                     </div>
                   </div>
@@ -810,11 +897,16 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
     <div style={{ paddingBottom: '60px' }}>
       {/* Location Header */}
       <div className="flex items-center gap-3 mb-5" style={{ marginTop: '8px' }}>
-        <div className={`w-14 h-14 rounded-xl ${SEVERITY_CONFIG[event.severity].bg} flex items-center justify-center flex-shrink-0`}>
+        <div className={`w-14 h-14 rounded-xl ${SEVERITY_CONFIG[event.severity].bg} flex items-center justify-center flex-shrink-0 ${event.isRecent ? 'animate-pulse' : ''}`}>
           {EVENT_ICONS[event.icon]}
         </div>
         <div className="flex-1">
-          <h3 className="font-bold text-2xl text-white">{event.city}</h3>
+          <h3 className="font-bold text-2xl text-white flex items-center gap-2">
+            {event.city}
+            {event.isNew && (
+              <span className="text-[10px] px-2 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
+            )}
+          </h3>
           <p className="text-sm text-gray-400">{event.country}</p>
         </div>
         <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
@@ -828,9 +920,9 @@ function TimelineView({ event, onBack, onClose, allEvents = [] }) {
         <p className="text-base text-gray-200 mb-4 leading-relaxed">{event.description}</p>
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-500">Source: {event.source}</span>
-          <div className="flex items-center gap-1 text-gray-400">
+          <div className={`flex items-center gap-1 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-400'}`}>
             <Clock className="w-4 h-4" />
-            {event.time}
+            {event.relativeTime || event.time}
           </div>
         </div>
       </div>
@@ -863,22 +955,33 @@ function EventsList({ events, selectedEvent, onSelect }) {
           className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 mb-3 ${
             selectedEvent?.id === event.id 
               ? 'bg-red-500/10 border-red-500/50' 
-              : 'bg-white/5 border-white/5 hover:bg-white/10'
+              : event.isNew 
+                ? 'bg-red-500/5 border-red-500/30 hover:bg-red-500/10'
+                : event.isRecent 
+                  ? 'bg-orange-500/5 border-orange-500/20 hover:bg-orange-500/10'
+                  : 'bg-white/5 border-white/5 hover:bg-white/10'
           }`}
           style={{ marginTop: index === 0 ? '0' : '0' }}
         >
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg}`}>
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg} ${event.isRecent ? 'animate-pulse' : ''}`}>
             {EVENT_ICONS[event.icon]}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
-              <span className="font-bold text-white text-base">{event.city}</span>
+              <span className="font-bold text-white text-base flex items-center gap-2">
+                {event.city}
+                {event.isNew && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
+                )}
+              </span>
               <span className={`text-[10px] px-2 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
                 {SEVERITY_CONFIG[event.severity].label}
               </span>
             </div>
             <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{event.description}</p>
-            <p className="text-[11px] text-gray-600 mt-2">{event.time}</p>
+            <p className={`text-[11px] mt-2 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
+              {event.relativeTime || event.time}
+            </p>
           </div>
         </button>
       ))}
