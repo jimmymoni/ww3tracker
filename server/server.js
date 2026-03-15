@@ -189,16 +189,30 @@ const testNasaFirmsAPI = async () => {
   }
 };
 
+// Helper to run function with timeout
+const withTimeout = (promise, timeoutMs, label) => {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => 
+      setTimeout(() => reject(new Error(`${label} timed out after ${timeoutMs}ms`)), timeoutMs)
+    )
+  ]).catch(err => {
+    console.log(`[API Test] ${err.message}`);
+    return { success: false, error: err.message };
+  });
+};
+
 // Run all tests before starting server
 const runAPITests = async () => {
   console.log('\n╔════════════════════════════════════════════════════════╗');
   console.log('║           RUNNING API CONNECTION TESTS                 ║');
   console.log('╚════════════════════════════════════════════════════════╝');
   
+  // Run tests with 15 second timeout each
   const results = {
-    replicate: await testReplicateAPI(),
-    giphy: await testGiphyAPI(),
-    nasa: await testNasaFirmsAPI()
+    replicate: await withTimeout(testReplicateAPI(), 15000, 'Replicate API test'),
+    giphy: await withTimeout(testGiphyAPI(), 15000, 'Giphy API test'),
+    nasa: await withTimeout(testNasaFirmsAPI(), 15000, 'NASA FIRMS API test')
   };
   
   console.log('\n╔════════════════════════════════════════════════════════╗');
@@ -212,9 +226,9 @@ const runAPITests = async () => {
   
   const allWorking = results.replicate.success && results.giphy.success;
   if (allWorking) {
-    console.log('🎉 Core APIs are working! Starting server...\n');
+    console.log('🎉 Core APIs are working!\n');
   } else {
-    console.log('⚠️ Some APIs failed. Starting server with fallbacks...\n');
+    console.log('⚠️ Some APIs failed. Server running with fallbacks...\n');
   }
   
   return results;
@@ -726,19 +740,16 @@ app.get('/api/ticker', async (req, res) => {
 // ==================== INITIALIZATION ====================
 
 const startServer = async () => {
-  // Run API tests first
-  await runAPITests();
-  
-  // Initialize game state
+  // Initialize game state immediately (no external calls)
   initGameState();
   
-  // Start RSS auto-refresh
+  // Start RSS auto-refresh (runs in background)
   startAutoRefresh();
   
   // Chat features removed - focusing on conflict monitoring
   console.log('[Server] Chat features disabled - focusing on conflict monitoring');
   
-  // Start server IMMEDIATELY (don't wait for data fetch)
+  // Start server IMMEDIATELY - don't wait for anything
   server.listen(PORT, () => {
     console.log(`
 ╔══════════════════════════════════════════════════════════════╗
@@ -768,6 +779,15 @@ const startServer = async () => {
 ╚══════════════════════════════════════════════════════════════╝
     `);
   });
+  
+  // Run API tests in BACKGROUND (don't block server startup)
+  (async () => {
+    try {
+      await runAPITests();
+    } catch (err) {
+      console.error('[Server] API tests error:', err.message);
+    }
+  })();
   
   // Initial data fetch and analysis (run asynchronously, don't block)
   (async () => {
