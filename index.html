@@ -350,20 +350,20 @@
     
     <!-- Hide static SEO content when React hydrates -->
     <script>
-      // Hide static content once React loads
+      // Only hide static content if React successfully renders
       window.addEventListener('load', function() {
-        var seoContent = document.getElementById('seo-static-content');
-        if (seoContent) {
-          seoContent.style.display = 'none';
-        }
+        setTimeout(function() {
+          var root = document.getElementById('root');
+          var seoContent = document.getElementById('seo-static-content');
+          // Only hide if React has rendered (root has more than just static content)
+          if (seoContent && root && root.children.length > 1) {
+            var reactContent = root.querySelector('[data-reactroot], .min-h-screen, nav, header, main');
+            if (reactContent) {
+              seoContent.style.display = 'none';
+            }
+          }
+        }, 1000);
       });
-      // Fallback: hide after 3 seconds even if React hasn't signaled
-      setTimeout(function() {
-        var seoContent = document.getElementById('seo-static-content');
-        if (seoContent && document.getElementById('root').children.length > 1) {
-          seoContent.style.display = 'none';
-        }
-      }, 3000);
     </script>
   </body>
 </html>
