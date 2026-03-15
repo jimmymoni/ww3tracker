@@ -46,6 +46,10 @@ const WW3ProbabilityPage = () => {
         ogImage="/og-image.png"
       />
       
+      <Helmet>
+        <link rel="canonical" href="https://ww3tracker.live/ww3-probability" />
+      </Helmet>
+      
       <BreadcrumbSchema items={breadcrumbItems} />
       <FAQSchema faqs={faqs} />
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Zap, Globe, Loader2, Menu, X } from 'lucide-react';
+import { AlertTriangle, Zap, Globe, Loader2, Menu, X, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Landing Pages
@@ -79,6 +79,22 @@ const NavLinks = ({ mobile = false, onClose }) => {
   );
 };
 
+// Live Timestamp Component
+const LiveTimestamp = () => {
+  const [time, setTime] = useState(new Date());
+  
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+  
+  return (
+    <span className="text-[10px] text-green-400/70 font-mono hidden lg:inline">
+      UPDATED: {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })} UTC
+    </span>
+  );
+};
+
 // Header - Mobile Optimized with Navigation
 const Header = ({ isLoading }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -117,6 +133,7 @@ const Header = ({ isLoading }) => {
               <Globe className="w-3 h-3" />
               <span className="font-body">24/7 MONITORING</span>
             </div>
+            <LiveTimestamp />
             <motion.div 
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}

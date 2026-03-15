@@ -46,6 +46,10 @@ const UsIranWarTrackerPage = () => {
         ogImage="/og-image.png"
       />
       
+      <Helmet>
+        <link rel="canonical" href="https://ww3tracker.live/us-iran-war-tracker" />
+      </Helmet>
+      
       <BreadcrumbSchema items={breadcrumbItems} />
       <FAQSchema faqs={faqs} />
 

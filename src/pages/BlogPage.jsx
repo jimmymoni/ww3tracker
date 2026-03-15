@@ -24,6 +24,11 @@ export default function BlogPage() {
         description="Clear explanations of the US-Iran war. From the 1953 coup to today's strikes, understand what's happening and why."
         pathname="/blog"
       />
+      
+      {/* Canonical URL for this page */}
+      <Helmet>
+        <link rel="canonical" href="https://ww3tracker.live/blog" />
+      </Helmet>
 
       <div className="min-h-screen bg-zinc-950 text-white">
         {/* Simple Header */}

@@ -26,6 +26,7 @@ const IranConflictLivePage = () => {
         <meta property="og:title" content="Iran Conflict Live | Real-Time Iran War Updates 2026" />
         <meta property="og:description" content="Get live Iran conflict updates. Breaking news, satellite imagery, and military developments from the Iran war zone." />
         <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://ww3tracker.live/iran-conflict-live" />
       </Helmet>
 
       <div className="min-h-screen bg-grid text-white">

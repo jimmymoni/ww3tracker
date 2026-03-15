@@ -79,6 +79,11 @@ const IsWW3HappeningPage = () => {
         ogImage="/og-image.png"
       />
       
+      {/* Canonical URL for this page */}
+      <Helmet>
+        <link rel="canonical" href="https://ww3tracker.live/is-ww3-happening" />
+      </Helmet>
+      
       <BreadcrumbSchema items={breadcrumbItems} />
       <FAQSchema faqs={faqs} />
       <ClaimReviewSchema 
