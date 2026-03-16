@@ -22,7 +22,10 @@ const KEYWORDS = [
   'airstrike', 'air strike', 'bombed', 'attack', 'hit', 'struck',
   'isfahan', 'natanz', 'kharg', 'drone', 'explosion', 'retaliation',
   'killed', 'casualties', 'destroyed', 'damaged', 'fire', 'blast',
-  'military', 'base', 'facility', 'infrastructure', 'oil'
+  'military', 'base', 'facility', 'infrastructure', 'oil',
+  // Aircraft/military hardware incidents
+  'aircraft', 'crash', 'crashed', 'tanker', 'carrier', 'plane', 'jet',
+  'helicopter', 'downed', 'shot down', 'emergency landing', 'wreckage'
 ];
 
 // Simple language detection - check if text contains non-Latin characters

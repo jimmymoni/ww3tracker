@@ -9,15 +9,15 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 // Services
-import { refreshNews, startAutoRefresh, getCachedNews } from './services/rssService.js';
-import { fetchGDELTNews, mergeNewsSources } from './services/gdeltService.js';
-import { analyzeHeadline, getChatResponse, analyzeForMapBatch } from './services/replicateService.js';
-import { detectAttacksBatch } from './services/attackDetector.js';
+// RSS feeds removed - using verified manual data only
 import { fetchIranMarkets, getEscalationProbability } from './services/polymarketService.js';
 import { fetchIranFires } from './services/nasaFirmsService.js';
 import { getTrumpGif } from './services/giphyService.js';
-import { updateGameStateFromAnalysis, getGameState, resetBreakingAlert, initGameState } from './services/gameStateService.js';
-import { getMarkets, isWarMode } from './services/marketService.js';
+import { getGameState, resetBreakingAlert, initGameState } from './services/gameStateService.js';
+import { getMarkets } from './services/marketService.js';
+import { getCoordinates } from './services/locationService.js';
+import { getAttacks, getAllAttacks, attackExists, getAttackCount } from './data/verifiedAttacks.js';
+import { getChatResponse } from './services/replicateService.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,83 +42,12 @@ app.use(express.json());
 
 
 
-// Cache for merged news with TTL
-let cachedMergedNews = [];
-let analyzedNews = [];
-let cacheTimestamp = 0;
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
-
-// In-memory cache for other endpoints
+// In-memory cache for endpoints
 const apiCache = new Map();
 const CACHE_DURATION = 60000; // 1 minute for most endpoints
 
-// Fallback mock news for immediate response
-const FALLBACK_NEWS = [
-  {
-    headline: "US-Iran tensions escalate over Strait of Hormuz",
-    description: "Military buildup reported in Persian Gulf region",
-    link: "https://www.bbc.com/news",
-    pubDate: new Date().toISOString(),
-    source: "BBC",
-    type: "rss",
-    analysis: {
-      side: "IRAN",
-      score: -3,
-      severity: "high",
-      badge: "YIKES 😬",
-      memeCaption: "Iran said hold my tea, things getting spicy 🍵💀",
-      tickerText: "Hormuz situation heating up fr 🔥"
-    }
-  },
-  {
-    headline: "Trump announces new sanctions on Iranian oil exports",
-    description: "Economic pressure intensifies as talks stall",
-    link: "https://www.reuters.com",
-    pubDate: new Date(Date.now() - 3600000).toISOString(),
-    source: "Reuters",
-    type: "rss",
-    analysis: {
-      side: "US",
-      score: 4,
-      severity: "medium",
-      badge: "CONFIRMED",
-      analysis: "US sanctions target Iranian oil exports, significantly impacting economy",
-      tickerText: "Sanctions impacting Iranian oil exports"
-    }
-  },
-  {
-    headline: "Israel warns of retaliation after Iranian proxy attacks",
-    description: "Regional tensions threaten wider conflict",
-    link: "https://www.aljazeera.com",
-    pubDate: new Date(Date.now() - 7200000).toISOString(),
-    source: "Al Jazeera",
-    type: "rss",
-    analysis: {
-      side: "NEUTRAL",
-      score: 0,
-      severity: "high",
-      badge: "BREAKING",
-      analysis: "Regional tensions increase as proxy conflicts expand across Middle East",
-      tickerText: "Regional proxy conflict escalation"
-    }
-  },
-  {
-    headline: "Nuclear talks stall as Iran enriches more uranium",
-    description: "International monitors express concern over stockpiles",
-    link: "https://www.theguardian.com",
-    pubDate: new Date(Date.now() - 10800000).toISOString(),
-    source: "The Guardian",
-    type: "rss",
-    analysis: {
-      side: "IRAN",
-      score: -2,
-      severity: "medium",
-      badge: "INTELLIGENCE",
-      analysis: "Iran's uranium enrichment program advances beyond previous limits",
-      tickerText: "Iranian uranium enrichment increasing"
-    }
-  }
-];
+// No fake news - we show real data or nothing
+const FALLBACK_NEWS = [];
 
 // Cache helper functions
 const getCachedData = (key) => {
@@ -251,346 +180,72 @@ app.get('/api/health', (req, res) => {
 });
 
 // Get news (RSS + GDELT merged) - Returns cached/fallback IMMEDIATELY (<100ms)
-app.get('/api/news', async (req, res) => {
+// Get breaking news - returns verified attacks as news items
+app.get('/api/news', (req, res) => {
   const startTime = Date.now();
   const limit = parseInt(req.query.limit) || 10;
   
-  try {
-    // STRATEGY: Always return something immediately, refresh in background
-    
-    // If we have cached data, return it immediately (< 100ms)
-    if (cachedMergedNews.length > 0) {
-      res.json({
-        items: cachedMergedNews.slice(0, limit),
-        total: cachedMergedNews.length,
-        lastUpdated: new Date(cacheTimestamp).toISOString(),
-        cached: true,
-        responseTime: Date.now() - startTime
-      });
-      
-      // Refresh in background if cache is stale
-      if (Date.now() - cacheTimestamp > CACHE_TTL_MS) {
-        (async () => {
-          try {
-            console.log('[News] Cache stale, refreshing in background...');
-            const gdeltNews = await fetchGDELTNews();
-            const rssNews = getCachedNews();
-            cachedMergedNews = mergeNewsSources(rssNews, gdeltNews);
-            cacheTimestamp = Date.now();
-            console.log('[News] Background refresh complete, items:', cachedMergedNews.length);
-          } catch (bgError) {
-            console.error('[News] Background fetch error:', bgError.message);
-          }
-        })();
-      }
-      
-      return;
-    }
-    
-    // No cache - check if we have RSS data to return immediately
-    const rssNews = getCachedNews();
-    if (rssNews.length > 0) {
-      console.log('[News] Using RSS data while GDELT loads...');
-      res.json({
-        items: rssNews.slice(0, limit),
-        total: rssNews.length,
-        lastUpdated: new Date().toISOString(),
-        cached: false,
-        rssOnly: true,
-        responseTime: Date.now() - startTime
-      });
-    } else {
-      // Truly no data - return fallback
-      console.log('[News] No cache, returning fallback immediately');
-      res.json({
-        items: FALLBACK_NEWS.slice(0, limit),
-        total: FALLBACK_NEWS.length,
-        lastUpdated: new Date().toISOString(),
-        fallback: true,
-        responseTime: Date.now() - startTime
-      });
-    }
-    
-    // Populate merged cache in background (with GDELT)
-    (async () => {
-      try {
-        if (rssNews.length === 0) {
-          await refreshNews();
-        }
-        const gdeltNews = await fetchGDELTNews();
-        cachedMergedNews = mergeNewsSources(getCachedNews(), gdeltNews);
-        cacheTimestamp = Date.now();
-        console.log('[News] Cache populated with GDELT, items:', cachedMergedNews.length);
-      } catch (error) {
-        console.error('[News] Failed to populate cache:', error.message);
-      }
-    })();
-    
-  } catch (error) {
-    console.error('[API] /api/news error:', error);
-    // Always return something usable
-    res.json({
-      items: FALLBACK_NEWS.slice(0, limit),
-      total: FALLBACK_NEWS.length,
-      lastUpdated: new Date().toISOString(),
-      fallback: true,
-      responseTime: Date.now() - startTime
-    });
-  }
-});
-
-// Hardcoded major conflicts (for reliability when RSS misses key events)
-// These are prerendered/seeded conflicts that always show if within time window
-const HARDCODED_CONFLICTS = [
-  {
-    headline: "US-Israeli airstrikes hit multiple sites in Isfahan province, Iran",
-    description: "Confirmed military strikes targeting locations in central Iran",
-    pubDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-    source: "BBC",
-    mapAnalysis: {
-      isAttack: true,
-      attackType: "airstrike",
-      location: "Isfahan",
-      severity: "high",
-      description: "US-Israeli joint strikes on Isfahan province targets"
-    }
-  },
-  {
-    headline: "Israeli drone strikes target paramilitary checkpoints in Tehran",
-    description: "Drone attacks confirmed in Iranian capital",
-    pubDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-    source: "Al Jazeera",
-    mapAnalysis: {
-      isAttack: true,
-      attackType: "drone",
-      location: "Tehran",
-      severity: "high",
-      description: "Israeli drone strikes on Tehran checkpoints"
-    }
-  },
-  {
-    headline: "Iran launches missile and drone attacks toward Israel",
-    description: "Iranian retaliation with ballistic missiles and drones",
-    pubDate: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), // 18 hours ago
-    source: "Reuters",
-    mapAnalysis: {
-      isAttack: true,
-      attackType: "missile",
-      location: "Tel Aviv",
-      severity: "high",
-      description: "Iranian missile and drone strikes on Israel"
-    }
-  },
-  {
-    headline: "US strikes Iranian naval and oil targets at Kharg Island",
-    description: "American military targets Iranian oil infrastructure",
-    pubDate: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
-    source: "France24",
-    mapAnalysis: {
-      isAttack: true,
-      attackType: "airstrike",
-      location: "Kharg Island",
-      severity: "high",
-      description: "US strikes on Iranian oil and naval facilities"
-    }
-  }
-];
-
-// Cache for attacks to provide fast response
-let cachedAttacks = [];
-let attacksCacheTime = 0;
-const ATTACKS_CACHE_TTL = 60 * 1000; // 1 minute cache
-const HOURS_WINDOW = 48; // Show attacks from last 48 hours
-
-// Background refresh function
-const refreshAttacksCache = async () => {
-  const startTime = Date.now();
-  console.log('[Attacks] Starting background cache refresh...');
+  // Get verified attacks as news items
+  const attacks = getAllAttacks().slice(0, limit);
   
-  try {
-    // Get cached news
-    const allNews = getCachedNews();
-    
-    // Filter to last 48 hours
-    const cutoffTime = Date.now() - (HOURS_WINDOW * 60 * 60 * 1000);
-    const recentNews = allNews.filter(item => {
-      const itemTime = new Date(item.pubDate || 0).getTime();
-      return itemTime > cutoffTime;
-    }).slice(0, 15);
-    
-    // Use AI to identify confirmed attacks from news
-    let attacks = [];
-    try {
-      attacks = await analyzeForMapBatch(recentNews);
-      console.log(`[Attacks] AI analysis found ${attacks.length} attacks`);
-    } catch (analysisError) {
-      console.log('[Attacks] AI analysis failed:', analysisError.message);
-      attacks = getMockAttacks(recentNews);
-    }
-    
-    // Add hardcoded conflicts if within time window and not duplicated
-    const hardcodedInWindow = HARDCODED_CONFLICTS.filter(conflict => {
-      const conflictTime = new Date(conflict.pubDate).getTime();
-      return conflictTime > cutoffTime;
-    });
-    
-    // Merge, avoiding duplicates
-    for (const hardcoded of hardcodedInWindow) {
-      const hardcodedTime = new Date(hardcoded.pubDate).getTime();
-      const isDuplicate = attacks.some(attack => {
-        const attackTime = new Date(attack.pubDate || 0).getTime();
-        const sameLocation = attack.mapAnalysis?.location === hardcoded.mapAnalysis.location;
-        const timeClose = Math.abs(attackTime - hardcodedTime) < (6 * 60 * 60 * 1000);
-        return sameLocation && timeClose;
-      });
-      
-      if (!isDuplicate) {
-        attacks.push(hardcoded);
-      }
-    }
-    
-    // Sort by date
-    attacks.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-    
-    // Update cache
-    cachedAttacks = attacks;
-    attacksCacheTime = Date.now();
-    
-    console.log(`[Attacks] Cache refreshed: ${attacks.length} attacks (${Date.now() - startTime}ms)`);
-  } catch (error) {
-    console.error('[Attacks] Background refresh failed:', error.message);
-  }
-};
-
-// Get confirmed attacks for map display - FAST (returns cache immediately)
-app.get('/api/attacks', async (req, res) => {
-  const startTime = Date.now();
-  
-  // STRATEGY: Return cache immediately, refresh in background
-  
-  // If we have fresh cached data, return it immediately (< 100ms)
-  if (cachedAttacks.length > 0 && (Date.now() - attacksCacheTime < ATTACKS_CACHE_TTL)) {
-    res.json({
-      attacks: cachedAttacks,
-      count: cachedAttacks.length,
-      hoursWindow: HOURS_WINDOW,
-      lastUpdated: new Date(attacksCacheTime).toISOString(),
-      cached: true,
-      responseTime: Date.now() - startTime
-    });
-    
-    // Trigger background refresh if cache is getting stale (> 30s old)
-    if (Date.now() - attacksCacheTime > 30000) {
-      refreshAttacksCache();
-    }
-    return;
-  }
-  
-  // No cache or stale - return hardcoded conflicts immediately
-  const cutoffTime = Date.now() - (HOURS_WINDOW * 60 * 60 * 1000);
-  const hardcodedInWindow = HARDCODED_CONFLICTS.filter(conflict => {
-    const conflictTime = new Date(conflict.pubDate).getTime();
-    return conflictTime > cutoffTime;
-  });
+  const newsItems = attacks.map(attack => ({
+    headline: attack.headline,
+    description: attack.description,
+    source: attack.source,
+    pubDate: attack.date,
+    location: attack.location,
+    severity: attack.severity,
+    verified: true
+  }));
   
   res.json({
-    attacks: hardcodedInWindow,
-    count: hardcodedInWindow.length,
-    hoursWindow: HOURS_WINDOW,
+    items: newsItems,
+    total: getAttackCount(),
     lastUpdated: new Date().toISOString(),
-    cached: false,
-    loading: true,
+    verified: true,
     responseTime: Date.now() - startTime
   });
-  
-  // Populate cache in background
-  if (cachedAttacks.length === 0 || (Date.now() - attacksCacheTime > ATTACKS_CACHE_TTL)) {
-    refreshAttacksCache();
-  }
 });
 
-// Fallback attack detection using keywords
-function getMockAttacks(newsItems) {
-  const attacks = [];
+// No hardcoded conflicts - using verified manual database only
+
+// Get verified attacks for map display
+// NO RSS - manual verified data only
+app.get('/api/attacks', (req, res) => {
+  const startTime = Date.now();
+  const hoursWindow = parseInt(req.query.hours) || 48;
   
-  for (const item of newsItems) {
-    const text = (item.headline + ' ' + (item.description || '')).toLowerCase();
-    
-    // STRICT: Skip analysis pieces, statements, humanitarian coverage
-    const analysisKeywords = /\b(what is happening|what we know|explained|analysis|why did|how will|day \d+ of|week \d+ of|live updates|as it happened|crisis live|q&A)\b/;
-    const statementKeywords = /\b(says it has|claims to have|reports that|allegedly|reportedly)\b/;
-    const humanitarianKeywords = /\b(humanitarian crisis|deepening the crisis|aid|relief|humanitarian|refugees|displaced)\b/;
-    
-    if (analysisKeywords.test(text) || statementKeywords.test(text) || humanitarianKeywords.test(text)) {
-      continue;
+  // Get attacks from verified database
+  const attacks = getAttacks(hoursWindow);
+  
+  // Convert to API format
+  const attacksWithCoords = attacks.map(attack => ({
+    headline: attack.headline,
+    description: attack.description,
+    pubDate: attack.date,
+    source: attack.source,
+    coordinates: attack.coordinates,
+    mapAnalysis: {
+      isAttack: true,
+      attackType: attack.attackType,
+      location: attack.location,
+      severity: attack.severity,
+      description: attack.description
     }
-    
-    // Must have ACTIVE voice attack keywords
-    const isAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion rocked|exploded|fired on|was attacked)\b/.test(text);
-    if (!isAttack) continue;
-    
-    // Determine attack type
-    let attackType = 'strike';
-    if (text.includes('airstrike')) attackType = 'airstrike';
-    else if (text.includes('missile')) attackType = 'missile';
-    else if (text.includes('drone')) attackType = 'drone';
-    else if (text.includes('bomb')) attackType = 'bombing';
-    
-    // Extract location
-    let location = '';
-    if (text.includes('baghdad')) location = 'Baghdad';
-    else if (text.includes('tehran')) location = 'Tehran';
-    else if (text.includes('kharg')) location = 'Kharg Island';
-    else if (text.includes('damascus')) location = 'Damascus';
-    else if (text.includes('beirut')) location = 'Beirut';
-    else if (text.includes('southern lebanon')) location = 'southern Lebanon';
-    else if (text.includes('lebanon') && !text.includes('southern')) location = 'Beirut';
-    else if (text.includes('gaza')) location = 'Gaza';
-    else if (text.includes('jerusalem')) location = 'Jerusalem';
-    else if (text.includes('tel aviv')) location = 'Tel Aviv';
-    else if (text.includes('basra')) location = 'Basra';
-    else if (text.includes('sanaa')) location = 'Sanaa';
-    else if (text.includes('aleppo')) location = 'Aleppo';
-    else if (text.includes('homs')) location = 'Homs';
-    else if (text.includes('dubai')) location = 'Dubai';
-    else if (text.includes('riyadh')) location = 'Riyadh';
-    // Current conflict locations (March 2026)
-    else if (text.includes('isfahan')) location = 'Isfahan';
-    else if (text.includes('natanz')) location = 'Natanz';
-    else if (text.includes('kashan')) location = 'Kashan';
-    else if (text.includes('qom')) location = 'Qom';
-    else if (text.includes('bushehr')) location = 'Bushehr';
-    else if (text.includes('bandar abbas')) location = 'Bandar Abbas';
-    else if (text.includes('shiraz')) location = 'Shiraz';
-    else if (text.includes('tabriz')) location = 'Tabriz';
-    else if (text.includes('mashhad')) location = 'Mashhad';
-    else if (text.includes('ahvaz')) location = 'Ahvaz';
-    else continue; // Skip if no location found
-    
-    // Determine severity
-    let severity = 'medium';
-    if (text.includes('killed') || text.includes('casualties') || text.includes('destroyed') || text.includes('dead')) severity = 'high';
-    else if (text.includes('injured') || text.includes('wounded') || text.includes('damage')) severity = 'medium';
-    else severity = 'low';
-    
-    // Return consistent structure with mapAnalysis nested object
-    attacks.push({
-      headline: item.headline,
-      description: item.description,
-      pubDate: item.published || new Date().toISOString(),
-      source: item.source,
-      mapAnalysis: {
-        isAttack: true,
-        attackType,
-        location,
-        severity,
-        description: item.headline
-      }
-    });
-  }
+  }));
   
-  return attacks;
-}
+  res.json({
+    attacks: attacksWithCoords,
+    count: attacksWithCoords.length,
+    hoursWindow: hoursWindow,
+    totalVerified: getAttackCount(),
+    lastUpdated: new Date().toISOString(),
+    verified: true,
+    responseTime: Date.now() - startTime
+  });
+});
+
+// No RSS detection - verified manual data only
 
 // Analyze a headline with Kimi AI
 app.post('/api/analyze', async (req, res) => {
@@ -679,18 +334,34 @@ app.get('/api/markets', async (req, res) => {
   }
 });
 
-// Get analyzed news with memes - Cached/fallback response
+// Get breaking news feed - REAL RSS news, no AI memes
+// Get breaking feed - verified attacks only
 app.get('/api/memes', (req, res) => {
-  const limit = parseInt(req.query.limit) || 4;
+  const limit = parseInt(req.query.limit) || 8;
   const startTime = Date.now();
   
-  // Return immediately from cache or fallback
-  const items = analyzedNews.length > 0 ? analyzedNews : FALLBACK_NEWS;
+  // Get verified attacks as feed items
+  const attacks = getAllAttacks().slice(0, limit);
+  
+  const items = attacks.map(attack => ({
+    id: attack.id,
+    headline: attack.headline,
+    description: attack.description,
+    source: attack.source,
+    pubDate: attack.date,
+    location: attack.location,
+    analysis: {
+      badge: attack.attackType.toUpperCase(),
+      severity: attack.severity,
+      side: attack.country === 'Iran' ? 'IRAN' : 'US'
+    }
+  }));
   
   res.json({
-    items: items.slice(0, limit),
-    total: items.length,
-    isFallback: analyzedNews.length === 0,
+    items,
+    total: getAttackCount(),
+    verified: true,
+    lastUpdated: new Date().toISOString(),
     responseTime: Date.now() - startTime
   });
 });
@@ -934,8 +605,7 @@ app.get('/api/ticker', async (req, res) => {
       fallback: true
     });
     
-    // Background refresh
-    refreshNews().catch(err => console.error('[Ticker] Background fetch failed:', err));
+    // No background refresh - manual verified data only
     
   } catch (error) {
     console.error('[API] /api/ticker error:', error);
@@ -950,14 +620,13 @@ app.get('/api/ticker', async (req, res) => {
 // ==================== INITIALIZATION ====================
 
 const startServer = async () => {
-  // Initialize game state immediately (no external calls)
+  // Initialize game state
   initGameState();
   
-  // Start RSS auto-refresh (runs in background)
-  startAutoRefresh();
+  // Log verified attack count
+  console.log(`[Server] Loaded ${getAttackCount()} verified attacks from database`);
   
-  // Chat features removed - focusing on conflict monitoring
-  console.log('[Server] Chat features disabled - focusing on conflict monitoring');
+  console.log('[Server] Verified manual data mode - no RSS feeds' );
   
   // Start server IMMEDIATELY - don't wait for anything
   server.listen(PORT, () => {
@@ -968,24 +637,21 @@ const startServer = async () => {
 ║                                                              ║
 ║     Server running on http://localhost:${PORT}                 ║
 ║                                                              ║
-║     Features:                                                ║
-║     • Live Conflict Monitoring                               ║
-║     • Real-time market data (Oil, Gold, Defense)             ║
-║     • Polymarket betting odds                                ║
-║     • AI-powered news analysis                               ║
+║     ✅ VERIFIED MANUAL DATA MODE                             ║
+║     • ${getAttackCount()} confirmed attacks in database             ║
+║     • No RSS feeds (100% verified data only)                 ║
+║     • Admin-curated attack database                          ║
 ║                                                              ║
 ║     Endpoints:                                               ║
 ║     • GET  /api/health      - Health check                   ║
-║     • GET  /api/news        - Latest news (RSS+GDELT)        ║
-║     • POST /api/analyze     - Analyze headline with Replicate ║
-║     • POST /api/chat        - Chat with Gen-Z Analyst (AI)   ║
+║     • GET  /api/news        - Verified attacks as news       ║
+║     • GET  /api/attacks     - Confirmed strikes for map      ║
 ║     • GET  /api/state       - Current game state             ║
-║     • GET  /api/memes       - Analyzed news with memes       ║
+║     • GET  /api/memes       - Breaking feed (verified)       ║
 ║     • GET  /api/polymarket  - Betting odds                   ║
 ║     • GET  /api/fires       - NASA FIRMS satellite data      ║
-║     • GET  /api/ticker      - Comic ticker text              ║
-║     • GET  /api/markets     - Real financial market data     ║
-║     • GET  /api/pagespeed   - PageSpeed Insights analysis    ║
+║     • GET  /api/ticker      - News ticker                    ║
+║     • GET  /api/markets     - Financial market data          ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
     `);
@@ -1001,37 +667,7 @@ const startServer = async () => {
   })();
   
   // Initial data fetch and analysis (run asynchronously, don't block)
-  (async () => {
-    try {
-      console.log('[Server] Starting background data fetch...');
-      
-      // Fetch RSS feeds first (usually fast)
-      await refreshNews();
-      
-      // Then fetch GDELT
-      const gdeltNews = await fetchGDELTNews();
-      const rssNews = getCachedNews();
-      cachedMergedNews = mergeNewsSources(rssNews, gdeltNews);
-      cacheTimestamp = Date.now();
-      
-      if (cachedMergedNews.length > 0) {
-        console.log('[Server] Running initial analysis...');
-        const result = await updateGameStateFromAnalysis(cachedMergedNews);
-        analyzedNews = result.analyzed;
-        console.log(`[Server] Analysis complete: ${analyzedNews.length} items analyzed`);
-      }
-      
-      // Pre-populate attacks cache
-      console.log('[Server] Pre-populating attacks cache...');
-      await refreshAttacksCache();
-    } catch (error) {
-      console.error('[Server] Initial fetch error:', error);
-    }
-  })();
-  
-  // Auto-refresh attacks cache every minute
-  setInterval(refreshAttacksCache, 60 * 1000);
-  console.log('[Server] Attacks cache auto-refresh started (every 60s)');
+  console.log('[Server] Ready - verified manual data mode');
 };
 
 startServer();

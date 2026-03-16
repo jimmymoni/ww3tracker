@@ -431,8 +431,8 @@ const getMockAnalysis = (headline) => {
     score: 0,
     severity: 'low',
     badge: badge,
-    memeCaption: 'Something sus happening bestie, stay woke 👀',
-    tickerText: 'Plot thickening... 🍿',
+    analysis: 'Military development requires monitoring',
+    tickerText: 'Conflict situation developing',
     _mock: true
   };
 };
@@ -452,7 +452,7 @@ const getMockChatResponse = () => {
 // ========== MAP ATTACK ANALYSIS ==========
 
 const analyzeForMapPrompt = (headline, description) => `
-You are a military intelligence analyst. Determine if this news describes a CONFIRMED military strike/attack that ALREADY HAPPENED.
+You are a military intelligence analyst. Determine if this news describes a CONFIRMED military strike/attack/incident that ALREADY HAPPENED.
 
 Headline: "${headline}"
 ${description ? `Description: "${description}"` : ''}
@@ -460,7 +460,7 @@ ${description ? `Description: "${description}"` : ''}
 Respond with ONLY a JSON object:
 {
   "isAttack": true | false,
-  "attackType": "airstrike" | "missile" | "drone" | "bombing" | "shelling" | "none",
+  "attackType": "airstrike" | "missile" | "drone" | "bombing" | "shelling" | "plane" | "none",
   "location": "city or region name",
   "severity": "high" | "medium" | "low",
   "description": "brief factual description"
@@ -475,10 +475,10 @@ CRITICAL RULES - isAttack MUST be FALSE if:
 - Is a retrospective/summary piece ("day 16 of", "week 3 of")
 
 isAttack ONLY TRUE if:
-- Explicit confirmed strike ALREADY occurred (not planned, not threatened)
-- Uses active voice: "struck", "hit", "bombed", "destroyed", "damaged"
+- Explicit confirmed strike/incident ALREADY occurred (not planned, not threatened)
+- Uses active voice: "struck", "hit", "bombed", "destroyed", "damaged", "crashed", "downed"
 - Mentions specific casualties or physical damage
-- Reports actual explosions/military action, not statements about action
+- Reports actual explosions/military action/aircraft incidents, not statements about action
 
 Examples of FALSE (not attacks):
 - "What is happening on day 16" - ANALYSIS
@@ -486,10 +486,14 @@ Examples of FALSE (not attacks):
 - "Crisis live: Latest updates" - ROLLING COVERAGE
 - "Why did Iran attack?" - EXPLAINER
 
-Examples of TRUE (confirmed attacks):
+Examples of TRUE (confirmed attacks/incidents):
 - "Missile strikes hit Tehran military base, 12 killed" - CONFIRMED
 - "Explosions rock Isfahan nuclear facility" - CONFIRMED
 - "US warplanes destroy Iranian radar installations" - CONFIRMED
+- "US refuelling plane crashes in Iraq, 6 crew killed" - CONFIRMED (attackType: "plane")
+- "Drone shot down over Kuwait" - CONFIRMED (attackType: "drone")
+
+Known locations: Tehran, Isfahan, Kharg Island, Baghdad, Basra, Dubai, Kuwait, Bahrain, Jordan, Tel Aviv, Jerusalem, Beirut, Damascus, Gaza, Riyadh, Doha, Sanaa, Hamadan, Chabahar, etc.
 
 Return ONLY JSON.
 `;
@@ -511,8 +515,8 @@ export const analyzeForMap = async (headline, description = '') => {
     return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
   }
   
-  // Must have concrete attack keywords in active voice
-  const hasActiveAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion|exploded|fired on|launched (missile|strike|attack)|was attacked)\b/.test(lower);
+  // Must have concrete attack keywords in active voice (including aircraft incidents)
+  const hasActiveAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion|exploded|fired on|launched (missile|strike|attack)|was attacked|crashes|crashed|crash|downed|shot down|emergency landing|wreckage found)\b/i.test(lower);
   if (!hasActiveAttack) {
     console.log(`[MapAnalysis] Skipped (no active attack keywords): "${headline.substring(0, 60)}..."`);
     return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
@@ -579,8 +583,8 @@ const getMockMapAnalysis = (headline, description) => {
     return { isAttack: false, attackType: 'none', location: '', severity: 'low', description: '' };
   }
   
-  // Must have ACTIVE voice attack keywords (not passive, not statements)
-  const hasActiveAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion rocked|exploded|fired on|was attacked)\b/.test(lower);
+  // Must have ACTIVE voice attack keywords (including aircraft incidents)
+  const hasActiveAttack = /\b(struck|hit|bombed|destroyed|damaged|explosion rocked|exploded|fired on|was attacked|crashes|crashed|crash|downed|shot down|emergency landing|wreckage found)\b/i.test(lower);
   
   if (hasActiveAttack) {
     let type = 'strike';
@@ -588,24 +592,19 @@ const getMockMapAnalysis = (headline, description) => {
     else if (lower.includes('drone')) type = 'drone';
     else if (lower.includes('bomb')) type = 'bombing';
     else if (lower.includes('airstrike')) type = 'airstrike';
+    else if (lower.includes('crash') || lower.includes('crashed') || lower.includes('downed')) type = 'plane';
+    else if (lower.includes('aircraft') || lower.includes('tanker') || lower.includes('carrier')) type = 'plane';
     
     let location = '';
     if (lower.includes('baghdad')) location = 'Baghdad';
+    else if (lower.includes('basra')) location = 'Basra';
+    else if (lower.includes('mosul')) location = 'Mosul';
+    else if (lower.includes('erbil')) location = 'Erbil';
+    else if (lower.includes('kirkuk')) location = 'Kirkuk';
     else if (lower.includes('tehran')) location = 'Tehran';
     else if (lower.includes('kharg')) location = 'Kharg Island';
-    else if (lower.includes('jerusalem')) location = 'Jerusalem';
-    else if (lower.includes('tel aviv')) location = 'Tel Aviv';
-    else if (lower.includes('beirut')) location = 'Beirut';
-    else if (lower.includes('southern lebanon')) location = 'southern Lebanon';
-    else if (lower.includes('lebanon') && !lower.includes('southern')) location = 'Beirut';
-    else if (lower.includes('damascus')) location = 'Damascus';
-    else if (lower.includes('gaza')) location = 'Gaza';
-    else if (lower.includes('basra')) location = 'Basra';
-    else if (lower.includes('dubai')) location = 'Dubai';
-    else if (lower.includes('sanaa')) location = 'Sanaa';
-    else if (lower.includes('aleppo')) location = 'Aleppo';
-    else if (lower.includes('homs')) location = 'Homs';
-    // Current conflict locations (March 2026)
+    else if (lower.includes('hamadan')) location = 'Hamadan';
+    else if (lower.includes('chabahar')) location = 'Chabahar';
     else if (lower.includes('isfahan')) location = 'Isfahan';
     else if (lower.includes('natanz')) location = 'Natanz';
     else if (lower.includes('kashan')) location = 'Kashan';
@@ -616,6 +615,27 @@ const getMockMapAnalysis = (headline, description) => {
     else if (lower.includes('tabriz')) location = 'Tabriz';
     else if (lower.includes('mashhad')) location = 'Mashhad';
     else if (lower.includes('ahvaz')) location = 'Ahvaz';
+    else if (lower.includes('jerusalem')) location = 'Jerusalem';
+    else if (lower.includes('tel aviv')) location = 'Tel Aviv';
+    else if (lower.includes('beirut')) location = 'Beirut';
+    else if (lower.includes('southern lebanon')) location = 'southern Lebanon';
+    else if (lower.includes('lebanon') && !lower.includes('southern')) location = 'Beirut';
+    else if (lower.includes('damascus')) location = 'Damascus';
+    else if (lower.includes('gaza')) location = 'Gaza';
+    else if (lower.includes('dubai')) location = 'Dubai';
+    else if (lower.includes('fujairah')) location = 'Fujairah';
+    else if (lower.includes('abu dhabi')) location = 'Abu Dhabi';
+    else if (lower.includes('sanaa')) location = 'Sanaa';
+    else if (lower.includes('aleppo')) location = 'Aleppo';
+    else if (lower.includes('homs')) location = 'Homs';
+    else if (lower.includes('kuwait')) location = 'Kuwait';
+    else if (lower.includes('bahrain')) location = 'Bahrain';
+    else if (lower.includes('jordan')) location = 'Jordan';
+    else if (lower.includes('amman')) location = 'Amman';
+    else if (lower.includes('qatar') || lower.includes('doha')) location = 'Doha';
+    else if (lower.includes('saudi') || lower.includes('riyadh')) location = 'Riyadh';
+    else if (lower.includes('yemen')) location = 'Yemen';
+    else if (lower.includes('iraq')) location = 'Iraq';
     
     let severity = 'medium';
     if (lower.includes('killed') || lower.includes('casualties') || lower.includes('destroyed') || lower.includes('dead')) severity = 'high';
@@ -637,9 +657,9 @@ const getMockMapAnalysis = (headline, description) => {
 
 export const analyzeForMapBatch = async (items) => {
   const results = [];
-  const MAX_ITEMS = 10; // Process more items to find all strikes
+  const MAX_ITEMS = 15; // Process more items to find all strikes
   let apiCalls = 0;
-  const MAX_API_CALLS = 3; // Limit expensive AI calls
+  const MAX_API_CALLS = 10; // Use AI for up to 10 items (was 3)
   
   for (const item of items.slice(0, MAX_ITEMS)) {
     try {

@@ -7,7 +7,7 @@
 **Platform:** Railway (Node.js backend + React frontend)  
 **Purpose:** Live US-Iran conflict monitoring dashboard with real-time data aggregation, AI analysis, prediction market integration, and meme/satirical elements.
 
-**Last Updated:** 2026-03-16
+**Last Updated:** 2026-03-16 (Verified Manual Data System)
 
 ---
 
@@ -41,12 +41,17 @@
 ### External APIs
 | Service | Data Provided | Optional |
 |---------|---------------|----------|
-| Replicate (Moonshot AI) | AI news analysis | Yes (fallback available) |
 | Giphy | Trump reaction GIFs | Yes |
 | NASA FIRMS | Satellite fire detection | Yes |
 | Polymarket | Prediction market odds | No (has fallback) |
-| RSS Feeds (BBC, Reuters, Guardian, Al Jazeera, AP) | News aggregation | No |
-| GDELT | OSINT data | Yes |
+
+### Data Sources (Verified Manual)
+| Source | Type | Update Method |
+|--------|------|---------------|
+| `server/data/verifiedAttacks.js` | Manually curated attack database | Admin updates |
+| Admin input | Real-time verified attack reports | Manual entry |
+
+**Note:** RSS feeds and AI news aggregation have been removed to prevent hallucination and ensure 100% verified data only.
 
 ---
 
@@ -69,26 +74,30 @@
                            │
         ┌──────────────────┼──────────────────┐
         ▼                  ▼                  ▼
-   ┌─────────┐      ┌──────────┐      ┌──────────┐
-   │Polymarket│     │RSS Feeds │      │NASA FIRMS│
-   └─────────┘      └──────────┘      └──────────┘
+   ┌─────────┐      ┌──────────────┐   ┌──────────┐
+   │Polymarket│     │Verified DB   │   │NASA FIRMS│
+   └─────────┘      │(Manual Data) │   └──────────┘
+                    └──────────────┘
 ```
 
 ### Data Flow
 
-1. **Game State (HP/Tension)**
+1. **Conflict Map (Verified Attacks)**
    ```
-   RSS Feeds → Replicate AI Analysis → Game State Service → /api/state → Frontend
+   Verified Attacks DB → Location Service → /api/attacks → ConflictMap
    ```
-   - Update frequency: Every 5 minutes (RSS refresh)
-   - Tension decays 2% every 10 minutes to prevent permanent 100%
+   - Source: `server/data/verifiedAttacks.js` (manual curation)
+   - Update method: Admin provides verified attack data
+   - No expiration - attacks remain on map permanently
+   - Duplicate detection: Same location within 6 hours
 
-2. **News/Memes**
+2. **Breaking Feed**
    ```
-   RSS Feeds + GDELT → Analysis → Categorization → /api/memes → MemeFeed
+   Verified Attacks DB → /api/memes → MemeFeed
    ```
-   - Update frequency: Every 5 minutes
-   - Fallback news always available for instant response
+   - Shows verified attacks as breaking news
+   - Professional badges (ATTACK, MISSILE, DRONE, etc.)
+   - No GenZ slang or AI-generated content
 
 3. **Polymarket Data**
    ```
@@ -122,17 +131,17 @@
 │
 ├── server/                    # Backend code
 │   ├── server.js              # Express server entry point
+│   ├── data/                  # Verified data storage
+│   │   └── verifiedAttacks.js     # Manually curated attack database
 │   └── services/              # Business logic modules
 │       ├── gameStateService.js    # HP bars, tension, alerts
-│       ├── rssService.js          # RSS feed fetching & caching
-│       ├── gdeltService.js        # GDELT OSINT integration
-│       ├── replicateService.js    # AI analysis via Replicate
+│       ├── locationService.js     # Geocoding for attack locations
 │       ├── polymarketService.js   # Prediction market data
 │       ├── nasaFirmsService.js    # Satellite fire data
 │       ├── giphyService.js        # Trump GIFs
-│       ├── marketService.js       # Financial market data
-│       ├── attackDetector.js      # Attack detection from news
-│       └── kimiService.js         # Legacy Kimi AI service
+│       └── marketService.js       # Financial market data
+│
+**Note:** RSS feeds, GDELT, and AI news analysis removed. Using verified manual data only.
 │
 ├── src/                       # Frontend source code
 │   ├── main.jsx               # React entry point
@@ -422,6 +431,52 @@ Auto-dismisses after 30 seconds.
 
 ---
 
+## Verified Attack Database
+
+### Overview
+The system uses a **manually curated attack database** instead of RSS feeds or AI-generated news. This ensures 100% accuracy and eliminates hallucination risks.
+
+### Database Location
+```
+server/data/verifiedAttacks.js
+```
+
+### Attack Schema
+```javascript
+{
+  id: 'attack-2026-03-16-dubai-airport',
+  headline: 'Drone strike on Dubai International Airport fuel tank',
+  description: 'Large fire at fuel tank area...',
+  location: 'Dubai',
+  country: 'UAE',
+  attackType: 'drone',     // airstrike|missile|drone|bombing|plane|naval
+  severity: 'high',        // high|medium|low
+  date: '2026-03-16T08:00:00Z',
+  source: 'Multiple sources',
+  coordinates: { lat: 25.2048, lng: 55.2708 },
+  verified: true,
+  addedBy: 'admin',
+  addedAt: '2026-03-16T14:00:00Z'
+}
+```
+
+### Adding New Attacks
+When new attacks occur:
+1. Admin provides verified attack details
+2. Developer adds to `verifiedAttacks.js`
+3. Restart server to load new data
+4. Attacks appear immediately on map and feed
+
+### Duplicate Detection
+The system automatically prevents duplicate entries:
+- Same location within 6 hours = duplicate
+- Same headline (80% similar) = duplicate
+
+### Current Attack Count
+See server startup log or check `/api/attacks` endpoint for current count.
+
+---
+
 ## Known Issues & Limitations
 
 ### Critical
@@ -548,6 +603,13 @@ npm install
 
 ## Changelog
 
+- **2026-03-16** - **MAJOR:** Switched to verified manual data system
+  - Removed RSS feeds (BBC, Al Jazeera, Guardian, etc.)
+  - Removed AI news analysis (hallucination risk)
+  - Created `verifiedAttacks.js` database
+  - Added 8 confirmed attacks (Dubai, Fujairah, Tehran, etc.)
+  - Simplified API endpoints
+  - Cost reduced to $0 (no API calls needed)
 - **2026-03-16** - Updated AGENTS.md with comprehensive documentation
 - **2026-03-14** - Reverted to pre-redesign state (commit `b80dd0d`)
 - **Earlier** - Initial dashboard creation

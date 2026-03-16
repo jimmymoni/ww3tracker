@@ -4,53 +4,8 @@ import { ExternalLink, Twitter, Link, Download, MessageCircle } from 'lucide-rea
 // html2canvas is loaded dynamically only when needed for downloads
 import { fetchMemes, getCachedData } from '../lib/api';
 
-// Default news items for fallback
-const DEFAULT_NEWS_ITEMS = [
-  {
-    id: '1',
-    headline: "US-Iran tensions escalate over Strait of Hormuz",
-    source: "BBC",
-    pubDate: new Date().toISOString(),
-    analysis: {
-      side: "IRAN",
-      badge: "OOF 💀",
-      analysis: "Iranian forces escalate presence in Strait of Hormuz amid rising tensions"
-    }
-  },
-  {
-    id: '2',
-    headline: "Trump announces new sanctions on Iranian oil exports",
-    source: "Reuters",
-    pubDate: new Date(Date.now() - 3600000).toISOString(),
-    analysis: {
-      side: "US",
-      badge: "OOF 💀",
-      analysis: "US sanctions target Iranian oil exports, significantly impacting economy"
-    }
-  },
-  {
-    id: '3',
-    headline: "Israel warns of retaliation after Iranian proxy attacks",
-    source: "Al Jazeera",
-    pubDate: new Date(Date.now() - 7200000).toISOString(),
-    analysis: {
-      side: "NEUTRAL",
-      badge: "YIKES 😬",
-      analysis: "Regional tensions increase as proxy conflicts expand across Middle East"
-    }
-  },
-  {
-    id: '4',
-    headline: "Nuclear talks stall as Iran enriches more uranium",
-    source: "The Guardian",
-    pubDate: new Date(Date.now() - 10800000).toISOString(),
-    analysis: {
-      side: "IRAN",
-      badge: "SUS 👀",
-      analysis: "Iran's uranium enrichment program advances beyond previous limits"
-    }
-  }
-];
+// No fake news - we show real data or empty state
+const DEFAULT_NEWS_ITEMS = [];
 
 const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
   const [copied, setCopied] = useState(false);
@@ -205,6 +160,11 @@ const Card = ({ meme, index }) => {
     'CASUALTIES': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
     'CONFIRMED': 'bg-green-500/20 text-green-400 border-green-500/30',
     'DISPUTED': 'bg-red-700/20 text-red-500 border-red-700/30',
+    // New professional badges
+    'ATTACK': 'bg-red-600/20 text-red-500 border-red-600/30',
+    'DIPLOMACY': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    'MILITARY': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    'UPDATE': 'bg-gray-600/20 text-gray-400 border-gray-600/30',
   };
 
   const badge = meme.analysis?.badge || 'INTELLIGENCE';
@@ -220,7 +180,7 @@ const Card = ({ meme, index }) => {
     >
       {/* Header */}
       <div className="flex justify-between items-start mb-1.5 sm:mb-2">
-        <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded border ${badgeColors[badge] || badgeColors['SUS 👀']}`}>
+        <span className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded border ${badgeColors[badge] || badgeColors['UPDATE']}`}>
           {badge}
         </span>
         <span className={`w-2 h-2 rounded-full ${
@@ -306,8 +266,14 @@ const MemeFeed = () => {
           Array.from({ length: 4 }).map((_, index) => (
             <SkeletonCard key={`skeleton-${index}`} index={index} />
           ))
+        ) : memes.length === 0 ? (
+          // Empty state - no news yet
+          <div className="col-span-2 md:col-span-4 p-8 text-center border border-white/10 rounded-lg bg-white/5">
+            <p className="text-gray-500 text-sm">No breaking news at this moment</p>
+            <p className="text-gray-600 text-xs mt-1">Feed updates every 2 minutes from BBC, Al Jazeera, Guardian, France24</p>
+          </div>
         ) : (
-          // Show actual memes (from cache or API)
+          // Show actual news (from RSS feeds)
           memes.map((meme, index) => (
             <Card key={meme.id || index} meme={meme} index={index} />
           ))

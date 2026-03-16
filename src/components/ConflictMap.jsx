@@ -17,9 +17,14 @@ const LABELS = [
   { name: 'UAE', lat: 24.5, lng: 54, type: 'country' },
   { name: 'QATAR', lat: 25.3, lng: 51.2, type: 'country' },
   { name: 'KUWAIT', lat: 29.3, lng: 47.5, type: 'country' },
+  { name: 'JORDAN', lat: 31, lng: 36, type: 'country' },
+  { name: 'BAHRAIN', lat: 26.1, lng: 50.55, type: 'country' },
   // Current conflict hotspots (March 2026)
   { name: 'ISFAHAN', lat: 32.65, lng: 51.67, type: 'city' },
   { name: 'NATANZ', lat: 33.91, lng: 51.72, type: 'city' },
+  { name: 'TEHRAN', lat: 35.69, lng: 51.39, type: 'city' },
+  { name: 'HAMADAN', lat: 34.80, lng: 48.51, type: 'city' },
+  { name: 'CHABAHAR', lat: 25.30, lng: 60.65, type: 'city' },
 ];
 
 const SEVERITY_CONFIG = {
@@ -137,23 +142,27 @@ export default function ConflictMap({ mobile = false }) {
           
           if (data.attacks && data.attacks.length > 0) {
             // Convert AI-analyzed attacks to map events
-            const mapEvents = data.attacks.map((item, idx) => ({
-              id: idx + 1,
-              lat: getLocationCoords(item.mapAnalysis.location).lat,
-              lng: getLocationCoords(item.mapAnalysis.location).lng,
-              city: item.mapAnalysis.location || 'Unknown',
-              country: getLocationCoords(item.mapAnalysis.location).country,
-              severity: item.mapAnalysis.severity,
-              type: item.mapAnalysis.attackType.toUpperCase(),
-              time: new Date(item.pubDate || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              relativeTime: getRelativeTime(item.pubDate),
-              isNew: isNewAttack(item.pubDate),
-              isRecent: isRecentAttack(item.pubDate),
-              pubDate: item.pubDate,
-              description: item.headline,
-              icon: item.mapAnalysis.attackType,
-              source: item.source
-            }));
+            const mapEvents = data.attacks.map((item, idx) => {
+              // Backend now provides coordinates - use them directly
+              const coords = item.coordinates || getLocationCoords(item.mapAnalysis.location);
+              return {
+                id: idx + 1,
+                lat: coords.lat,
+                lng: coords.lng,
+                city: item.mapAnalysis.location || 'Unknown',
+                country: coords.country,
+                severity: item.mapAnalysis.severity,
+                type: item.mapAnalysis.attackType.toUpperCase(),
+                time: new Date(item.pubDate || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                relativeTime: getRelativeTime(item.pubDate),
+                isNew: isNewAttack(item.pubDate),
+                isRecent: isRecentAttack(item.pubDate),
+                pubDate: item.pubDate,
+                description: item.headline,
+                icon: item.mapAnalysis.attackType,
+                source: item.source
+              };
+            });
             setEvents(mapEvents);
             setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
           } else {
@@ -178,52 +187,29 @@ export default function ConflictMap({ mobile = false }) {
     return () => clearInterval(interval);
   }, []);
   
-  // Helper to get coordinates for location
+  // Fallback coordinates for locations (backend should provide these)
+  // This is only used if backend doesn't include coordinates
   const getLocationCoords = (location) => {
     const coords = {
-      'Baghdad': { lat: 33.3152, lng: 44.3661, country: 'Iraq' },
       'Tehran': { lat: 35.6892, lng: 51.3890, country: 'Iran' },
-      'Kharg Island': { lat: 29.25, lng: 50.33, country: 'Iran' },
-      'Jerusalem': { lat: 31.7683, lng: 35.2137, country: 'Israel' },
-      'Tel Aviv': { lat: 32.0853, lng: 34.7818, country: 'Israel' },
-      'Beirut': { lat: 33.8938, lng: 35.5018, country: 'Lebanon' },
-      'southern Lebanon': { lat: 33.2, lng: 35.3, country: 'Lebanon' },
-      'southern lebanon': { lat: 33.2, lng: 35.3, country: 'Lebanon' },
-      'Lebanon': { lat: 33.8547, lng: 35.8623, country: 'Lebanon' },
-      'lebanon': { lat: 33.8547, lng: 35.8623, country: 'Lebanon' },
-      'Damascus': { lat: 33.5138, lng: 36.2765, country: 'Syria' },
-      'Dubai': { lat: 25.2048, lng: 55.2708, country: 'UAE' },
-      'Riyadh': { lat: 24.7136, lng: 46.6753, country: 'Saudi Arabia' },
-      'Basra': { lat: 30.5156, lng: 47.7804, country: 'Iraq' },
-      'Gaza': { lat: 31.5017, lng: 34.4668, country: 'Gaza Strip' },
-      'gaza': { lat: 31.5017, lng: 34.4668, country: 'Gaza Strip' },
-      'Sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
-      'sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
-      'Aleppo': { lat: 36.2021, lng: 37.1343, country: 'Syria' },
-      'aleppo': { lat: 36.2021, lng: 37.1343, country: 'Syria' },
-      'Homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' },
-      'homs': { lat: 34.7308, lng: 36.7094, country: 'Syria' },
-      // Current conflict locations (March 2026)
       'Isfahan': { lat: 32.6539, lng: 51.6660, country: 'Iran' },
-      'isfahan': { lat: 32.6539, lng: 51.6660, country: 'Iran' },
-      'Natanz': { lat: 33.9061, lng: 51.7198, country: 'Iran' },
-      'natanz': { lat: 33.9061, lng: 51.7198, country: 'Iran' },
-      'Kashan': { lat: 33.9850, lng: 51.4100, country: 'Iran' },
-      'kashan': { lat: 33.9850, lng: 51.4100, country: 'Iran' },
-      'Qom': { lat: 34.6401, lng: 50.8764, country: 'Iran' },
-      'qom': { lat: 34.6401, lng: 50.8764, country: 'Iran' },
-      'Bushehr': { lat: 28.9684, lng: 50.8385, country: 'Iran' },
-      'bushehr': { lat: 28.9684, lng: 50.8385, country: 'Iran' },
-      'Bandar Abbas': { lat: 27.1833, lng: 56.2666, country: 'Iran' },
-      'bandar abbas': { lat: 27.1833, lng: 56.2666, country: 'Iran' },
-      'Shiraz': { lat: 29.5926, lng: 52.5836, country: 'Iran' },
-      'shiraz': { lat: 29.5926, lng: 52.5836, country: 'Iran' },
-      'Tabriz': { lat: 38.0962, lng: 46.2738, country: 'Iran' },
-      'tabriz': { lat: 38.0962, lng: 46.2738, country: 'Iran' },
-      'Mashhad': { lat: 36.2605, lng: 59.6168, country: 'Iran' },
-      'mashhad': { lat: 36.2605, lng: 59.6168, country: 'Iran' },
-      'Ahvaz': { lat: 31.3183, lng: 48.6706, country: 'Iran' },
-      'ahvaz': { lat: 31.3183, lng: 48.6706, country: 'Iran' }
+      'Kharg Island': { lat: 29.25, lng: 50.33, country: 'Iran' },
+      'Hamadan': { lat: 34.7983, lng: 48.5148, country: 'Iran' },
+      'Chabahar': { lat: 25.2969, lng: 60.6458, country: 'Iran' },
+      'Tel Aviv': { lat: 32.0853, lng: 34.7818, country: 'Israel' },
+      'Jerusalem': { lat: 31.7683, lng: 35.2137, country: 'Israel' },
+      'Baghdad': { lat: 33.3152, lng: 44.3661, country: 'Iraq' },
+      'Kuwait': { lat: 29.3000, lng: 47.8000, country: 'Kuwait' },
+      'Bahrain': { lat: 26.0667, lng: 50.5577, country: 'Bahrain' },
+      'Jordan': { lat: 31.0000, lng: 36.0000, country: 'Jordan' },
+      'Dubai': { lat: 25.2048, lng: 55.2708, country: 'UAE' },
+      'Fujairah': { lat: 25.1288, lng: 56.3265, country: 'UAE' },
+      'Beirut': { lat: 33.8938, lng: 35.5018, country: 'Lebanon' },
+      'Damascus': { lat: 33.5138, lng: 36.2765, country: 'Syria' },
+      'Riyadh': { lat: 24.7136, lng: 46.6753, country: 'Saudi Arabia' },
+      'Doha': { lat: 25.2854, lng: 51.5310, country: 'Qatar' },
+      'Sanaa': { lat: 15.3694, lng: 44.1910, country: 'Yemen' },
+      'Gaza': { lat: 31.5017, lng: 34.4668, country: 'Gaza Strip' },
     };
     return coords[location] || { lat: 32.0, lng: 53.0, country: 'Unknown' };
   };
