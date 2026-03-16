@@ -119,7 +119,7 @@ export default function ConflictMap({ mobile = false }) {
       const container = isMobile ? mobileContainerRef.current : desktopContainerRef.current;
       if (container) {
         const rect = container.getBoundingClientRect();
-        const height = isMobile ? (mobile ? 200 : 320) : 500;
+        const height = isMobile ? (mobile ? 240 : 360) : 500;
         const newDimensions = { width: Math.max(rect.width, 300), height };
         setDimensions(newDimensions);
       }
@@ -355,13 +355,13 @@ export default function ConflictMap({ mobile = false }) {
     svg.call(zoom);
     
     const { width, height } = dimensions;
-    const scale = isMobile ? 3.2 : 2.4;
+    const scale = isMobile ? 2.6 : 2.4;
     const centerX = width / 2;
     const centerY = height / 2;
     const initialTransform = d3.zoomIdentity
       .translate(centerX, centerY)
       .scale(scale)
-      .translate(-width / 2 + (isMobile ? 0 : 0), -height / 2 + (isMobile ? -30 : 20));
+      .translate(-width / 2 + (isMobile ? 0 : 0), -height / 2 + (isMobile ? 10 : 20));
     
     svg.call(zoom.transform, initialTransform);
     if (gRef.current) {
@@ -494,10 +494,9 @@ export default function ConflictMap({ mobile = false }) {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
               if (!isVisible(event.lat, event.lng)) return null;
               const config = SEVERITY_CONFIG[event.severity];
-              // Bigger heat radius for new/recent attacks
-              const baseR = isMobile ? (event.isNew ? 12 : event.isRecent ? 10 : 8) : (event.isNew ? 16 : event.isRecent ? 14 : 12);
-              const r = event.severity === 'high' ? baseR * 2 : event.severity === 'medium' ? baseR * 1.5 : baseR;
-              const opacity = event.severity === 'high' ? 0.4 : event.severity === 'medium' ? 0.25 : 0.15;
+              // Subtle glow - smaller and less opaque
+              const r = isMobile ? 10 : 12;
+              const opacity = event.severity === 'high' ? 0.25 : event.severity === 'medium' ? 0.15 : 0.1;
               
               return (
                 <circle 
@@ -519,59 +518,58 @@ export default function ConflictMap({ mobile = false }) {
               const config = SEVERITY_CONFIG[event.severity];
               const isHovered = hoveredEvent?.id === event.id;
               const isSelected = selectedEvent?.id === event.id;
-              const radius = isMobile ? (event.isNew ? 6 : 4) : (event.isNew ? 7 : 5);
+              
+              // Simple dot sizing - consistent by severity
+              const baseRadius = isMobile ? 5 : 6;
+              const radius = baseRadius;
               const glowFilter = event.severity === 'high' ? 'url(#glow-red)' : 
                                 event.severity === 'medium' ? 'url(#glow-orange)' : 'url(#glow-yellow)';
               
-              // Faster pulse for new attacks
-              const pulseDuration = event.isNew ? '0.8s' : event.isRecent ? '1.2s' : event.severity === 'high' ? '1.5s' : '2.5s';
-              const pulseRadius = event.isNew ? radius * 3 : event.isRecent ? radius * 2.5 : radius * (event.severity === 'high' ? 2.5 : 2);
-              const pulseOpacity = event.isNew ? 0.9 : event.isRecent ? 0.7 : event.severity === 'high' ? 0.8 : 0.4;
+              // Subtle pulse only for recent attacks
+              const shouldPulse = event.isNew || event.isRecent;
+              const pulseRadius = radius * 2.2;
+              const pulseDuration = event.isNew ? '1.2s' : '1.8s';
+              const pulseOpacity = event.isNew ? 0.6 : 0.4;
 
               return (
                 <g key={event.id} className="cursor-pointer" onClick={() => handleEventClick(event)}>
-                  {/* Outer pulse ring - faster for recent attacks */}
-                  <circle 
-                    cx={x} 
-                    cy={y} 
-                    r={isMobile ? (event.severity === 'high' ? 10 : 6) : (event.severity === 'high' ? 14 : 8)} 
-                    fill="none" 
-                    stroke={event.isNew ? '#ef4444' : event.isRecent ? '#f97316' : config.color} 
-                    strokeWidth={event.isNew ? 3 : event.isRecent ? 2 : event.severity === 'high' ? 2 : 1} 
-                    opacity={pulseOpacity}
-                  >
-                    <animate attributeName="r" values={`${radius};${pulseRadius};${radius}`} dur={pulseDuration} repeatCount="indefinite" />
-                    <animate attributeName="opacity" values={`${pulseOpacity};0;${pulseOpacity}`} dur={pulseDuration} repeatCount="indefinite" />
-                  </circle>
+                  {/* Subtle pulse ring - only for recent attacks */}
+                  {shouldPulse && (
+                    <circle 
+                      cx={x} 
+                      cy={y} 
+                      r={radius * 1.5}
+                      fill="none" 
+                      stroke={config.color}
+                      strokeWidth={1.5}
+                      opacity={pulseOpacity}
+                    >
+                      <animate attributeName="r" values={`${radius * 1.5};${pulseRadius};${radius * 1.5}`} dur={pulseDuration} repeatCount="indefinite" />
+                      <animate attributeName="opacity" values={`${pulseOpacity};0;${pulseOpacity}`} dur={pulseDuration} repeatCount="indefinite" />
+                    </circle>
+                  )}
                   
-                  {/* Core dot */}
+                  {/* Core dot - simple colored dot matching legend */}
                   <circle
                     cx={x} 
                     cy={y} 
-                    r={isHovered || isSelected ? radius + 2 : radius}
-                    fill={event.isNew ? '#ef4444' : event.isRecent ? '#f97316' : config.color}
-                    stroke="white"
-                    strokeWidth={event.isNew ? 2.5 : 1.5}
-                    style={{ filter: glowFilter, transition: 'all 0.2s ease' }}
+                    r={isHovered || isSelected ? radius + 1.5 : radius}
+                    fill={config.color}
+                    stroke="rgba(0,0,0,0.5)"
+                    strokeWidth={1}
+                    style={{ filter: glowFilter, transition: 'all 0.15s ease' }}
                     onMouseEnter={() => setHoveredEvent(event)}
                     onMouseLeave={() => setHoveredEvent(null)}
                   />
-                  
-                  {/* NEW badge on map for very recent */}
-                  {event.isNew && (
-                    <g>
-                      <rect x={x - 14} y={y - 22} width="28" height="10" rx="2" fill="#ef4444" />
-                      <text x={x} y={y - 15} textAnchor="middle" fill="white" fontSize="6" fontWeight="700">NEW</text>
-                    </g>
-                  )}
 
+                  {/* Tooltip on hover */}
                   {(isHovered || isSelected) && (
                     <g>
                       <rect x={x - 45} y={y - 32} width="90" height="20" rx="3" fill="rgba(0,0,0,0.95)" stroke={config.color} strokeWidth="0.5" />
                       <text x={x} y={y - 22} textAnchor="middle" fill="white" fontSize="8" fontWeight="600">
                         {event.city}
                       </text>
-                      <text x={x} y={y - 12} textAnchor="middle" fill={event.isNew ? '#ef4444' : event.isRecent ? '#f97316' : '#9ca3af'} fontSize="7">
+                      <text x={x} y={y - 12} textAnchor="middle" fill={event.isNew ? '#ef4444' : '#9ca3af'} fontSize="7">
                         {event.relativeTime}
                       </text>
                     </g>
@@ -587,19 +585,10 @@ export default function ConflictMap({ mobile = false }) {
         <div className="space-y-1.5">
           {Object.entries(SEVERITY_CONFIG).map(([key, config]) => (
             <div key={key} className="flex items-center gap-1.5">
-              <span className={`w-2 h-2 rounded-full ${config.bg} ${key === 'high' ? 'animate-pulse' : ''}`} />
+              <span className={`w-2 h-2 rounded-full ${config.bg}`} />
               <span className="text-[10px] text-gray-400">{config.label}</span>
             </div>
           ))}
-          {/* Time indicators */}
-          <div className="flex items-center gap-1.5 pt-1 border-t border-white/10 mt-1">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-[10px] text-gray-400">&lt; 6h (NEW)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-orange-500" />
-            <span className="text-[10px] text-gray-400">&lt; 12h</span>
-          </div>
         </div>
       </div>
 
