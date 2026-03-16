@@ -360,9 +360,11 @@ function MainDashboard() {
           </Suspense>
         </div>
 
-        {/* MOBILE: Map second (smaller) */}
+        {/* MOBILE: Map second (smaller) - DEFERRED for performance */}
         <div className="lg:hidden mb-4">
-          <Suspense fallback={<div className="h-[240px] bg-black/40 rounded-2xl animate-pulse" />}>
+          <Suspense fallback={<div className="h-[240px] bg-black/40 rounded-2xl flex items-center justify-center text-gray-500 text-sm">
+            <Loader2 className="w-5 h-5 animate-spin mr-2" /> Loading map...
+          </div>}>
             <ConflictMap mobile />
           </Suspense>
         </div>

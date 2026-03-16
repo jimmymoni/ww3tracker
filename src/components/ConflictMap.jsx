@@ -104,13 +104,22 @@ export default function ConflictMap({ mobile = false }) {
   }, []);
 
   useEffect(() => {
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-      .then(r => r.json())
-      .then(data => {
-        setWorldData(data);
-        setIsLoading(false);
-      })
-      .catch(() => setIsLoading(false));
+    // DEFER map loading to reduce initial TBT
+    const loadMap = () => {
+      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+        .then(r => r.json())
+        .then(data => {
+          setWorldData(data);
+          setIsLoading(false);
+        })
+        .catch(() => setIsLoading(false));
+    };
+    // Use requestIdleCallback or setTimeout to defer
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(loadMap, { timeout: 2000 });
+    } else {
+      setTimeout(loadMap, 500); // Defer by 500ms
+    }
   }, []);
 
   // Update dimensions based on active container
@@ -130,8 +139,9 @@ export default function ConflictMap({ mobile = false }) {
     return () => window.removeEventListener('resize', update);
   }, [isMobile, mobile]);
 
-  // Fetch AI-analyzed attacks from API
+  // Fetch AI-analyzed attacks from API - DEFERRED
   useEffect(() => {
+    let cancelled = false;
     const fetchAttacks = async () => {
       try {
         setIsLoadingRealData(true);
@@ -182,9 +192,23 @@ export default function ConflictMap({ mobile = false }) {
       }
     };
 
-    fetchAttacks();
-    const interval = setInterval(fetchAttacks, 60 * 1000); // Refresh every minute
-    return () => clearInterval(interval);
+    // DEFER attacks fetch to reduce initial TBT
+    const deferFetch = () => {
+      if (!cancelled) fetchAttacks();
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(deferFetch, { timeout: 3000 });
+    } else {
+      setTimeout(deferFetch, 1000); // Defer by 1s
+    }
+    
+    const interval = setInterval(() => {
+      if (!cancelled) fetchAttacks();
+    }, 60 * 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, []);
   
   // Fallback coordinates for locations (backend should provide these)

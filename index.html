@@ -17,8 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     
-    <!-- Preload critical font file only -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
+
     
     <!-- Favicon for Google Search and browsers -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -55,8 +54,8 @@
     <meta name="twitter:image" content="https://ww3tracker.live/og-image.png?t=202603031200" />
     <meta name="twitter:image:alt" content="WW3 Tracker - US vs Iran Live Standoff" />
     
-    <!-- Google Fonts - Async load for better mobile performance -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
+    <!-- Google Fonts - Standard load (media=print caused delays) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     
     <!-- Critical CSS inline for above-the-fold content -->
     <style>
@@ -310,7 +309,6 @@
     <!-- Main app - async to not block HTML parsing, with cache bust -->
     <script type="module" src="/src/main.jsx?v=2" async></script>
     
-    <!-- React will hydrate and replace the static content - v2 -->
-    <!-- If React fails, static content remains visible -->
+    <!-- React app mounts here -->
   </body>
 </html>
