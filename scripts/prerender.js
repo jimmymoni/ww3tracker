@@ -47,54 +47,59 @@ routes.forEach(route => {
   // Modify the HTML for this specific route
   let routeHtml = indexContent;
   
+
+  
   // Add route-specific meta tags
   const routeMeta = getRouteMeta(route);
   
   // Add route-specific body content for SEO
   const routeContent = getRouteContent(route);
   
-  // Replace the seo-static-content div content
+  // Replace the seo-static-content div content (only the content, keep the div)
   routeHtml = routeHtml.replace(
-    /<div id="seo-static-content"[^>]*>[\s\S]*?<\/div>\s*<div id="root"><\/div>/,
-    `<div id="seo-static-content" style="background: #0d0d12; color: #ffffff; font-family: Inter, system-ui, sans-serif; padding: 20px; min-height: 100vh;">
-      ${routeContent}
-    </div>
-    <div id="root"></div>`
+    /(<div id="seo-static-content"[^>]*>)[\s\S]*?(<\/div>)(\s*<div id="root">[\s\S]*?<\/div>)?/,
+    `$1${routeContent}$2$3`
   );
+  
+
   
   // Replace the title and description
   routeHtml = routeHtml.replace(
     /<title>.*?<\/title>/,
     `<title>${routeMeta.title}</title>`
   );
+
   
-  // Replace description (handle multiline with [\s\S]*? instead of .*?)
+  // Replace description (handle self-closing />
+  const sanitizedDesc = routeMeta.description.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
   routeHtml = routeHtml.replace(
-    /<meta name="description" content="[\s\S]*?">/,
-    `<meta name="description" content="${routeMeta.description}">`
+    /<meta name="description" content="[^"]*"\s*\/?>/,
+    `<meta name="description" content="${sanitizedDesc}" />`
   );
   
   // Also update OG and Twitter descriptions
   routeHtml = routeHtml.replace(
-    /<meta property="og:description" content="[\s\S]*?">/,
-    `<meta property="og:description" content="${routeMeta.description}">`
+    /<meta property="og:description" content="[^"]*"\s*\/?>/,
+    `<meta property="og:description" content="${sanitizedDesc}" />`
   );
   
   routeHtml = routeHtml.replace(
-    /<meta name="twitter:description" content="[\s\S]*?">/,
-    `<meta name="twitter:description" content="${routeMeta.description}">`
+    /<meta name="twitter:description" content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:description" content="${sanitizedDesc}" />`
   );
   
   // Update OG and Twitter titles too
   routeHtml = routeHtml.replace(
-    /<meta property="og:title" content="[\s\S]*?">/,
-    `<meta property="og:title" content="${routeMeta.title}">`
+    /<meta property="og:title" content="[^"]*"\s*\/?>/,
+    `<meta property="og:title" content="${routeMeta.title}" />`
   );
   
   routeHtml = routeHtml.replace(
-    /<meta name="twitter:title" content="[\s\S]*?">/,
-    `<meta name="twitter:title" content="${routeMeta.title}">`
+    /<meta name="twitter:title" content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:title" content="${routeMeta.title}" />`
   );
+  
+
   
   // Add canonical link
   const canonicalUrl = `https://ww3tracker.live${route}`;
@@ -104,6 +109,8 @@ routes.forEach(route => {
       `  <link rel="canonical" href="${canonicalUrl}" />\n  </head>`
     );
   }
+  
+
   
   // Determine output path
   let outputPath;
