@@ -31,7 +31,8 @@ const GlobalParticipantsCarousel = lazy(() => import('./components/GlobalPartici
 const TimelineOfChaos = lazy(() => import('./components/TimelineOfChaos'));
 const MemeFeed = lazy(() => import('./components/MemeCard'));
 const SpicyMeter = lazy(() => import('./components/SpicyMeter'));
-const PolymarketWidget = lazy(() => import('./components/PolymarketWidget')); // eslint-disable-line @typescript-eslint/no-unused-vars
+const PolymarketWidget = lazy(() => import('./components/PolymarketWidget'));
+const NasaFirmsStrip = lazy(() => import('./components/NasaFirmsStrip'));
 
 
 
