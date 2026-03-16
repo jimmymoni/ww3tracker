@@ -1,7 +1,7 @@
 // Use relative URL - works with any domain (localhost, railway, custom domain)
 const API_BASE_URL = '/api';
 
-const DEFAULT_TIMEOUT = 15000; // 15 seconds
+const DEFAULT_TIMEOUT = 5000; // 5 seconds - fail fast for better UX
 
 // Create fetch with timeout using AbortController
 const fetchWithTimeout = async (url, options = {}, timeout = DEFAULT_TIMEOUT) => {

@@ -250,64 +250,33 @@ function MainDashboard() {
   const [serverFailed, setServerFailed] = useState(false);
 
 
-  // Load initial game state with retry logic
+  // Load initial game state - render immediately with cached data, fetch in background
   useEffect(() => {
     const loadInitialState = async () => {
-      const maxRetries = 3;
-      const retryDelay = 2000; // 2 seconds between retries
+      // Use cached data immediately if available
+      if (cachedState) {
+        console.log('[App] Using cached data immediately');
+        setGameState(cachedState);
+        setInitialLoading(false);
+      } else {
+        // No cache - show UI with default state
+        console.log('[App] No cached data, showing default state');
+        setInitialLoading(false);
+      }
       
-      for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        try {
-          console.log(`[App] Loading game state (attempt ${attempt}/${maxRetries})...`);
-          
-          // Try to fetch state (lightweight endpoint)
-          const state = await fetchGameState();
-          setGameState(state);
-          console.log('[App] Game state loaded successfully');
-          setServerFailed(false);
-          setInitialLoading(false);
-          setBackgroundLoading(false);
-          return; // Success - exit retry loop
-        } catch (err) {
-          console.warn(`[App] Attempt ${attempt} failed:`, err.message);
-          
-          if (attempt === maxRetries) {
-            console.error('[App] All retries failed');
-            // If we have cached data, keep showing it
-            if (cachedState) {
-              console.log('[App] Using cached data, will retry in background');
-              setServerFailed(false);
-            } else {
-              // No cached data - show failure state
-              setServerFailed(true);
-            }
-            setInitialLoading(false);
-            setBackgroundLoading(false);
-          } else {
-            // Wait before retrying
-            console.log(`[App] Retrying in ${retryDelay}ms...`);
-            await new Promise(r => setTimeout(r, retryDelay));
-          }
-        }
+      // Fetch fresh data in background (non-blocking)
+      try {
+        const state = await fetchGameState();
+        setGameState(state);
+        setServerFailed(false);
+        console.log('[App] Fresh data loaded in background');
+      } catch (err) {
+        console.warn('[App] Background fetch failed:', err.message);
+        // Already showing cached/default data, no need to change
       }
     };
 
     loadInitialState();
-    
-    // Fallback: Force show page after 2 seconds - render with cached data immediately
-    const forceTimeout = setTimeout(() => {
-      if (initialLoading) {
-        console.log('[App] Force showing page after timeout');
-        setInitialLoading(false);
-        setBackgroundLoading(false);
-        // Only mark as failed if we don't have any data
-        if (!cachedState) {
-          setServerFailed(true);
-        }
-      }
-    }, 2000); // Reduced to 2 seconds - show UI immediately with cached data
-    
-    return () => clearTimeout(forceTimeout);
   }, []);
   
   // Background refresh after initial load - silently update data
