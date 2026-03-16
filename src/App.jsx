@@ -34,6 +34,9 @@ const SpicyMeter = lazy(() => import('./components/SpicyMeter'));
 const PolymarketWidget = lazy(() => import('./components/PolymarketWidget'));
 const NasaFirmsStrip = lazy(() => import('./components/NasaFirmsStrip')); // eslint-disable-line @typescript-eslint/no-unused-vars
 
+// Lazy load below-fold components
+import LazyLoad, { SkeletonLoader } from './components/LazyLoad';
+
 // API
 import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
 
@@ -416,17 +419,19 @@ function MainDashboard() {
           <GlobalParticipantsCarousel />
         </Suspense>
 
-        {/* ROW 2: Meme Feed - Full Width Below */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
-          <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <MemeFeed />
-          </Suspense>
-        </motion.section>
+        {/* ROW 2: Meme Feed - Lazy loaded below fold */}
+        <LazyLoad fallback={<SkeletonLoader height="300px" className="mb-6" />}>
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-6"
+          >
+            <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
+              <MemeFeed />
+            </Suspense>
+          </motion.section>
+        </LazyLoad>
 
         {/* ROW 3: Spicy Meter */}
         <motion.section
@@ -443,29 +448,33 @@ function MainDashboard() {
           />
         </motion.section>
 
-        {/* ROW 4: Polymarket Widget - Full Width */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mb-6"
-        >
-          <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <PolymarketWidget />
-          </Suspense>
-        </motion.section>
+        {/* ROW 4: Polymarket Widget - Lazy loaded below fold */}
+        <LazyLoad fallback={<SkeletonLoader height="200px" className="mb-6" />}>
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mb-6"
+          >
+            <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
+              <PolymarketWidget />
+            </Suspense>
+          </motion.section>
+        </LazyLoad>
 
-        {/* ROW 5: Timeline of Chaos - Full Width */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="mb-6"
-        >
-          <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <TimelineOfChaos />
-          </Suspense>
-        </motion.section>
+        {/* ROW 5: Timeline of Chaos - Lazy loaded below fold */}
+        <LazyLoad fallback={<SkeletonLoader height="300px" className="mb-6" />}>
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mb-6"
+          >
+            <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
+              <TimelineOfChaos />
+            </Suspense>
+          </motion.section>
+        </LazyLoad>
 
         <Disclaimer />
         
