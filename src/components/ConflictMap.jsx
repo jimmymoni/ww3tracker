@@ -371,7 +371,7 @@ export default function ConflictMap({ mobile = false }) {
   }, [worldData, dimensions.width, dimensions.height, isMobile]);
 
   const projection = useCallback(() => {
-    const scale = isMobile ? dimensions.width * 0.65 : dimensions.width * 0.8;
+    const scale = isMobile ? dimensions.width * 0.9 : dimensions.width * 0.8;
     return d3.geoMercator()
       .center([47, 30])
       .scale(scale)
