@@ -2,20 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google Analytics - Deferred to prevent blocking -->
-    <!-- KOCHI EXCLUSION: Analytics blocked for visitors from Kochi -->
-    <!-- Google Analytics - Simple async load -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E"></script>
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical font files for faster rendering -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Google Analytics - DEFERRED until after page load -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TV2FWQFE2E');
+      // Load GA after page is interactive
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E';
+          document.head.appendChild(s);
+          gtag('js', new Date());
+          gtag('config', 'G-TV2FWQFE2E');
+        }, 2000); // 2 second delay after load
+      });
     </script>
-    
-    <!-- Preconnect to critical domains (fonts most important) -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     
 
     
