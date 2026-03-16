@@ -25,13 +25,13 @@ const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
 import WW3Counter from './components/WW3Counter';
 import BreakingAlert from './components/BreakingAlert';
 
-// Load all components immediately - avoid lazy loading waterfall
-import ConflictMap from './components/ConflictMap';
-import GlobalParticipantsCarousel from './components/GlobalParticipantsCarousel';
-import TimelineOfChaos from './components/TimelineOfChaos';
-import MemeFeed from './components/MemeCard';
-import SpicyMeter from './components/SpicyMeter';
-import PolymarketWidget from './components/PolymarketWidget';
+// Heavy components - lazy loaded
+const ConflictMap = lazy(() => import('./components/ConflictMap'));
+const GlobalParticipantsCarousel = lazy(() => import('./components/GlobalParticipantsCarousel'));
+const TimelineOfChaos = lazy(() => import('./components/TimelineOfChaos'));
+const MemeFeed = lazy(() => import('./components/MemeCard'));
+const SpicyMeter = lazy(() => import('./components/SpicyMeter'));
+const PolymarketWidget = lazy(() => import('./components/PolymarketWidget')); // eslint-disable-line @typescript-eslint/no-unused-vars
 
 
 
@@ -385,12 +385,16 @@ function MainDashboard() {
 
         {/* DESKTOP: Map first */}
         <div className="hidden lg:block mb-6">
-          <ConflictMap />
+          <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <ConflictMap />
+          </Suspense>
         </div>
 
         {/* MOBILE: Map second (smaller) */}
         <div className="lg:hidden mb-4">
-          <ConflictMap mobile />
+          <Suspense fallback={<div className="h-[240px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <ConflictMap mobile />
+          </Suspense>
         </div>
 
         {/* DESKTOP: WW3 Counter after map */}
@@ -399,7 +403,9 @@ function MainDashboard() {
         </div>
 
         {/* ROW 3: Global Participants Carousel */}
-        <GlobalParticipantsCarousel />
+        <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
+          <GlobalParticipantsCarousel />
+        </Suspense>
 
         {/* ROW 2: Meme Feed - Full Width Below */}
         <motion.section
@@ -408,7 +414,9 @@ function MainDashboard() {
           transition={{ delay: 0.3 }}
           className="mb-6"
         >
-          <MemeFeed />
+          <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <MemeFeed />
+          </Suspense>
         </motion.section>
 
         {/* ROW 3: Spicy Meter */}
@@ -419,11 +427,13 @@ function MainDashboard() {
           className="mb-6"
           style={{ minHeight: '420px' }}
         >
-          <SpicyMeter 
-            tension={gameState.tension} 
-            usHP={gameState.usHP}
-            iranHP={gameState.iranHP}
-          />
+          <Suspense fallback={<div className="h-[420px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <SpicyMeter 
+              tension={gameState.tension} 
+              usHP={gameState.usHP}
+              iranHP={gameState.iranHP}
+            />
+          </Suspense>
         </motion.section>
 
         {/* ROW 4: Polymarket Widget - Full Width */}
@@ -433,7 +443,9 @@ function MainDashboard() {
           transition={{ delay: 0.5 }}
           className="mb-6"
         >
-          <PolymarketWidget />
+          <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <PolymarketWidget />
+          </Suspense>
         </motion.section>
 
         {/* ROW 5: Timeline of Chaos - Full Width */}
@@ -443,7 +455,9 @@ function MainDashboard() {
           transition={{ delay: 0.6 }}
           className="mb-6"
         >
-          <TimelineOfChaos />
+          <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <TimelineOfChaos />
+          </Suspense>
         </motion.section>
 
         <Disclaimer />
