@@ -43,7 +43,7 @@ Object.entries(expectedMeta).forEach(([route, expected]) => {
   
   const content = fs.readFileSync(filePath, 'utf-8');
   const titleMatch = content.match(/<title>(.*?)<\/title>/);
-  const descMatch = content.match(/<meta name="description" content="(.*?)">/);
+  const descMatch = content.match(/<meta name="description" content="([^"]*)"/);
   
   const actualTitle = titleMatch ? titleMatch[1] : 'NOT FOUND';
   const actualDesc = descMatch ? descMatch[1] : 'NOT FOUND';
