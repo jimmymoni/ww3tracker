@@ -348,48 +348,7 @@
     <!-- Main app - async to not block HTML parsing, with cache bust -->
     <script type="module" src="/src/main.jsx?v=2" async></script>
     
-    <!-- Hide static SEO content when React hydrates -->
-    <script>
-      (function() {
-        var root = document.getElementById('root');
-        var seoContent = document.getElementById('seo-static-content');
-        var loader = document.getElementById('initial-loader');
-        
-        // Show loader immediately
-        if (loader) loader.style.display = 'flex';
-        
-        // Check if React has rendered content
-        function checkReactRendered() {
-          // React adds data-reactroot or renders actual content
-          var hasReactContent = root && (root.children.length > 1 || root.innerHTML.length > 7000);
-          return hasReactContent;
-        }
-        
-        // Try to hide static content after React renders
-        function tryHideStatic() {
-          if (checkReactRendered()) {
-            // React has rendered, safe to hide static
-            if (seoContent) seoContent.style.display = 'none';
-            if (loader) loader.style.display = 'none';
-            return true;
-          }
-          return false;
-        }
-        
-        // Check every 200ms for up to 5 seconds
-        var attempts = 0;
-        var interval = setInterval(function() {
-          attempts++;
-          if (tryHideStatic() || attempts > 25) {
-            clearInterval(interval);
-            // If React never rendered, keep static content visible
-            if (!checkReactRendered()) {
-              console.log('React not rendered, keeping static content');
-              if (loader) loader.style.display = 'none';
-            }
-          }
-        }, 200);
-      })();
-    </script>
+    <!-- React will hydrate and replace the static content -->
+    <!-- If React fails, static content remains visible -->
   </body>
 </html>
