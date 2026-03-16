@@ -355,7 +355,7 @@ export default function ConflictMap({ mobile = false }) {
     svg.call(zoom);
     
     const { width, height } = dimensions;
-    const scale = isMobile ? 2.6 : 2.4;
+    const scale = isMobile ? 3.0 : 2.4;
     const centerX = width / 2;
     const centerY = height / 2;
     const initialTransform = d3.zoomIdentity
