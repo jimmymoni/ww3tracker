@@ -25,14 +25,15 @@ const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
 import WW3Counter from './components/WW3Counter';
 import BreakingAlert from './components/BreakingAlert';
 
-// Heavy components - loaded on demand
-const ConflictMap = lazy(() => import('./components/ConflictMap'));
-const GlobalParticipantsCarousel = lazy(() => import('./components/GlobalParticipantsCarousel'));
+// Above-fold: Load immediately (critical for LCP)
+import ConflictMap from './components/ConflictMap';
+import GlobalParticipantsCarousel from './components/GlobalParticipantsCarousel';
+
+// Below-fold: Lazy loaded
 const TimelineOfChaos = lazy(() => import('./components/TimelineOfChaos'));
 const MemeFeed = lazy(() => import('./components/MemeCard'));
 const SpicyMeter = lazy(() => import('./components/SpicyMeter'));
-const PolymarketWidget = lazy(() => import('./components/PolymarketWidget'));
-const NasaFirmsStrip = lazy(() => import('./components/NasaFirmsStrip')); // eslint-disable-line @typescript-eslint/no-unused-vars
+const PolymarketWidget = lazy(() => import('./components/PolymarketWidget')); // eslint-disable-line @typescript-eslint/no-unused-vars
 
 
 
@@ -396,16 +397,12 @@ function MainDashboard() {
 
         {/* DESKTOP: Map first */}
         <div className="hidden lg:block mb-6">
-          <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <ConflictMap />
-          </Suspense>
+          <ConflictMap />
         </div>
 
         {/* MOBILE: Map second (smaller) */}
         <div className="lg:hidden mb-4">
-          <Suspense fallback={<div className="h-[240px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <ConflictMap mobile />
-          </Suspense>
+          <ConflictMap mobile />
         </div>
 
         {/* DESKTOP: WW3 Counter after map */}
@@ -414,9 +411,7 @@ function MainDashboard() {
         </div>
 
         {/* ROW 3: Global Participants Carousel */}
-        <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
-          <GlobalParticipantsCarousel />
-        </Suspense>
+        <GlobalParticipantsCarousel />
 
         {/* ROW 2: Meme Feed - Full Width Below */}
         <motion.section
