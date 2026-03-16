@@ -358,17 +358,37 @@
         // Show loader immediately
         if (loader) loader.style.display = 'flex';
         
-        // Hide static content after a short delay (React should be ready)
-        setTimeout(function() {
-          if (seoContent) seoContent.style.display = 'none';
-          if (loader) loader.style.display = 'none';
-        }, 800);
+        // Check if React has rendered content
+        function checkReactRendered() {
+          // React adds data-reactroot or renders actual content
+          var hasReactContent = root && (root.children.length > 1 || root.innerHTML.length > 7000);
+          return hasReactContent;
+        }
         
-        // Fallback: always hide after 3 seconds max
-        setTimeout(function() {
-          if (seoContent) seoContent.style.display = 'none';
-          if (loader) loader.style.display = 'none';
-        }, 3000);
+        // Try to hide static content after React renders
+        function tryHideStatic() {
+          if (checkReactRendered()) {
+            // React has rendered, safe to hide static
+            if (seoContent) seoContent.style.display = 'none';
+            if (loader) loader.style.display = 'none';
+            return true;
+          }
+          return false;
+        }
+        
+        // Check every 200ms for up to 5 seconds
+        var attempts = 0;
+        var interval = setInterval(function() {
+          attempts++;
+          if (tryHideStatic() || attempts > 25) {
+            clearInterval(interval);
+            // If React never rendered, keep static content visible
+            if (!checkReactRendered()) {
+              console.log('React not rendered, keeping static content');
+              if (loader) loader.style.display = 'none';
+            }
+          }
+        }, 200);
       })();
     </script>
   </body>
