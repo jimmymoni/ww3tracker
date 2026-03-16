@@ -37,8 +37,33 @@ const fetchLiveStats = async () => {
   }
 };
 
-// Key participants - showing current status, not fake game stats
-const getInitialLeadersData = () => {
+// Key participants - dynamically updated from live API data
+const getInitialLeadersData = (liveData = null) => {
+  // Get real values from API or use defaults
+  const usHP = liveData?.usHP ?? 75;
+  const iranHP = liveData?.iranHP ?? 60;
+  const tension = liveData?.tension ?? 45;
+  
+  // Determine status based on actual HP values
+  const getUSStatus = () => {
+    if (usHP > 80) return STATUS_TYPES.STRIKING;
+    if (usHP > 50) return STATUS_TYPES.ACTIVE;
+    return STATUS_TYPES.UNDER_FIRE;
+  };
+  
+  const getIranStatus = () => {
+    if (iranHP > 70) return STATUS_TYPES.RETALIATING;
+    if (iranHP > 40) return STATUS_TYPES.ACTIVE;
+    return STATUS_TYPES.UNDER_FIRE;
+  };
+  
+  const getTensionLabel = () => {
+    if (tension > 75) return 'Critical';
+    if (tension > 50) return 'Elevated';
+    if (tension > 30) return 'Tense';
+    return 'Stable';
+  };
+  
   return [
     {
       id: 'trump',
@@ -48,14 +73,14 @@ const getInitialLeadersData = () => {
       nickname: 'US PRESIDENT',
       gifUrl: LEADER_GIFS.trump,
       accentColor: 'blue',
-      status: STATUS_TYPES.STRIKING,
+      status: getUSStatus(),
       stats: [
-        { emoji: '🎯', label: 'Policy', value: 'Maximum Pressure' },
-        { emoji: '🚢', label: 'Forces', value: 'Gulf Deployed' },
-        { emoji: '🤝', label: 'Alliance', value: 'US-Israel' }
+        { emoji: '❤️', label: 'Strength', value: `${Math.round(usHP)}%` },
+        { emoji: '📊', label: 'Tension', value: getTensionLabel() },
+        { emoji: '🎯', label: 'Posture', value: usHP > 60 ? 'Offensive' : 'Defensive' }
       ],
       lastUpdate: Date.now(),
-      shareText: `🇺🇸 US Position:\n🎯 Policy: Maximum Pressure Campaign\n🚢 Forces: Deployed to Persian Gulf\n🤝 Alliance: Coordinating with Israel\n\nLive updates: ${SITE_URL}\n\n#USvsIran`
+      shareText: `🇺🇸 US Position:\n❤️ Strength: ${Math.round(usHP)}%\n📊 Tension: ${getTensionLabel()}\n🎯 Posture: ${usHP > 60 ? 'Offensive' : 'Defensive'}\n\nLive updates: ${SITE_URL}\n\n#USvsIran`
     },
     {
       id: 'iran',
@@ -65,14 +90,14 @@ const getInitialLeadersData = () => {
       nickname: 'SUPREME LEADER',
       gifUrl: LEADER_GIFS.iran,
       accentColor: 'red',
-      status: STATUS_TYPES.RETALIATING,
+      status: getIranStatus(),
       stats: [
-        { emoji: '🚀', label: 'Posture', value: 'Retaliatory' },
-        { emoji: '📡', label: 'Proxy', value: 'Regional Active' },
-        { emoji: '⛔', label: 'Hormuz', value: 'Contested' }
+        { emoji: '❤️', label: 'Strength', value: `${Math.round(iranHP)}%` },
+        { emoji: '📊', label: 'Tension', value: getTensionLabel() },
+        { emoji: '🚀', label: 'Posture', value: iranHP > 50 ? 'Retaliating' : 'Defensive' }
       ],
       lastUpdate: Date.now(),
-      shareText: `🇮🇷 Iran Position:\n🚀 Posture: Retaliatory Operations\n📡 Proxy Forces: Active Regionally\n⛔ Strait: Contested Status\n\nLive updates: ${SITE_URL}\n\n#USvsIran`
+      shareText: `🇮🇷 Iran Position:\n❤️ Strength: ${Math.round(iranHP)}%\n📊 Tension: ${getTensionLabel()}\n🚀 Posture: ${iranHP > 50 ? 'Retaliating' : 'Defensive'}\n\nLive updates: ${SITE_URL}\n\n#USvsIran`
     },
     {
       id: 'netanyahu',
@@ -82,14 +107,14 @@ const getInitialLeadersData = () => {
       nickname: 'ISRAELI PM',
       gifUrl: LEADER_GIFS.netanyahu,
       accentColor: 'indigo',
-      status: STATUS_TYPES.ACTIVE,
+      status: tension > 60 ? STATUS_TYPES.ACTIVE : STATUS_TYPES.MONITORING,
       stats: [
-        { emoji: '🎯', label: 'Operation', value: 'Roaring Lion' },
-        { emoji: '🏴', label: 'Status', value: 'Targeted' },
-        { emoji: '🛡️', label: 'Defense', value: 'Iron Dome' }
+        { emoji: '🎯', label: 'Operation', value: 'Active' },
+        { emoji: '📊', label: 'Tension', value: getTensionLabel() },
+        { emoji: '🛡️', label: 'Status', value: tension > 70 ? 'High Alert' : 'Watch' }
       ],
       lastUpdate: Date.now(),
-      shareText: `🇮🇱 NETANYAHU CARD:\n🎯 Operation: Roaring Lion\n🏴 Status: Office Targeted\n🛡️ Defense: Iron Dome Active\n\nActive partner 👇\n${SITE_URL}\n\n#USvsIran`
+      shareText: `🇮🇱 Israel Position:\n🎯 Operation: Active\n📊 Tension: ${getTensionLabel()}\n🛡️ Status: ${tension > 70 ? 'High Alert' : 'Watch'}\n\nActive partner 👇\n${SITE_URL}\n\n#USvsIran`
     }
   ];
 };
@@ -375,30 +400,27 @@ const GlobalParticipantsCarousel = () => {
     loadLiveData();
   }, []);
 
-  // Simulate real-time updates with actual data refresh
+  // Fetch real-time updates from API
   const simulateLiveUpdates = useCallback(async () => {
-    // Try to fetch fresh data first
+    // Fetch fresh data from API
     const liveData = await fetchLiveStats();
     
-    setLeaders(prevLeaders => {
-      const freshData = getInitialLeadersData(liveData);
-      return prevLeaders.map((leader, idx) => {
-        const updatedLeader = { 
-          ...freshData[idx], 
-          lastUpdate: Date.now() 
-        };
-        
-        // Simulate status changes based on events
-        if (leader.id === 'iran' && Math.random() > 0.8) {
-          updatedLeader.status = STATUS_TYPES.RETALIATING;
-          setNewAlertId('iran');
-          setTimeout(() => setNewAlertId(null), 3000);
-        }
-        
-        return updatedLeader;
+    if (liveData) {
+      setLeaders(prevLeaders => {
+        const freshData = getInitialLeadersData(liveData);
+        return freshData.map((leader, idx) => ({
+          ...leader,
+          lastUpdate: Date.now()
+        }));
       });
-    });
-    setLastGlobalUpdate(Date.now());
+      setLastGlobalUpdate(Date.now());
+      
+      // Show alert if tension is critically high
+      if (liveData.tension > 80) {
+        setNewAlertId('iran');
+        setTimeout(() => setNewAlertId(null), 3000);
+      }
+    }
   }, []);
 
   // Auto-refresh every 60 seconds

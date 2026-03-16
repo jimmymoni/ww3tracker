@@ -50,6 +50,18 @@ routes.forEach(route => {
   // Add route-specific meta tags
   const routeMeta = getRouteMeta(route);
   
+  // Add route-specific body content for SEO
+  const routeContent = getRouteContent(route);
+  
+  // Replace the seo-static-content div content
+  routeHtml = routeHtml.replace(
+    /<div id="seo-static-content"[^>]*>[\s\S]*?<\/div>\s*<div id="root"><\/div>/,
+    `<div id="seo-static-content" style="background: #0d0d12; color: #ffffff; font-family: Inter, system-ui, sans-serif; padding: 20px; min-height: 100vh;">
+      ${routeContent}
+    </div>
+    <div id="root"></div>`
+  );
+  
   // Replace the title and description
   routeHtml = routeHtml.replace(
     /<title>.*?<\/title>/,
@@ -203,4 +215,139 @@ function getRouteMeta(route) {
   };
   
   return metas[route] || metas['/'];
+}
+
+// Helper function to get route-specific body content for SEO
+function getRouteContent(route) {
+  const contents = {
+    '/': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; background: linear-gradient(135deg, #ef4444 0%, #fbbf24 50%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">WW3 Tracker - Live US vs Iran Conflict Monitor</h1>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">Real-time tracking of the US-Iran war with satellite intelligence, prediction markets, and breaking news. Monitor WW3 probability, military strikes, and geopolitical developments.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Live Conflict Dashboard</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">Track the US-Iran war in real-time with our comprehensive monitoring system. View confirmed military strikes on our interactive map, monitor WW3 probability based on Polymarket prediction data, and get breaking news updates as events unfold.</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">WW3 Probability Monitor</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">Our WW3 probability tracker combines prediction market data, geopolitical analysis, and real-time news to estimate the likelihood of World War 3. Updated every 60 seconds with live data from Polymarket and global news sources.</p>
+        </section>
+      </main>
+    `,
+    '/is-ww3-happening': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; color: #22c55e;">Is WW3 Happening Right Now?</h1>
+        <p style="font-size: 24px; color: #22c55e; font-weight: 600;">Current Status: NO</p>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 16px auto 0;">World War 3 has not started. While the US-Iran conflict is active, it remains a regional war.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Current WW3 Probability</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">Based on Polymarket prediction markets and geopolitical analysis, the current WW3 probability is approximately 15-25%. While concerning, this does not indicate imminent global conflict.</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Warning Signs to Watch</h2>
+          <ul style="color: #d1d5db; line-height: 1.7; padding-left: 20px;">
+            <li>Multiple major powers directly entering the conflict</li>
+            <li>NATO Article 5 invocation</li>
+            <li>Russia or China direct military involvement</li>
+            <li>Nuclear weapons use or threat</li>
+            <li>Global military mobilization</li>
+          </ul>
+        </section>
+      </main>
+    `,
+    '/ww3-probability': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; background: linear-gradient(135deg, #ef4444 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">WW3 Probability Tracker</h1>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">Live WW3 risk percentage based on prediction markets, military tensions, and geopolitical analysis.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">How We Calculate WW3 Probability</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">Our WW3 probability tracker aggregates data from multiple sources: Polymarket prediction markets (weighted 40%), military action intensity (30%), diplomatic relations (20%), and economic indicators (10%).</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Current Risk Assessment</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">As of March 2026, the US-Iran conflict remains regional. While tensions are elevated, the probability of WW3 remains below 25% according to prediction market data.</p>
+        </section>
+      </main>
+    `,
+    '/us-iran-war-tracker': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; color: #3b82f6;">US vs Iran War Tracker</h1>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">Real-time tracking of military casualties, equipment losses, and conflict statistics.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Conflict Overview</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">The US-Iran war began in March 2026 following years of escalating tensions. Track live military statistics, confirmed strikes, and casualty reports updated in real-time.</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Live Military Statistics</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">View confirmed military strikes on our interactive conflict map. Data sourced from satellite intelligence (NASA FIRMS), news reports, and official statements.</p>
+        </section>
+      </main>
+    `,
+    '/world-war-3-news': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; color: #ef4444;">World War 3 News</h1>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">Latest WW3 updates, breaking news, and geopolitical analysis from the US-Iran conflict.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Breaking News Updates</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">Stay informed with real-time news aggregation from global sources. Our AI-powered analysis monitors thousands of news feeds to identify critical developments.</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">News Sources</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">We aggregate news from BBC, Reuters, Guardian, Al Jazeera, Associated Press, and GDELT global database for comprehensive coverage.</p>
+        </section>
+      </main>
+    `,
+    '/iran-nuclear-deal': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; color: #fbbf24;">Iran Nuclear Deal (JCPOA)</h1>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">Complete guide to the Iran nuclear deal: History, current status, and what happens next.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">What is the JCPOA?</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">The Joint Comprehensive Plan of Action (JCPOA) was the 2015 nuclear agreement between Iran and world powers. It limited Iran's nuclear program in exchange for sanctions relief.</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Why the US Withdrew</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">In 2018, the Trump administration withdrew from the deal, citing concerns about sunset clauses, ballistic missiles, and Iran's regional activities. Iran subsequently began enriching uranium beyond deal limits.</p>
+        </section>
+      </main>
+    `,
+    '/blog': `
+      <header style="text-align: center; padding: 40px 20px; border-bottom: 1px solid #1f2937;">
+        <h1 style="font-size: 42px; font-weight: 900; margin: 0 0 16px; color: #3b82f6;">WW3 Tracker Blog</h1>
+        <p style="font-size: 18px; color: #9ca3af; max-width: 600px; margin: 0 auto;">In-depth analysis, explainers, and research on the US-Iran conflict and WW3 probability.</p>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Featured Articles</h2>
+          <p style="color: #d1d5db; line-height: 1.7;">Explore our collection of detailed explainers covering the history of US-Iran relations, military capabilities, nuclear program, and geopolitical implications.</p>
+        </section>
+        <section style="margin-bottom: 40px;">
+          <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Topics Covered</h2>
+          <ul style="color: #d1d5db; line-height: 1.7; padding-left: 20px;">
+            <li>History of US-Iran conflict (1953-2026)</li>
+            <li>Military comparison and capabilities</li>
+            <li>Iran's nuclear program</li>
+            <li>Israel-Iran tensions</li>
+            <li>Strait of Hormuz and global oil</li>
+            <li>Prediction markets and WW3 probability</li>
+          </ul>
+        </section>
+      </main>
+    `
+  };
+  
+  // Default content for routes without specific content
+  return contents[route] || contents['/'];
 }

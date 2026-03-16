@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { getCachedNews } from './rssService.js';
 
 const GDELT_API_URL = 'https://api.gdeltproject.org/api/v2/doc/doc';
 
@@ -151,6 +152,16 @@ export const fetchGDELTNews = async () => {
   
   // Sort by date (newest first)
   unique.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  
+  // If GDELT returned no results, fall back to cached RSS news
+  if (unique.length === 0) {
+    console.log('[GDELT] No results from GDELT, falling back to RSS cache');
+    const rssNews = getCachedNews();
+    if (rssNews && rssNews.length > 0) {
+      console.log(`[GDELT] Returning ${rssNews.length} items from RSS fallback`);
+      return rssNews.slice(0, 25);
+    }
+  }
   
   return unique.slice(0, 25);
 };

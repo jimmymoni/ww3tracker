@@ -69,14 +69,20 @@ export default defineConfig(({ mode }) => ({
       output: {
         // Manual chunk splitting for better caching
         manualChunks: {
-          // Vendor chunk - third-party libraries
-          vendor: ['react', 'react-dom', 'framer-motion'],
+          // Vendor chunk - core third-party libraries
+          vendor: ['react', 'react-dom'],
+          // UI animations
+          animations: ['framer-motion'],
           // Icons chunk - separates lucide icons
           icons: ['lucide-react'],
           // Router chunk
           router: ['react-router-dom'],
-          // Markdown rendering (heavy)
+          // Markdown rendering (heavy) - only loaded on blog pages
           markdown: ['react-markdown', 'remark-gfm'],
+          // Map libraries (heavy) - only loaded when map is shown
+          maps: ['d3', 'd3-geo', 'topojson-client'],
+          // Data fetching and utilities
+          utils: ['node-fetch', 'xml2js'],
         },
         // Asset naming for better caching
         entryFileNames: 'assets/[name]-[hash].js',
