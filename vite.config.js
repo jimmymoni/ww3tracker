@@ -84,9 +84,11 @@ export default defineConfig(({ mode }) => ({
           // Data fetching and utilities
           utils: ['node-fetch', 'xml2js'],
         },
-        // Asset naming for better caching
+        // Asset naming for better caching with content hash
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
+        // Add build timestamp to force cache refresh on deploy
+        banner: `/* WW3 Tracker Build: ${new Date().toISOString()} */`,
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')
           const ext = info[info.length - 1]
