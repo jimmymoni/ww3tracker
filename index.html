@@ -4,48 +4,13 @@
     <meta charset="UTF-8" />
     <!-- Google Analytics - Deferred to prevent blocking -->
     <!-- KOCHI EXCLUSION: Analytics blocked for visitors from Kochi -->
-    <script defer>
-      // Defer GA loading until after page is interactive
-      window.addEventListener('load', function() {
-        // Check if user is from Kochi and exclude from analytics
-        fetch('https://ipapi.co/json/')
-          .then(res => res.json())
-          .then(data => {
-            const isKochi = data.city === 'Kochi' || 
-                            data.city === 'Cochin' || 
-                            data.region === 'Kerala';
-            
-            if (!isKochi) {
-              // Load Google Analytics only for non-Kochi visitors
-              const gaScript = document.createElement('script');
-              gaScript.async = true;
-              gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E';
-              document.head.appendChild(gaScript);
-              
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-TV2FWQFE2E');
-              window.gtag = gtag;
-            } else {
-              console.log('👤 Analytics excluded: Kochi visitor detected');
-              window.gtag = function(){};
-            }
-          })
-          .catch(() => {
-            // If geolocation fails, load GA anyway (fail open)
-            const gaScript = document.createElement('script');
-            gaScript.async = true;
-            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E';
-            document.head.appendChild(gaScript);
-            
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-TV2FWQFE2E');
-            window.gtag = gtag;
-          });
-      });
+    <!-- Google Analytics - Simple async load -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TV2FWQFE2E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TV2FWQFE2E');
     </script>
     
     <!-- Preconnect to critical domains (fonts most important) -->
