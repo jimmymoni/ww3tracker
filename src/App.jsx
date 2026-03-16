@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Zap, Globe, Loader2, Menu, X, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Landing Pages - load immediately
-import WW3ProbabilityPage from './pages/WW3ProbabilityPage';
-import UsIranWarTrackerPage from './pages/UsIranWarTrackerPage';
-import IranConflictLivePage from './pages/IranConflictLivePage';
-import TimelinePage from './pages/TimelinePage';
-import BlogPage from './pages/BlogPage';
-import BlogPostPage from './pages/BlogPostPage';
-import WW3RiskCalculatorPage from './pages/WW3RiskCalculatorPage';
-import WW3ReadinessGame from './components/WW3ReadinessGame';
-import ShareResultPage from './pages/ShareResultPage';
+// Landing Pages - lazy loaded
+const WW3ProbabilityPage = lazy(() => import('./pages/WW3ProbabilityPage'));
+const UsIranWarTrackerPage = lazy(() => import('./pages/UsIranWarTrackerPage'));
+const IranConflictLivePage = lazy(() => import('./pages/IranConflictLivePage'));
+const TimelinePage = lazy(() => import('./pages/TimelinePage'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
+const WW3RiskCalculatorPage = lazy(() => import('./pages/WW3RiskCalculatorPage'));
+const WW3ReadinessGame = lazy(() => import('./components/WW3ReadinessGame'));
+const ShareResultPage = lazy(() => import('./pages/ShareResultPage'));
 
 // SEO-Optimized Pages
-import IsWW3HappeningPage from './pages/IsWW3HappeningPage';
-import WorldWar3NewsPage from './pages/WorldWar3NewsPage';
-import IranNuclearDealPage from './pages/IranNuclearDealPage';
+const IsWW3HappeningPage = lazy(() => import('./pages/IsWW3HappeningPage'));
+const WorldWar3NewsPage = lazy(() => import('./pages/WorldWar3NewsPage'));
+const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
 
 // Components - lazy load heavy components
 import WW3Counter from './components/WW3Counter';
@@ -474,20 +474,68 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainDashboard />} />
-          <Route path="/ww3-probability" element={<WW3ProbabilityPage />} />
-          <Route path="/us-iran-war-tracker" element={<UsIranWarTrackerPage />} />
-          <Route path="/iran-conflict-live" element={<IranConflictLivePage />} />
-          <Route path="/timeline" element={<TimelinePage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<BlogPostPage />} />
-          <Route path="/ww3-risk-calculator" element={<WW3ReadinessGame />} />
-          <Route path="/ready" element={<WW3ReadinessGame />} />
-          <Route path="/share/:score" element={<ShareResultPage />} />
+          <Route path="/ww3-probability" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <WW3ProbabilityPage />
+            </Suspense>
+          } />
+          <Route path="/us-iran-war-tracker" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <UsIranWarTrackerPage />
+            </Suspense>
+          } />
+          <Route path="/iran-conflict-live" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <IranConflictLivePage />
+            </Suspense>
+          } />
+          <Route path="/timeline" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <TimelinePage />
+            </Suspense>
+          } />
+          <Route path="/blog" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <BlogPage />
+            </Suspense>
+          } />
+          <Route path="/blog/:slug" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <BlogPostPage />
+            </Suspense>
+          } />
+          <Route path="/ww3-risk-calculator" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <WW3ReadinessGame />
+            </Suspense>
+          } />
+          <Route path="/ready" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <WW3ReadinessGame />
+            </Suspense>
+          } />
+          <Route path="/share/:score" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <ShareResultPage />
+            </Suspense>
+          } />
           
           {/* SEO Landing Pages */}
-          <Route path="/is-ww3-happening" element={<IsWW3HappeningPage />} />
-          <Route path="/world-war-3-news" element={<WorldWar3NewsPage />} />
-          <Route path="/iran-nuclear-deal" element={<IranNuclearDealPage />} />
+          <Route path="/is-ww3-happening" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <IsWW3HappeningPage />
+            </Suspense>
+          } />
+          <Route path="/world-war-3-news" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <WorldWar3NewsPage />
+            </Suspense>
+          } />
+          <Route path="/iran-nuclear-deal" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <IranNuclearDealPage />
+            </Suspense>
+          } />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
