@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google tag (gtag.js) - Load async to prevent blocking -->
+    <!-- Google Analytics - Deferred to prevent blocking -->
     <!-- KOCHI EXCLUSION: Analytics blocked for visitors from Kochi -->
-    <script>
-      // Check if user is from Kochi and exclude from analytics
-      (function() {
-        // Fetch location and conditionally load GA
+    <script defer>
+      // Defer GA loading until after page is interactive
+      window.addEventListener('load', function() {
+        // Check if user is from Kochi and exclude from analytics
         fetch('https://ipapi.co/json/')
           .then(res => res.json())
           .then(data => {
@@ -29,7 +29,6 @@
               window.gtag = gtag;
             } else {
               console.log('👤 Analytics excluded: Kochi visitor detected');
-              // Set dummy gtag to prevent errors
               window.gtag = function(){};
             }
           })
@@ -46,7 +45,7 @@
             gtag('config', 'G-TV2FWQFE2E');
             window.gtag = gtag;
           });
-      })();
+      });
     </script>
     
     <!-- Preconnect to critical domains -->
@@ -54,6 +53,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://api.gdeltproject.org">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://ipapi.co">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="/src/main.jsx" as="script" type="module">
@@ -349,7 +351,8 @@
     <style>
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Main app - async to not block HTML parsing -->
+    <script type="module" src="/src/main.jsx" async></script>
     
     <!-- Hide static SEO content when React hydrates -->
     <script>
