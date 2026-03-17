@@ -2,11 +2,129 @@
  * VERIFIED ATTACKS DATABASE
  * Manually curated by admin - 100% verified facts only
  * No RSS, no AI hallucination, no expiration
- * Last updated: 2026-03-16
+ * Last updated: 2026-03-17
  */
 
 export const VERIFIED_ATTACKS = [
-  // Major strikes: 14-16 March 2026
+  // Major strikes: 16-17 March 2026
+  {
+    id: '2026-03-17-baghdad-embassy',
+    headline: 'Major attack on US Embassy Baghdad – rockets and drones',
+    description: 'At least 5 drones and rockets launched; one drone hit inside compound causing fire and explosions. One of the most intense attacks since the war began.',
+    location: 'Baghdad',
+    country: 'Iraq',
+    attackType: 'drone',
+    severity: 'high',
+    date: '2026-03-17T01:45:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Iraqi security sources, Reuters witnesses',
+    coordinates: { lat: 33.3128, lng: 44.3615 }
+  },
+  {
+    id: '2026-03-17-tehran-israeli-wave',
+    headline: 'Wide-scale Israeli strikes on Tehran government & military infrastructure',
+    description: 'IDF announced and carried out a wide-scale wave of strikes targeting Iranian infrastructure in Tehran and other areas.',
+    location: 'Tehran',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-17T04:30:00Z',
+    reportedAt: '2026-03-17',
+    source: 'IDF announcement, verified reports',
+    coordinates: { lat: 35.6892, lng: 51.3890 }
+  },
+  {
+    id: '2026-03-17-beirut-israeli-strikes',
+    headline: 'Israeli airstrikes hit multiple Beirut neighborhoods',
+    description: 'Strikes targeted Kafaat, Haret Hreik, and Doha Aramoun neighborhoods. Damage to residential buildings and Hezbollah-linked sites.',
+    location: 'Beirut',
+    country: 'Lebanon',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-17T02:30:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Verified reports',
+    coordinates: { lat: 33.8938, lng: 35.5018 }
+  },
+  {
+    id: '2026-03-17-baghdad-missile-residential',
+    headline: 'Missile strike on residential building in Baghdad al-Jadriya',
+    description: 'Strike hit house in al-Jadriya area killing at least 2 Iran-linked personnel. Reports mention up to 4 killed in related incidents.',
+    location: 'Baghdad',
+    country: 'Iraq',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-17T05:00:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Verified reports',
+    coordinates: { lat: 33.2854, lng: 44.3848 }
+  },
+  {
+    id: '2026-03-17-doha-missile-fresh',
+    headline: 'Fresh Iranian ballistic missile attack on Doha intercepted',
+    description: 'Ballistic missile intercepted; fire in industrial area from debris/impact. Part of ongoing Iranian retaliation waves.',
+    location: 'Doha',
+    country: 'Qatar',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-17T06:00:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Verified reports',
+    coordinates: { lat: 25.2854, lng: 51.5310 }
+  },
+  {
+    id: '2026-03-17-shah-oil-field',
+    headline: 'Drone strike on Shah oil field in UAE',
+    description: 'Fire at Shah gas/oil field; operations suspended, fire contained, no injuries reported.',
+    location: 'Shah',
+    country: 'UAE',
+    attackType: 'drone',
+    severity: 'medium',
+    date: '2026-03-16T20:00:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Verified reports',
+    coordinates: { lat: 24.2500, lng: 55.3333 }
+  },
+  {
+    id: '2026-03-17-fujairah-tanker',
+    headline: 'Tanker hit near Fujairah – fire at oil port/hub',
+    description: 'Drone/projectile strikes caused fires at Fujairah oil port and industry zone; loading operations suspended.',
+    location: 'Fujairah',
+    country: 'UAE',
+    attackType: 'naval',
+    severity: 'high',
+    date: '2026-03-16T23:01:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Verified reports',
+    coordinates: { lat: 25.1288, lng: 56.3265 }
+  },
+  {
+    id: '2026-03-17-israel-missile-wave',
+    headline: 'New missile and drone waves targeting central Israel',
+    description: 'Iran launched fresh missile/drone barrages; sirens across central Israel with multiple interceptions, no major injuries.',
+    location: 'Tel Aviv',
+    country: 'Israel',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-17T03:00:00Z',
+    reportedAt: '2026-03-17',
+    source: 'Verified reports',
+    coordinates: { lat: 32.0853, lng: 34.7818 }
+  },
+  {
+    id: '2026-03-17-abu-dhabi-missile',
+    headline: 'Missile debris strikes civilian vehicle in Abu Dhabi – 1 killed',
+    description: 'Debris from intercepted Iranian missile struck civilian vehicle in Al Bahyah area killing one Palestinian civilian.',
+    location: 'Abu Dhabi',
+    country: 'UAE',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-16T04:50:00Z',
+    reportedAt: '2026-03-16',
+    source: 'Verified reports',
+    coordinates: { lat: 24.4539, lng: 54.3773 }
+  },
+  // Major strikes: 16-17 March 2026
   {
     id: '2026-03-16-dubai-airport',
     headline: 'Drone strike on Dubai International Airport fuel tank',
@@ -19,45 +137,6 @@ export const VERIFIED_ATTACKS = [
     reportedAt: '2026-03-16',
     source: 'Verified reports',
     coordinates: { lat: 25.2048, lng: 55.2708 }
-  },
-  {
-    id: '2026-03-15-fujairah-oil',
-    headline: 'Drone strike on Fujairah oil infrastructure',
-    description: 'Fire reported at Fujairah oil industry zone. Iranian drone suspected.',
-    location: 'Fujairah',
-    country: 'UAE',
-    attackType: 'drone',
-    severity: 'high',
-    date: '2026-03-15T14:00:00Z',
-    reportedAt: '2026-03-15',
-    source: 'Verified reports',
-    coordinates: { lat: 25.1288, lng: 56.3265 }
-  },
-  {
-    id: '2026-03-15-tehran-depots',
-    headline: 'Israeli airstrikes on Tehran fuel depots',
-    description: 'Explosions reported in capital and fuel depot areas. Multiple locations hit.',
-    location: 'Tehran',
-    country: 'Iran',
-    attackType: 'airstrike',
-    severity: 'high',
-    date: '2026-03-15T18:00:00Z',
-    reportedAt: '2026-03-15',
-    source: 'Verified reports',
-    coordinates: { lat: 35.6892, lng: 51.3890 }
-  },
-  {
-    id: '2026-03-15-markazi',
-    headline: 'US-Israeli strikes in Markazi Province',
-    description: 'Reported deaths from attacks on facilities in Markazi Province.',
-    location: 'Markazi',
-    country: 'Iran',
-    attackType: 'airstrike',
-    severity: 'high',
-    date: '2026-03-15T12:00:00Z',
-    reportedAt: '2026-03-15',
-    source: 'Verified reports',
-    coordinates: { lat: 34.0917, lng: 49.6892 }
   },
   {
     id: '2026-03-16-chabahar',

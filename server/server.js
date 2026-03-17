@@ -532,6 +532,11 @@ app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/robots.txt'));
 });
 
+// Nuclear Blast Simulator - standalone page
+app.get('/nuke', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/nuke.html'));
+});
+
 // Serve prerendered HTML files for specific routes
 const prerenderedRoutes = [
   '/blog',

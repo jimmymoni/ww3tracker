@@ -46,6 +46,7 @@ const NavLinks = ({ mobile = false, onClose }) => {
     { to: '/blog', label: 'Blog' },
     { to: '/ww3-probability', label: 'WW3 Probability' },
     { to: '/us-iran-war-tracker', label: 'War Tracker' },
+    { to: '/nuke', label: '☢️ Nuke Sim', external: true },
     { to: '/iran-conflict-live', label: 'Live Updates' },
     { to: '/timeline', label: 'Timeline' },
     { to: '/ww3-risk-calculator', label: 'Risk Calculator' },
@@ -200,6 +201,8 @@ const FooterNav = () => (
     <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
     <span className="text-gray-700">•</span>
     <Link to="/ww3-risk-calculator" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Risk Calculator</Link>
+    <span className="text-gray-700">•</span>
+    <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">☢️ Nuke Sim</a>
   </div>
 );
 
