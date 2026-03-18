@@ -558,7 +558,7 @@ export default function ConflictMap({ mobile = false }) {
                   {label.name}
                 </text>
               );
-            })
+            })}
 
             {events.map(event => {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
