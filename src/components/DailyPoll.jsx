@@ -11,12 +11,12 @@ const DailyPoll = () => {
   const [copied, setCopied] = useState(false);
 
   const poll = {
-    question: "Who drops first in Round 1? 🥊",
+    question: "How will the US-Iran conflict develop?",
     options: [
-      { id: 'us', label: '🇺🇸 US Sanctions Break Iran', votes: 1245, color: 'bg-blue-500', emoji: '💰' },
-      { id: 'iran', label: '🇮🇷 Iran Escalates via Proxies', votes: 892, color: 'bg-red-500', emoji: '🔥' },
-      { id: 'neither', label: '🤝 Neither - They Negotiate', votes: 456, color: 'bg-green-500', emoji: '🕊️' },
-      { id: 'both', label: '☢️ Both - WW3 Incoming', votes: 254, color: 'bg-yellow-500', emoji: '💀' },
+      { id: 'us', label: 'US Sanctions Lead to Negotiations', votes: 1245, color: 'bg-blue-500', emoji: '💰' },
+      { id: 'iran', label: 'Iran Escalates via Regional Proxies', votes: 892, color: 'bg-red-500', emoji: '🔥' },
+      { id: 'neither', label: 'Diplomatic Resolution Reached', votes: 456, color: 'bg-green-500', emoji: '🕊️' },
+      { id: 'both', label: 'Military Confrontation Escalates', votes: 254, color: 'bg-yellow-500', emoji: '⚠️' },
     ]
   };
 
@@ -65,7 +65,7 @@ const DailyPoll = () => {
   };
 
   const sharePoll = () => {
-    const text = `I voted "${poll.options.find(o => o.id === selectedOption)?.label}" on the WW3 Daily Poll ☢️\n\n${totalVotes.toLocaleString()} people are voting. Cast yours 👇\n\nww3tracker.live #WW3 #DailyPoll`;
+    const text = `I voted "${poll.options.find(o => o.id === selectedOption)?.label}" on the WW3 Daily Poll\n\n${totalVotes.toLocaleString()} people are voting. Cast yours at ww3tracker.live`;
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
   };
 
@@ -90,11 +90,11 @@ const DailyPoll = () => {
       transition={{ delay: 0.2 }}
       className="w-full bg-[#0a0a0a] rounded-xl p-4 sm:p-5 mb-4 border border-white/10"
     >
-      {/* Header - Theme Matched */}
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center border border-yellow-500/30">
-            <BarChart3 className="w-4 h-4 text-yellow-400" />
+          <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
+            <BarChart3 className="w-4 h-4 text-blue-400" />
           </div>
           <div>
             <h3 className="font-heading font-bold text-sm text-white">DAILY POLL</h3>
@@ -135,7 +135,7 @@ const DailyPoll = () => {
               whileTap={!hasVoted ? { scale: 0.99 } : {}}
               className={`w-full relative overflow-hidden rounded-lg transition-all ${
                 hasVoted ? 'cursor-default' : 'cursor-pointer hover:bg-white/5'
-              } ${isSelected ? 'ring-1 ring-yellow-500/50' : ''}`}
+              } ${isSelected ? 'ring-1 ring-blue-500/50' : ''}`}
             >
               {/* Background Progress Bar */}
               {showResults && (
@@ -151,15 +151,15 @@ const DailyPoll = () => {
               <div className="relative flex items-center justify-between p-2.5 sm:p-3 bg-white/5 border border-white/10 rounded-lg">
                 <div className="flex items-center gap-2">
                   <span className="text-base">{option.emoji}</span>
-                  <span className={`text-xs sm:text-sm font-comic ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+                  <span className={`text-xs sm:text-sm font-body ${isSelected ? 'text-white' : 'text-gray-300'}`}>
                     {option.label}
                   </span>
-                  {isSelected && <Check className="w-3 h-3 text-yellow-400" />}
+                  {isSelected && <Check className="w-3 h-3 text-blue-400" />}
                 </div>
                 
                 {showResults && (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-impact text-gray-300">{percentage}%</span>
+                    <span className="text-xs font-heading text-gray-300">{percentage}%</span>
                     <span className="text-[10px] text-gray-600 font-mono hidden sm:inline">({option.votes.toLocaleString()})</span>
                   </div>
                 )}
@@ -194,7 +194,7 @@ const DailyPoll = () => {
                 onClick={sharePoll}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/30 rounded text-yellow-400 text-xs transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 rounded text-blue-400 text-xs transition-colors"
               >
                 <Twitter className="w-3.5 h-3.5" />
                 <span>Share My Vote</span>
@@ -224,9 +224,9 @@ const DailyPoll = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-3 p-2 bg-yellow-500/10 rounded border border-yellow-500/20"
+          className="mt-3 p-2 bg-blue-500/10 rounded border border-blue-500/20"
         >
-          <p className="text-[10px] text-yellow-400/80 text-center font-comic">
+          <p className="text-[10px] text-blue-400/80 text-center font-body">
             <TrendingUp className="w-3 h-3 inline mr-1" />
             {totalVotes.toLocaleString()} people voted today • Vote to see results
           </p>

@@ -1,21 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Twitter, Link, Download, MessageCircle } from 'lucide-react';
-// html2canvas is loaded dynamically only when needed for downloads
 import { fetchMemes, getCachedData } from '../lib/api';
 
 // No fake news - we show real data or empty state
 const DEFAULT_NEWS_ITEMS = [];
 
-const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
+const ShareButtons = ({ news, cardRef, isWW3 = false, ww3Data = null }) => {
   const [copied, setCopied] = useState(false);
   const [tooltip, setTooltip] = useState(null);
 
   const getShareText = () => {
-    if (meme?.analysis?.analysis) {
-      return `${meme.analysis.badge}: ${meme.analysis.analysis}\n\nLive US-Iran conflict updates | ww3tracker.live`;
+    if (news?.analysis?.analysis) {
+      return `${news.analysis.badge}: ${news.analysis.analysis}\n\nLive US-Iran conflict updates | ww3tracker.live`;
     }
-    return `☢️ WW3: ${ww3Data?.probability || 50}% likely right now ww3tracker.live #WW3 #TheStandoff`;
+    return `WW3 Risk Assessment: ${ww3Data?.probability || 50}% - Live Tracker ww3tracker.live`;
   };
 
   const shareToX = () => {
@@ -23,8 +22,8 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
   };
 
   const shareToReddit = () => {
-    const title = meme?.analysis?.analysis 
-      ? `${meme.analysis.analysis} | ww3tracker.live`
+    const title = news?.analysis?.analysis 
+      ? `${news.analysis.analysis} | ww3tracker.live`
       : `WW3 Probability: ${ww3Data?.probability || 50}% - Live Tracker`;
     window.open(`https://reddit.com/submit?url=${encodeURIComponent('https://ww3tracker.live')}&title=${encodeURIComponent(title)}`, '_blank');
   };
@@ -43,7 +42,6 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
     if (!cardRef.current) return;
     
     try {
-      // Dynamically import html2canvas only when needed
       const { default: html2canvas } = await import('html2canvas');
       
       const canvas = await html2canvas(cardRef.current, {
@@ -53,30 +51,15 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
         logging: false
       });
 
-      // Add watermark
       const ctx = canvas.getContext('2d');
       ctx.font = 'bold 14px Arial';
       ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
       ctx.textAlign = 'right';
       ctx.fillText('ww3tracker.live', canvas.width - 10, canvas.height - 10);
 
-      // For WW3 counter, add dramatic overlay
-      if (isWW3 && ww3Data) {
-        ctx.fillStyle = 'rgba(220, 38, 38, 0.9)';
-        ctx.font = 'bold 32px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(`☢️ WW3: ${ww3Data.probability || 50}% likely`, canvas.width / 2, canvas.height / 2);
-        ctx.font = 'bold 18px Arial';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-        ctx.fillText('right now', canvas.width / 2, canvas.height / 2 + 30);
-        ctx.font = 'bold 14px Arial';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-        ctx.fillText('ww3tracker.live', canvas.width / 2, canvas.height / 2 + 55);
-      }
-
       const link = document.createElement('a');
       const date = new Date().toISOString().split('T')[0];
-      link.download = `standoff-${date}.png`;
+      link.download = `news-${date}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
@@ -109,7 +92,7 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
           )}
           {btn.id === 'copy' && copied && (
             <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] bg-green-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-20">
-              Copied! ✅
+              Copied!
             </span>
           )}
         </button>
@@ -118,13 +101,13 @@ const ShareButtons = ({ meme, cardRef, isWW3 = false, ww3Data = null }) => {
   );
 };
 
-// Skeleton loader for meme cards
+// Skeleton loader for news cards
 const SkeletonCard = ({ index }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.1 }}
-    className="comic-panel rounded-lg p-2.5 sm:p-3 relative animate-pulse"
+    className="bg-[#14141c] border border-white/10 rounded-lg p-2.5 sm:p-3 relative animate-pulse"
   >
     {/* Header skeleton */}
     <div className="flex justify-between items-start mb-1.5 sm:mb-2">
@@ -151,7 +134,7 @@ const SkeletonCard = ({ index }) => (
   </motion.div>
 );
 
-const Card = ({ meme, index }) => {
+const Card = ({ news, index }) => {
   const cardRef = useRef(null);
   const badgeColors = {
     'BREAKING': 'bg-red-500/20 text-red-400 border-red-500/30',
@@ -160,15 +143,14 @@ const Card = ({ meme, index }) => {
     'CASUALTIES': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
     'CONFIRMED': 'bg-green-500/20 text-green-400 border-green-500/30',
     'DISPUTED': 'bg-red-700/20 text-red-500 border-red-700/30',
-    // New professional badges
     'ATTACK': 'bg-red-600/20 text-red-500 border-red-600/30',
     'DIPLOMACY': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     'MILITARY': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
     'UPDATE': 'bg-gray-600/20 text-gray-400 border-gray-600/30',
   };
 
-  const badge = meme.analysis?.badge || 'INTELLIGENCE';
-  const side = meme.analysis?.side || 'NEUTRAL';
+  const badge = news.analysis?.badge || 'UPDATE';
+  const side = news.analysis?.side || 'NEUTRAL';
   
   return (
     <motion.div
@@ -176,7 +158,7 @@ const Card = ({ meme, index }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="comic-panel rounded-lg p-2.5 sm:p-3 relative"
+      className="bg-[#14141c] border border-white/10 rounded-lg p-2.5 sm:p-3 relative"
     >
       {/* Header */}
       <div className="flex justify-between items-start mb-1.5 sm:mb-2">
@@ -190,92 +172,88 @@ const Card = ({ meme, index }) => {
 
       {/* Headline */}
       <p className="text-[11px] sm:text-xs text-gray-300 font-body mb-1.5 sm:mb-2 line-clamp-2 leading-relaxed">
-        {meme.headline}
+        {news.headline}
       </p>
 
-      {/* Caption */}
+      {/* Analysis */}
       <p className="text-[10px] text-gray-400 font-body mb-1.5 sm:mb-2 italic leading-relaxed">
-        {meme.analysis?.analysis}
+        {news.analysis?.analysis}
       </p>
 
       {/* Source & Share Buttons */}
       <div className="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-white/5">
-        <span className="text-[8px] sm:text-[9px] text-gray-500">via {meme.source}</span>
-        <ShareButtons meme={meme} cardRef={cardRef} />
+        <span className="text-[8px] sm:text-[9px] text-gray-500">via {news.source}</span>
+        <ShareButtons news={news} cardRef={cardRef} />
       </div>
     </motion.div>
   );
 };
 
-const MemeFeed = () => {
-  const [memes, setMemes] = useState([]);
+const VerifiedNewsFeed = () => {
+  const [newsItems, setNewsItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadMemes = async () => {
+    const loadNews = async () => {
       try {
         setLoading(true);
         
         // First, try to get cached data for instant display
         const cached = getCachedData('memes');
         if (cached?.items) {
-          setMemes(cached.items);
-          setLoading(false); // Show cached data immediately
+          setNewsItems(cached.items);
+          setLoading(false);
         }
         
         // Then fetch fresh data
         const data = await fetchMemes(4);
         if (data?.items) {
-          setMemes(data.items);
+          setNewsItems(data.items);
         }
       } catch (error) {
-        console.error('Failed to load memes:', error);
-        // If we don't have any memes yet (no cache), use defaults
-        if (memes.length === 0) {
-          setMemes(DEFAULT_NEWS_ITEMS);
+        console.error('Failed to load news:', error);
+        if (newsItems.length === 0) {
+          setNewsItems(DEFAULT_NEWS_ITEMS);
         }
       } finally {
         setLoading(false);
       }
     };
 
-    loadMemes();
+    loadNews();
     
     // Refresh every 2 minutes
-    const interval = setInterval(loadMemes, 2 * 60 * 1000);
+    const interval = setInterval(loadNews, 2 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="section-header">
-        <div className="section-icon text-purple-400 w-8 h-8 sm:w-9 sm:h-9">
-          <span className="text-base sm:text-lg">🎭</span>
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+          <ExternalLink className="w-4 h-4 text-blue-400" />
         </div>
         <div>
-          <h2 className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">BREAKING FEED</h2>
-          <p className="text-gray-500 text-[10px] sm:text-xs font-body">Live updates as they happen</p>
+          <h2 className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">VERIFIED NEWS</h2>
+          <p className="text-gray-500 text-[10px] sm:text-xs font-body">Confirmed updates from verified sources</p>
         </div>
       </div>
 
-      {/* 4 Cards Grid - show skeletons when loading, cards when ready */}
+      {/* 4 Cards Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
-        {loading && memes.length === 0 ? (
-          // Show skeleton loaders when loading and no cached data
+        {loading && newsItems.length === 0 ? (
           Array.from({ length: 4 }).map((_, index) => (
             <SkeletonCard key={`skeleton-${index}`} index={index} />
           ))
-        ) : memes.length === 0 ? (
-          // Empty state - no news yet
+        ) : newsItems.length === 0 ? (
           <div className="col-span-2 md:col-span-4 p-8 text-center border border-white/10 rounded-lg bg-white/5">
-            <p className="text-gray-500 text-sm">No breaking news at this moment</p>
-            <p className="text-gray-600 text-xs mt-1">Feed updates every 2 minutes from BBC, Al Jazeera, Guardian, France24</p>
+            <p className="text-gray-500 text-sm">No verified news at this moment</p>
+            <p className="text-gray-600 text-xs mt-1">Feed updates every 2 minutes</p>
           </div>
         ) : (
-          // Show actual news (from RSS feeds)
-          memes.map((meme, index) => (
-            <Card key={meme.id || index} meme={meme} index={index} />
+          newsItems.map((news, index) => (
+            <Card key={news.id || index} news={news} index={index} />
           ))
         )}
       </div>
@@ -283,5 +261,5 @@ const MemeFeed = () => {
   );
 };
 
-export default MemeFeed;
+export default VerifiedNewsFeed;
 export { ShareButtons };

@@ -2,7 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Zap, Globe, Loader2, Menu, X, Clock } from 'lucide-react';
+import { AlertTriangle, Zap, Globe, Loader2, Menu, X, Clock, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Landing Pages - lazy loaded
@@ -10,10 +10,18 @@ const WW3ProbabilityPage = lazy(() => import('./pages/WW3ProbabilityPage'));
 const UsIranWarTrackerPage = lazy(() => import('./pages/UsIranWarTrackerPage'));
 const IranConflictLivePage = lazy(() => import('./pages/IranConflictLivePage'));
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
+
+// New Regional Conflict Tracker Pages
+const ConflictTrackerPage = lazy(() => import('./pages/ConflictTrackerPage'));
+const LiveMonitorPage = lazy(() => import('./pages/LiveMonitorPage'));
+const MultiConflictTimeline = lazy(() => import('./pages/MultiConflictTimeline'));
+const GlobalRiskMonitor = lazy(() => import('./pages/GlobalRiskMonitor'));
+const ConflictDetailPage = lazy(() => import('./pages/ConflictDetailPage'));
+const WhyConflictsHappenPage = lazy(() => import('./pages/WhyConflictsHappenPage'));
+const RelationshipExplorerPage = lazy(() => import('./pages/RelationshipExplorerPage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 const WW3RiskCalculatorPage = lazy(() => import('./pages/WW3RiskCalculatorPage'));
-const WW3ReadinessGame = lazy(() => import('./components/WW3ReadinessGame'));
 const ShareResultPage = lazy(() => import('./pages/ShareResultPage'));
 
 // SEO-Optimized Pages
@@ -21,34 +29,48 @@ const IsWW3HappeningPage = lazy(() => import('./pages/IsWW3HappeningPage'));
 const WorldWar3NewsPage = lazy(() => import('./pages/WorldWar3NewsPage'));
 const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
 
-// Components - lazy load heavy components
-import WW3Counter from './components/WW3Counter';
-import BreakingAlert from './components/BreakingAlert';
+// Conflict Zone Landing Pages
+const IranUSConflictPage = lazy(() => import('./pages/IranUSConflictPage'));
+const IsraelHezbollahPage = lazy(() => import('./pages/IsraelHezbollahPage'));
+const PakAfghanConflictPage = lazy(() => import('./pages/PakAfghanConflictPage'));
 
-// Heavy components - lazy loaded
+// Email Alert Management
+const ManageAlertsPage = lazy(() => import('./pages/ManageAlertsPage'));
+const DataMethodologyPage = lazy(() => import('./pages/DataMethodologyPage'));
+
+// Components - ALL lazy loaded to prevent hook conflicts
+const WW3Counter = lazy(() => import('./components/WW3Counter'));
+const BreakingAlert = lazy(() => import('./components/BreakingAlert'));
 const ConflictMap = lazy(() => import('./components/ConflictMap'));
-const GlobalParticipantsCarousel = lazy(() => import('./components/GlobalParticipantsCarousel'));
 const TimelineOfChaos = lazy(() => import('./components/TimelineOfChaos'));
-const MemeFeed = lazy(() => import('./components/MemeCard'));
+const VerifiedNewsFeed = lazy(() => import('./components/VerifiedNewsFeed'));
 const SpicyMeter = lazy(() => import('./components/SpicyMeter'));
 const PolymarketWidget = lazy(() => import('./components/PolymarketWidget'));
 const NasaFirmsStrip = lazy(() => import('./components/NasaFirmsStrip'));
+const EmailSignup = lazy(() => import('./components/EmailSignup'));
+
+// NEW: Claude Strategy Components
+const KeyDevelopmentsFeed = lazy(() => import('./components/KeyDevelopmentsFeed'));
+const HumanImpactDashboard = lazy(() => import('./components/HumanImpactDashboard'));
+const ConflictEscalationTimeline = lazy(() => import('./components/ConflictEscalationTimeline'));
 
 
 
 // API
 import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
 
-// Navigation Links
+// Navigation Links - Mobile only (desktop uses DesktopNav)
 const NavLinks = ({ mobile = false, onClose }) => {
   const links = [
     { to: '/', label: 'Home' },
     { to: '/blog', label: 'Blog' },
-    { to: '/ww3-probability', label: 'WW3 Probability' },
-    { to: '/us-iran-war-tracker', label: 'War Tracker' },
+    { to: '/conflict-tracker', label: 'Conflict Tracker' },
+    { to: '/live-monitor', label: 'Live Monitor' },
+    { to: '/global-risk-monitor', label: 'Risk Monitor' },
     { to: '/nuke', label: '☢️ Nuke Sim', external: true },
-    { to: '/iran-conflict-live', label: 'Live Updates' },
-    { to: '/timeline', label: 'Timeline' },
+    { to: '/multi-conflict-timeline', label: 'Timeline' },
+    { to: '/why-conflicts-happen', label: 'Why Conflicts Happen' },
+    { to: '/relationships', label: 'Relationships' },
     { to: '/ww3-risk-calculator', label: 'Risk Calculator' },
   ];
 
@@ -69,17 +91,69 @@ const NavLinks = ({ mobile = false, onClose }) => {
     );
   }
 
+  // Desktop nav is handled by DesktopNav component below
+  return null;
+};
+
+// Desktop Navigation with "More" dropdown
+const DesktopNav = () => {
+  const [moreOpen, setMoreOpen] = useState(false);
+  
+  // Primary nav items - always visible
+  const primaryLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/conflict-tracker', label: 'Conflict Tracker' },
+    { to: '/live-monitor', label: 'Live Monitor' },
+    { to: '/multi-conflict-timeline', label: 'Timeline' },
+    { to: '/blog', label: 'Blog' },
+  ];
+  
+  // Secondary items - in "More" dropdown
+  const moreLinks = [
+    { to: '/global-risk-monitor', label: 'Risk Monitor' },
+    { to: '/nuke', label: '☢️ Nuke Sim' },
+    { to: '/why-conflicts-happen', label: 'Why Conflicts Happen' },
+    { to: '/relationships', label: 'Relationships' },
+    { to: '/ww3-risk-calculator', label: 'Risk Calculator' },
+  ];
+
   return (
     <nav className="hidden lg:flex items-center gap-1">
-      {links.map(link => (
+      {primaryLinks.map(link => (
         <Link
           key={link.to}
           to={link.to}
-          className="text-gray-400 hover:text-white font-body text-xs px-3 py-2 rounded hover:bg-white/5 transition-colors"
+          className="text-gray-400 hover:text-white font-body text-sm px-3 py-2 rounded hover:bg-white/5 transition-colors"
         >
           {link.label}
         </Link>
       ))}
+      
+      {/* More Dropdown */}
+      <div className="relative">
+        <button
+          onClick={() => setMoreOpen(!moreOpen)}
+          onBlur={() => setTimeout(() => setMoreOpen(false), 150)}
+          className="flex items-center gap-1 text-gray-400 hover:text-white font-body text-sm px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        >
+          More
+          <ChevronDown className={`w-4 h-4 transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
+        </button>
+        
+        {moreOpen && (
+          <div className="absolute top-full right-0 mt-2 w-48 bg-[#14141c] border border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
+            {moreLinks.map(link => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="block px-4 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </nav>
   );
 };
@@ -100,54 +174,35 @@ const LiveTimestamp = () => {
   );
 };
 
-// Header - Mobile Optimized with Navigation
+// Header - Clean Design
 const Header = ({ isLoading }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
+    <header className="sticky top-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center text-lg sm:text-2xl">
-              <span>🦅</span>
-              <span className="text-gray-600 mx-0.5 sm:mx-1 text-sm sm:text-base">vs</span>
-              <span>☠️</span>
+          {/* Logo - Radar globe - BIGGER */}
+          <Link to="/" className="flex items-center gap-4">
+            <div className="w-10 h-10 relative">
+              <img src="/logo/globe-radar.svg" alt="WW3 Tracker" className="w-full h-full" />
             </div>
             <div>
-              <h1 className="font-heading font-bold text-lg sm:text-2xl text-white tracking-wide">
+              <h1 className="font-heading font-bold text-xl text-white tracking-wide">
                 WW3 TRACKER
               </h1>
-              <p className="text-[9px] sm:text-[10px] text-gray-500 font-mono tracking-wider uppercase">
-                Live Conflict Monitor
+              <p className="text-xs text-gray-500 font-mono">
+                Understanding Escalation Before It Spreads
               </p>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <NavLinks />
+          {/* Desktop Navigation - with More dropdown */}
+          <DesktopNav />
 
-          {/* Status & Mobile Menu */}
-          <div className="flex items-center gap-2 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-1 text-yellow-500/70 text-xs">
-              <Zap className="w-3 h-3" />
-              <span className="font-body">LIVE UPDATES</span>
-            </div>
-            <div className="hidden md:flex items-center gap-1 text-blue-400/70 text-xs">
-              <Globe className="w-3 h-3" />
-              <span className="font-body">24/7 MONITORING</span>
-            </div>
+          {/* Right Side - Clean */}
+          <div className="flex items-center gap-4">
             <LiveTimestamp />
-            <motion.div 
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="bg-red-600/20 text-red-400 border border-red-500/30 font-heading text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded flex items-center gap-1 sm:gap-2"
-            >
-              <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-              <span className="hidden sm:inline">LIVE TRACKER</span>
-              <span className="sm:hidden">LIVE</span>
-            </motion.div>
             
             {/* Mobile Menu Button */}
             <button
@@ -156,18 +211,6 @@ const Header = ({ isLoading }) => {
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-
-            {/* Subtle loading indicator */}
-            {isLoading && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="hidden sm:flex items-center gap-1 text-blue-400 text-xs"
-              >
-                <Loader2 className="w-3 h-3 animate-spin" />
-                <span className="font-body">Syncing...</span>
-              </motion.div>
-            )}
           </div>
         </div>
 
@@ -192,15 +235,17 @@ const FooterNav = () => (
   <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-4">
     <Link to="/" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Home</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/ww3-probability" className="text-gray-500 hover:text-white text-xs font-body transition-colors">WW3 Probability</Link>
+    <Link to="/conflict-tracker" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Conflict Tracker</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/us-iran-war-tracker" className="text-gray-500 hover:text-white text-xs font-body transition-colors">War Tracker</Link>
+    <Link to="/live-monitor" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Live Monitor</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/iran-conflict-live" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Live Updates</Link>
+    <Link to="/global-risk-monitor" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Risk Monitor</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
+    <Link to="/multi-conflict-timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/ww3-risk-calculator" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Risk Calculator</Link>
+    <Link to="/why-conflicts-happen" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Why Conflicts Happen</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/relationships" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Relationships</Link>
     <span className="text-gray-700">•</span>
     <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">☢️ Nuke Sim</a>
   </div>
@@ -342,18 +387,24 @@ function MainDashboard() {
       <Header isLoading={backgroundLoading} />
 
       {/* Breaking Alert Overlay */}
-      <BreakingAlert 
-        alert={gameState.breakingAlert} 
-        onDismiss={handleDismissAlert}
-      />
+      <Suspense fallback={null}>
+        <BreakingAlert 
+          alert={gameState.breakingAlert} 
+          onDismiss={handleDismissAlert}
+        />
+      </Suspense>
 
       {/* NASA FIRMS Strip */}
-      <NasaFirmsStrip />
+      <Suspense fallback={null}>
+        <NasaFirmsStrip />
+      </Suspense>
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
         {/* MOBILE: WW3 Probability FIRST (above fold) */}
         <div className="lg:hidden mb-4">
-          <WW3Counter tension={gameState.tension} />
+          <Suspense fallback={<div className="h-[120px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <WW3Counter tension={gameState.tension} />
+          </Suspense>
         </div>
 
         {/* DESKTOP: Map first */}
@@ -374,52 +425,44 @@ function MainDashboard() {
 
         {/* DESKTOP: WW3 Counter after map */}
         <div className="hidden lg:block mb-6">
-          <WW3Counter tension={gameState.tension} />
+          <Suspense fallback={<div className="h-[120px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <WW3Counter tension={gameState.tension} />
+          </Suspense>
         </div>
 
-        {/* ROW 3: Global Participants Carousel */}
-        <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
-          <GlobalParticipantsCarousel />
-        </Suspense>
-
-        {/* ROW 2: Meme Feed - Full Width Below */}
+        {/* ROW 2: Key Developments Feed - NEW */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           className="mb-6"
         >
-          <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <MemeFeed />
+          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <KeyDevelopmentsFeed />
           </Suspense>
         </motion.section>
 
-        {/* ROW 3: Spicy Meter */}
+        {/* ROW 3: Human Impact Dashboard - NEW */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           className="mb-6"
-          style={{ minHeight: '420px' }}
         >
-          <Suspense fallback={<div className="h-[420px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <SpicyMeter 
-              tension={gameState.tension} 
-              usHP={gameState.usHP}
-              iranHP={gameState.iranHP}
-            />
+          <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <HumanImpactDashboard />
           </Suspense>
         </motion.section>
 
-        {/* ROW 4: Polymarket Widget - Full Width */}
+        {/* ROW 4: Conflict Escalation Timeline - NEW */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           className="mb-6"
         >
-          <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <PolymarketWidget />
+          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <ConflictEscalationTimeline />
           </Suspense>
         </motion.section>
 
@@ -432,6 +475,18 @@ function MainDashboard() {
         >
           <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
             <TimelineOfChaos />
+          </Suspense>
+        </motion.section>
+
+        {/* Email Signup - Single location at end */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="mb-6"
+        >
+          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <EmailSignup />
           </Suspense>
         </motion.section>
 
@@ -463,24 +518,63 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainDashboard />} />
+          
+          {/* Legacy Routes - Map to new components */}
           <Route path="/ww3-probability" element={
             <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
-              <WW3ProbabilityPage />
+              <GlobalRiskMonitor />
             </Suspense>
           } />
           <Route path="/us-iran-war-tracker" element={
             <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
-              <UsIranWarTrackerPage />
+              <ConflictTrackerPage />
             </Suspense>
           } />
           <Route path="/iran-conflict-live" element={
             <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
-              <IranConflictLivePage />
+              <LiveMonitorPage />
             </Suspense>
           } />
           <Route path="/timeline" element={
             <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
-              <TimelinePage />
+              <MultiConflictTimeline />
+            </Suspense>
+          } />
+          
+          {/* New Regional Conflict Tracker Routes */}
+          <Route path="/conflict-tracker" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <ConflictTrackerPage />
+            </Suspense>
+          } />
+          <Route path="/live-monitor" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <LiveMonitorPage />
+            </Suspense>
+          } />
+          <Route path="/multi-conflict-timeline" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <MultiConflictTimeline />
+            </Suspense>
+          } />
+          <Route path="/global-risk-monitor" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <GlobalRiskMonitor />
+            </Suspense>
+          } />
+          <Route path="/conflict/:zoneId" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <ConflictDetailPage />
+            </Suspense>
+          } />
+          <Route path="/why-conflicts-happen" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <WhyConflictsHappenPage />
+            </Suspense>
+          } />
+          <Route path="/relationships" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <RelationshipExplorerPage />
             </Suspense>
           } />
           <Route path="/blog" element={
@@ -495,12 +589,7 @@ function App() {
           } />
           <Route path="/ww3-risk-calculator" element={
             <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
-              <WW3ReadinessGame />
-            </Suspense>
-          } />
-          <Route path="/ready" element={
-            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
-              <WW3ReadinessGame />
+              <WW3RiskCalculatorPage />
             </Suspense>
           } />
           <Route path="/share/:score" element={
@@ -523,6 +612,37 @@ function App() {
           <Route path="/iran-nuclear-deal" element={
             <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
               <IranNuclearDealPage />
+            </Suspense>
+          } />
+          
+          {/* Email Alert Management */}
+          <Route path="/alerts/manage" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <ManageAlertsPage />
+            </Suspense>
+          } />
+          
+          {/* Data Methodology */}
+          <Route path="/about-data" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <DataMethodologyPage />
+            </Suspense>
+          } />
+          
+          {/* Conflict Zone Landing Pages */}
+          <Route path="/iran-us-conflict" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <IranUSConflictPage />
+            </Suspense>
+          } />
+          <Route path="/israel-hezbollah-conflict" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <IsraelHezbollahPage />
+            </Suspense>
+          } />
+          <Route path="/pak-afghan-conflict" element={
+            <Suspense fallback={<div className="min-h-screen bg-[#0d0d12] flex items-center justify-center"><div className="w-10 h-10 border-3 border-red-500/30 border-t-red-500 rounded-full animate-spin" /></div>}>
+              <PakAfghanConflictPage />
             </Suspense>
           } />
         </Routes>

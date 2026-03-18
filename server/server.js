@@ -16,8 +16,10 @@ import { getTrumpGif } from './services/giphyService.js';
 import { getGameState, resetBreakingAlert, initGameState } from './services/gameStateService.js';
 import { getMarkets } from './services/marketService.js';
 import { getCoordinates } from './services/locationService.js';
-import { getAttacks, getAllAttacks, attackExists, getAttackCount } from './data/verifiedAttacks.js';
+import { getAttacks, getAllAttacks, attackExists, getAttackCount, getAttacksByZone, getZoneStatistics, getAttackCountByZone } from './data/verifiedAttacks.js';
 import { getChatResponse } from './services/replicateService.js';
+import { getAllZones, getZoneById, getZoneStats, getRelatedZones, getActiveZones } from './data/conflictZones.js';
+import { ACTORS, RELATIONSHIPS, getAllActors, getRelationshipsForActor, getConflictStats } from './data/conflictRelationships.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -211,20 +213,30 @@ app.get('/api/news', (req, res) => {
 
 // Get verified attacks for map display
 // NO RSS - manual verified data only
+// Query params: hours=48, zone=us-iran|pak-afghan|all
 app.get('/api/attacks', (req, res) => {
   const startTime = Date.now();
   const hoursWindow = parseInt(req.query.hours) || 48;
+  const zoneFilter = req.query.zone || 'all';
   
   // Get attacks from verified database
-  const attacks = getAttacks(hoursWindow);
+  let attacks = getAttacks(hoursWindow);
+  
+  // Filter by zone if specified
+  if (zoneFilter !== 'all') {
+    attacks = attacks.filter(attack => attack.conflictZone === zoneFilter);
+  }
   
   // Convert to API format
   const attacksWithCoords = attacks.map(attack => ({
+    id: attack.id,
     headline: attack.headline,
     description: attack.description,
     pubDate: attack.date,
     source: attack.source,
     coordinates: attack.coordinates,
+    conflictZone: attack.conflictZone,
+    country: attack.country,
     mapAnalysis: {
       isAttack: true,
       attackType: attack.attackType,
@@ -238,7 +250,9 @@ app.get('/api/attacks', (req, res) => {
     attacks: attacksWithCoords,
     count: attacksWithCoords.length,
     hoursWindow: hoursWindow,
+    zoneFilter: zoneFilter,
     totalVerified: getAttackCount(),
+    zoneStats: getZoneStatistics(),
     lastUpdated: new Date().toISOString(),
     verified: true,
     responseTime: Date.now() - startTime
@@ -295,24 +309,32 @@ app.get('/api/state', (req, res) => {
   }
 });
 
-// Refresh game state with latest news
+// Refresh game state with latest attacks
 app.post('/api/state/refresh', async (req, res) => {
   try {
-    const news = cachedMergedNews.length > 0 ? cachedMergedNews : getCachedNews();
+    // Get recent attacks to refresh state
+    const recentAttacks = getAttacks(24);
     
-    if (news.length === 0) {
-      return res.status(400).json({ error: 'No news available. Fetch news first.' });
+    if (recentAttacks.length === 0) {
+      return res.status(400).json({ error: 'No recent attacks available.' });
     }
     
-    const result = await updateGameStateFromAnalysis(news);
-    analyzedNews = result.analyzed;
+    // Calculate state changes from recent attacks
+    const state = getGameState();
+    const highSeverityAttacks = recentAttacks.filter(a => a.severity === 'high').length;
+    
+    // Update tension based on recent attacks
+    const tensionIncrease = Math.min(highSeverityAttacks * 5, 20);
+    state.tension = Math.min(100, state.tension + tensionIncrease);
     
     // Update cache
-    setCachedData('gameState', result.state);
+    setCachedData('gameState', state);
     
     res.json({
-      state: result.state,
-      analyzed: result.analyzed.length
+      state,
+      recentAttacks: recentAttacks.length,
+      highSeverityAttacks,
+      tensionIncrease
     });
   } catch (error) {
     console.error('[API] /api/state/refresh error:', error);
@@ -519,6 +541,555 @@ app.get('/api/pagespeed', async (req, res) => {
   }
 });
 
+// ==================== REGIONAL CONFLICT TRACKER API ====================
+
+// Get all conflict zones (summary)
+// GET /api/conflict-zones
+app.get('/api/conflict-zones', (req, res) => {
+  const startTime = Date.now();
+  const includeInactive = req.query.includeInactive === 'true';
+  
+  let zones = getAllZones();
+  
+  if (!includeInactive) {
+    zones = zones.filter(z => z.active);
+  }
+  
+  res.json({
+    zones,
+    count: zones.length,
+    activeCount: zones.filter(z => z.active).length,
+    lastUpdated: new Date().toISOString(),
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Get specific conflict zone details
+// GET /api/conflict-zones/:zoneId
+app.get('/api/conflict-zones/:zoneId', (req, res) => {
+  const startTime = Date.now();
+  const { zoneId } = req.params;
+  
+  const zone = getZoneById(zoneId);
+  
+  if (!zone) {
+    return res.status(404).json({
+      error: 'Zone not found',
+      availableZones: getAllZones().map(z => z.id)
+    });
+  }
+  
+  // Get attacks for this zone
+  const zoneAttacks = getAttacksByZone(zoneId);
+  
+  res.json({
+    zone,
+    attacks: {
+      count: zoneAttacks.length,
+      recent: zoneAttacks.slice(0, 5)
+    },
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Get conflict relationships
+// GET /api/relationships
+app.get('/api/relationships', (req, res) => {
+  const startTime = Date.now();
+  const { actor, type } = req.query;
+  
+  let relationships = RELATIONSHIPS;
+  let actors = getAllActors();
+  
+  // Filter by actor if specified
+  if (actor) {
+    relationships = getRelationshipsForActor(actor);
+    actors = actors.filter(a => 
+      relationships.some(r => r.source === a.id || r.target === a.id)
+    );
+  }
+  
+  // Filter by relationship type if specified
+  if (type) {
+    relationships = relationships.filter(r => r.type === type);
+  }
+  
+  res.json({
+    actors: actors.map(a => ({
+      id: a.id,
+      name: a.name,
+      shortName: a.shortName,
+      type: a.type,
+      category: a.category,
+      flag: a.flag,
+      region: a.region
+    })),
+    relationships,
+    stats: getConflictStats(),
+    filters: { actor, type },
+    count: relationships.length,
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Get context for a conflict zone
+// GET /api/context/:zoneId
+app.get('/api/context/:zoneId', (req, res) => {
+  const startTime = Date.now();
+  const { zoneId } = req.params;
+  const format = req.query.format || 'json'; // 'json' or 'markdown'
+  
+  // Validate zone exists
+  const zone = getZoneById(zoneId);
+  if (!zone) {
+    return res.status(404).json({
+      error: 'Zone not found',
+      availableZones: getAllZones().map(z => z.id)
+    });
+  }
+  
+  // Try to read context file
+  const contextPath = path.join(__dirname, 'data', 'conflictContext', `${zoneId}.md`);
+  
+  try {
+    if (fs.existsSync(contextPath)) {
+      const markdown = fs.readFileSync(contextPath, 'utf8');
+      
+      if (format === 'markdown') {
+        res.setHeader('Content-Type', 'text/markdown');
+        return res.send(markdown);
+      }
+      
+      // Parse markdown to JSON structure
+      const parsed = parseMarkdownContext(markdown);
+      
+      res.json({
+        zoneId,
+        zoneName: zone.name,
+        format: 'json',
+        content: parsed,
+        rawMarkdown: format === 'full' ? markdown : undefined,
+        lastModified: fs.statSync(contextPath).mtime,
+        responseTime: Date.now() - startTime
+      });
+    } else {
+      res.status(404).json({
+        error: 'Context file not found',
+        zoneId,
+        searchedPath: contextPath
+      });
+    }
+  } catch (error) {
+    console.error(`[API] /api/context/${zoneId} error:`, error);
+    res.status(500).json({
+      error: 'Failed to load context',
+      message: error.message
+    });
+  }
+});
+
+// Helper: Parse markdown context into structured JSON
+function parseMarkdownContext(markdown) {
+  const lines = markdown.split('\n');
+  const result = {
+    title: '',
+    sections: [],
+    tables: []
+  };
+  
+  let currentSection = null;
+  let currentTable = null;
+  let inTable = false;
+  
+  for (const line of lines) {
+    // Title (H1)
+    if (line.startsWith('# ')) {
+      result.title = line.replace('# ', '').trim();
+      continue;
+    }
+    
+    // Section headers (H2, H3)
+    if (line.startsWith('## ')) {
+      if (currentSection) {
+        result.sections.push(currentSection);
+      }
+      currentSection = {
+        level: 2,
+        title: line.replace('## ', '').trim(),
+        content: []
+      };
+      inTable = false;
+      continue;
+    }
+    
+    if (line.startsWith('### ')) {
+      if (currentSection && !inTable) {
+        currentSection.content.push({
+          type: 'subsection',
+          title: line.replace('### ', '').trim()
+        });
+      }
+      continue;
+    }
+    
+    // Tables
+    if (line.startsWith('|')) {
+      if (!inTable) {
+        inTable = true;
+        currentTable = {
+          type: 'table',
+          headers: [],
+          rows: []
+        };
+      }
+      
+      const cells = line.split('|').map(c => c.trim()).filter(c => c);
+      
+      // Skip separator lines (---)
+      if (cells.every(c => c.match(/^-+$/))) {
+        continue;
+      }
+      
+      if (currentTable.headers.length === 0) {
+        currentTable.headers = cells;
+      } else {
+        currentTable.rows.push(cells);
+      }
+      continue;
+    } else if (inTable) {
+      // End of table
+      if (currentSection) {
+        currentSection.content.push(currentTable);
+      }
+      inTable = false;
+      currentTable = null;
+    }
+    
+    // List items
+    if (line.startsWith('- ')) {
+      if (currentSection) {
+        currentSection.content.push({
+          type: 'listItem',
+          content: line.replace('- ', '').trim()
+        });
+      }
+      continue;
+    }
+    
+    // Bold items (key: value)
+    const boldMatch = line.match(/\*\*(.+?)\*\*:\s*(.+)/);
+    if (boldMatch) {
+      if (currentSection) {
+        currentSection.content.push({
+          type: 'keyValue',
+          key: boldMatch[1],
+          value: boldMatch[2]
+        });
+      }
+      continue;
+    }
+    
+    // Regular paragraphs
+    if (line.trim() && currentSection) {
+      currentSection.content.push({
+        type: 'paragraph',
+        content: line.trim()
+      });
+    }
+  }
+  
+  // Push final section
+  if (currentSection) {
+    result.sections.push(currentSection);
+  }
+  
+  return result;
+}
+
+// ==================== EMAIL ALERT API ====================
+
+// Import alert services
+import { create as createSubscriber, getByEmail, getByToken, update as updateSubscriber, unsubscribe as unsubscribeSubscriber, getStats as getSubscriberStats, getActiveByZone, VALID_ZONES, VALID_FREQUENCIES } from './models/subscriber.js';
+import { queueBreakingAlerts, queueDailyDigests, getStats as getAlertStats, testSend as testAlertSend } from './services/alertService.js';
+
+// Subscribe to alerts
+// POST /api/alerts/subscribe
+app.post('/api/alerts/subscribe', (req, res) => {
+  const startTime = Date.now();
+  const { email, zones, frequency } = req.body;
+
+  // Validate required fields
+  if (!email || !zones || !Array.isArray(zones) || zones.length === 0) {
+    return res.status(400).json({
+      success: false,
+      error: 'Email and at least one zone are required'
+    });
+  }
+
+  // Validate zones
+  const invalidZones = zones.filter(z => !VALID_ZONES.includes(z));
+  if (invalidZones.length > 0) {
+    return res.status(400).json({
+      success: false,
+      error: `Invalid zones: ${invalidZones.join(', ')}`
+    });
+  }
+
+  // Validate frequency
+  const alertFrequency = frequency || 'breaking';
+  if (!VALID_FREQUENCIES.includes(alertFrequency)) {
+    return res.status(400).json({
+      success: false,
+      error: `Invalid frequency: ${alertFrequency}. Must be one of: ${VALID_FREQUENCIES.join(', ')}`
+    });
+  }
+
+  // Create subscriber
+  const result = createSubscriber({
+    email: email.trim(),
+    zones,
+    frequency: alertFrequency
+  });
+
+  if (!result.success) {
+    return res.status(409).json(result); // 409 Conflict for duplicate
+  }
+
+  console.log(`[API] New subscriber: ${result.subscriber.email}`);
+
+  res.status(201).json({
+    success: true,
+    subscriber: result.subscriber,
+    message: 'Successfully subscribed to alerts',
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Get subscriber preferences by token
+// GET /api/alerts/preferences?token=xxx
+app.get('/api/alerts/preferences', (req, res) => {
+  const startTime = Date.now();
+  const { token } = req.query;
+
+  if (!token) {
+    return res.status(400).json({
+      success: false,
+      error: 'Token is required'
+    });
+  }
+
+  const subscriber = getByToken(token);
+
+  if (!subscriber) {
+    return res.status(404).json({
+      success: false,
+      error: 'Subscriber not found or invalid token'
+    });
+  }
+
+  res.json({
+    success: true,
+    subscriber: {
+      email: subscriber.email,
+      zones: subscriber.zones,
+      frequency: subscriber.frequency,
+      token: subscriber.token,
+      createdAt: subscriber.createdAt,
+      alertCount: subscriber.alertCount,
+      lastAlertAt: subscriber.lastAlertAt
+    },
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Update subscriber preferences
+// POST /api/alerts/preferences
+app.post('/api/alerts/preferences', (req, res) => {
+  const startTime = Date.now();
+  const { token, zones, frequency } = req.body;
+
+  if (!token) {
+    return res.status(400).json({
+      success: false,
+      error: 'Token is required'
+    });
+  }
+
+  // Find subscriber by token
+  const subscriber = getByToken(token);
+  if (!subscriber) {
+    return res.status(404).json({
+      success: false,
+      error: 'Subscriber not found'
+    });
+  }
+
+  // Validate zones if provided
+  if (zones) {
+    if (!Array.isArray(zones) || zones.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'At least one zone must be selected'
+      });
+    }
+    const invalidZones = zones.filter(z => !VALID_ZONES.includes(z));
+    if (invalidZones.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid zones: ${invalidZones.join(', ')}`
+      });
+    }
+  }
+
+  // Validate frequency if provided
+  if (frequency && !VALID_FREQUENCIES.includes(frequency)) {
+    return res.status(400).json({
+      success: false,
+      error: `Invalid frequency: ${frequency}`
+    });
+  }
+
+  // Update subscriber
+  const result = updateSubscriber(subscriber.email, { zones, frequency });
+
+  if (!result.success) {
+    return res.status(500).json(result);
+  }
+
+  console.log(`[API] Updated preferences for: ${subscriber.email}`);
+
+  res.json({
+    success: true,
+    subscriber: result.subscriber,
+    message: 'Preferences updated successfully',
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Unsubscribe from alerts
+// POST /api/alerts/unsubscribe
+app.post('/api/alerts/unsubscribe', (req, res) => {
+  const startTime = Date.now();
+  const { token, email } = req.body;
+
+  const identifier = token || email;
+  if (!identifier) {
+    return res.status(400).json({
+      success: false,
+      error: 'Token or email is required'
+    });
+  }
+
+  const result = unsubscribeSubscriber(identifier);
+
+  if (!result.success) {
+    return res.status(404).json(result);
+  }
+
+  console.log(`[API] Unsubscribed: ${identifier}`);
+
+  res.json({
+    success: true,
+    message: result.message,
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Get alert system stats (admin only - no auth for MVP)
+// GET /api/alerts/stats
+app.get('/api/alerts/stats', (req, res) => {
+  const startTime = Date.now();
+  
+  const subscriberStats = getSubscriberStats();
+  const alertServiceStats = getAlertStats();
+
+  res.json({
+    success: true,
+    stats: {
+      subscribers: subscriberStats,
+      alerts: alertServiceStats
+    },
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Test email generation (admin only)
+// POST /api/alerts/test
+app.post('/api/alerts/test', async (req, res) => {
+  const { email, attackId } = req.body;
+
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      error: 'Email is required'
+    });
+  }
+
+  // Get a sample attack for testing
+  const attacks = getAllAttacks();
+  const testAttack = attackId 
+    ? attacks.find(a => a.id === attackId)
+    : attacks[0];
+
+  if (!testAttack) {
+    return res.status(404).json({
+      success: false,
+      error: 'No attack found for testing'
+    });
+  }
+
+  const result = await testAlertSend(email, testAttack);
+
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+
+  res.json({
+    success: true,
+    preview: result.preview,
+    attack: {
+      id: testAttack.id,
+      location: testAttack.location,
+      severity: testAttack.severity
+    }
+  });
+});
+
+// Trigger alerts manually for a specific attack (admin only)
+// POST /api/alerts/trigger/:attackId
+app.post('/api/alerts/trigger/:attackId', async (req, res) => {
+  const startTime = Date.now();
+  const { attackId } = req.params;
+
+  // Find attack
+  const attacks = getAllAttacks();
+  const attack = attacks.find(a => a.id === attackId);
+
+  if (!attack) {
+    return res.status(404).json({
+      success: false,
+      error: 'Attack not found'
+    });
+  }
+
+  // Queue breaking alerts
+  const result = await queueBreakingAlerts(attack);
+
+  res.json({
+    success: true,
+    message: `Queued ${result.queued} breaking alerts`,
+    attack: {
+      id: attack.id,
+      location: attack.location,
+      severity: attack.severity
+    },
+    queued: result.queued,
+    responseTime: Date.now() - startTime
+  });
+});
+
+// ==================== STATIC FILES ====================
+
 // Serve static files from dist folder (production build)
 app.use(express.static(path.join(__dirname, '../dist')));
 
@@ -571,12 +1142,12 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-// Get ticker text (for comic ticker) - Instant response
+// Get ticker text (for comic ticker) - Uses verified attacks
 app.get('/api/ticker', async (req, res) => {
   const startTime = Date.now();
   
-  // Hardcoded fallback headlines for immediate response
-  const fallbackItems = [
+  // Base headlines
+  const baseItems = [
     '🔴 Breaking: US-Iran tensions remain high in Persian Gulf region',
     '🔵 Trump administration signals potential new sanctions on Tehran',
     '🟡 Nuclear talks stall as uranium enrichment continues',
@@ -586,36 +1157,37 @@ app.get('/api/ticker', async (req, res) => {
   ];
   
   try {
-    // Get cached news headlines immediately
-    const rssNews = getCachedNews();
+    // Get recent verified attacks for ticker
+    const recentAttacks = getAttacks(48).slice(0, 8);
     
-    if (rssNews.length > 0) {
-      const headlines = rssNews
-        .slice(0, 10)
-        .map(n => `🔴 ${n.headline}`)
-        .filter(Boolean);
+    if (recentAttacks.length > 0) {
+      const attackHeadlines = recentAttacks.map(a => 
+        `🔴 ${a.location}: ${a.headline.substring(0, 60)}...`
+      );
+      
+      // Combine attack headlines with base items
+      const combined = [...attackHeadlines, ...baseItems];
       
       res.json({ 
-        items: headlines.length > 0 ? headlines : fallbackItems,
+        items: combined,
+        attackCount: recentAttacks.length,
         responseTime: Date.now() - startTime,
-        cached: true
+        source: 'verified-attacks'
       });
       return;
     }
     
-    // Return fallback immediately but trigger fetch
+    // Return base items if no recent attacks
     res.json({ 
-      items: fallbackItems,
+      items: baseItems,
       responseTime: Date.now() - startTime,
       fallback: true
     });
     
-    // No background refresh - manual verified data only
-    
   } catch (error) {
     console.error('[API] /api/ticker error:', error);
     res.json({ 
-      items: fallbackItems,
+      items: baseItems,
       responseTime: Date.now() - startTime,
       fallback: true
     });
@@ -647,16 +1219,29 @@ const startServer = async () => {
 ║     • No RSS feeds (100% verified data only)                 ║
 ║     • Admin-curated attack database                          ║
 ║                                                              ║
-║     Endpoints:                                               ║
-║     • GET  /api/health      - Health check                   ║
-║     • GET  /api/news        - Verified attacks as news       ║
-║     • GET  /api/attacks     - Confirmed strikes for map      ║
-║     • GET  /api/state       - Current game state             ║
-║     • GET  /api/memes       - Breaking feed (verified)       ║
-║     • GET  /api/polymarket  - Betting odds                   ║
-║     • GET  /api/fires       - NASA FIRMS satellite data      ║
-║     • GET  /api/ticker      - News ticker                    ║
-║     • GET  /api/markets     - Financial market data          ║
+║     Core Endpoints:                                          ║
+║     • GET  /api/health           - Health check              ║
+║     • GET  /api/news             - Verified attacks as news  ║
+║     • GET  /api/attacks          - Confirmed strikes (map)   ║
+║     • GET  /api/state            - Current game state        ║
+║     • GET  /api/memes            - Breaking feed             ║
+║     • GET  /api/polymarket       - Betting odds              ║
+║     • GET  /api/fires            - NASA FIRMS data           ║
+║     • GET  /api/ticker           - News ticker               ║
+║     • GET  /api/markets          - Financial data            ║
+║                                                              ║
+║     Email Alert System:                                      ║
+║     • POST /api/alerts/subscribe      - Subscribe to alerts  ║
+║     • GET  /api/alerts/preferences    - Get preferences      ║
+║     • POST /api/alerts/preferences    - Update preferences   ║
+║     • POST /api/alerts/unsubscribe    - Unsubscribe          ║
+║     • GET  /api/alerts/stats          - System stats         ║
+║                                                              ║
+║     Regional Conflict Tracker:                               ║
+║     • GET  /api/conflict-zones        - List all zones       ║
+║     • GET  /api/conflict-zones/:id    - Zone details         ║
+║     • GET  /api/relationships         - Actor relationships  ║
+║     • GET  /api/context/:zoneId       - Zone context docs    ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
     `);

@@ -38,20 +38,8 @@ const BreakingAlert = ({ alert, onDismiss }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-red-950/95 z-[100] flex items-center justify-center"
+          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center"
         >
-          {/* Siren animation background */}
-          <div className="absolute inset-0 overflow-hidden">
-            <motion.div
-              animate={{ 
-                opacity: [0.3, 0.6, 0.3],
-                scale: [1, 1.2, 1]
-              }}
-              transition={{ duration: 1, repeat: Infinity }}
-              className="absolute inset-0 bg-red-600/20"
-            />
-          </div>
-          
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -61,52 +49,45 @@ const BreakingAlert = ({ alert, onDismiss }) => {
             {/* Close button */}
             <button
               onClick={handleDismiss}
-              className="absolute top-0 right-0 text-red-400/50 hover:text-red-400 transition-colors"
+              className="absolute top-0 right-0 text-gray-500 hover:text-white transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
             
             {/* Alert icon */}
-            <motion.div
-              animate={{ 
-                rotate: [-5, 5, -5],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              className="text-6xl mb-4"
-            >
+            <div className="text-6xl mb-4">
               <AlertTriangle className="w-20 h-20 text-red-500 mx-auto" />
-            </motion.div>
+            </div>
             
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-red-600 text-white font-bangers text-lg px-4 py-2 rounded mb-4">
-              <span className="animate-pulse">⚠️</span>
-              BREAKING ALERT
-              <span className="animate-pulse">⚠️</span>
+            <div className="inline-flex items-center gap-2 bg-red-600 text-white font-heading text-sm font-bold px-4 py-2 rounded mb-4">
+              <span>⚠️</span>
+              ALERT
+              <span>⚠️</span>
             </div>
             
             {/* Headline */}
-            <h1 className="font-bangers text-3xl md:text-4xl text-white mb-4 tracking-wide">
+            <h1 className="font-heading text-2xl md:text-3xl text-white mb-4 tracking-wide">
               {alert.headline}
             </h1>
             
-            {/* Meme caption */}
-            <p className="font-comic text-xl text-red-300 mb-6">
+            {/* Analysis */}
+            <p className="font-body text-lg text-gray-300 mb-6">
               {alert.caption}
             </p>
             
             {/* Badge */}
-            <div className={`inline-block px-4 py-2 rounded-lg border text-lg font-bangers ${
+            <div className={`inline-block px-4 py-2 rounded-lg border text-sm font-heading ${
               alert.badge?.includes('BREAKING') ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-              alert.badge?.includes('YIKES') ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
-              alert.badge?.includes('SUS') ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
-              'bg-purple-500/20 text-purple-400 border-purple-500/30'
+              alert.badge?.includes('ESCALATION') ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+              alert.badge?.includes('CONFIRMED') ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+              'bg-gray-500/20 text-gray-400 border-gray-500/30'
             }`}>
-              {alert.badge || 'BREAKING 💥'}
+              {alert.badge || 'UPDATE'}
             </div>
             
             {/* Progress bar for auto-dismiss */}
-            <div className="mt-8 h-1 bg-red-900/50 rounded-full overflow-hidden">
+            <div className="mt-8 h-1 bg-gray-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: '100%' }}
                 animate={{ width: '0%' }}

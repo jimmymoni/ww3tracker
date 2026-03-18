@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { fetchTickerItems, getCachedData } from '../lib/api';
 import { Radio, Volume2, VolumeX, Loader2 } from 'lucide-react';
 
-const ComicTicker = () => {
+const NewsTicker = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,24 +15,24 @@ const ComicTicker = () => {
         // Check for cached data first
         const cached = getCachedData('ticker');
         
-        // FALLBACK: Always show something immediately
+        // Fallback items
         const fallbackItems = [
-          '🔴 Breaking: US-Iran tensions remain high in Persian Gulf region',
-          '🔵 Trump administration signals potential new sanctions on Tehran',
-          '🟡 Nuclear talks stall as uranium enrichment continues',
-          '🔴 Strait of Hormuz shipping concerns impact global markets',
-          '🔵 Israel warns of retaliation amid regional proxy conflicts',
-          '🟡 International monitors express concern over Iran nuclear program',
-          '🔴 Military buildup reported near Iranian borders'
+          'Breaking: US-Iran tensions remain high in Persian Gulf region',
+          'Trump administration signals potential new sanctions on Tehran',
+          'Nuclear talks stall as uranium enrichment continues',
+          'Strait of Hormuz shipping concerns impact global markets',
+          'Israel warns of retaliation amid regional proxy conflicts',
+          'International monitors express concern over Iran nuclear program',
+          'Military buildup reported near Iranian borders'
         ];
         
         // If we have cached items, show them immediately
         if (cached?.items && cached.items.length > 0) {
           setItems(cached.items);
           setLoading(false);
-          setFetching(true); // Show subtle indicator while fetching
+          setFetching(true);
         } else {
-          // Show fallback immediately - don't wait for API
+          // Show fallback immediately
           setItems(fallbackItems);
           setLoading(false);
           setFetching(true);
@@ -45,7 +45,6 @@ const ComicTicker = () => {
         }
       } catch (error) {
         console.error('Failed to load ticker:', error);
-        // Keep showing whatever we have - fallback or cached
       } finally {
         setFetching(false);
       }
@@ -69,7 +68,7 @@ const ComicTicker = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-black/90 border-t border-white/10 z-40 backdrop-blur-sm h-10">
         <div className="flex items-center justify-center h-full text-gray-500 gap-2">
           <Loader2 className="w-3 h-3 animate-spin" />
-          <span className="font-comic text-sm">Loading ticker...</span>
+          <span className="font-body text-sm">Loading ticker...</span>
         </div>
       </div>
     );
@@ -87,7 +86,7 @@ const ComicTicker = () => {
             transition={{ duration: 1, repeat: Infinity }}
             className="w-2 h-2 bg-white rounded-full"
           />
-          <span className="font-impact text-white text-sm tracking-wider">LIVE</span>
+          <span className="font-heading text-white text-sm tracking-wider font-bold">LIVE</span>
         </div>
       </div>
 
@@ -100,8 +99,8 @@ const ComicTicker = () => {
         >
           {duplicatedItems.map((item, index) => (
             <div key={index} className="flex items-center gap-3 shrink-0">
-              <span className="font-comic text-gray-400 text-sm whitespace-nowrap">
-                {fetching && index === 0 ? '🔄 Fetching live intel...' : item}
+              <span className="font-body text-gray-400 text-sm whitespace-nowrap">
+                {fetching && index === 0 ? 'Fetching updates...' : item}
               </span>
               <span className="text-gray-600">•</span>
             </div>
@@ -117,20 +116,20 @@ const ComicTicker = () => {
         {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
       </button>
 
-      {/* Breaking badge */}
+      {/* Alert badge */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3 }}
         className="absolute -top-6 right-4"
       >
-        <div className="bg-red-600 text-white font-bangers text-xs px-3 py-1 rounded-t flex items-center gap-1">
+        <div className="bg-red-600 text-white font-heading text-xs font-bold px-3 py-1 rounded-t flex items-center gap-1">
           <Radio className="w-3 h-3" />
-          BREAKING
+          UPDATES
         </div>
       </motion.div>
     </div>
   );
 };
 
-export default ComicTicker;
+export default NewsTicker;

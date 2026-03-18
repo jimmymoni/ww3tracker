@@ -52,6 +52,14 @@
       color: var(--text-primary);
       font-family: var(--font-body);
       -webkit-font-smoothing: antialiased;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    
+    /* Ensure layouts are visible by default */
+    .desktop-layout,
+    .mobile-layout {
+      display: flex;
     }
 
     /* ============================================
@@ -945,9 +953,11 @@
        ============================================ */
     @media (max-width: 768px) {
       .desktop-layout { display: none !important; }
+      .mobile-layout { display: flex !important; }
     }
     
     @media (min-width: 769px) {
+      .desktop-layout { display: flex !important; }
       .mobile-layout { display: none !important; }
     }
     
@@ -977,6 +987,11 @@
   </style>
 </head>
 <body>
+  <noscript style="display: block; padding: 40px; text-align: center; color: white; font-family: sans-serif;">
+    <h1>JavaScript Required</h1>
+    <p>The Nuclear Blast Simulator requires JavaScript to run.</p>
+    <p>Please enable JavaScript in your browser settings.</p>
+  </noscript>
   <!-- ============================================
        DESKTOP LAYOUT
        ============================================ -->
@@ -1909,20 +1924,25 @@
        INITIALIZATION
        ============================================ */
     const init = () => {
-      state.isMobile = window.innerWidth < 769;
-      
-      renderWeapons();
-      initMap();
-      initEventListeners();
-      
-      if (state.isMobile) {
-        initBottomSheet();
-        initAutocomplete();
-        renderRecentSearches();
-        initPopularTargets();
+      try {
+        state.isMobile = window.innerWidth < 769;
         
-        // Clear recent searches handler
-        document.getElementById('clear-recent')?.addEventListener('click', clearRecentSearches);
+        renderWeapons();
+        initMap();
+        initEventListeners();
+        
+        if (state.isMobile) {
+          initBottomSheet();
+          initAutocomplete();
+          renderRecentSearches();
+          initPopularTargets();
+          
+          // Clear recent searches handler
+          document.getElementById('clear-recent')?.addEventListener('click', clearRecentSearches);
+        }
+      } catch (err) {
+        console.error('Initialization error:', err);
+        document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: white; font-family: sans-serif;"><h1>Nuke Simulator</h1><p>Error loading: ' + err.message + '</p><p>Please refresh or <a href="/" style="color: #3b82f6;">go back</a></p></div>';
       }
     };
 

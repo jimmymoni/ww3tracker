@@ -734,29 +734,38 @@ export default function ConflictMap({ mobile = false }) {
           </div>
         </div>
 
-        {/* DESKTOP LAYOUT */}
-        <div className="hidden lg:flex">
-          <div ref={desktopContainerRef} className="relative bg-[#020617] flex-1" style={{ height: '500px' }}>
+        {/* DESKTOP LAYOUT - Full width map + horizontal scroll cards */}
+        <div className="hidden lg:block">
+          {/* Map: Full width */}
+          <div ref={desktopContainerRef} className="relative bg-[#020617] w-full" style={{ height: '500px' }}>
             {renderMap()}
           </div>
 
-          <div className="w-80 border-l border-white/10 bg-black/40 flex flex-col" style={{ height: '500px' }}>
-            <div className="p-4 border-b border-white/10">
-              <h3 className="font-bold text-white flex items-center gap-2">
+          {/* Horizontal scrollable cards below map */}
+          <div className="border-t border-white/10 bg-black/40 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-white text-sm flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-red-400" />
                 Confirmed Strikes
               </h3>
-              <p className="text-xs text-gray-500 mt-1">{events.length} attacks verified</p>
+              <span className="text-xs text-gray-500">{events.length} attacks verified</span>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4 space-y-2">
+            {/* Horizontal scroll container with peek effect */}
+            <div 
+              className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory"
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none'
+              }}
+            >
               {events.map(event => (
                 <button
                   key={event.id}
                   onClick={() => handleEventClick(event)}
                   onMouseEnter={() => setHoveredEvent(event)}
                   onMouseLeave={() => setHoveredEvent(null)}
-                  className={`w-full text-left p-3 rounded-xl border transition-all ${
+                  className={`flex-shrink-0 w-[300px] snap-start text-left p-4 rounded-xl border transition-all ${
                     selectedEvent?.id === event.id 
                       ? 'bg-red-500/10 border-red-500/50' 
                       : event.isNew 
@@ -766,24 +775,24 @@ export default function ConflictMap({ mobile = false }) {
                           : 'bg-white/5 border-white/5 hover:bg-white/10'
                   }`}
                 >
-                  <div className="flex items-start gap-2.5">
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg} ${event.isRecent ? 'animate-pulse' : ''}`}>
+                  <div className="flex items-start gap-3">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${SEVERITY_CONFIG[event.severity].bg} ${event.isRecent ? 'animate-pulse' : ''}`}>
                       {EVENT_ICONS[event.icon]}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white text-sm flex items-center gap-2">
+                        <span className="font-bold text-white flex items-center gap-2">
                           {event.city}
                           {event.isNew && (
-                            <span className="text-[8px] px-1.5 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
+                            <span className="text-[10px] px-2 py-0.5 rounded bg-red-500 text-white animate-pulse">NEW</span>
                           )}
                         </span>
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white`}>
+                        <span className={`text-[10px] px-2 py-0.5 rounded ${SEVERITY_CONFIG[event.severity].bg} text-white font-medium`}>
                           {SEVERITY_CONFIG[event.severity].label}
                         </span>
                       </div>
-                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-2">{event.description}</p>
-                      <p className={`text-[9px] mt-1 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
+                      <p className="text-xs text-gray-400 mt-1.5 line-clamp-2">{event.description}</p>
+                      <p className={`text-xs mt-2 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-500'}`}>
                         {event.relativeTime}
                       </p>
                     </div>

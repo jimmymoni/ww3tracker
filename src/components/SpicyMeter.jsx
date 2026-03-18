@@ -1,7 +1,7 @@
-// WAR MARKET - Real Financial Market Data Component
+// Market Data Component - Displays real financial market indicators
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Twitter, Link, AlertTriangle } from 'lucide-react';
+import { Twitter, Link } from 'lucide-react';
 import { fetchPolymarketData } from '../lib/api';
 import html2canvas from 'html2canvas';
 
@@ -11,11 +11,7 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState('--:--');
   const [copied, setCopied] = useState(false);
-  const [warMode, setWarMode] = useState(false);
   const cardRef = useRef(null);
-
-  // Only trigger circuit breaker at extreme tension (99+) and not permanently
-  const isCircuitBreaker = tension >= 99;
 
   // Fetch WW3 probability from Polymarket
   useEffect(() => {
@@ -44,16 +40,6 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
         if (data.stocks && data.stocks.length > 0) {
           setStocks(data.stocks);
           setLastUpdate(new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
-          
-          // Check for war mode
-          const oil = data.stocks.find(s => s.label === 'OIL.WAR');
-          const defense = data.stocks.find(s => s.label === 'WAR.STOCKS');
-          
-          if (oil && defense) {
-            const oilChange = parseFloat(oil.change.replace('%', '').replace('+', ''));
-            const defenseChange = parseFloat(defense.change.replace('%', '').replace('+', ''));
-            setWarMode(oilChange > 3 && defenseChange > 3);
-          }
         }
       } catch (err) {
         console.error('Market fetch error:', err);
@@ -72,7 +58,7 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
     const gold = stocks.find(s => s.label === 'SAFE.HAVEN');
     const defense = stocks.find(s => s.label === 'WAR.STOCKS');
     
-    const text = `📉 LIVE WAR MARKET UPDATE:\n🛢️ Oil: ${oil?.change || 'N/A'}\n🥇 Gold: ${gold?.change || 'N/A'}\n🚀 Defense stocks: ${defense?.change || 'N/A'}\n💸 Iran Rial: SUFFERING\nMarkets know something 👀\nww3tracker.live #WW3 #USvsIran`;
+    const text = `Market Update:\nOil: ${oil?.change || 'N/A'}\nGold: ${gold?.change || 'N/A'}\nDefense: ${defense?.change || 'N/A'}\nww3tracker.live`;
     
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
   };
@@ -92,7 +78,7 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
     try {
       const canvas = await html2canvas(cardRef.current, { backgroundColor: '#0a0a0a', scale: 2, useCORS: true });
       const link = document.createElement('a');
-      link.download = `war-market-${new Date().toISOString().split('T')[0]}.png`;
+      link.download = `market-data-${new Date().toISOString().split('T')[0]}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
@@ -126,62 +112,12 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
         minHeight: '400px',
       }}
     >
-      {/* War Mode Banner */}
-      {warMode && (
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: '#dc2626',
-          padding: '4px 8px',
-          textAlign: 'center',
-          zIndex: 25,
-        }}>
-          <span style={{
-            fontSize: '11px',
-            fontWeight: 'bold',
-            color: '#ffffff',
-            letterSpacing: '0.05em',
-          }}>
-            ⚠️ MARKETS IN WAR MODE — Oil and defense stocks surging
-          </span>
-        </div>
-      )}
-
-      {/* Circuit Breaker */}
-      {isCircuitBreaker && (
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: '#dc2626',
-          zIndex: 30,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <AlertTriangle style={{ width: '48px', height: '48px', color: '#ffffff', margin: '0 auto 8px' }} />
-            <h3 style={{
-              fontSize: '24px',
-              fontWeight: 'bold',
-              color: '#ffffff',
-              letterSpacing: '0.1em',
-              margin: 0,
-            }}>
-              CIRCUIT BREAKER - TRADING HALTED
-            </h3>
-          </div>
-        </div>
-      )}
-
       {/* Header */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: warMode ? '24px' : '16px',
-        marginTop: warMode ? '20px' : '0',
+        marginBottom: '16px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ fontSize: '20px' }}>📉</span>
@@ -193,7 +129,7 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
               letterSpacing: '0.05em',
               margin: 0,
             }}>
-              WAR MARKET
+              MARKET DATA
             </h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
               <span style={{
@@ -245,20 +181,17 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
         </div>
       </div>
 
-      {/* Stock Rows - Always render */}
+      {/* Stock Rows */}
       <div>
         {loading ? (
-          // Loading state
           <div style={{ textAlign: 'center', padding: '40px 0', color: '#6b7280', fontSize: '12px' }}>
-            📡 Connecting to markets...
+            Connecting to markets...
           </div>
         ) : stocks.length === 0 ? (
-          // No data
           <div style={{ textAlign: 'center', padding: '40px 0', color: '#6b7280', fontSize: '12px' }}>
-            ⚠️ Market data unavailable
+            Market data unavailable
           </div>
         ) : (
-          // Render stock rows
           <>
             {stocks.map((stock, index) => (
               <motion.div
@@ -364,7 +297,7 @@ const SpicyMeter = ({ tension = 65, usHP = 75, iranHP = 60 }) => {
           color: '#6b7280',
           fontFamily: 'monospace',
         }}>
-          🔄 Updated {lastUpdate}
+          Updated {lastUpdate}
         </span>
         <span style={{
           fontSize: '10px',
