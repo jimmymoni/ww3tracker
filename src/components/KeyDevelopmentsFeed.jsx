@@ -235,12 +235,9 @@ const KeyDevelopmentsFeed = () => {
 
         {/* Footer */}
         <div className="mt-3 pt-3 border-t border-white/10 text-center">
-          <a 
-            href="/live-monitor" 
-            className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            View all developments →
-          </a>
+          <p className="text-xs text-gray-500">
+            Verified events from Mar 17–18, 2026
+          </p>
         </div>
       </div>
     </section>
