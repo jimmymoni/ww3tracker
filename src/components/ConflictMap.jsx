@@ -8,23 +8,48 @@ import { getCachedData } from '../lib/api';
 // No default events - only show real confirmed strikes
 const DEFAULT_EVENTS = [];
 
-const LABELS = [
-  { name: 'IRAN', lat: 32, lng: 54, type: 'country' },
-  { name: 'IRAQ', lat: 33, lng: 43, type: 'country' },
-  { name: 'SAUDI ARABIA', lat: 24, lng: 45, type: 'country' },
-  { name: 'SYRIA', lat: 35, lng: 38, type: 'country' },
-  { name: 'ISRAEL', lat: 31, lng: 34.8, type: 'country' },
-  { name: 'UAE', lat: 24.5, lng: 54, type: 'country' },
-  { name: 'QATAR', lat: 25.3, lng: 51.2, type: 'country' },
-  { name: 'KUWAIT', lat: 29.3, lng: 47.5, type: 'country' },
-  { name: 'JORDAN', lat: 31, lng: 36, type: 'country' },
-  { name: 'BAHRAIN', lat: 26.1, lng: 50.55, type: 'country' },
-  // Current conflict hotspots (March 2026)
-  { name: 'ISFAHAN', lat: 32.65, lng: 51.67, type: 'city' },
-  { name: 'NATANZ', lat: 33.91, lng: 51.72, type: 'city' },
-  { name: 'TEHRAN', lat: 35.69, lng: 51.39, type: 'city' },
-  { name: 'HAMADAN', lat: 34.80, lng: 48.51, type: 'city' },
-  { name: 'CHABAHAR', lat: 25.30, lng: 60.65, type: 'city' },
+// COUNTRIES - Bold, larger font
+const COUNTRY_LABELS = [
+  { name: 'IRAN', lat: 33.5, lng: 54 },
+  { name: 'IRAQ', lat: 33, lng: 43 },
+  { name: 'SAUDI ARABIA', lat: 23, lng: 45 },
+  { name: 'SYRIA', lat: 35, lng: 38 },
+  { name: 'ISRAEL', lat: 31.5, lng: 35 },
+  { name: 'LEBANON', lat: 33.8, lng: 35.8 },
+  { name: 'JORDAN', lat: 30.5, lng: 36.5 },
+  { name: 'TURKEY', lat: 39, lng: 35 },
+  { name: 'OMAN', lat: 20.5, lng: 56.5 },
+  { name: 'PAKISTAN', lat: 28, lng: 67 },
+  { name: 'AFGHANISTAN', lat: 33, lng: 66 },
+];
+
+// CITIES/REGIONS - Smaller, lighter font
+const CITY_LABELS = [
+  // Iran cities
+  { name: 'Tehran', lat: 35.69, lng: 51.39 },
+  { name: 'Isfahan', lat: 32.65, lng: 51.67 },
+  { name: 'Natanz', lat: 33.91, lng: 51.72 },
+  { name: 'Hamadan', lat: 34.80, lng: 48.51 },
+  { name: 'Bandar Abbas', lat: 27.18, lng: 56.27 },
+  { name: 'Chabahar', lat: 25.30, lng: 60.65 },
+  // Gulf cities
+  { name: 'Kuwait City', lat: 29.37, lng: 47.97 },
+  { name: 'Doha', lat: 25.28, lng: 51.53 },
+  { name: 'Dubai', lat: 25.20, lng: 55.27 },
+  { name: 'Abu Dhabi', lat: 24.45, lng: 54.37 },
+  { name: 'Manama', lat: 26.22, lng: 50.58 },
+  { name: 'Riyadh', lat: 24.71, lng: 46.67 },
+  // Levant cities
+  { name: 'Beirut', lat: 33.89, lng: 35.50 },
+  { name: 'Tyre', lat: 33.27, lng: 35.20 },
+  { name: 'Tel Aviv', lat: 32.08, lng: 34.78 },
+  { name: 'Jerusalem', lat: 31.77, lng: 35.21 },
+  { name: 'Damascus', lat: 33.51, lng: 36.27 },
+  { name: 'Baghdad', lat: 33.31, lng: 44.36 },
+  // Other
+  { name: 'Muscat', lat: 23.58, lng: 58.40 },
+  { name: 'Karachi', lat: 24.86, lng: 67.00 },
+  { name: 'Kabul', lat: 34.52, lng: 69.17 },
 ];
 
 const SEVERITY_CONFIG = {
@@ -494,7 +519,8 @@ export default function ConflictMap({ mobile = false }) {
               </g>
             )}
 
-            {LABELS.map(label => {
+            {/* COUNTRIES - Bold, uppercase */}
+            {COUNTRY_LABELS.map(label => {
               const [x, y] = proj([label.lng, label.lat]) || [0, 0];
               if (!isVisible(label.lat, label.lng)) return null;
               return (
@@ -503,16 +529,36 @@ export default function ConflictMap({ mobile = false }) {
                   x={x} 
                   y={y} 
                   textAnchor="middle" 
-                  fill="rgba(148, 163, 184, 0.4)" 
-                  fontSize={isMobile ? 8 : 10} 
-                  fontWeight="700" 
-                  letterSpacing="1"
-                  style={{ textShadow: '0 0 4px rgba(0,0,0,0.8)' }}
+                  fill="rgba(100, 116, 139, 0.5)" 
+                  fontSize={isMobile ? 9 : 12} 
+                  fontWeight="800" 
+                  letterSpacing="1.5"
+                  style={{ textShadow: '0 0 6px rgba(0,0,0,0.9)', textTransform: 'uppercase' }}
                 >
                   {label.name}
                 </text>
               );
             })}
+
+            {/* CITIES - Lighter, smaller, normal case */}
+            {CITY_LABELS.map(label => {
+              const [x, y] = proj([label.lng, label.lat]) || [0, 0];
+              if (!isVisible(label.lat, label.lng)) return null;
+              return (
+                <text 
+                  key={label.name} 
+                  x={x} 
+                  y={y} 
+                  textAnchor="middle" 
+                  fill="rgba(148, 163, 184, 0.35)" 
+                  fontSize={isMobile ? 7 : 9} 
+                  fontWeight="400"
+                  style={{ textShadow: '0 0 4px rgba(0,0,0,0.8)' }}
+                >
+                  {label.name}
+                </text>
+              );
+            })
 
             {events.map(event => {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
