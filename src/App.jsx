@@ -245,14 +245,7 @@ function HomePage() {
       </Suspense>
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* NUKE SIM HERO - Featured at top */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <Suspense fallback={<div className="h-[600px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <NukeSimHero />
-          </Suspense>
-        </motion.section>
-
-        {/* WW3 Probability - Context */}
+        {/* WW3 Probability */}
         <div className="mb-6">
           <Suspense fallback={<div className="h-[120px] bg-black/40 rounded-2xl animate-pulse" />}>
             <WW3Counter tension={gameState.tension} />
@@ -260,7 +253,7 @@ function HomePage() {
         </div>
 
         {/* Conflict Map */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-6">
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
             <ConflictMap />
           </Suspense>
