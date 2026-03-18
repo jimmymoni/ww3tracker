@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-**Name:** WW3 Tracker (US vs Iran War Tracker)  
+**Name:** WW3 Tracker  
 **Domain:** ww3tracker.live  
 **Platform:** Railway (Node.js backend + React frontend)  
-**Purpose:** Live US-Iran conflict monitoring dashboard with real-time data aggregation, AI analysis, prediction market integration, and meme/satirical elements.
+**Purpose:** Educational conflict monitor for the US-Iran war (Mar 17-18, 2026)
 
-**Last Updated:** 2026-03-16 (Verified Manual Data System)
+**Last Updated:** 2026-03-18 (Brutal Simplification Complete)
 
 ---
 
@@ -23,35 +23,29 @@
 | Framer Motion | Animations |
 | Lucide React | Icons |
 | D3 + d3-geo | Interactive conflict maps |
-| react-markdown + remark-gfm | Blog content rendering |
 | react-helmet-async | SEO meta tags |
-| Leaflet + react-leaflet | Map visualizations |
 
 ### Backend
 | Technology | Purpose |
 |------------|---------|
 | Node.js 20 | Runtime |
 | Express.js | Web framework |
-| Socket.io | Real-time features (if enabled) |
 | node-fetch | HTTP requests |
-| xml2js | RSS feed parsing |
 | cors | Cross-origin support |
 | dotenv | Environment configuration |
 
 ### External APIs
-| Service | Data Provided | Optional |
-|---------|---------------|----------|
-| Giphy | Trump reaction GIFs | Yes |
-| NASA FIRMS | Satellite fire detection | Yes |
-| Polymarket | Prediction market odds | No (has fallback) |
+| Service | Data Provided | Status |
+|---------|---------------|--------|
+| NASA FIRMS | Satellite fire detection | Optional (has fallback) |
+| Giphy | Reaction GIFs | Optional |
 
 ### Data Sources (Verified Manual)
 | Source | Type | Update Method |
 |--------|------|---------------|
 | `server/data/verifiedAttacks.js` | Manually curated attack database | Admin updates |
-| Admin input | Real-time verified attack reports | Manual entry |
 
-**Note:** RSS feeds and AI news aggregation have been removed to prevent hallucination and ensure 100% verified data only.
+**Note:** RSS feeds and AI news aggregation have been removed. Only 100% verified data.
 
 ---
 
@@ -68,49 +62,30 @@
 ┌──────────────────────────▼──────────────────────────────────┐
 │                      SERVER (Node.js)                        │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │   Express    │  │  API Routes  │  │   Services   │       │
+│  │   Express    │  │  API Routes  │  │  Static Data │       │
 │  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
-                           │
-        ┌──────────────────┼──────────────────┐
-        ▼                  ▼                  ▼
-   ┌─────────┐      ┌──────────────┐   ┌──────────┐
-   │Polymarket│     │Verified DB   │   │NASA FIRMS│
-   └─────────┘      │(Manual Data) │   └──────────┘
-                    └──────────────┘
 ```
 
 ### Data Flow
 
 1. **Conflict Map (Verified Attacks)**
    ```
-   Verified Attacks DB → Location Service → /api/attacks → ConflictMap
+   verifiedAttacks.js → /api/attacks → ConflictMap
    ```
-   - Source: `server/data/verifiedAttacks.js` (manual curation)
-   - Update method: Admin provides verified attack data
-   - No expiration - attacks remain on map permanently
-   - Duplicate detection: Same location within 6 hours
+   - Source: `server/data/verifiedAttacks.js` (12 attacks, Mar 17-18, 2026)
+   - No expiration - attacks remain permanently
 
-2. **Breaking Feed**
+2. **Key Developments Feed**
    ```
-   Verified Attacks DB → /api/memes → MemeFeed
+   Hardcoded data → KeyDevelopmentsFeed
    ```
-   - Shows verified attacks as breaking news
-   - Professional badges (ATTACK, MISSILE, DRONE, etc.)
-   - No GenZ slang or AI-generated content
+   - Shows 3 significant events with "Why This Matters"
 
-3. **Polymarket Data**
-   ```
-   Polymarket API → /api/polymarket → PolymarketWidget
-   ```
-   - Update frequency: Every 60 seconds
-   - Cached for 1 minute
-
-4. **NASA FIRMS Fire Data**
+3. **NASA FIRMS Fire Data**
    ```
    NASA API → /api/fires → NasaFirmsStrip
    ```
-   - Update frequency: Every 30 minutes
    - Mock data fallback if API unavailable
 
 ---
@@ -118,30 +93,29 @@
 ## Project Structure
 
 ```
-├── index.html                 # Main HTML template with inline SEO content
+├── index.html                 # Main HTML template with inline SEO
 ├── package.json               # Dependencies and scripts
-├── vite.config.js             # Vite configuration with code splitting
-├── tailwind.config.js         # Tailwind CSS theme configuration
+├── vite.config.js             # Vite configuration
+├── tailwind.config.js         # Tailwind CSS theme
 ├── postcss.config.js          # PostCSS setup
 ├── railway.json               # Railway deployment config
 ├── .env.example               # Environment variable template
-├── .env                       # Local environment (gitignored)
-├── README.md                  # Human-readable project docs
-├── AGENTS.md                  # This file - AI agent documentation
+├── README.md                  # Human-readable docs
+├── AGENTS.md                  # This file - AI agent docs
 │
 ├── server/                    # Backend code
 │   ├── server.js              # Express server entry point
-│   ├── data/                  # Verified data storage
-│   │   └── verifiedAttacks.js     # Manually curated attack database
-│   └── services/              # Business logic modules
-│       ├── gameStateService.js    # HP bars, tension, alerts
-│       ├── locationService.js     # Geocoding for attack locations
-│       ├── polymarketService.js   # Prediction market data
-│       ├── nasaFirmsService.js    # Satellite fire data
-│       ├── giphyService.js        # Trump GIFs
-│       └── marketService.js       # Financial market data
-│
-**Note:** RSS feeds, GDELT, and AI news analysis removed. Using verified manual data only.
+│   ├── data/                  # Data storage
+│   │   ├── verifiedAttacks.js     # 12 verified attacks
+│   │   ├── conflictZones.js       # Zone definitions
+│   │   └── subscribers.json       # Email subscribers
+│   ├── models/
+│   │   └── subscriber.js          # Subscriber model
+│   └── services/
+│       ├── alertService.js        # Email templates
+│       ├── gameStateService.js    # HP bars, tension (legacy)
+│       ├── locationService.js     # Geocoding
+│       └── nasaFirmsService.js    # Satellite data
 │
 ├── src/                       # Frontend source code
 │   ├── main.jsx               # React entry point
@@ -149,129 +123,58 @@
 │   ├── index.css              # Global styles + Tailwind
 │   │
 │   ├── components/            # React components
-│   │   ├── WW3Counter.jsx         # Main probability display
+│   │   ├── WW3Counter.jsx         # WW3 probability display
+│   │   ├── BreakingAlert.jsx      # Breaking news alert
 │   │   ├── ConflictMap.jsx        # D3 interactive map
-│   │   ├── GlobalParticipantsCarousel.jsx  # Trump/Iran/Netanyahu cards
-│   │   ├── HPBar.jsx              # Fighting game HP bars
-│   │   ├── SpicyMeter.jsx         # Tension gauge
-│   │   ├── PolymarketWidget.jsx   # Prediction markets
-│   │   ├── MemeCard.jsx           # News/meme feed
+│   │   ├── KeyDevelopmentsFeed.jsx# Significant events
+│   │   ├── HumanImpactDashboard.jsx# Casualties/infrastructure
+│   │   ├── ConflictEscalationTimeline.jsx # Causation chain
 │   │   ├── NasaFirmsStrip.jsx     # Satellite fire strip
-│   │   ├── TimelineOfChaos.jsx    # Historical timeline
-│   │   ├── BreakingAlert.jsx      # Full-screen alerts
-│   │   ├── FighterCard.jsx        # US vs Iran fighter cards
-│   │   ├── ComicTicker.jsx        # News ticker
-│   │   ├── WW3ReadinessGame.jsx   # Interactive quiz game
+│   │   ├── EmailSignup.jsx        # Compact email signup
 │   │   ├── SEO.jsx                # SEO component wrapper
-│   │   ├── StructuredData.jsx     # JSON-LD schema
-│   │   ├── Breadcrumbs.jsx        # Navigation breadcrumbs
-│   │   ├── PickSideModal.jsx      # US/Iran selector modal
-│   │   ├── DisqusComments.jsx     # Comments integration
-│   │   ├── DailyPoll.jsx          # User polling
-│   │   ├── ConflictGlobe.jsx      # 3D globe visualization
-│   │   ├── EliminatedBoard.jsx    # Defeated entities display
-│   │   ├── FloatingChat.jsx       # AI chat interface
-│   │   ├── GenZAnalyst.jsx        # Gen-Z AI persona
-│   │   ├── CentralTweetButton.jsx # Share functionality
-│   │   ├── ReadingProgress.jsx    # Blog reading indicator
-│   │   ├── TableOfContents.jsx    # Blog TOC
-│   │   ├── WarRoomComments.jsx    # Comment system
 │   │   └── Blog/                  # Blog-specific components
-│   │       ├── ArticleCard.jsx
-│   │       ├── BlogContentRenderer.jsx
-│   │       ├── ComparisonTable.jsx
-│   │       ├── FAQ.jsx
-│   │       ├── KeyTakeaway.jsx
-│   │       ├── NewsletterSignup.jsx
-│   │       ├── PollWidget.jsx
-│   │       ├── PullQuote.jsx
-│   │       ├── QuickFacts.jsx
-│   │       ├── QuoteBlock.jsx
-│   │       ├── RelatedConflicts.jsx
-│   │       ├── ShareButtons.jsx
-│   │       ├── StatCard.jsx
-│   │       ├── Timeline.jsx
-│   │       ├── TimelineItem.jsx
-│   │       └── index.js
 │   │
 │   ├── pages/                 # Page components (routes)
-│   │   ├── WW3ProbabilityPage.jsx
-│   │   ├── UsIranWarTrackerPage.jsx
-│   │   ├── IranConflictLivePage.jsx
-│   │   ├── TimelinePage.jsx
-│   │   ├── BlogPage.jsx
-│   │   ├── BlogPostPage.jsx
-│   │   ├── WW3RiskCalculatorPage.jsx
-│   │   ├── ShareResultPage.jsx
-│   │   ├── IsWW3HappeningPage.jsx      # SEO landing
-│   │   ├── WorldWar3NewsPage.jsx       # SEO landing
-│   │   └── IranNuclearDealPage.jsx     # SEO landing
+│   │   ├── WW3ProbabilityPage.jsx     # (redirected)
+│   │   ├── UsIranWarTrackerPage.jsx   # (redirected)
+│   │   ├── IranConflictLivePage.jsx   # (redirected)
+│   │   ├── BlogPage.jsx               # WW3 News/Blog
+│   │   ├── BlogPostPage.jsx           # Individual blog post
+│   │   ├── IsWW3HappeningPage.jsx     # SEO landing
+│   │   ├── WorldWar3NewsPage.jsx      # SEO landing
+│   │   ├── IranNuclearDealPage.jsx    # SEO landing
+│   │   ├── IranUSConflictPage.jsx     # Conflict landing
+│   │   ├── IsraelHezbollahPage.jsx    # Conflict landing
+│   │   └── PakAfghanConflictPage.jsx  # Conflict landing
 │   │
 │   ├── lib/                   # Utilities & API clients
-│   │   ├── api.js             # Frontend API client with caching
-│   │   ├── utils.js           # Utility functions
-│   │   └── mockData.js        # Mock/fallback data
+│   │   ├── api.js             # Frontend API client
+│   │   └── utils.js           # Utility functions
 │   │
 │   └── data/                  # Static data
 │       └── blogPosts.js       # Blog post content
 │
-├── scripts/                   # Build & utility scripts
-│   ├── prerender.js           # Prerender static pages
-│   ├── verify-prerender.js    # Verify prerender output
-│   ├── generate-sitemap.js    # Generate sitemap.xml
-│   ├── generate-og-image.js   # Generate OpenGraph images
-│   ├── fetch-analytics.js     # Fetch analytics data
-│   └── detailed-engagement.js # Engagement analysis
-│
 ├── dist/                      # Production build output
-│   ├── index.html             # Built index
-│   ├── assets/                # Bundled JS/CSS/images
-│   ├── sitemap.xml            # Generated sitemap
-│   └── robots.txt             # SEO robots file
-│
 └── public/                    # Static assets
-    ├── favicon.ico
-    ├── favicon.svg
-    ├── favicon-48x48.png
-    ├── og-image.png           # Social sharing image
-    └── _redirects             # SPA routing rules
+    ├── logo/                  # Logo files
+    ├── images/                # Blog images
+    └── favicon.*              # Favicon files
 ```
 
 ---
 
-## Build & Development Commands
+## Build & Development
 
 ### Development
 ```bash
-# Start both frontend and backend concurrently
-npm run dev
-
-# Or run separately:
-npm run server    # Backend on http://localhost:3001
-npm run vite      # Frontend on http://localhost:5173
+npm run dev    # Start both frontend and backend
 ```
 
 ### Production Build
 ```bash
-# Build frontend for production
-npm run build
-
-# This runs:
-# 1. vite build (creates dist/ folder)
-# 2. node scripts/prerender.js (prerenders pages)
-# 3. node scripts/verify-prerender.js (verifies output)
-# 4. node scripts/generate-sitemap.js (creates sitemap)
+npm run build  # Build frontend for production
+npm start      # Start production server
 ```
-
-### Production Serve
-```bash
-# Serve production build
-npm start         # Runs node server/server.js
-```
-
-### Vite Proxy Configuration
-During development, API requests are proxied:
-- `/api/*` → `http://localhost:3001`
 
 ---
 
@@ -280,45 +183,93 @@ During development, API requests are proxied:
 Create a `.env` file in the project root:
 
 ```bash
-# Replicate API Token (AI analysis)
-# Get from: https://replicate.com/account/api-tokens
-# Costs ~$0.0001-0.0002 per analysis
-REPLICATE_API_TOKEN=your_token_here
-
-# Giphy API Key (for Trump GIFs)
-# Get from: https://developers.giphy.com/
-GIPHY_API_KEY=your_key_here
-
-# NASA FIRMS API Key (satellite fire data)
-# Register free at: https://firms.modaps.eosdis.nasa.gov/
+# Optional - for NASA FIRMS satellite data
 NASA_FIRMS_KEY=your_key_here
+
+# Optional - for Trump GIFs
+GIPHY_API_KEY=your_key_here
 
 # Server Port (default: 3001)
 PORT=3001
 ```
 
-**Note:** The app works without API keys using fallback/mock data, but functionality will be limited.
+**Note:** The app works without API keys using fallback/mock data.
 
 ---
 
-## API Endpoints
+## Navigation Structure
 
-| Endpoint | Method | Description | Cache TTL |
-|----------|--------|-------------|-----------|
-| `/api/health` | GET | Health check + env status | None |
-| `/api/news` | GET | Latest news (RSS + GDELT merged) | 5 min |
-| `/api/attacks` | GET | Confirmed attacks for map | 1 min |
-| `/api/analyze` | POST | Analyze headline with AI | None |
-| `/api/chat` | POST | Chat with AI analyst | None |
-| `/api/state` | GET | Current game state (HP/tension) | 1 min |
-| `/api/state/refresh` | POST | Refresh game state with latest | None |
-| `/api/memes` | GET | Analyzed news with memes | 5 min |
-| `/api/polymarket` | GET | Prediction market data | 1 min |
-| `/api/fires` | GET | NASA FIRMS fire data | 30 min |
-| `/api/ticker` | GET | Comic ticker headlines | 5 min |
-| `/api/markets` | GET | Financial market data | 1 min |
-| `/api/trump-gif` | GET | Trump reaction GIF | 1 min |
-| `/api/alert/dismiss` | POST | Clear breaking alert | None |
+### Current Nav (4 Items)
+```
+Home | Live Map | WW3 News | ☢️ Nuke Sim
+```
+
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/` | HomePage | Dashboard with map, developments, impact, timeline |
+| `/live-map` | LiveMapPage | Full-screen conflict map |
+| `/blog` | BlogPage | WW3 News articles |
+| `/nuke` | (static) | Nuclear blast calculator |
+
+### Deleted Pages (Redirect to Home)
+- `/conflict-tracker` → `/live-map`
+- `/live-monitor` → `/live-map`
+- `/global-risk-monitor` → `/`
+- `/ww3-risk-calculator` → `/`
+- `/why-conflicts-happen` → `/blog`
+- `/relationships` → `/blog`
+- `/multi-conflict-timeline` → `/`
+
+---
+
+## Homepage Sections (Top to Bottom)
+
+1. **WW3 Counter** — Probability percentage display
+2. **Conflict Map** — Full-width D3 map with attack markers
+3. **Key Developments Feed** — 3 curated events with "Why This Matters"
+4. **Human Impact Dashboard** — Casualties, displaced, infrastructure
+5. **Conflict Escalation Timeline** — Visual causation chain
+6. **Email Signup** — Compact subscribe form
+7. **Disclaimer** — Footer with links
+
+---
+
+## Verified Attack Database
+
+### Current Attacks: 12 (Mar 17-18, 2026)
+
+**US-Iran War:**
+- Tehran (2 Israeli airstrikes)
+- Bandar Abbas (US airstrike)
+- Tel Aviv (2 Iranian missile strikes)
+- Kuwait City (Iranian missiles)
+- Doha (Iranian missile intercepted)
+- Baghdad (2 attacks on US Embassy/residential)
+
+**Israel-Hezbollah:**
+- Beirut (2 Israeli airstrikes)
+- Tyre (Israeli airstrikes)
+
+### Database Location
+```
+server/data/verifiedAttacks.js
+```
+
+### Schema
+```javascript
+{
+  id: '2026-03-17-tehran-leadership',
+  headline: 'Israeli precision airstrike on senior Iranian leadership in Tehran',
+  description: 'Central govt district / security zone...',
+  location: 'Tehran',
+  country: 'Iran',
+  attackType: 'airstrike',
+  severity: 'high',
+  date: '2026-03-17T12:00:00Z',
+  coordinates: { lat: 35.6892, lng: 51.3890 },
+  conflictZone: 'us-iran-war-2026'
+}
+```
 
 ---
 
@@ -328,170 +279,25 @@ PORT=3001
 - Use ES6+ syntax (project uses ES modules)
 - Functional components with hooks
 - Async/await for asynchronous operations
-- Destructuring for props
 
 ### Naming Conventions
 - Components: PascalCase (e.g., `WW3Counter.jsx`)
 - Utilities/Hooks: camelCase (e.g., `useGameState.js`)
 - Constants: UPPER_SNAKE_CASE
-- CSS Classes: kebab-case (e.g., `health-bar-container`)
 
 ### Tailwind Usage
 - Mobile-first responsive design
 - Custom classes in `index.css` for complex components
-- Use `comic-panel` for card styling
-- Use `font-heading` for bold uppercase text
-- Use `font-body` for body text
-- Use `font-mono` for monospace/code
-
-### File Organization
-- One component per file
-- Related components can be grouped in subdirectories (e.g., `Blog/`)
-- Export from index.js for clean imports
+- Use `comic-panel` for card styling (legacy name)
 
 ---
 
-## Design System
+## Security Considerations
 
-### Colors
-| Name | Value | Usage |
-|------|-------|-------|
-| Background | `#0d0d12` | Page background |
-| Primary | `#3b82f6` (blue) | US side, links |
-| Secondary | `#ef4444` (red) | Iran side, danger |
-| Warning | `#fbbf24` (amber) | Alerts, highlights |
-| Success | `#22c55e` (green) | Positive indicators |
-| Panel BG | `rgba(20, 20, 28, 0.8)` | Card backgrounds |
-
-### Typography
-- **Headings:** `font-heading` (Space Grotesk) - Bold, uppercase, letter-spacing
-- **Body:** `font-body` (Inter) - Regular weight
-- **Monospace:** `font-mono` (JetBrains Mono) - Stats, timestamps
-
-### Key CSS Classes
-```css
-.comic-panel        /* Card with border and backdrop blur */
-.bg-grid            /* Subtle grid background pattern */
-.health-bar-container  /* HP bar wrapper */
-.section-header     /* Consistent section titles */
-.hover-lift         /* Subtle hover animation */
-.glass              /* Glass morphism effect */
-.prose-invert       /* Blog content styling */
-```
-
----
-
-## State Management
-
-### Frontend State
-- React hooks (useState, useEffect) for component state
-- localStorage for client-side caching (see `src/lib/api.js`)
-- No global state library (Redux/Zustand not used)
-
-### Backend State
-- In-memory state for game state (HP, tension, alerts)
-- No database - all data ephemeral or from external APIs
-- RSS cache refreshed every 5 minutes
-- Tension decays 2% every 10 minutes automatically
-
-### Caching Strategy
-1. **Server-side:** In-memory Map with TTL
-2. **Client-side:** localStorage with CACHE_KEYS
-3. **Build-time:** Prerendered static pages
-
----
-
-## Game State Logic
-
-### HP Bar Calculation
-```javascript
-// From news analysis scores
-usScoreDelta += score * 2;      // Positive = US wins
-iranScoreDelta += Math.abs(score) * 2;  // Negative = Iran wins
-
-// Applied with dampening (30% of calculated value)
-newHP = currentHP + (delta * 0.3)
-newHP = clamp(newHP, 10, 100)   // Min 10%, max 100%
-```
-
-### Tension Calculation
-```javascript
-// Based on severity from AI analysis
-high severity    → +5% tension
-medium severity  → +2% tension
-low severity     → +0.5% tension
-
-// Decay over time
-Every 10 minutes: tension -= 2% (minimum 35%)
-```
-
-### Breaking Alerts
-Triggered when `severity === 'high'` in analyzed news.
-Auto-dismisses after 30 seconds.
-
----
-
-## Verified Attack Database
-
-### Overview
-The system uses a **manually curated attack database** instead of RSS feeds or AI-generated news. This ensures 100% accuracy and eliminates hallucination risks.
-
-### Database Location
-```
-server/data/verifiedAttacks.js
-```
-
-### Attack Schema
-```javascript
-{
-  id: 'attack-2026-03-16-dubai-airport',
-  headline: 'Drone strike on Dubai International Airport fuel tank',
-  description: 'Large fire at fuel tank area...',
-  location: 'Dubai',
-  country: 'UAE',
-  attackType: 'drone',     // airstrike|missile|drone|bombing|plane|naval
-  severity: 'high',        // high|medium|low
-  date: '2026-03-16T08:00:00Z',
-  source: 'Multiple sources',
-  coordinates: { lat: 25.2048, lng: 55.2708 },
-  verified: true,
-  addedBy: 'admin',
-  addedAt: '2026-03-16T14:00:00Z'
-}
-```
-
-### Adding New Attacks
-When new attacks occur:
-1. Admin provides verified attack details
-2. Developer adds to `verifiedAttacks.js`
-3. Restart server to load new data
-4. Attacks appear immediately on map and feed
-
-### Duplicate Detection
-The system automatically prevents duplicate entries:
-- Same location within 6 hours = duplicate
-- Same headline (80% similar) = duplicate
-
-### Current Attack Count
-See server startup log or check `/api/attacks` endpoint for current count.
-
----
-
-## Known Issues & Limitations
-
-### Critical
-1. **GlobalParticipantsCarousel shows STATIC DATA** - Lines 38-76 hardcode Trump/Iran stats
-2. **Iran card shows "CONTENT NOT AVAILABLE"** - Broken Giphy URL in line 9
-3. **Some GIFs may be rate-limited** - Giphy API has limits
-
-### Medium
-4. **Circuit Breaker** - May trigger too easily, showing "TRADING HALTED"
-5. **Tension can spike to 100%** - Then decays slowly (by design)
-
-### API Dependencies
-- Replicate API is **CHEAPER** than Kimi (~$0.0001/request)
-- Without API keys, app uses mock data
-- NASA FIRMS requires free registration
+1. **Environment Variables** - Never commit `.env` to git
+2. **CORS** - Enabled for all origins
+3. **API Keys** - Stored server-side only
+4. **User Input** - Basic validation on email signup
 
 ---
 
@@ -505,119 +311,38 @@ See server startup log or check `/api/attacks` endpoint for current count.
 ### Build Process
 1. `npm install` - Install dependencies
 2. `npm run build` - Vite production build
-3. `npm run postbuild` - Runs automatically:
-   - Prerender static pages
-   - Verify prerender output
-   - Generate sitemap.xml
-
-### Static Files
-- `dist/` folder served by Express
-- SPA catch-all route for client-side routing
-- Prerendered HTML files for SEO routes
-
----
-
-## SEO Strategy
-
-### Prerendered Routes
-- `/` (homepage)
-- `/blog` and `/blog/:slug`
-- `/ww3-probability`
-- `/us-iran-war-tracker`
-- `/iran-conflict-live`
-- `/timeline`
-- `/ww3-risk-calculator`
-- `/is-ww3-happening`
-- `/world-war-3-news`
-- `/iran-nuclear-deal`
-
-### SEO Components
-- `SEO.jsx` - Meta tags, Open Graph, Twitter Cards
-- `StructuredData.jsx` - JSON-LD schema markup
-- Static content in `index.html` for crawlers
-- Canonical URLs with cache-busting query params
-
-### Google Analytics
-- Tracking ID: `G-TV2FWQFE2E`
-- **Kochi Exclusion:** Analytics blocked for visitors from Kochi, India
-- Loaded asynchronously after geolocation check
-
----
-
-## Testing
-
-Currently, the project does **NOT** have automated tests. Manual testing checklist:
-
-1. **Development:** `npm run dev` - Verify both servers start
-2. **API Health:** `curl http://localhost:3001/api/health`
-3. **Build:** `npm run build` - No Vite errors
-4. **Prerender:** Check `dist/` has all route folders
-5. **Production:** `npm start` - App serves correctly
-
----
-
-## Security Considerations
-
-1. **Environment Variables** - Never commit `.env` to git
-2. **CORS** - Enabled for all origins (configured in server.js)
-3. **API Keys** - Stored server-side only
-4. **User Input** - Bad words filter used on chat/comments (`bad-words` package)
-5. **Rate Limiting** - Not currently implemented (relies on Railway/nginx)
-
----
-
-## Contributing Guidelines
-
-1. **Code Style:** Follow existing patterns in the codebase
-2. **Components:** Create in `src/components/`, export in index if in subdirectory
-3. **API Routes:** Add to `server/server.js` following existing patterns
-4. **Environment:** Copy `.env.example` to `.env` for local development
-5. **Build:** Verify `npm run build` succeeds before committing
-
----
-
-## Troubleshooting
-
-### Common Issues
-
-**Build fails:**
-```bash
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-**Server won't start:**
-- Check if PORT 3001 is available
-- Verify `.env` file exists (can be empty)
-
-**API calls failing:**
-- Check backend is running: `npm run server`
-- Verify Vite proxy in `vite.config.js`
-
-**Tension stuck at 100%:**
-- Normal behavior - decays 2% every 10 minutes
-- Or restart server to reset
+3. `npm run postbuild` - Prerender static pages, generate sitemap
 
 ---
 
 ## Changelog
 
-- **2026-03-16** - **MAJOR:** Switched to verified manual data system
-  - Removed RSS feeds (BBC, Al Jazeera, Guardian, etc.)
-  - Removed AI news analysis (hallucination risk)
-  - Created `verifiedAttacks.js` database
-  - Added 8 confirmed attacks (Dubai, Fujairah, Tehran, etc.)
-  - Simplified API endpoints
-  - Cost reduced to $0 (no API calls needed)
-- **2026-03-16** - Updated AGENTS.md with comprehensive documentation
-- **2026-03-14** - Reverted to pre-redesign state (commit `b80dd0d`)
-- **Earlier** - Initial dashboard creation
+### 2026-03-18 - BRUTAL SIMPLIFICATION
+- **Deleted 8 pages:** Conflict Tracker, Live Monitor, Global Risk Monitor, WW3 Risk Calculator, Why Conflicts Happen, Relationships, Multi-Conflict Timeline, Data Methodology
+- **Simplified nav:** 4 items only (Home, Live Map, WW3 News, Nuke Sim)
+- **Removed features:** TimelineOfChaos, Risk Calculator, Relationships diagrams
+- **Added redirects:** All deleted pages redirect to home/blog
+- **Map improvements:** Bold countries + lighter cities labels
+- **Email signup:** Ultra-compact design
+
+### 2026-03-18 - Database Update
+- **Reduced attacks:** 22 → 12 (Mar 17-18, 2026 only)
+- **Removed:** Pak-Afghan conflict (not part of current war)
+- **Added:** Precise location context for each attack
+
+### Earlier Changes
+- Header redesign with "More" dropdown
+- Full-width conflict map with horizontal cards
+- KeyDevelopmentsFeed with "Why This Matters"
+- HumanImpactDashboard with data warnings
+- ConflictEscalationTimeline with causation chains
+- Email Alert System
+- Verified manual data system (removed RSS/AI)
 
 ---
 
-## Contact & Resources
+## Contact
 
 - **Domain:** https://ww3tracker.live
-- **Repository:** Private
+- **Repository:** Private (GitHub)
 - **Deployment:** Railway.app
