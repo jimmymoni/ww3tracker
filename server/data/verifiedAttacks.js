@@ -201,6 +201,118 @@ export const VERIFIED_ATTACKS = [
     coordinates: { lat: 33.2700, lng: 35.2033 },
     context: 'Coastal launch areas',
     conflictZone: 'israel-hezbollah-conflict'
+  },
+
+  // ==================== GROK VERIFIED - MAR 18-19, 2026 ====================
+  // Source: Cross-checked Reuters, AP, NYT, BBC, Al Jazeera, Bloomberg, ISW
+  
+  // March 18, 2026
+  {
+    id: '2026-03-18-ramat-gan',
+    headline: 'Iranian ballistic missile strike kills 2 in Ramat Gan suburb',
+    description: 'IRGC missiles with cluster munitions hit residential building. Elderly couple Yaron & Ilana Moshe (70s) killed by shrapnel. Rail station damaged.',
+    location: 'Ramat Gan',
+    country: 'Israel',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-18T04:00:00Z',
+    reportedAt: '2026-03-18',
+    source: 'NYT, Guardian, Times of Israel, ISW, Al Jazeera',
+    coordinates: { lat: 32.07, lng: 34.82 },
+    context: 'Predawn strike on civilian area with cluster munitions',
+    conflictZone: 'us-iran-war-2026'
+  },
+  {
+    id: '2026-03-18-south-pars',
+    headline: 'Israeli airstrikes on South Pars gas field, Iran',
+    description: 'World\'s largest gas field (shared with Qatar) hit. Gas storage tanks and petrochemical plants targeted. Production halted.',
+    location: 'Asaluyeh',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-18T15:00:00Z',
+    reportedAt: '2026-03-18',
+    source: 'Bloomberg, AP, Al Jazeera, Jerusalem Post, Reuters',
+    coordinates: { lat: 27.5, lng: 52.5 },
+    context: 'Major energy infrastructure attack. US informed but did not participate.',
+    conflictZone: 'us-iran-war-2026'
+  },
+  {
+    id: '2026-03-18-tehran-khatib',
+    headline: 'Israeli airstrike kills Iranian Intelligence Minister Khatib',
+    description: 'Precision strike targeting Iranian Intelligence Minister Esmaeil Khatib. Both Iran and Israel confirmed death. Major escalation.',
+    location: 'Tehran',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'critical',
+    date: '2026-03-18T02:00:00Z',
+    reportedAt: '2026-03-18',
+    source: 'NYT, Al Jazeera, BBC, DW, Israeli Defense Minister',
+    coordinates: { lat: 35.6892, lng: 51.389 },
+    context: 'High-level assassination. Critical escalation.',
+    conflictZone: 'us-iran-war-2026'
+  },
+  {
+    id: '2026-03-18-beit-awwa',
+    headline: 'Iranian missile strike on West Bank - first direct hit',
+    description: 'First Iranian missile strike in West Bank. Civilian area in Beit Awwa targeted. 4 killed, 6 injured. Regional expansion of conflict.',
+    location: 'Beit Awwa',
+    country: 'West Bank',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-18T08:00:00Z',
+    reportedAt: '2026-03-18',
+    source: 'NYT live updates, Israeli reports',
+    coordinates: { lat: 31.5, lng: 35.0 },
+    context: 'First direct Iranian attack in West Bank. Significant regional expansion.',
+    conflictZone: 'us-iran-war-2026'
+  },
+  {
+    id: '2026-03-18-hezbollah-rockets',
+    headline: 'Hezbollah rocket attacks on northern Israel',
+    description: 'Coordinated rocket barrage on Kiryat Shmona and Ashkelon. Part of broader Iranian-backed offensive.',
+    location: 'Kiryat Shmona',
+    country: 'Israel',
+    attackType: 'missile',
+    severity: 'medium',
+    date: '2026-03-18T12:00:00Z',
+    reportedAt: '2026-03-18',
+    source: 'ISW Special Report, ILTV',
+    coordinates: { lat: 33.2, lng: 35.6 },
+    context: 'Hezbollah coordination with Iranian strikes',
+    conflictZone: 'israel-hezbollah-conflict'
+  },
+
+  // March 19, 2026
+  {
+    id: '2026-03-19-ras-laffan',
+    headline: 'Iranian missiles hit Qatar LNG facility',
+    description: '5 ballistic missiles fired at world\'s largest LNG hub. 1 impacted. Extensive fires. No worker injuries. Global energy market impact.',
+    location: 'Ras Laffan',
+    country: 'Qatar',
+    attackType: 'missile',
+    severity: 'critical',
+    date: '2026-03-19T03:00:00Z',
+    reportedAt: '2026-03-19',
+    source: 'Al Jazeera, Qatar Ministry, Times of India, Bloomberg',
+    coordinates: { lat: 25.9, lng: 51.5 },
+    context: 'Major escalation - attack on world\'s largest LNG facility.',
+    conflictZone: 'us-iran-war-2026'
+  },
+  {
+    id: '2026-03-19-riyadh-refineries',
+    headline: 'Iranian missiles strike Riyadh oil refineries',
+    description: 'Multiple ballistic missiles hit oil refineries near Saudi capital. Explosions and fires. Limited casualties due to intercepts.',
+    location: 'Riyadh',
+    country: 'Saudi Arabia',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-19T04:00:00Z',
+    reportedAt: '2026-03-19',
+    source: 'Times of India, Al Jazeera, Saudi statements, Reuters',
+    coordinates: { lat: 24.7136, lng: 46.6753 },
+    context: 'Major Saudi energy infrastructure targeted.',
+    conflictZone: 'us-iran-war-2026'
   }
 ];
 
