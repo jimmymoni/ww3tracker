@@ -418,23 +418,23 @@ export function getZoneStatistics() {
   
   // Convert Sets to Arrays for JSON serialization
   Object.keys(stats).forEach(zone => {
-    stats[zone].countries = [...stats[zone].countries  // Added via Telegram Bot on 2026-03-20T13:43:03.482Z
+    stats[zone].countries = [...stats[zone].countries  // Added via Telegram Bot on 2026-03-20T18:06:18.914Z
   {
-  "id": "2026-03-25-tehran-airstrike",
-  "headline": "Israeli strike on Tehran refinery",
-  "description": "Oil refinery",
+  "id": "2026-03-20-tehran-airstrike",
+  "headline": "Israeli airstrike destroys Iranian missile facility in Tehran",
+  "description": "IRGC missile depot",
   "location": "Tehran",
   "country": "Iran",
   "attackType": "airstrike",
   "severity": "high",
-  "date": "2026-03-25T03:00:00.000Z",
+  "date": "2026-03-20T14:30:00.000Z",
   "coordinates": {
     "lat": 35.6892,
     "lng": 51.389
   },
   "conflictZone": "us-iran-war-2026",
-  "source": "Reuters",
-  "narrative": "Early morning strike caused major damage"
+  "source": "Reuters, Al Jazeera, Israeli Defense Ministry",
+  "narrative": "Israeli warplanes struck a key IRGC missile storage facility in southern Tehran. Secondary explosions reported. I\n  ran confirms facility hit but denies casualties."
 },
 
 ];
