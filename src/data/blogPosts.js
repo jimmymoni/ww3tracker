@@ -3,6 +3,64 @@
 
 export const blogPosts = [
   {
+  // Auto-published via Telegram Bot on 2026-03-20T19:03:11.224Z
+  {
+  id: "how-dubai-s-economy-is-crumbling-under-war-pressur",
+  slug: "how-dubai-s-economy-is-crumbling-under-war-pressur",
+  title: "How Dubai's Economy is Crumbling Under War Pressure\n  CATEGORY: analysis\n  TAGS: dubai, economy, uae, impact\n  CONTENT:\n  ## The City That Never Sleeps... Anymore\n\n  Dubai was supposed to be the safe haven. The place where war doesn't \n  reach. But 2026 changed everything.\n\n  ## Empty Hotels, Silent Malls\n\n  The Burj Khalifa still stands tall, but the tourists are gone. Hotel \n  occupancy dropped 70% in March alone.\n\n  ## Why This Matters\n\n  Dubai's economy relies on:\n  - Tourism (dead)\n  - Real estate (crashing)\n  - Trade (sanctions killing it)\n\n  The war is 300km away, but the impact is right here.\n\n  FAQ:\n  Q: Is Dubai safe?\n  A: Physically yes, but economically it's bleeding.\n\n  Q: Why should I care?\n  A: Dubai is the Middle East's financial hub. If it falls, the whole r\n  egion suffers.",
+  excerpt: "The City That Never Sleeps... Anymore\n\n  Dubai was supposed to be the safe haven. The place where war doesn't \n  reach. But 2026 changed everything.\n\n...",
+  category: "Analysis\n  TAGS: dubai, economy, uae, impact\n  CONTENT:\n  ## The City That Never Sleeps... Anymore\n\n  Dubai was supposed to be the safe haven. The place where war doesn't \n  reach. But 2026 changed everything.\n\n  ## Empty Hotels, Silent Malls\n\n  The Burj Khalifa still stands tall, but the tourists are gone. Hotel \n  occupancy dropped 70% in March alone.\n\n  ## Why This Matters\n\n  Dubai's economy relies on:\n  - Tourism (dead)\n  - Real estate (crashing)\n  - Trade (sanctions killing it)\n\n  The war is 300km away, but the impact is right here.\n\n  FAQ:\n  Q: Is Dubai safe?\n  A: Physically yes, but economically it's bleeding.\n\n  Q: Why should I care?\n  A: Dubai is the Middle East's financial hub. If it falls, the whole r\n  egion suffers.",
+  readTime: "1 min",
+  date: "March 21, 2026",
+  image: "/images/blog/how-dubai-s-economy-is-crumbling-under-war-pressur.jpg",
+  author: {
+    name: "WW3 Tracker",
+    role: "Conflict Analysis",
+    avatar: null
+  },
+  tags: [
+    "dubai",
+    "economy",
+    "uae",
+    "impact\n  CONTENT:\n  ## The City That Never Sleeps... Anymore\n\n  Dubai was supposed to be the safe haven. The place where war doesn't \n  reach. But 2026 changed everything.\n\n  ## Empty Hotels",
+    "Silent Malls\n\n  The Burj Khalifa still stands tall",
+    "but the tourists are gone. Hotel \n  occupancy dropped 70% in March alone.\n\n  ## Why This Matters\n\n  Dubai's economy relies on:\n  - Tourism (dead)\n  - Real estate (crashing)\n  - Trade (sanctions killing it)\n\n  The war is 300km away",
+    "but the impact is right here.\n\n  FAQ:\n  Q: Is Dubai safe?\n  A: Physically yes",
+    "but economically it's bleeding.\n\n  Q: Why should I care?\n  A: Dubai is the Middle East's financial hub. If it falls",
+    "the whole r\n  egion suffers."
+  ],
+  sections: [
+    {
+      id: "section-0",
+      title: "The City That Never Sleeps... Anymore"
+    },
+    {
+      id: "section-1",
+      title: "Empty Hotels, Silent Malls"
+    },
+    {
+      id: "section-2",
+      title: "Why This Matters"
+    }
+  ],
+  quickFacts: [],
+  keyTakeaway: {
+    points: [
+      "The City That Never Sleeps... Anymore"
+    ]
+  },
+  content: "## The City That Never Sleeps... Anymore\n\n  Dubai was supposed to be the safe haven. The place where war doesn't \n  reach. But 2026 changed everything.\n\n  ## Empty Hotels, Silent Malls\n\n  The Burj Khalifa still stands tall, but the tourists are gone. Hotel \n  occupancy dropped 70% in March alone.\n\n  ## Why This Matters\n\n  Dubai's economy relies on:\n  - Tourism (dead)\n  - Real estate (crashing)\n  - Trade (sanctions killing it)\n\n  The war is 300km away, but the impact is right here.",
+  faq: [
+    {
+      question: "Is Dubai safe?",
+      answer: "Physically yes, but economically it's bleeding."
+    },
+    {
+      question: "Why should I care?",
+      answer: "Dubai is the Middle East's financial hub. If it falls, the whole r\n  egion suffers."
+    }
+  ]
+},
     id: "why-america-fighting-iran",
     slug: "why-america-fighting-iran",
     title: "Why Are America and Iran Fighting? The Full Story",
