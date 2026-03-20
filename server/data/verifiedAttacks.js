@@ -313,6 +313,21 @@ export const VERIFIED_ATTACKS = [
     coordinates: { lat: 24.7136, lng: 46.6753 },
     context: 'Major Saudi energy infrastructure targeted.',
     conflictZone: 'us-iran-war-2026'
+  },
+  {
+    id: '2026-03-20-tehran-airstrike',
+    headline: 'Israeli airstrike destroys Iranian missile facility in Tehran',
+    description: 'IRGC missile depot',
+    location: 'Tehran',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-20T14:30:00Z',
+    reportedAt: '2026-03-20',
+    source: 'Reuters, Al Jazeera, Israeli Defense Ministry',
+    coordinates: { lat: 35.6892, lng: 51.389 },
+    context: 'IRGC facility struck, secondary explosions reported',
+    conflictZone: 'us-iran-war-2026'
   }
 ];
 
@@ -418,26 +433,7 @@ export function getZoneStatistics() {
   
   // Convert Sets to Arrays for JSON serialization
   Object.keys(stats).forEach(zone => {
-    stats[zone].countries = [...stats[zone].countries  // Added via Telegram Bot on 2026-03-20T18:06:18.914Z
-  {
-  "id": "2026-03-20-tehran-airstrike",
-  "headline": "Israeli airstrike destroys Iranian missile facility in Tehran",
-  "description": "IRGC missile depot",
-  "location": "Tehran",
-  "country": "Iran",
-  "attackType": "airstrike",
-  "severity": "high",
-  "date": "2026-03-20T14:30:00.000Z",
-  "coordinates": {
-    "lat": 35.6892,
-    "lng": 51.389
-  },
-  "conflictZone": "us-iran-war-2026",
-  "source": "Reuters, Al Jazeera, Israeli Defense Ministry",
-  "narrative": "Israeli warplanes struck a key IRGC missile storage facility in southern Tehran. Secondary explosions reported. I\n  ran confirms facility hit but denies casualties."
-},
-
-];
+    stats[zone].countries = [...stats[zone].countries];
   });
   
   return stats;
