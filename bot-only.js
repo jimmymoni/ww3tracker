@@ -247,8 +247,8 @@ async function addToDatabase(attack) {
     narrative: attack.NARRATIVE || ''
   };
   
-  // Find the end of VERIFIED_ATTACKS array
-  const arrayEndPattern = /(conflictZone: 'us-iran-war-2026'\s*\}\s*)\];\s*\/\/ =+/;
+  // Find the end of VERIFIED_ATTACKS array (handle both with and without comma)
+  const arrayEndPattern = /(conflictZone: 'us-iran-war-2026',?\s*\}\s*)\];\s*\/\/ =+/;
   const match = content.match(arrayEndPattern);
   
   if (!match) {
