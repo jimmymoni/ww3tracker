@@ -11,16 +11,19 @@ import { createServer } from 'http';
 // Services
 // RSS feeds removed - using verified manual data only
 import { fetchIranMarkets, getEscalationProbability } from './services/polymarketService.js';
+import { emailService } from './services/emailService.js';
+import emailRoutes from './routes/emailRoutes.js';
 import { fetchIranFires } from './services/nasaFirmsService.js';
 import { getTrumpGif } from './services/giphyService.js';
 import { getGameState, resetBreakingAlert, initGameState } from './services/gameStateService.js';
 import { getMarkets } from './services/marketService.js';
 import { getCoordinates } from './services/locationService.js';
 import { getAttacks, getAllAttacks, attackExists, getAttackCount, getAttacksByZone, getZoneStatistics, getAttackCountByZone } from './data/verifiedAttacks.js';
+import autoPublisher from './services/autoPublisher.js';
 import { getChatResponse } from './services/replicateService.js';
 import { getAllZones, getZoneById, getZoneStats, getRelatedZones, getActiveZones } from './data/conflictZones.js';
 import { ACTORS, RELATIONSHIPS, getAllActors, getRelationshipsForActor, getConflictStats } from './data/conflictRelationships.js';
-
+import * as telegramBot from './services/telegramBotSimple.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +37,8 @@ console.log('\n=== ENVIRONMENT VARIABLES CHECK ===');
 console.log('REPLICATE_API_TOKEN:', process.env.REPLICATE_API_TOKEN ? '✅ Set (' + process.env.REPLICATE_API_TOKEN.slice(0, 10) + '...)' : '❌ NOT SET (will use mock)');
 console.log('GIPHY_API_KEY:', process.env.GIPHY_API_KEY ? '✅ Set (' + process.env.GIPHY_API_KEY.slice(0, 10) + '...)' : '❌ NOT SET');
 console.log('NASA_FIRMS_KEY:', process.env.NASA_FIRMS_KEY ? '✅ Set (' + process.env.NASA_FIRMS_KEY.slice(0, 10) + '...)' : '❌ NOT SET');
+console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN ? '✅ Set (' + process.env.TELEGRAM_BOT_TOKEN.slice(0, 10) + '...)' : '❌ NOT SET (bot disabled)');
+console.log('TELEGRAM_CHANNEL_ID:', process.env.TELEGRAM_CHANNEL_ID || '❌ NOT SET');
 console.log('PORT:', process.env.PORT || '3001 (default)');
 console.log('💰 Using Replicate (~$0.0001-0.0002 per request)');
 console.log('=====================================\n');
@@ -41,6 +46,9 @@ console.log('=====================================\n');
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Email service routes
+app.use('/api/email', emailRoutes);
 
 
 
@@ -1088,6 +1096,73 @@ app.post('/api/alerts/trigger/:attackId', async (req, res) => {
   });
 });
 
+// ==================== AUTO-PUBLISHER API ====================
+
+// Publish new attack (admin only - triggers full pipeline)
+// POST /api/publisher/publish
+app.post('/api/publisher/publish', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const result = await autoPublisher.publishAttack(req.body);
+    
+    const statusCode = result.success ? 201 : 400;
+    res.status(statusCode).json({
+      ...result,
+      responseTime: Date.now() - startTime
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      responseTime: Date.now() - startTime
+    });
+  }
+});
+
+// Get publisher status
+// GET /api/publisher/status
+app.get('/api/publisher/status', (req, res) => {
+  const startTime = Date.now();
+  const stats = autoPublisher.getStats();
+  
+  res.json({
+    success: true,
+    stats,
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Get pending jobs
+// GET /api/publisher/jobs
+app.get('/api/publisher/jobs', (req, res) => {
+  const startTime = Date.now();
+  const pending = autoPublisher.getPendingJobs();
+  
+  res.json({
+    success: true,
+    jobs: pending,
+    count: pending.length,
+    responseTime: Date.now() - startTime
+  });
+});
+
+// Cancel a scheduled job
+// POST /api/publisher/jobs/:jobId/cancel
+app.post('/api/publisher/jobs/:jobId/cancel', (req, res) => {
+  const startTime = Date.now();
+  const { jobId } = req.params;
+  
+  const success = autoPublisher.cancelJob(jobId);
+  
+  res.json({
+    success,
+    jobId,
+    message: success ? 'Job cancelled' : 'Job not found or already completed',
+    responseTime: Date.now() - startTime
+  });
+});
+
 // ==================== STATIC FILES ====================
 
 // Serve static files from dist folder (production build)
@@ -1237,11 +1312,25 @@ const startServer = async () => {
 ║     • POST /api/alerts/unsubscribe    - Unsubscribe          ║
 ║     • GET  /api/alerts/stats          - System stats         ║
 ║                                                              ║
+║     Email Service:                                           ║
+║     • GET  /api/email/status          - Queue status         ║
+║     • POST /api/email/test            - Send test email      ║
+║     • POST /api/email/send-batch      - Trigger batch send   ║
+║     • POST /api/email/verify-smtp     - Verify SMTP config   ║
+║                                                              ║
 ║     Regional Conflict Tracker:                               ║
 ║     • GET  /api/conflict-zones        - List all zones       ║
 ║     • GET  /api/conflict-zones/:id    - Zone details         ║
 ║     • GET  /api/relationships         - Actor relationships  ║
 ║     • GET  /api/context/:zoneId       - Zone context docs    ║
+║                                                              ║
+║     Auto-Publisher API:                                      ║
+║     • POST /api/publisher/publish     - Publish new attack   ║
+║     • GET  /api/publisher/status      - Publisher stats      ║
+║     • GET  /api/publisher/jobs        - List pending jobs    ║
+║                                                              ║
+║     Telegram Bot:                                            ║
+║     • /addattack, /quickadd, /status, /pending, /cancel      ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
     `);
@@ -1258,6 +1347,23 @@ const startServer = async () => {
   
   // Initial data fetch and analysis (run asynchronously, don't block)
   console.log('[Server] Ready - verified manual data mode');
+  
+  // Start Telegram Bot (if configured)
+  try {
+    telegramBot.start();
+  } catch (err) {
+    console.log('[Server] Telegram bot not started:', err.message);
+  }
+  
+  // Initialize Email Service (with delay to allow SMTP config check)
+  setTimeout(async () => {
+    try {
+      await emailService.initialize();
+      console.log('[Server] Email service initialized');
+    } catch (error) {
+      console.log('[Server] Email service not configured (set SMTP_HOST and SMTP_USER)');
+    }
+  }, 1000);
 };
 
 startServer();

@@ -53,7 +53,8 @@ const CITY_LABELS = [
 ];
 
 const SEVERITY_CONFIG = {
-  high: { color: '#ef4444', bg: 'bg-red-500', label: 'CRITICAL' },
+  critical: { color: '#dc2626', bg: 'bg-red-600', label: 'CRITICAL' },
+  high: { color: '#ef4444', bg: 'bg-red-500', label: 'HIGH' },
   medium: { color: '#f97316', bg: 'bg-orange-500', label: 'ELEVATED' },
   low: { color: '#eab308', bg: 'bg-yellow-500', label: 'MONITORING' }
 };

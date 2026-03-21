@@ -39,6 +39,22 @@
 |---------|---------------|--------|
 | NASA FIRMS | Satellite fire detection | Optional (has fallback) |
 | Giphy | Reaction GIFs | Optional |
+| Telegram Bot API | Admin publishing bot | Required for bot |
+
+### Telegram Bot
+| Property | Value |
+|----------|-------|
+| Username | @ww3tracker_live_bot (configured) |
+| Purpose | Admin attack publishing |
+| Env Var | `TELEGRAM_BOT_TOKEN` |
+
+**Commands:**
+- `/addattack` - Interactive attack entry (step-by-step wizard)
+- `/quickadd <data>` - Fast entry (pipe-separated format)
+- `/status` - Show publisher status
+- `/pending` - List scheduled jobs
+- `/cancel <jobId>` - Cancel pending job
+- `/help` - Show help
 
 ### Data Sources (Verified Manual)
 | Source | Type | Update Method |
@@ -113,9 +129,12 @@
 │   │   └── subscriber.js          # Subscriber model
 │   └── services/
 │       ├── alertService.js        # Email templates
+│       ├── attackParser.js        # Parse Claude's structured output
+│       ├── autoPublisher.js       # Website publishing + tweet scheduling
 │       ├── gameStateService.js    # HP bars, tension (legacy)
 │       ├── locationService.js     # Geocoding
-│       └── nasaFirmsService.js    # Satellite data
+│       ├── nasaFirmsService.js    # Satellite data
+│       └── telegramBot.js         # Telegram admin bot
 │
 ├── src/                       # Frontend source code
 │   ├── main.jsx               # React entry point
@@ -189,11 +208,55 @@ NASA_FIRMS_KEY=your_key_here
 # Optional - for Trump GIFs
 GIPHY_API_KEY=your_key_here
 
+# Optional - for Telegram Bot (admin publishing)
+TELEGRAM_BOT_TOKEN=your_token_here
+TELEGRAM_CHANNEL_ID=your_channel_id_here
+
 # Server Port (default: 3001)
 PORT=3001
+
+# ============================================
+# EMAIL ALERT SERVICE (Optional)
+# ============================================
+# SMTP Provider Settings - Gmail, SendGrid, AWS SES, etc.
+# SendGrid free tier: 100 emails/day
+
+SMTP_HOST=smtp.sendgrid.net
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=apikey
+SMTP_PASS=your_sendgrid_api_key
+SMTP_FROM=alerts@ww3tracker.live
+
+# Email batching interval (ms, default: 1 hour = 3600000)
+EMAIL_BATCH_INTERVAL=3600000
 ```
 
 **Note:** The app works without API keys using fallback/mock data.
+
+### Email Alert Service
+
+The email service batches HIGH and MEDIUM severity attacks into hourly digest emails:
+
+- **HIGH severity** → 🔴 Red badge in email
+- **MEDIUM severity** → 🟠 Orange badge in email  
+- **LOW severity** → No email (site-only)
+
+**SMTP Providers:**
+| Provider | Setup | Free Tier |
+|----------|-------|-----------|
+| SendGrid | `smtp.sendgrid.net` | 100 emails/day |
+| Gmail | `smtp.gmail.com` | 500 emails/day |
+| AWS SES | `email-smtp.*.amazonaws.com` | 62,000 emails/month |
+
+**API Endpoints:**
+```
+GET  /api/email/status         - Queue status
+POST /api/email/test           - Send test email
+POST /api/email/send-batch     - Trigger batch send (admin)
+POST /api/email/clear-queue    - Clear pending queue (admin)
+POST /api/email/verify-smtp    - Verify SMTP configuration
+```
 
 ---
 
@@ -273,6 +336,76 @@ server/data/verifiedAttacks.js
 
 ---
 
+## Auto-Publisher Pipeline
+
+**Purpose:** Automated attack publishing from admin confirmation to deployment
+
+**File:** `server/services/autoPublisher.js`
+
+### Pipeline Steps
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    AUTO-PUBLISHER PIPELINE                       │
+├─────────────────────────────────────────────────────────────────┤
+│ 1. VALIDATE  → Check required fields, confidence level          │
+│ 2. DATABASE  → Add attack, persist to verifiedAttacks.js        │
+│ 3. SITEMAP   → Regenerate sitemap.xml with new attack URL       │
+│ 4. GIT       → Commit changes, push to origin/main              │
+│ 5. RAILWAY   → Auto-deploy triggered by git push                │
+│ 6. SCHEDULE  → Queue tweets/emails based on confidence          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Confidence Levels
+
+| Level | Tweet Timing | Email | Label |
+|-------|-------------|-------|-------|
+| `HIGH` | 15 minutes | Immediate | Verified |
+| `MEDIUM` | 30 minutes | Immediate | Awaiting confirmation |
+| `LOW` | No tweet | No email | Unverified (site only) |
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/publisher/publish` | Publish new attack (full pipeline) |
+| GET | `/api/publisher/status` | Get publisher stats and logs |
+| GET | `/api/publisher/jobs` | List pending tweet/email jobs |
+| POST | `/api/publisher/jobs/:jobId/cancel` | Cancel scheduled job |
+
+### Telegram Bot Integration
+
+**File:** `server/services/telegramBot.js`
+
+**Commands:**
+- `/addattack` - Interactive attack entry (step-by-step)
+- `/quickadd <data>` - Fast entry with pipe-separated format
+- `/status` - Check publisher status
+- `/pending` - List scheduled jobs
+- `/cancel <jobId>` - Cancel a pending job
+- `/help` - Show all commands
+
+**Quick Add Format:**
+```
+/quickadd Headline | Location | Country | Lat,Lng | Type | Severity | Confidence
+
+Example:
+/quickadd Israeli airstrike on Tehran | Tehran | Iran | 35.6892,51.3890 | airstrike | high | HIGH
+```
+
+### Scheduler
+
+**File:** `server/services/scheduler.js`
+
+Simple in-memory scheduler using `setTimeout` for MVP. Supports:
+- Delayed tweet posting
+- Email alert batching
+- Job cancellation
+- Stats tracking
+
+---
+
 ## Code Style Guidelines
 
 ### JavaScript/React
@@ -316,6 +449,44 @@ server/data/verifiedAttacks.js
 ---
 
 ## Changelog
+
+### 2026-03-20 - Email Alert Service
+- **New service:** Hourly batch email alerts for HIGH/MEDIUM severity attacks
+- **Files added:**
+  - `server/services/emailService.js` - Main email service with nodemailer
+  - `server/routes/emailRoutes.js` - API endpoints for email management
+- **Features:**
+  - Batches multiple attacks into one email (hourly digest)
+  - Only HIGH and MEDIUM confidence attacks trigger emails
+  - LOW confidence = site-only (no email)
+  - Professional HTML email templates with severity badges
+  - Queue persistence across server restarts
+  - Test email functionality
+  - SMTP configuration verification
+  - Support for Gmail, SendGrid, AWS SES
+
+### 2026-03-20 - Auto-Publisher Pipeline
+- **New system:** Complete attack publishing pipeline from admin confirmation to deployment
+- **Files added:**
+  - `server/services/autoPublisher.js` - Main pipeline controller
+  - `server/services/scheduler.js` - Tweet/email scheduling service
+  - `server/services/telegramBot.js` - Telegram bot for admin publishing
+- **Pipeline Steps:**
+  1. Validate attack data
+  2. Update database (verifiedAttacks.js)
+  3. Persist to disk
+  4. Regenerate sitemap
+  5. Git commit and push
+  6. Railway auto-deploy
+  7. Schedule tweets/emails based on confidence
+- **Features:**
+  - Interactive `/addattack` command (step-by-step wizard)
+  - Fast `/quickadd` command (pipe-separated format)
+  - Confidence levels: HIGH (15min), MEDIUM (30min), LOW (no tweet)
+  - Duplicate detection (6-hour window)
+  - Job management: `/status`, `/pending`, `/cancel`
+  - API endpoints for programmatic publishing
+  - Comprehensive logging for debugging
 
 ### 2026-03-18 - BRUTAL SIMPLIFICATION
 - **Deleted 8 pages:** Conflict Tracker, Live Monitor, Global Risk Monitor, WW3 Risk Calculator, Why Conflicts Happen, Relationships, Multi-Conflict Timeline, Data Methodology

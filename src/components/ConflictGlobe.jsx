@@ -12,7 +12,8 @@ const MOCK_CONFLICTS = [
 ];
 
 const SEVERITY_CONFIG = {
-  high: { color: '#ef4444', pulse: true, label: '🔴 CRITICAL' },
+  critical: { color: '#dc2626', pulse: true, label: '🔴 CRITICAL' },
+  high: { color: '#ef4444', pulse: true, label: '🔴 HIGH' },
   medium: { color: '#f97316', pulse: true, label: '🟠 ELEVATED' },
   low: { color: '#eab308', pulse: false, label: '🟡 MONITORING' },
 };

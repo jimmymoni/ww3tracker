@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
 // Pages
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
+const AttackPage = lazy(() => import('./pages/AttackPage'));
 const IranUSConflictPage = lazy(() => import('./pages/IranUSConflictPage'));
 const IsraelHezbollahPage = lazy(() => import('./pages/IsraelHezbollahPage'));
 const PakAfghanConflictPage = lazy(() => import('./pages/PakAfghanConflictPage'));
 const IsWW3HappeningPage = lazy(() => import('./pages/IsWW3HappeningPage'));
 const WorldWar3NewsPage = lazy(() => import('./pages/WorldWar3NewsPage'));
 const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
+const AttacksArchivePage = lazy(() => import('./pages/AttacksArchivePage'));
 
 // Components
 const WW3Counter = lazy(() => import('./components/WW3Counter'));
@@ -314,6 +316,21 @@ function App() {
               <BlogPostPage />
             </Suspense>
           } />
+          
+          {/* Attacks Archive */}
+          <Route path="/attacks" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <AttacksArchivePage />
+            </Suspense>
+          } />
+          
+          {/* Attack Detail Pages */}
+          <Route path="/attack/:id" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <AttackPage />
+            </Suspense>
+          } />
+          <Route path="/attack" element={<Navigate to="/live-map" replace />} />
           
           {/* SEO Landing Pages */}
           <Route path="/is-ww3-happening" element={
