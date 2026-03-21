@@ -563,7 +563,8 @@ export default function ConflictMap({ mobile = false }) {
 
             {events.map(event => {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
-              if (!isVisible(event.lat, event.lng)) return null;
+              // Show all attacks on map (removed isVisible filter)
+              if (x === 0 && y === 0) return null;
               const config = SEVERITY_CONFIG[event.severity];
               // Subtle glow - smaller and less opaque
               const r = isMobile ? 10 : 12;
@@ -584,7 +585,8 @@ export default function ConflictMap({ mobile = false }) {
 
             {events.map(event => {
               const [x, y] = proj([event.lng, event.lat]) || [0, 0];
-              if (!isVisible(event.lat, event.lng)) return null;
+              // Show all attacks on map (removed isVisible filter)
+              if (x === 0 && y === 0) return null;
               
               const config = SEVERITY_CONFIG[event.severity];
               const isHovered = hoveredEvent?.id === event.id;
