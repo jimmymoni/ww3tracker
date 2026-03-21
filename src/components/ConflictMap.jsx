@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, X } from 'lucide-react';
+import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, X, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { getCachedData, fetchAttacks } from '../lib/api';
+import { getCachedData } from '../lib/api';
 
 // No default events - only show real confirmed strikes
 const DEFAULT_EVENTS = [];
@@ -742,9 +743,9 @@ export default function ConflictMap({ mobile = false }) {
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                   {events.map(event => (
-                    <button
+                    <Link
                       key={event.id}
-                      onClick={() => {setSelectedEvent(event); setShowDetailModal(true);}}
+                      to={`/attack/${event.id}`}
                       className={`flex-shrink-0 w-[280px] snap-start text-left p-3 rounded-xl border transition-all ${
                         event.isNew 
                           ? 'border-red-500/50 bg-red-500/5' 
@@ -770,12 +771,17 @@ export default function ConflictMap({ mobile = false }) {
                             </span>
                           </div>
                           <p className="text-[11px] text-gray-400 line-clamp-2 mt-1">{event.description}</p>
-                          <p className={`text-[10px] mt-1 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
-                            {event.relativeTime}
-                          </p>
+                          <div className="flex items-center justify-between mt-1">
+                            <p className={`text-[10px] ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
+                              {event.relativeTime}
+                            </p>
+                            <span className="text-[10px] text-blue-400 flex items-center gap-0.5">
+                              Details <ExternalLink className="w-3 h-3" />
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -809,9 +815,9 @@ export default function ConflictMap({ mobile = false }) {
               }}
             >
               {events.map(event => (
-                <button
+                <Link
                   key={event.id}
-                  onClick={() => handleEventClick(event)}
+                  to={`/attack/${event.id}`}
                   onMouseEnter={() => setHoveredEvent(event)}
                   onMouseLeave={() => setHoveredEvent(null)}
                   className={`flex-shrink-0 w-[300px] snap-start text-left p-4 rounded-xl border transition-all ${
@@ -841,12 +847,17 @@ export default function ConflictMap({ mobile = false }) {
                         </span>
                       </div>
                       <p className="text-xs text-gray-400 mt-1.5 line-clamp-2">{event.description}</p>
-                      <p className={`text-xs mt-2 ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-500'}`}>
-                        {event.relativeTime}
-                      </p>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className={`text-xs ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-500'}`}>
+                          {event.relativeTime}
+                        </p>
+                        <span className="text-[11px] text-blue-400 flex items-center gap-0.5 hover:text-blue-300">
+                          View Details <ExternalLink className="w-3 h-3" />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
           </div>

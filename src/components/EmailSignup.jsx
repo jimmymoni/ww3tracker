@@ -44,7 +44,7 @@ export default function EmailSignup({ onSuccess, className = '' }) {
       <div className={`bg-[#14141c] border border-white/10 rounded-xl p-6 text-center ${className}`}>
         <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
         <h3 className="font-heading text-lg text-white mb-1">Subscribed!</h3>
-        <p className="text-gray-500 text-sm">Breaking alerts will arrive in your inbox.</p>
+        <p className="text-gray-500 text-sm">Get ready for the latest analysis — new posts drop daily.</p>
       </div>
     );
   }
@@ -55,8 +55,8 @@ export default function EmailSignup({ onSuccess, className = '' }) {
       <div className="flex items-center gap-3 mb-4">
         <Bell className="w-5 h-5 text-blue-400" />
         <div>
-          <h3 className="font-heading text-white">Get Breaking Alerts</h3>
-          <p className="text-gray-500 text-xs">Major events only. Unsubscribe anytime.</p>
+          <h3 className="font-heading text-white">Stay in the Loop</h3>
+          <p className="text-gray-500 text-xs">Get the latest analysis — new posts drop daily.</p>
         </div>
       </div>
 

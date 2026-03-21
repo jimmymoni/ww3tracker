@@ -595,6 +595,65 @@ input:focus-visible {
   }
 }
 
+/* ============================================
+   NUKE SIMULATOR STYLES
+   ============================================ */
+
+/* Custom scrollbar for warhead selector */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(239, 68, 68, 0.3);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 68, 68, 0.5);
+}
+
+/* Blast zone animations */
+@keyframes blast-pulse {
+  0%, 100% { 
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+.blast-zone-fireball {
+  animation: blast-pulse 2s ease-in-out infinite;
+}
+
+/* Casualty counter animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.casualty-counter {
+  animation: count-up 0.5s ease-out forwards;
+}
+
+/* Zone expansion animation */
+@keyframes zone-expand {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.zone-expand {
+  animation: zone-expand 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
 /* React Markdown Table Styles */
 .prose table {
   width: 100%;

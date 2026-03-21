@@ -1,7 +1,13 @@
 import React from 'react';
 
+const SITE_URL = 'https://ww3tracker.live';
+const SITE_NAME = 'WW3 Tracker';
+const LOGO_URL = `${SITE_URL}/favicon.svg`;
+const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
+
 /**
  * Article Schema - For blog posts and news articles
+ * Enhanced with NewsArticle type for better Google News visibility
  */
 export const ArticleSchema = ({ post }) => {
   const schema = {
@@ -11,31 +17,33 @@ export const ArticleSchema = ({ post }) => {
     "description": post.excerpt,
     "image": post.image?.startsWith('http') 
       ? post.image 
-      : `https://ww3tracker.live${post.image}`,
+      : `${SITE_URL}${post.image}`,
     "datePublished": new Date(post.date).toISOString(),
     "dateModified": new Date(post.date).toISOString(),
     "author": {
       "@type": "Organization",
-      "name": post.author?.name || "WW3 Tracker",
-      "url": "https://ww3tracker.live"
+      "name": post.author?.name || SITE_NAME,
+      "url": SITE_URL
     },
     "publisher": {
       "@type": "Organization",
-      "name": "WW3 Tracker",
+      "name": SITE_NAME,
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ww3tracker.live/favicon.svg",
-        "width": 512,
-        "height": 512
+        "url": OG_IMAGE_URL,
+        "width": 1200,
+        "height": 630
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://ww3tracker.live/blog/${post.slug}`
+      "@id": `${SITE_URL}/blog/${post.slug}`
     },
-    "url": `https://ww3tracker.live/blog/${post.slug}`,
+    "url": `${SITE_URL}/blog/${post.slug}`,
     "articleSection": post.category,
-    "keywords": post.tags?.join(', ') || "US Iran conflict, WW3, World War 3"
+    "keywords": post.tags?.join(', ') || "US Iran conflict, WW3, World War 3",
+    "inLanguage": "en-US",
+    "isAccessibleForFree": true
   };
 
   return (
@@ -47,6 +55,7 @@ export const ArticleSchema = ({ post }) => {
 
 /**
  * FAQ Schema - For FAQ sections (triggers rich snippets)
+ * Essential for AI citation optimization - ChatGPT, Perplexity, etc.
  */
 export const FAQSchema = ({ faqs }) => {
   if (!faqs || faqs.length === 0) return null;
@@ -73,6 +82,7 @@ export const FAQSchema = ({ faqs }) => {
 
 /**
  * Breadcrumb Schema - For navigation breadcrumbs
+ * Helps Google show breadcrumb navigation in search results
  */
 export const BreadcrumbSchema = ({ items }) => {
   // items = [{ name: "Home", url: "/" }, { name: "Blog", url: "/blog" }, ...]
@@ -83,7 +93,7 @@ export const BreadcrumbSchema = ({ items }) => {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `https://ww3tracker.live${item.url}`
+      "item": `${SITE_URL}${item.url}`
     }))
   };
 
@@ -96,33 +106,36 @@ export const BreadcrumbSchema = ({ items }) => {
 
 /**
  * WebSite Schema - For homepage
+ * Includes SearchAction for Google sitelinks search box
  */
 export const WebsiteSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "WW3 Tracker",
-    "url": "https://ww3tracker.live",
-    "description": "Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news.",
+    "name": SITE_NAME,
+    "alternateName": "WW3 Tracker - Live US-Iran War Monitor",
+    "url": SITE_URL,
+    "description": "Real-time tracking of the US-Iran conflict. Interactive map of every strike, verified news, and military analysis.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://ww3tracker.live/blog?q={search_term_string}"
+        "urlTemplate": `${SITE_URL}/blog?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "WW3 Tracker",
-      "url": "https://ww3tracker.live",
+      "name": SITE_NAME,
+      "url": SITE_URL,
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ww3tracker.live/favicon.svg",
-        "width": 512,
-        "height": 512
+        "url": OG_IMAGE_URL,
+        "width": 1200,
+        "height": 630
       }
-    }
+    },
+    "inLanguage": "en-US"
   };
 
   return (
@@ -133,20 +146,77 @@ export const WebsiteSchema = () => {
 };
 
 /**
- * Organization Schema - For about/brand pages
+ * Organization Schema - Enhanced for Google Knowledge Panel
+ * Critical for brand recognition and entity SEO
  */
 export const OrganizationSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "WW3 Tracker",
+    "name": SITE_NAME,
     "alternateName": "WW3 Tracker - Live Conflict Monitor",
-    "url": "https://ww3tracker.live",
-    "logo": "https://ww3tracker.live/favicon.svg",
+    "url": SITE_URL,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${SITE_URL}/favicon-48x48.png`,
+      "width": 48,
+      "height": 48
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": OG_IMAGE_URL,
+      "width": 1200,
+      "height": 630
+    },
     "sameAs": [
       "https://twitter.com/ww3tracker"
     ],
-    "description": "Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news."
+    "description": "Real-time tracking of the US-Iran conflict with interactive maps, verified news, and military analysis.",
+    "foundingDate": "2025",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Global"
+    },
+    "knowsAbout": [
+      "US-Iran Conflict",
+      "Military Analysis",
+      "Geopolitics",
+      "World War 3",
+      "Middle East Relations"
+    ]
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
+/**
+ * NewsMediaOrganization Schema - For news credibility
+ * Helps establish the site as a news source
+ */
+export const NewsMediaOrganizationSchema = () => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": SITE_NAME,
+    "url": SITE_URL,
+    "logo": {
+      "@type": "ImageObject",
+      "url": OG_IMAGE_URL,
+      "width": 1200,
+      "height": 630
+    },
+    "sameAs": [
+      "https://twitter.com/ww3tracker"
+    ],
+    "ethicsPolicy": `${SITE_URL}/about`,
+    "missionCoveragePrioritiesPolicy": "Track and analyze the US-Iran conflict with verified data from NASA FIRMS, satellite imagery, and confirmed military sources.",
+    "diversityPolicy": "We aggregate data from multiple international sources to ensure balanced coverage.",
+    "correctionsPolicy": `${SITE_URL}/about`,
+    "verificationFactCheckingPolicy": "All attacks are verified through multiple independent sources before publication."
   };
 
   return (
@@ -158,6 +228,7 @@ export const OrganizationSchema = () => {
 
 /**
  * HowTo Schema - For instructional/military comparison content
+ * Triggers rich "How To" snippets in search results
  */
 export const HowToSchema = ({ title, description, steps, totalTime }) => {
   const schema = {
@@ -184,13 +255,14 @@ export const HowToSchema = ({ title, description, steps, totalTime }) => {
 
 /**
  * ClaimReview Schema - For fact-checking content
+ * Shows "Fact Check" rich results in Google
  */
-export const ClaimReviewSchema = ({ claim, reviewRating, author = "WW3 Tracker" }) => {
+export const ClaimReviewSchema = ({ claim, reviewRating, author = SITE_NAME }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ClaimReview",
     "datePublished": new Date().toISOString(),
-    "url": "https://ww3tracker.live",
+    "url": SITE_URL,
     "claimReviewed": claim,
     "reviewRating": {
       "@type": "Rating",
@@ -215,8 +287,9 @@ export const ClaimReviewSchema = ({ claim, reviewRating, author = "WW3 Tracker" 
 /**
  * Speakable Schema - For voice search optimization (AEO)
  * Identifies content sections optimized for voice assistants
+ * Critical for "Hey Google" and Alexa answers
  */
-export const SpeakableSchema = ({ cssSelectors = [".article-summary", ".key-takeaway", ".faq-answer"] }) => {
+export const SpeakableSchema = ({ cssSelectors = [".article-summary", ".key-takeaway", ".faq-answer", "h2", ".ai-citation"] }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -257,10 +330,10 @@ export const VideoObjectSchema = ({
     ...(embedUrl && { "embedUrl": embedUrl }),
     "publisher": {
       "@type": "Organization",
-      "name": "WW3 Tracker",
+      "name": SITE_NAME,
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ww3tracker.live/favicon.svg",
+        "url": LOGO_URL,
         "width": 512,
         "height": 512
       }
@@ -295,8 +368,8 @@ export const EventSchema = ({ name, startDate, endDate, location, description })
     "description": description,
     "organizer": {
       "@type": "Organization",
-      "name": "WW3 Tracker",
-      "url": "https://ww3tracker.live"
+      "name": SITE_NAME,
+      "url": SITE_URL
     }
   };
 
@@ -309,6 +382,7 @@ export const EventSchema = ({ name, startDate, endDate, location, description })
 
 /**
  * ItemList Schema - For list-based content (news feeds, rankings)
+ * Triggers "Top Stories" style rich results
  */
 export const ItemListSchema = ({ items, itemType = "ListItem" }) => {
   const schema = {
@@ -319,8 +393,54 @@ export const ItemListSchema = ({ items, itemType = "ListItem" }) => {
       "position": index + 1,
       "name": item.name || item.title,
       "description": item.description,
-      "url": item.url ? `https://ww3tracker.live${item.url}` : undefined
+      "url": item.url ? `${SITE_URL}${item.url}` : undefined
     }))
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
+/**
+ * Person Schema - For author/entity pages
+ */
+export const PersonSchema = ({ name, description, jobTitle, sameAs = [] }) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": name,
+    "description": description,
+    "jobTitle": jobTitle,
+    "sameAs": sameAs
+  };
+
+  return (
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  );
+};
+
+/**
+ * WebPage Schema - Generic page schema
+ */
+export const WebPageSchema = ({ title, description, url, lastReviewed }) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": title,
+    "description": description,
+    "url": url || SITE_URL,
+    "lastReviewed": lastReviewed || new Date().toISOString(),
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": SITE_NAME,
+      "url": SITE_URL
+    }
   };
 
   return (
@@ -336,10 +456,13 @@ export default {
   BreadcrumbSchema,
   WebsiteSchema,
   OrganizationSchema,
+  NewsMediaOrganizationSchema,
   HowToSchema,
   ClaimReviewSchema,
   SpeakableSchema,
   VideoObjectSchema,
   EventSchema,
-  ItemListSchema
+  ItemListSchema,
+  PersonSchema,
+  WebPageSchema
 };

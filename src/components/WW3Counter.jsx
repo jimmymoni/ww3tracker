@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Link, Twitter, Download } from 'lucide-react';
+import { Link, Twitter, Download, Info } from 'lucide-react';
 import { fetchPolymarketData, fetchNews, getCachedData } from '../lib/api';
 import html2canvas from 'html2canvas';
 
@@ -9,6 +9,7 @@ const WW3Counter = ({ tension = 65 }) => {
   const [newsProb, setNewsProb] = useState(35);
   const [isReal, setIsReal] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   const cardRef = useRef(null);
 
   // Calculate WW3 probability: average of all 3 sources
@@ -52,7 +53,7 @@ const WW3Counter = ({ tension = 65 }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const shareText = `WW3 Risk Assessment: ${ww3Probability}%\nBased on live Polymarket + news data\nww3tracker.live #WW3`;
+  const shareText = `Conflict Tension Index: ${ww3Probability}%\nBased on live Polymarket + news data\nww3tracker.live #WW3`;
 
   const shareToX = () => {
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText), '_blank');
@@ -81,7 +82,7 @@ const WW3Counter = ({ tension = 65 }) => {
 
       const link = document.createElement('a');
       const date = new Date().toISOString().split('T')[0];
-      link.download = `ww3-probability-${date}.png`;
+      link.download = `conflict-tension-${date}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
@@ -112,9 +113,9 @@ const WW3Counter = ({ tension = 65 }) => {
         {/* MOBILE: Compact horizontal layout */}
         <div className="flex items-center justify-between sm:hidden">
           <div className="flex items-center gap-2">
-            <span className="text-xl">☢️</span>
+            <span className="text-xl">📊</span>
             <div>
-              <p className="text-[10px] text-gray-500 uppercase">World War 3 Risk</p>
+              <p className="text-[10px] text-gray-500 uppercase">Conflict Tension Index</p>
               <p className="font-heading font-bold text-3xl" style={{ color }}>
                 {ww3Probability}%
               </p>
@@ -140,11 +141,20 @@ const WW3Counter = ({ tension = 65 }) => {
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="text-3xl">☢️</div>
+              <div className="text-3xl">📊</div>
               <div>
-                <h2 className="font-heading font-bold text-xl text-white tracking-wide">
-                  World War 3 Probability
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="font-heading font-bold text-xl text-white tracking-wide">
+                    Conflict Tension Index
+                  </h2>
+                  <button 
+                    onClick={() => setShowInfo(!showInfo)}
+                    className="text-gray-500 hover:text-gray-400 transition-colors"
+                    title="What is this?"
+                  >
+                    <Info className="w-4 h-4" />
+                  </button>
+                </div>
                 <p className="text-[10px] text-gray-500 font-body uppercase tracking-wider">
                   LIVE • Updates every 60s
                 </p>
@@ -190,6 +200,22 @@ const WW3Counter = ({ tension = 65 }) => {
             </div>
           </div>
 
+          {/* Info Tooltip */}
+          {showInfo && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg"
+            >
+              <p className="text-xs text-gray-400">
+                <strong className="text-blue-400">What is this?</strong> An aggregate measure combining 
+                prediction market data (Polymarket), geopolitical tension metrics, and news sentiment analysis. 
+                It tracks the perceived risk of major escalation, not a literal probability of World War 3.
+              </p>
+            </motion.div>
+          )}
+
           {/* Giant Probability Number */}
           <div className="text-center mb-4">
             <motion.div
@@ -203,7 +229,7 @@ const WW3Counter = ({ tension = 65 }) => {
               {ww3Probability}%
             </motion.div>
             <p className="text-gray-400 text-sm font-body mt-1">
-              Current Risk Level
+              Current Escalation Level
             </p>
           </div>
 

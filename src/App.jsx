@@ -1,9 +1,13 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Loader2, Menu, X, Clock } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+// SEO Components
+import { PageSEO } from './components/SEO';
+import { WebsiteSchema, OrganizationSchema, FAQSchema } from './components/StructuredData';
 
 // Pages
 const BlogPage = lazy(() => import('./pages/BlogPage'));
@@ -16,21 +20,26 @@ const IsWW3HappeningPage = lazy(() => import('./pages/IsWW3HappeningPage'));
 const WorldWar3NewsPage = lazy(() => import('./pages/WorldWar3NewsPage'));
 const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
 const AttacksArchivePage = lazy(() => import('./pages/AttacksArchivePage'));
+const ImpactPage = lazy(() => import('./pages/ImpactPage'));
+const TimelinePage = lazy(() => import('./pages/TimelinePage'));
+const NukeSimulatorPage = lazy(() => import('./pages/NukeSimulatorPage'));
 
 // Components
 const WW3Counter = lazy(() => import('./components/WW3Counter'));
 const BreakingAlert = lazy(() => import('./components/BreakingAlert'));
 const ConflictMap = lazy(() => import('./components/ConflictMap'));
-const VerifiedNewsFeed = lazy(() => import('./components/VerifiedNewsFeed'));
 const NasaFirmsStrip = lazy(() => import('./components/NasaFirmsStrip'));
 const EmailSignup = lazy(() => import('./components/EmailSignup'));
-const KeyDevelopmentsFeed = lazy(() => import('./components/KeyDevelopmentsFeed'));
-const HumanImpactDashboard = lazy(() => import('./components/HumanImpactDashboard'));
-const ConflictEscalationTimeline = lazy(() => import('./components/ConflictEscalationTimeline'));
-const NukeSimHero = lazy(() => import('./components/NukeSimHero'));
+const LatestBlogHero = lazy(() => import('./components/LatestBlogHero'));
+const BlogPostGrid = lazy(() => import('./components/BlogPostGrid'));
+const NukeSimCTA = lazy(() => import('./components/NukeSimCTA'));
+const ImpactSummaryBar = lazy(() => import('./components/ImpactSummaryBar'));
+
+// Data
+import { blogPosts } from './data/blogPosts';
 
 // API
-import { fetchGameState, refreshGameState, getCachedData } from './lib/api';
+import { fetchGameState, getCachedData } from './lib/api';
 
 // ==================== NAVIGATION ====================
 
@@ -162,6 +171,10 @@ const FooterNav = () => (
     <span className="text-gray-700">•</span>
     <Link to="/blog" className="text-gray-500 hover:text-white text-xs font-body transition-colors">WW3 News</Link>
     <span className="text-gray-700">•</span>
+    <Link to="/impact" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Impact</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
+    <span className="text-gray-700">•</span>
     <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">☢️ Nuke Sim</a>
   </div>
 );
@@ -187,7 +200,7 @@ const Disclaimer = () => (
 const LoadingScreen = () => (
   <div className="min-h-screen bg-grid flex items-center justify-center px-4">
     <div className="text-center">
-      <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-blue-400 animate-spin mx-auto mb-3 sm:mb-4" />
+      <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin mx-auto mb-3 sm:mb-4" />
       <p className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">LOADING...</p>
     </div>
   </div>
@@ -208,11 +221,22 @@ function LiveMapPage() {
   );
 }
 
-// Homepage
+// Homepage - Redesigned for traffic growth with SEO
 function HomePage() {
   const cachedState = getCachedData('gameState');
   const [gameState, setGameState] = useState(cachedState || { tension: 35, breakingAlert: null });
   const [initialLoading, setInitialLoading] = useState(!cachedState);
+
+  // Get blog posts - latest first
+  const sortedPosts = [...blogPosts].sort((a, b) => {
+    // Simple date sort (assuming format like "March 5, 2026")
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
+  const latestPost = sortedPosts[0];
+  const morePosts = sortedPosts.slice(1, 5); // Next 4 posts
 
   useEffect(() => {
     const load = async () => {
@@ -234,8 +258,45 @@ function HomePage() {
 
   if (initialLoading) return <LoadingScreen />;
 
+  // FAQ data for AI citation optimization
+  const homeFAQData = [
+    {
+      question: "What is the current status of the US-Iran war?",
+      answer: "The US-Iran war began on March 17, 2026. Current operations include Israeli strikes on Iranian leadership in Tehran, US airstrikes on Bandar Abbas, Iranian missile attacks on Israel and US bases, and ongoing hostilities across the Middle East."
+    },
+    {
+      question: "How many casualties in the US-Iran war?",
+      answer: "The conflict has resulted in significant casualties including Iranian military personnel from strikes in Tehran and Bandar Abbas, US casualties from Iranian missile attacks, Israeli losses from missile strikes, and civilian casualties across the region."
+    },
+    {
+      question: "What weapons is Iran using?",
+      answer: "Iran has deployed ballistic missiles (Shahab and Emad series), cruise missiles, and suicide drone swarms (Shahed-136) targeting Israel, US bases, and commercial shipping in the Persian Gulf."
+    },
+    {
+      question: "Is the Strait of Hormuz still open?",
+      answer: "The Strait of Hormuz remains operational but volatile. This waterway handles 20% of global oil shipments. Military activity poses risks to international shipping and energy markets."
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-grid text-white pb-16">
+    <>
+      {/* Homepage SEO - Optimized for US-Iran War queries */}
+      <PageSEO
+        title="WW3 Tracker | Live US-Iran War Map & Analysis"
+        description="Real-time tracking of the US-Iran conflict. Interactive map of every strike, verified news, and military analysis. See what's happening now."
+        pathname="/"
+      />
+      
+      <Helmet>
+        <meta name="keywords" content="US-Iran war, Iran conflict map, WW3 tracker, World War 3, US strikes Iran, Iran missiles, live war map, military casualties, Strait of Hormuz, Tehran, Bandar Abbas" />
+      </Helmet>
+
+      {/* Structured Data for Homepage */}
+      <WebsiteSchema />
+      <OrganizationSchema />
+      <FAQSchema faqs={homeFAQData} />
+
+      <div className="min-h-screen bg-grid text-white pb-16">
       <Header />
 
       <Suspense fallback={null}>
@@ -247,43 +308,52 @@ function HomePage() {
       </Suspense>
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* WW3 Probability */}
+        {/* 1. Conflict Tension Index (formerly WW3 Counter) */}
         <div className="mb-6">
           <Suspense fallback={<div className="h-[120px] bg-black/40 rounded-2xl animate-pulse" />}>
             <WW3Counter tension={gameState.tension} />
           </Suspense>
         </div>
 
-        {/* Conflict Map */}
+        {/* 2. Conflict Map - Crown Jewel */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
             <ConflictMap />
           </Suspense>
         </motion.section>
 
-        {/* Key Developments */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-6">
-          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <KeyDevelopmentsFeed />
+        {/* 3. Impact Summary Bar (compact stats) */}
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <Suspense fallback={<div className="h-[80px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <ImpactSummaryBar />
           </Suspense>
         </motion.section>
 
-        {/* Human Impact */}
+        {/* 4. Latest Blog Post (Hero) */}
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <LatestBlogHero post={latestPost} />
+          </Suspense>
+        </motion.section>
+
+        {/* 5. More Blog Posts (Grid) */}
+        {morePosts.length > 0 && (
+          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
+              <BlogPostGrid posts={morePosts} />
+            </Suspense>
+          </motion.section>
+        )}
+
+        {/* 6. Nuke Sim CTA */}
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+          <Suspense fallback={<div className="h-[100px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <NukeSimCTA />
+          </Suspense>
+        </motion.section>
+
+        {/* 7. Email Signup */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6">
-          <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <HumanImpactDashboard />
-          </Suspense>
-        </motion.section>
-
-        {/* Escalation Timeline */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-6">
-          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <ConflictEscalationTimeline />
-          </Suspense>
-        </motion.section>
-
-        {/* Email Signup */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mb-6">
           <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
             <EmailSignup />
           </Suspense>
@@ -292,6 +362,7 @@ function HomePage() {
         <Disclaimer />
       </main>
     </div>
+    </>
   );
 }
 
@@ -314,6 +385,25 @@ function App() {
           <Route path="/blog/:slug" element={
             <Suspense fallback={<LoadingScreen />}>
               <BlogPostPage />
+            </Suspense>
+          } />
+          
+          {/* Nuke Simulator */}
+          <Route path="/nuke" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <NukeSimulatorPage />
+            </Suspense>
+          } />
+          
+          {/* New Pages */}
+          <Route path="/impact" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <ImpactPage />
+            </Suspense>
+          } />
+          <Route path="/timeline" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <TimelinePage />
             </Suspense>
           } />
           
@@ -371,8 +461,7 @@ function App() {
           <Route path="/ww3-risk-calculator" element={<Navigate to="/" replace />} />
           <Route path="/why-conflicts-happen" element={<Navigate to="/blog" replace />} />
           <Route path="/relationships" element={<Navigate to="/blog" replace />} />
-          <Route path="/multi-conflict-timeline" element={<Navigate to="/" replace />} />
-          <Route path="/timeline" element={<Navigate to="/" replace />} />
+          <Route path="/multi-conflict-timeline" element={<Navigate to="/timeline" replace />} />
           <Route path="/us-iran-war-tracker" element={<Navigate to="/iran-us-conflict" replace />} />
           <Route path="/iran-conflict-live" element={<Navigate to="/live-map" replace />} />
           <Route path="/ww3-probability" element={<Navigate to="/" replace />} />
