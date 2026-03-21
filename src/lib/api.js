@@ -187,5 +187,9 @@ export const fetchTickerItems = async () => {
 export const dismissAlert = () => 
   fetchJSON(`${API_BASE_URL}/alert/dismiss`, { method: 'POST' });
 
+// Fetch verified attacks for map
+export const fetchAttacks = async (hours = 8760) => 
+  fetchJSON(`${API_BASE_URL}/attacks?hours=${hours}`);
+
 // Export cache utilities
 export { CACHE_KEYS };

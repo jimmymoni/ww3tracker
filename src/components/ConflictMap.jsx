@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, X } from 'lucide-react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { getCachedData } from '../lib/api';
+import { getCachedData, fetchAttacks } from '../lib/api';
 
 // No default events - only show real confirmed strikes
 const DEFAULT_EVENTS = [];
@@ -171,7 +171,7 @@ export default function ConflictMap({ mobile = false }) {
     const fetchAttacks = async () => {
       try {
         setIsLoadingRealData(true);
-        const response = await fetch('/api/attacks');
+        const response = await fetch('/api/attacks?hours=8760');
         if (response.ok) {
           const data = await response.json();
           console.log('[ConflictMap] Attacks received:', data.count, data.loading ? '(loading fresh data)' : '(cached)');
