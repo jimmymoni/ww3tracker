@@ -283,8 +283,8 @@ Tap **YES** → Attacks published to ww3tracker.live
 
 **Environment Variables:**
 ```
-TELEGRAM_BOT_TOKEN=8523841644:AAH7Sh9qrIiFuZqf5W5nF11FutBlIbio2MA
-TELEGRAM_CHANNEL_ID=-1003877631265
+TELEGRAM_BOT_TOKEN=your_bot_token_here
+TELEGRAM_CHANNEL_ID=your_channel_id_here
 ```
 
 ---
