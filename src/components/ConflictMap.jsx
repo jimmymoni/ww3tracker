@@ -59,8 +59,8 @@ const SEVERITY_CONFIG = {
   low: { color: '#eab308', bg: 'bg-yellow-500', label: 'MONITORING' }
 };
 
-// Time window config
-const HOURS_WINDOW = 48;
+// Time window config - SHOW ALL ATTACKS
+const HOURS_WINDOW = 8760; // 1 year - show all historical attacks
 const NEW_THRESHOLD_HOURS = 6;  // Show "NEW" badge
 const RECENT_THRESHOLD_HOURS = 12; // Pulsing animation
 
@@ -685,7 +685,7 @@ export default function ConflictMap({ mobile = false }) {
               <div>
                 <h2 className="font-heading font-bold text-sm md:text-lg text-white">Confirmed Military Strikes</h2>
                 <p className="text-[10px] md:text-xs text-gray-500">
-                  {events.length === 0 ? `No confirmed strikes in last ${HOURS_WINDOW}h` : `${events.length} verified attacks in last ${HOURS_WINDOW}h`}
+                  {events.length === 0 ? `No confirmed strikes` : `${events.length} verified attacks`}
                   {isLoadingRealData ? (
                     <span className="text-yellow-500 ml-1">• Updating...</span>
                   ) : (
