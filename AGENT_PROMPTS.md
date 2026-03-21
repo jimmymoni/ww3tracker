@@ -198,21 +198,31 @@ OUTPUT FORMAT:
 
 --- BATCH 1: Core War Zone Strikes ---
 /batch
-LOCATION: [City name only]
-COUNTRY: [Country]
-TIME: [YYYY-MM-DD HH:MM UTC]
-TYPE: [airstrike|missile|drone|naval|cyber|artillery]
-SEVERITY: [critical|high|medium|low]
-TARGET: [Specific target hit, max 10 words]
-HEADLINE: [What hit what, max 80 chars]
-SOURCE: [Outlets that confirmed]
-NARRATIVE: [2-3 sentences - what was hit, damage, significance]
+LOCATION: Tehran
+COUNTRY: Iran
+TIME: 2026-03-21 06:00 UTC
+TYPE: airstrike
+SEVERITY: critical
+TARGET: Military base
+HEADLINE: Israeli jets strike Tehran military base
+SOURCE: Reuters, AP
+NARRATIVE: Israeli airstrikes hit a key military base in Tehran, causing major explosions and damaging IRGC infrastructure. The strike represents continued deep-penetration attacks inside Iran.
 
 ---
-[next strike...]
+
+LOCATION: Beirut
+COUNTRY: Lebanon
+TIME: 2026-03-21 07:00 UTC
+TYPE: missile
+SEVERITY: high
+TARGET: Hezbollah command center
+HEADLINE: Israeli missiles hit Hezbollah sites in Beirut
+SOURCE: Al Jazeera, Reuters
+NARRATIVE: Israeli missiles struck Hezbollah-controlled areas in southern Beirut, destroying multiple buildings and causing fires. The attack continues pressure on Hezbollah leadership.
 
 ---
-[next strike...]
+
+[Continue for each attack - EVERY attack needs ALL 8 fields. Separate with ---]
 
 --- END BATCH 1 ---
 
@@ -233,9 +243,34 @@ SEVERITY GUIDELINES (for STRIKES):
 RULES:
 - ONLY include CONFIRMED HITS (not intercepted, not unconfirmed)
 - Up to 5 strikes per batch
-- LOCATION = city only
+- EACH attack must have ALL 8 fields: LOCATION, COUNTRY, TIME, TYPE, SEVERITY, TARGET, HEADLINE, SOURCE, NARRATIVE
+- Separate EACH attack with "---" on its own line (CRITICAL for bot parsing)
+- LOCATION = city only (no "near", no regions)
 - HEADLINE format: "[Attacker] strikes [Target]" or "[Location] hit by [Type]"
 - NARRATIVE: Focus on damage caused, not political context
+
+CRITICAL FORMATTING:
+The bot parses attacks by looking for "---" separators. Without them, only the first attack will be detected.
+
+WRONG (bot sees 1 attack):
+/batch
+LOCATION: Tehran
+...
+NARRATIVE: ...war.
+LOCATION: Beirut    ← Missing separator!
+...
+
+CORRECT (bot sees 2 attacks):
+/batch
+LOCATION: Tehran
+...
+NARRATIVE: ...war.
+
+---                  ← REQUIRED separator!
+
+LOCATION: Beirut
+...
+NARRATIVE: ...damage.
 
 EXAMPLE:
 LOCATION: Ras Laffan
