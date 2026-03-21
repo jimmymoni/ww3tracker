@@ -1165,31 +1165,30 @@ app.post('/api/publisher/jobs/:jobId/cancel', (req, res) => {
 
 // ==================== STATIC FILES ====================
 
-// Serve static files from dist folder (production build)
+// Serve static files from dist folder (production build) - MUST be before routes
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Explicit route for sitemap.xml (before SPA catch-all)
+// Explicit route for sitemap.xml
 app.get('/sitemap.xml', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/sitemap.xml'));
 });
 
-// Explicit route for robots.txt (before SPA catch-all)
+// Explicit route for robots.txt
 app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/robots.txt'));
 });
 
-// Nuclear Blast Simulator - standalone page
-app.get('/nuke', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/nuke.html'));
-});
+// ==================== SPA CATCH-ALL (MUST BE LAST) ====================
 
 // Serve prerendered HTML files for specific routes
 const prerenderedRoutes = [
+  '/',
   '/blog',
   '/ww3-probability',
   '/us-iran-war-tracker', 
   '/iran-conflict-live',
   '/timeline',
+  '/impact',
   '/ww3-risk-calculator',
   '/ready',
   '/share',
@@ -1197,25 +1196,6 @@ const prerenderedRoutes = [
   '/world-war-3-news',
   '/iran-nuclear-deal'
 ];
-
-// Check for prerendered HTML files before falling back to index.html
-app.get('*', (req, res) => {
-  const route = req.path;
-  
-  // Check if this is a known route with a prerendered HTML file
-  const hasPrerendered = prerenderedRoutes.some(r => route === r || route.startsWith(r + '/'));
-  
-  if (hasPrerendered && !route.includes('.')) {
-    // Try to serve the prerendered index.html for this route
-    const prerenderedPath = path.join(__dirname, '../dist', route, 'index.html');
-    if (fs.existsSync(prerenderedPath)) {
-      return res.sendFile(prerenderedPath);
-    }
-  }
-  
-  // Fall back to the main index.html for SPA routing
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
 
 // Get ticker text (for comic ticker) - Uses verified attacks
 app.get('/api/ticker', async (req, res) => {
@@ -1267,6 +1247,33 @@ app.get('/api/ticker', async (req, res) => {
       fallback: true
     });
   }
+});
+
+// ==================== SPA CATCH-ALL (MUST BE LAST) ====================
+
+// Catch-all route for Single Page Application - serves index.html for all non-API routes
+// This must be AFTER all API routes and static file serving
+app.get('*', (req, res) => {
+  const route = req.path;
+  
+  // Don't serve HTML for asset files (JS, CSS, images, etc.)
+  if (route.match(/\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|xml|txt|map)$/)) {
+    return res.status(404).send('Not found');
+  }
+  
+  // Check if this is a known route with a prerendered HTML file
+  const hasPrerendered = prerenderedRoutes.some(r => route === r || route.startsWith(r + '/'));
+  
+  if (hasPrerendered) {
+    // Try to serve the prerendered index.html for this route
+    const prerenderedPath = path.join(__dirname, '../dist', route, 'index.html');
+    if (fs.existsSync(prerenderedPath)) {
+      return res.sendFile(prerenderedPath);
+    }
+  }
+  
+  // Fall back to the main index.html for SPA routing
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 // ==================== INITIALIZATION ====================

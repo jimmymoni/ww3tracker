@@ -18,12 +18,15 @@ const routes = [
   '/us-iran-war-tracker',
   '/iran-conflict-live',
   '/timeline',
+  '/impact',
+  '/nuke',
   '/ww3-risk-calculator',
   '/ready',
   '/share',
   '/is-ww3-happening',
   '/world-war-3-news',
   '/iran-nuclear-deal',
+  // Original blog posts
   '/blog/why-america-fighting-iran',
   '/blog/us-vs-iran-military',
   '/blog/israel-iran-war',
@@ -33,6 +36,13 @@ const routes = [
   '/blog/ww3-probability-2025-data',
   '/blog/us-iran-war-5-warning-signs',
   '/blog/can-prediction-markets-predict-ww3',
+  // NEW: Viral blog posts (March 2026)
+  '/blog/iran-shot-down-f35',
+  '/blog/how-iran-hit-stealth-tech-breakdown',
+  '/blog/strait-hormuz-closure-economic-impact',
+  '/blog/every-strike-us-iran-war-mapped',
+  '/blog/could-this-become-world-war-3',
+  '/blog/us-iran-military-compared-real-data',
 ];
 
 // Read the index.html template
