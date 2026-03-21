@@ -172,7 +172,7 @@ export default function ConflictMap({ mobile = false }) {
     const fetchAttacks = async () => {
       try {
         setIsLoadingRealData(true);
-        const response = await fetch('/api/attacks?hours=8760');
+        const response = await fetch('/api/attacks?hours=48');
         if (response.ok) {
           const data = await response.json();
           console.log('[ConflictMap] Attacks received:', data.count, data.loading ? '(loading fresh data)' : '(cached)');
