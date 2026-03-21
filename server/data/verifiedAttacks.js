@@ -342,6 +342,77 @@ export const VERIFIED_ATTACKS = [
     conflictZone: 'us-iran-war-2026',
     source: 'Reuters, Guardian',
     narrative: 'Israeli airstrikes targeted key Iranian military infrastructure in Tehran as part of an ongoing escalation campaign. The strikes signal deepening direct confrontation between Israel and Iran, increasing the risk of wider regional war.'
+  },
+  // Manual addition - March 21, 2026 batch
+  {
+    id: '2026-03-20-tehran-airstrikes',
+    headline: 'Israeli airstrikes devastate Tehran military targets',
+    description: 'Military and IRGC sites in Tehran area',
+    location: 'Tehran',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'critical',
+    date: '2026-03-20T00:00:00Z',
+    coordinates: { lat: 35.6892, lng: 51.389 },
+    conflictZone: 'us-iran-war-2026',
+    source: 'Reuters, Al Jazeera',
+    narrative: 'Multiple waves of Israeli airstrikes struck Tehran and suburbs, causing explosions and significant damage to IRGC and military infrastructure.'
+  },
+  {
+    id: '2026-03-21-beirut-airstrikes',
+    headline: 'Israeli strikes hit Hezbollah targets in Beirut suburbs',
+    description: 'Hezbollah infrastructure in southern suburbs',
+    location: 'Beirut',
+    country: 'Lebanon',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-21T04:30:00Z',
+    coordinates: { lat: 33.8938, lng: 35.5018 },
+    conflictZone: 'israel-hezbollah-conflict',
+    source: 'Multiple local and X sources',
+    narrative: 'Israeli airstrikes targeted Hezbollah command and facilities in Beirut southern suburbs at dawn. Footage shows destroyed buildings and fires.'
+  },
+  {
+    id: '2026-03-20-tehran-basij-chief',
+    headline: 'Israeli strike eliminates Basij intel chief in Tehran',
+    description: 'Basij intelligence chief Ismail Ahmadi',
+    location: 'Tehran',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-20T18:00:00Z',
+    coordinates: { lat: 35.6892, lng: 51.389 },
+    conflictZone: 'us-iran-war-2026',
+    source: 'IDF statements, multiple X outlets',
+    narrative: 'Targeted Israeli airstrike killed Basij intelligence chief Ismail Ahmadi in Tehran as part of leadership decapitation efforts.'
+  },
+  {
+    id: '2026-03-20-west-bank-missile',
+    headline: 'Iranian missile kills 4 in West Bank civilian strike',
+    description: 'Civilian beauty salon building',
+    location: 'Beit Awa',
+    country: 'Palestine',
+    attackType: 'missile',
+    severity: 'high',
+    date: '2026-03-20T20:00:00Z',
+    coordinates: { lat: 31.5, lng: 35.0 },
+    conflictZone: 'us-iran-war-2026',
+    source: 'BBC, Reuters, Al Jazeera',
+    narrative: 'Iranian missile strike hit a civilian building in Beit Awa, killing at least four Palestinian women. This marks spillover to West Bank.'
+  },
+  {
+    id: '2026-03-20-ras-laffan-lng',
+    headline: 'Iran damages Qatar Ras Laffan LNG site',
+    description: 'LNG complex and facilities',
+    location: 'Ras Laffan',
+    country: 'Qatar',
+    attackType: 'missile',
+    severity: 'critical',
+    date: '2026-03-20T14:00:00Z',
+    coordinates: { lat: 25.9333, lng: 51.6167 },
+    conflictZone: 'us-iran-war-2026',
+    source: 'Reuters, AP',
+    narrative: 'Iranian strikes caused extensive damage at Ras Laffan LNG complex, disrupting exports significantly. Operations halted.'
   }
 ];
 

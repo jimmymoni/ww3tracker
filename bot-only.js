@@ -232,6 +232,8 @@ async function addToDatabase(attack) {
   const filePath = path.join(__dirname, 'server/data/verifiedAttacks.js');
   let content = fs.readFileSync(filePath, 'utf8');
   
+  console.log(`[Bot] Database file size: ${content.length} bytes`);
+  
   const attackObj = {
     id: attack.ID,
     headline: attack.HEADLINE,
@@ -249,11 +251,15 @@ async function addToDatabase(attack) {
   
   // Find the end of VERIFIED_ATTACKS array (handle both with and without comma)
   const arrayEndPattern = /(conflictZone: 'us-iran-war-2026',?\s*\}\s*)\];\s*\/\/ =+/;
+  console.log(`[Bot] Looking for insertion point with regex...`);
   const match = content.match(arrayEndPattern);
   
   if (!match) {
+    console.error(`[Bot] Regex failed to find insertion point`);
+    console.error(`[Bot] File ends with: ${content.slice(-200)}`);
     throw new Error('Could not find insertion point in database file');
   }
+  console.log(`[Bot] Found insertion point at position ${content.indexOf(match[0])}`)
   
   const insertPoint = content.indexOf(match[0]) + match[1].length;
   const attackStr = JSON.stringify(attackObj, null, 2);
@@ -268,14 +274,19 @@ async function addToDatabase(attack) {
 
 async function addMultipleToDatabase(attacks) {
   const results = [];
-  for (const attack of attacks) {
+  console.log(`[Bot] Adding ${attacks.length} attacks to database...`);
+  for (let i = 0; i < attacks.length; i++) {
+    const attack = attacks[i];
     try {
+      console.log(`[Bot] Adding attack ${i+1}: ${attack.ID}`);
       const result = await addToDatabase(attack);
       results.push(result);
+      console.log(`[Bot] ✓ Added: ${attack.ID}`);
     } catch (err) {
-      console.error(`[Bot] Failed to add ${attack.ID}:`, err.message);
+      console.error(`[Bot] ✗ Failed to add ${attack.ID}:`, err.message);
     }
   }
+  console.log(`[Bot] Successfully added ${results.length}/${attacks.length} attacks`);
   return results;
 }
 
