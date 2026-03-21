@@ -328,26 +328,22 @@ export const VERIFIED_ATTACKS = [
     coordinates: { lat: 35.6892, lng: 51.389 },
     context: 'IRGC facility struck, secondary explosions reported',
     conflictZone: 'us-iran-war-2026'
-  }
-,
-  // Added via Telegram Bot on 2026-03-21T06:11:05.905Z
-  {
-  "id": "2026-03-21-tehran-airstrike",
-  "headline": "Israeli airstrikes hit military targets in Tehran",
-  "description": "Iranian military infrastructure",
-  "location": "Tehran",
-  "country": "Iran",
-  "attackType": "airstrike",
-  "severity": "critical",
-  "date": "2026-03-21T06:00:00.000Z",
-  "coordinates": {
-    "lat": 35.6892,
-    "lng": 51.389
   },
-  "conflictZone": "us-iran-war-2026",
-  "source": "Reuters, Guardian",
-  "narrative": "Israeli airstrikes targeted key Iranian military infrastructure in Tehran as part of an ongoing escalation campaign. The strikes signal deepening direct confrontation between Israel and Iran, increasing the risk of wider regional war."
-}];
+  {
+    id: '2026-03-21-tehran-airstrike',
+    headline: 'Israeli airstrikes hit military targets in Tehran',
+    description: 'Iranian military infrastructure',
+    location: 'Tehran',
+    country: 'Iran',
+    attackType: 'airstrike',
+    severity: 'critical',
+    date: '2026-03-21T06:00:00.000Z',
+    coordinates: { lat: 35.6892, lng: 51.389 },
+    conflictZone: 'us-iran-war-2026',
+    source: 'Reuters, Guardian',
+    narrative: 'Israeli airstrikes targeted key Iranian military infrastructure in Tehran as part of an ongoing escalation campaign. The strikes signal deepening direct confrontation between Israel and Iran, increasing the risk of wider regional war.'
+  }
+];
 
 // ==================== HELPER FUNCTIONS ====================
 
