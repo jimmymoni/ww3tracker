@@ -115,30 +115,54 @@ function parseSingleAttack(text) {
 
 function parseBatchAttacks(text) {
   // Remove the /batch command from the start
-  const content = text.replace(/^\/batch\s*/i, '').trim();
+  let content = text.replace(/^\/batch\s*/i, '').trim();
   
   // DEBUG: Log what we received
   console.log('[Bot] Raw content length:', content.length);
   console.log('[Bot] Content preview:', content.substring(0, 200));
   
-  // Try multiple separator patterns
-  // Pattern 1: --- on its own line
-  // Pattern 2: --- with spaces
-  // Pattern 3: Multiple newlines between incidents
+  // Normalize line endings to \n for consistent parsing
+  content = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  
   let incidents = [];
   
-  if (content.includes('\n---\n') || content.includes('\n---\r\n')) {
-    // Standard separator with newlines
-    incidents = content.split(/\n\s*---\s*\n/).filter(s => s.trim().length > 0);
-    console.log('[Bot] Used newline separator pattern');
-  } else if (content.includes('---')) {
-    // Any --- pattern
-    incidents = content.split(/\s*---+\s*/).filter(s => s.trim().length > 0);
-    console.log('[Bot] Used generic --- pattern');
+  // Check for --- separators (explicit separator)
+  if (content.includes('\n---\n') || content.includes('\n---')) {
+    incidents = content.split(/\n\s*---\s*\n?/).filter(s => s.trim().length > 0);
+    console.log('[Bot] Used --- separator pattern');
   } else {
-    // Try double newline separator
-    incidents = content.split(/\n\n+/).filter(s => s.trim().length > 0 && s.includes('LOCATION:'));
-    console.log('[Bot] Used double newline pattern');
+    // ROBUST METHOD: Split by LOCATION: at the start of a line
+    // This handles both blank line separators AND no separators between incidents
+    const lines = content.split('\n');
+    const locationLineIndices = [];
+    
+    lines.forEach((line, idx) => {
+      // Check if line starts with LOCATION: (allowing for optional whitespace)
+      if (/^\s*LOCATION:/.test(line)) {
+        locationLineIndices.push(idx);
+      }
+    });
+    
+    console.log(`[Bot] Found ${locationLineIndices.length} LOCATION: markers at lines:`, locationLineIndices);
+    
+    // Reconstruct incidents from LOCATION: markers
+    for (let i = 0; i < locationLineIndices.length; i++) {
+      const start = locationLineIndices[i];
+      const end = locationLineIndices[i + 1] !== undefined ? locationLineIndices[i + 1] : lines.length;
+      const incidentLines = lines.slice(start, end);
+      const incident = incidentLines.join('\n').trim();
+      if (incident.length > 0) {
+        incidents.push(incident);
+      }
+    }
+    
+    if (incidents.length > 0) {
+      console.log('[Bot] Used LOCATION: line-start pattern');
+    } else {
+      // Fallback: try double newline separator
+      incidents = content.split(/\n\n+/).filter(s => s.trim().length > 0 && s.includes('LOCATION:'));
+      console.log('[Bot] Used double newline fallback pattern');
+    }
   }
   
   console.log(`[Bot] Found ${incidents.length} raw incidents`);
@@ -172,15 +196,33 @@ function parseBatchAttacks(text) {
 
 function validateAttack(data) {
   const required = ['LOCATION', 'COUNTRY', 'TIME', 'TYPE', 'SEVERITY', 'TARGET', 'HEADLINE'];
-  const missing = required.filter(field => !data[field]);
+  const missing = required.filter(field => !data[field] || data[field].trim() === '');
   
   if (missing.length > 0) {
-    throw new Error(`Missing: ${missing.join(', ')}`);
+    throw new Error(`Missing required fields: ${missing.join(', ')}`);
   }
   
+  // Normalize severity to lowercase for validation and storage
+  const severityRaw = data.SEVERITY.trim();
+  const severityLower = severityRaw.toLowerCase();
   const validSeverities = ['low', 'medium', 'high', 'critical'];
-  if (!validSeverities.includes(data.SEVERITY.toLowerCase())) {
-    throw new Error(`SEVERITY must be: low/medium/high/critical`);
+  
+  if (!validSeverities.includes(severityLower)) {
+    throw new Error(
+      `Invalid SEVERITY "${severityRaw}". Must be one of: low, medium, high, critical (case-insensitive)`
+    );
+  }
+  
+  // Update the data object with normalized lowercase severity
+  data.SEVERITY = severityLower;
+  
+  // Additional validation for other fields
+  if (data.LOCATION.trim().length < 2) {
+    throw new Error('LOCATION must be at least 2 characters');
+  }
+  
+  if (data.HEADLINE.trim().length < 10) {
+    throw new Error('HEADLINE must be at least 10 characters');
   }
   
   return true;
@@ -345,7 +387,8 @@ async function handleBatchPublish(msg, chatId) {
       '`---`\n\n' +
       '`LOCATION:` Ras Laffan\n' +
       '`COUNTRY:` Qatar\n' +
-      '... (next incident)'
+      '... (next incident)\n\n' +
+      '💡 **Tip:** You can include up to 10 attacks in one batch!'
     );
     return;
   }
@@ -355,6 +398,16 @@ async function handleBatchPublish(msg, chatId) {
     
     if (attacks.length === 0) {
       await sendMessage(chatId, '❌ No valid attacks found. Check format.');
+      return;
+    }
+    
+    if (attacks.length > 10) {
+      await sendMessage(chatId, 
+        `⚠️ **Too many attacks!**\n\n` +
+        `Found ${attacks.length} attacks.\n` +
+        `Maximum is 10 per batch.\n\n` +
+        `Please split into multiple batches.`
+      );
       return;
     }
     
@@ -369,7 +422,7 @@ async function handleBatchPublish(msg, chatId) {
     // Build summary preview
     let preview = `📋 **BATCH PREVIEW: ${attacks.length} ATTACKS**\n\n`;
     attacks.forEach((attack, i) => {
-      preview += `${i + 1}. **${attack.LOCATION}** - ${attack.HEADLINE.substring(0, 50)}${attack.HEADLINE.length > 50 ? '...' : ''}\n`;
+      preview += `${i + 1}. **${attack.LOCATION}** - ${attack.HEADLINE.substring(0, 45)}${attack.HEADLINE.length > 45 ? '...' : ''}\n`;
     });
     
     preview += `\n✅ Publish all ${attacks.length} attacks?`;
@@ -429,13 +482,20 @@ async function handleCallback(query) {
       } else {
         // Batch attacks
         const results = await addMultipleToDatabase(pending.data);
-        const headlines = pending.data.map(a => a.HEADLINE.substring(0, 40)).join(', ');
-        gitPush(`Add ${results.length} attacks: ${headlines.substring(0, 80)}...`);
+        const headlines = pending.data.map(a => a.HEADLINE.substring(0, 30)).join(', ');
+        gitPush(`Add ${results.length} attacks: ${headlines.substring(0, 60)}...`);
+        
+        // Build success message with list
+        let successMsg = `✅ **PUBLISHED ${results.length} ATTACKS!**\n\n`;
+        results.forEach((attack, i) => {
+          successMsg += `${i + 1}. ${attack.location}\n`;
+        });
+        successMsg += `\n🔗 ww3tracker.live\n⏳ Site updating...`;
         
         await telegramApi('editMessageText', {
           chat_id: chatId,
           message_id: query.message.message_id,
-          text: `✅ **PUBLISHED ${results.length} ATTACKS!**\n\n🔗 ww3tracker.live\n⏳ Site updating in 2-3 minutes...`,
+          text: successMsg,
           parse_mode: 'Markdown'
         });
       }
