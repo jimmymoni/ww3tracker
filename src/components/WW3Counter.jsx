@@ -1,16 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link, Twitter, Download, Info } from 'lucide-react';
-import { fetchPolymarketData, fetchNews, getCachedData } from '../lib/api';
-import html2canvas from 'html2canvas';
+import { fetchPolymarketData, getCachedData } from '../lib/api';
 
-const WW3Counter = ({ tension = 65 }) => {
-  const [polymarketProb, setPolymarketProb] = useState(28);
-  const [newsProb, setNewsProb] = useState(35);
+const WW3Counter = ({ tension = 35 }) => {
+  const [polymarketProb, setPolymarketProb] = useState(26);
+  const [newsProb, setNewsProb] = useState(70);
   const [isReal, setIsReal] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
-  const cardRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Calculate WW3 probability: average of all 3 sources
   const ww3Probability = Math.round((polymarketProb + tension + newsProb) / 3);
@@ -28,7 +24,6 @@ const WW3Counter = ({ tension = 65 }) => {
         // Calculate news sentiment probability from recent headlines
         const cachedNews = getCachedData('memes');
         if (cachedNews?.items && cachedNews.items.length > 0) {
-          // Calculate sentiment score based on recent news analysis
           let totalSeverity = 0;
           let count = 0;
           cachedNews.items.slice(0, 10).forEach(item => {
@@ -53,248 +48,111 @@ const WW3Counter = ({ tension = 65 }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const shareText = `Conflict Tension Index: ${ww3Probability}%\nBased on live Polymarket + news data\nww3tracker.live #WW3`;
-
-  const shareToX = () => {
-    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText), '_blank');
-  };
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText('https://ww3tracker.live');
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
-  const downloadCard = async () => {
-    if (!cardRef.current) return;
-    
-    try {
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: '#0d0d12',
-        scale: 2,
-        useCORS: true,
-        logging: false
-      });
-
-      const link = document.createElement('a');
-      const date = new Date().toISOString().split('T')[0];
-      link.download = `conflict-tension-${date}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch (err) {
-      console.error('Failed to download:', err);
-    }
-  };
-
-  // Get color based on probability
+  // Get color for probability
   const getColor = (prob) => {
-    if (prob >= 70) return '#dc2626'; // Red
-    if (prob >= 50) return '#f97316'; // Orange
-    if (prob >= 30) return '#fbbf24'; // Yellow
-    return '#4ade80'; // Green
+    if (prob >= 70) return '#dc2626';
+    if (prob >= 50) return '#f97316';
+    if (prob >= 30) return '#fbbf24';
+    return '#4ade80';
   };
 
-  const color = getColor(ww3Probability);
+  const mainColor = getColor(ww3Probability);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full mb-4"
+      className="w-full mb-3"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div 
-        ref={cardRef}
-        className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-3 sm:p-5 relative overflow-hidden"
-      >
-        {/* MOBILE: Compact horizontal layout */}
-        <div className="flex items-center justify-between sm:hidden">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">📊</span>
-            <div>
-              <p className="text-[10px] text-gray-500 uppercase">Conflict Tension Index</p>
-              <p className="font-heading font-bold text-3xl" style={{ color }}>
-                {ww3Probability}%
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <button onClick={shareToX} className="p-2 rounded-lg hover:bg-white/10">
-              <Twitter className="w-4 h-4" style={{ color }} />
-            </button>
-            <button onClick={copyLink} className="p-2 rounded-lg hover:bg-white/10 relative">
-              <Link className="w-4 h-4 text-gray-400" />
-              {copied && (
-                <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] bg-green-500 text-white px-1.5 py-0.5 rounded z-10">
-                  Copied!
-                </span>
-              )}
-            </button>
+      {/* Compact Horizontal Strip - Max 52px height */}
+      <div className="bg-[#0d0d0d] border border-[#1a1a1a] rounded-lg px-3 py-2 h-[52px] flex items-center justify-between gap-3">
+        
+        {/* LEFT: CTI Badge + Label + Live */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {/* CTI Badge */}
+          <span 
+            className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold text-white"
+            style={{ backgroundColor: '#cc1a1a' }}
+          >
+            CTI
+          </span>
+          
+          {/* Label + Live */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[12px] text-[#666]">Conflict Tension Index</span>
+            <span className="flex items-center gap-1 text-[10px] text-[#444]">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+              LIVE
+            </span>
           </div>
         </div>
 
-        {/* DESKTOP: Full layout */}
-        <div className="hidden sm:block">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                <span className="font-heading font-bold text-red-400">CTI</span>
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-heading font-bold text-xl text-white">
-                    Conflict Tension Index
-                  </h2>
-                  <button 
-                    onClick={() => setShowInfo(!showInfo)}
-                    className="text-gray-500 hover:text-white transition-colors"
-                    title="What is this?"
-                  >
-                    <Info className="w-4 h-4" />
-                  </button>
-                </div>
-                <p className="text-[10px] text-gray-500 font-body uppercase tracking-wider">
-                  LIVE • Updates every 60s
-                </p>
-              </div>
-            </div>
+        {/* Divider */}
+        <div className="w-px h-6 bg-[#222] flex-shrink-0"></div>
 
-            {/* Share Buttons */}
-            <div className="flex items-center gap-1">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={shareToX}
-                className="p-2 rounded hover:bg-white/5 transition-colors"
-                title="Share on X"
-              >
-                <Twitter className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={copyLink}
-                className="p-2 rounded hover:bg-white/5 transition-colors relative"
-                title="Copy link"
-              >
-                <Link className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
-                {copied && (
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-10">
-                    Copied!
-                  </span>
-                )}
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={downloadCard}
-                className="p-2 rounded hover:bg-white/5 transition-colors"
-                title="Download card"
-              >
-                <Download className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
-              </motion.button>
-            </div>
+        {/* CENTER: Main Number + Sub Metrics */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          {/* Main Number */}
+          <span 
+            className="text-[24px] font-bold flex-shrink-0"
+            style={{ color: mainColor }}
+          >
+            {ww3Probability}%
+          </span>
+          
+          {/* Sub Metrics */}
+          <div className="flex items-center gap-2 text-[11px] text-[#555] flex-wrap">
+            <span>
+              MARKETS <span style={{ color: getColor(polymarketProb) }}>{polymarketProb}%</span>
+            </span>
+            <span className="text-[#333]">·</span>
+            <span>
+              TENSION <span style={{ color: getColor(tension) }}>{tension}%</span>
+            </span>
+            <span className="text-[#333]">·</span>
+            <span>
+              NEWS <span style={{ color: getColor(newsProb) }}>{newsProb}%</span>
+            </span>
           </div>
+        </div>
 
-          {/* Info Tooltip */}
-          {showInfo && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg"
-            >
-              <p className="text-xs text-gray-400">
-                <strong className="text-red-400">What is this?</strong> An aggregate measure combining 
-                prediction market data (Polymarket), geopolitical tension metrics, and news sentiment analysis. 
-                It tracks the perceived risk of major escalation, not a literal probability of World War 3.
-              </p>
-            </motion.div>
-          )}
+        {/* Divider */}
+        <div className="w-px h-6 bg-[#222] flex-shrink-0 hidden sm:block"></div>
 
-          {/* Giant Probability Number */}
-          <div className="text-center mb-4">
-            <motion.div
-              key={ww3Probability}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 200 }}
-              className="font-heading font-bold text-6xl md:text-7xl"
-              style={{ color }}
-            >
-              {ww3Probability}%
-            </motion.div>
-            <p className="text-gray-400 text-sm font-body mt-1">
-              Current Escalation Level
-            </p>
-          </div>
-
-          {/* Data Sources Breakdown */}
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="bg-black/30 rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <span className="text-[10px] text-gray-500 font-body uppercase">Markets</span>
-              </div>
-              <div className="font-mono font-bold text-lg" style={{ color: getColor(polymarketProb) }}>
-                {polymarketProb}%
-              </div>
-            </div>
-
-            <div className="bg-black/30 rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <span className="text-[10px] text-gray-500 font-body uppercase">Tension</span>
-              </div>
-              <div className="font-mono font-bold text-lg" style={{ color: getColor(tension) }}>
-                {tension}%
-              </div>
-            </div>
-
-            <div className="bg-black/30 rounded-lg p-3 text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <span className="text-[10px] text-gray-500 font-body uppercase">News</span>
-              </div>
-              <div className="font-mono font-bold text-lg" style={{ color: getColor(newsProb) }}>
-                {newsProb}%
-              </div>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="relative h-4 bg-gray-800 rounded-full overflow-hidden">
-            <motion.div
-              className="absolute inset-y-0 left-0 rounded-full"
-              style={{
-                background: `linear-gradient(90deg, #4ade80 0%, #fbbf24 33%, #f97316 66%, #dc2626 100%)`,
-                width: `${ww3Probability}%`
-              }}
-              initial={{ width: 0 }}
-              animate={{ width: `${ww3Probability}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-            />
-            <div 
-              className="absolute top-0 bottom-0 w-0.5 bg-white/30"
-              style={{ left: '50%' }}
-            />
-          </div>
-
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-gray-500 font-body">
-              Based on: Polymarket + Tension + News
-              {isReal ? ' • Live data' : ' • Estimated'}
-            </p>
-            <p className="text-[10px] text-gray-600 font-body hidden sm:block">
-              ww3tracker.live
-            </p>
-          </div>
+        {/* RIGHT: Gradient Bar (hidden on small mobile) */}
+        <div className="hidden sm:block relative w-[120px] md:w-[160px] h-[6px] rounded-full overflow-hidden flex-shrink-0">
+          {/* Background gradient */}
+          <div 
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'linear-gradient(90deg, #4ade80 0%, #fbbf24 33%, #f97316 66%, #dc2626 100%)'
+            }}
+          />
+          {/* Position marker */}
+          <div 
+            className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_4px_rgba(255,255,255,0.8)]"
+            style={{ left: `${ww3Probability}%`, transform: 'translateX(-50%)' }}
+          />
         </div>
       </div>
+
+      {/* Attribution - hover only */}
+      <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ 
+          opacity: isHovered ? 1 : 0, 
+          height: isHovered ? 'auto' : 0 
+        }}
+        transition={{ duration: 0.2 }}
+        className="overflow-hidden"
+      >
+        <p className="text-[10px] text-[#333] px-3 pt-1">
+          Based on: Polymarket + Tension + News + Live data
+          {isReal ? ' • Live data' : ' • Estimated'}
+        </p>
+      </motion.div>
     </motion.section>
   );
 };
