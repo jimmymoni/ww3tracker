@@ -49,7 +49,7 @@ const ArticleCard = ({
       {/* Image Container */}
       <div className={`relative overflow-hidden ${featured ? 'md:h-full h-48' : 'h-48'}`}>
         <motion.div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-top"
           style={{ backgroundImage: `url(${image})` }}
           whileHover={{ scale: 1.08 }}
           transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}

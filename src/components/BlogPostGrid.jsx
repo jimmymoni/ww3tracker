@@ -39,7 +39,7 @@ const BlogPostGrid = ({ posts = [] }) => {
                 {/* Image */}
                 <div className="relative h-32 rounded-xl overflow-hidden mb-3">
                   <motion.div
-                    className="absolute inset-0 bg-cover bg-center"
+                    className="absolute inset-0 bg-cover bg-top"
                     style={{ 
                       backgroundImage: `url(${post.image || '/images/blog/default.jpg'})`,
                       backgroundColor: '#1a1a2e'

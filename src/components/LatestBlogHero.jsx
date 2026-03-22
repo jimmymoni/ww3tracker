@@ -36,7 +36,7 @@ const LatestBlogHero = ({ post }) => {
           {/* Image */}
           <div className="relative h-56 md:h-72 overflow-hidden">
             <motion.div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-top"
               style={{ backgroundImage: `url(${post.image || '/images/blog/default.jpg'})` }}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.6 }}
