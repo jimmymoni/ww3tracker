@@ -757,10 +757,13 @@ export default function ConflictMap({ mobile = false }) {
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                   {events.map(event => (
-                    <Link
+                    <div
                       key={event.id}
-                      to={`/attack/${event.id}`}
-                      className={`flex-shrink-0 w-[280px] snap-start text-left p-3 rounded-xl border transition-all ${
+                      onClick={() => {
+                        setSelectedEvent(event);
+                        setShowDetailModal(true);
+                      }}
+                      className={`flex-shrink-0 w-[280px] snap-start text-left p-3 rounded-xl border transition-all cursor-pointer ${
                         event.isNew 
                           ? 'border-red-500/50 bg-red-500/5' 
                           : event.isRecent 
@@ -789,13 +792,13 @@ export default function ConflictMap({ mobile = false }) {
                             <p className={`text-[10px] ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
                               {event.relativeTime}
                             </p>
-                            <span className="text-[10px] text-gray-400 flex items-center gap-0.5 group-hover:text-white transition-colors">
+                            <span className="text-[10px] text-gray-400 flex items-center gap-0.5">
                               Details <ExternalLink className="w-3 h-3" />
                             </span>
                           </div>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>
