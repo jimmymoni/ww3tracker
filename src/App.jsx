@@ -5,12 +5,16 @@ import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// DEBUG: Verify fresh code load
+console.log('[DEBUG] App.jsx loaded - BlogPage is direct import, not lazy');
+
 // SEO Components
 import { PageSEO } from './components/SEO';
 import { WebsiteSchema, OrganizationSchema, FAQSchema } from './components/StructuredData';
 
 // Pages
-const BlogPage = lazy(() => import('./pages/BlogPage'));
+import BlogPage from './pages/BlogPage';
+// const BlogPage = lazy(() => import('./pages/BlogPage')); // Disabled due to duplicate React instances issue
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 const AttackPage = lazy(() => import('./pages/AttackPage'));
 const IranUSConflictPage = lazy(() => import('./pages/IranUSConflictPage'));
@@ -377,11 +381,7 @@ function App() {
           <Route path="/live-map" element={<LiveMapPage />} />
           
           {/* Blog */}
-          <Route path="/blog" element={
-            <Suspense fallback={<LoadingScreen />}>
-              <BlogPage />
-            </Suspense>
-          } />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={
             <Suspense fallback={<LoadingScreen />}>
               <BlogPostPage />

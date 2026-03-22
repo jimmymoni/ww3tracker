@@ -68,20 +68,27 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         // Manual chunk splitting for better caching
+        // IMPORTANT: React and all React-dependent libraries must be in the same chunk
+        // to avoid "Cannot read properties of null (reading 'useState')" errors
+        // caused by duplicate React instances
         manualChunks: {
-          // Vendor chunk - core third-party libraries
-          vendor: ['react', 'react-dom'],
-          // UI animations
-          animations: ['framer-motion'],
-          // Icons chunk - separates lucide icons
-          icons: ['lucide-react'],
-          // Router chunk
-          router: ['react-router-dom'],
-          // Markdown rendering (heavy) - only loaded on blog pages
-          markdown: ['react-markdown', 'remark-gfm'],
-          // Map libraries (heavy) - only loaded when map is shown
+          // Vendor chunk - ALL React-related libraries MUST be together
+          // react, react-dom, react-router-dom, framer-motion, lucide-react, and react-markdown
+          // are interdependent and must share the same React instance to avoid
+          // "Cannot read properties of null (reading 'useState')" errors
+          vendor: [
+            'react', 
+            'react-dom', 
+            'react-router-dom', 
+            'framer-motion',
+            'lucide-react',
+            'react-markdown',
+            'remark-gfm',
+            'react-helmet-async'
+          ],
+          // Map libraries (heavy) - only loaded when map is shown (no React dependency)
           maps: ['d3', 'd3-geo', 'topojson-client'],
-          // Data fetching and utilities
+          // Data fetching and utilities (no React dependency)
           utils: ['node-fetch', 'xml2js'],
         },
         // Asset naming for better caching with content hash
@@ -111,7 +118,17 @@ export default defineConfig(({ mode }) => ({
   },
   
   // Optimize dependencies
+  // Include all React-related libraries to ensure they're pre-bundled together
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
+    include: [
+      'react', 
+      'react-dom', 
+      'framer-motion', 
+      'lucide-react',
+      'react-markdown',
+      'remark-gfm',
+      'react-helmet-async',
+      'react-router-dom'
+    ],
   },
 }))

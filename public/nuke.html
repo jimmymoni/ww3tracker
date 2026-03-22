@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Nuclear Blast Simulator | WW3 Tracker</title>
-  <meta name="description" content="Educational nuclear blast radius simulator. Visualize the impact of historical and modern nuclear weapons on any city.">
+  <title>Nuclear Weapons Effects Simulator | WW3 Tracker</title>
+  <meta name="description" content="Educational nuclear weapons effects simulator. Learn about the humanitarian impact of nuclear weapons based on standard nuclear weapons effects data.">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
       --accent-blue: #3b82f6;
       --accent-red: #ef4444;
       --accent-yellow: #fbbf24;
-      --accent-orange: #ff6600;
+      --accent-orange: #f97316;
       --accent-green: #88ff44;
       --font-heading: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
@@ -52,58 +52,18 @@
       color: var(--text-primary);
       font-family: var(--font-body);
       -webkit-font-smoothing: antialiased;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-    
-    /* Ensure layouts are visible by default */
-    .desktop-layout,
-    .mobile-layout {
-      display: flex;
     }
 
     /* ============================================
-       LEAFLET MAP STYLES
+       LEAFLET MAP STYLES - FIXED
        ============================================ */
     .leaflet-container {
       background: #0a0a0f !important;
+      font-family: var(--font-body);
     }
     
-    /* Map loading indicator */
-    .map-loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
-      pointer-events: none;
-    }
-    
-    .map-loading::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(239, 68, 68, 0.3);
-      border-top-color: #ef4444;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Doom aesthetic: dark with red blood tint */
     .leaflet-tile {
-      filter: brightness(0.6) contrast(1.3) sepia(0.3) hue-rotate(320deg) saturate(1.5) !important;
-    }
-    
-    /* Performance optimization */
-    .leaflet-tile-container,
-    .leaflet-tile {
-      will-change: transform;
-      transform: translateZ(0);
+      filter: brightness(0.5) contrast(1.2) !important;
     }
     
     .leaflet-control-attribution {
@@ -117,7 +77,6 @@
       color: var(--text-secondary) !important;
     }
     
-    /* Hide zoom controls on mobile */
     @media (max-width: 768px) {
       .leaflet-control-zoom {
         display: none !important;
@@ -134,16 +93,16 @@
     }
     
     .target-dot {
-      width: 20px;
-      height: 20px;
-      background: #ff2020;
+      width: 16px;
+      height: 16px;
+      background: var(--accent-blue);
       border-radius: 50%;
       border: 3px solid white;
-      box-shadow: 0 0 20px #ff2020, 0 0 40px #ff2020;
+      box-shadow: 0 0 20px var(--accent-blue), 0 0 40px var(--accent-blue);
       animation: pulse-target 2s infinite;
       position: absolute;
-      top: 2px;
-      left: 2px;
+      top: 4px;
+      left: 4px;
     }
     
     .target-ring {
@@ -152,7 +111,7 @@
       left: 50%;
       width: 40px;
       height: 40px;
-      border: 2px solid rgba(255, 32, 32, 0.5);
+      border: 2px solid rgba(59, 130, 246, 0.5);
       border-radius: 50%;
       transform: translate(-50%, -50%);
       animation: ripple 2s infinite;
@@ -190,7 +149,7 @@
     }
     
     .sidebar {
-      width: 320px;
+      width: 380px;
       flex-shrink: 0;
       background: rgba(13, 13, 18, 0.98);
       backdrop-filter: blur(10px);
@@ -217,7 +176,7 @@
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       transition: color 0.2s;
     }
     
@@ -225,11 +184,30 @@
     
     .sim-title {
       font-family: var(--font-heading);
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       color: var(--text-primary);
+    }
+    
+    .sim-subtitle {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    
+    .edu-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 20px;
+      font-size: 10px;
+      color: var(--accent-blue);
+      margin-top: 8px;
     }
     
     .section-label {
@@ -323,7 +301,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 16px;
+      padding: 12px 14px;
       background: rgba(255, 255, 255, 0.05);
       border: 2px solid var(--border-default);
       border-radius: var(--radius-md);
@@ -340,40 +318,61 @@
     }
     
     .weapon-item.selected {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: var(--accent-red);
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--accent-blue);
+    }
+    
+    .weapon-item.reference {
+      border-left: 3px solid var(--accent-yellow);
     }
     
     .weapon-info { flex: 1; }
     
     .weapon-name {
       display: block;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
     }
     
     .weapon-meta {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-secondary);
       margin-top: 2px;
     }
     
+    .weapon-country {
+      font-size: 10px;
+      color: var(--text-secondary);
+      background: rgba(255,255,255,0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+    
     .weapon-check {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       border: 2px solid var(--border-default);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 10px;
       transition: all 0.2s;
     }
     
     .weapon-item.selected .weapon-check {
-      background: var(--accent-red);
-      border-color: var(--accent-red);
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+    
+    .weapon-yield {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-orange);
+      margin-left: 8px;
     }
     
     .stats-section {
@@ -430,23 +429,23 @@
     
     .detonate-btn {
       padding: 16px;
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      background: linear-gradient(135deg, var(--accent-orange), #ea580c);
       border: none;
       border-radius: var(--radius-md);
       color: white;
       font-family: var(--font-heading);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
     }
     
     .detonate-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(220, 38, 38, 0.4);
+      box-shadow: 0 6px 25px rgba(249, 115, 22, 0.4);
     }
     
     .detonate-btn:disabled {
@@ -493,7 +492,7 @@
     
     .disclaimer {
       text-align: center;
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -514,6 +513,20 @@
       left: 0;
       width: 100%;
       height: 100%;
+    }
+    
+    .weapon-details {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      padding: 8px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      display: none;
+    }
+    
+    .weapon-details.visible {
+      display: block;
     }
 
     /* ============================================
@@ -556,7 +569,7 @@
     
     .mobile-title {
       font-family: var(--font-heading);
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -727,8 +740,8 @@
     }
     
     .weapon-chip.selected {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: var(--accent-red);
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-blue);
     }
     
     /* Autocomplete Dropdown */
@@ -837,7 +850,7 @@
       color: var(--text-secondary);
     }
     
-    /* Popular Targets */
+    /* Popular Cities */
     .popular-targets {
       margin-bottom: 16px;
     }
@@ -853,8 +866,8 @@
       align-items: center;
       gap: 6px;
       padding: 10px 14px;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
       border-radius: var(--radius-md);
       color: var(--text-primary);
       font-size: 13px;
@@ -864,8 +877,8 @@
     }
     
     .popular-chip:hover {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: var(--accent-red);
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-blue);
     }
     
     .target-info {
@@ -897,17 +910,17 @@
       left: 16px;
       right: 16px;
       padding: 16px;
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      background: linear-gradient(135deg, var(--accent-orange), #ea580c);
       border: none;
       border-radius: var(--radius-md);
       color: white;
       font-family: var(--font-heading);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
       transition: all 0.2s;
     }
     
@@ -946,6 +959,16 @@
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+    
+    /* Category headers */
+    .category-label {
+      font-size: 9px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 12px 0 8px;
+      padding-left: 4px;
     }
 
     /* ============================================
@@ -989,36 +1012,38 @@
 <body>
   <noscript style="display: block; padding: 40px; text-align: center; color: white; font-family: sans-serif;">
     <h1>JavaScript Required</h1>
-    <p>The Nuclear Blast Simulator requires JavaScript to run.</p>
+    <p>The Nuclear Weapons Effects Simulator requires JavaScript to run.</p>
     <p>Please enable JavaScript in your browser settings.</p>
   </noscript>
+
   <!-- ============================================
        DESKTOP LAYOUT
        ============================================ -->
   <div class="desktop-layout">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <a href="https://ww3tracker.live" class="back-link">← Back to Conflict Tracker</a>
-        <h1 class="sim-title">NUKE SIMULATOR</h1>
+        <a href="https://ww3tracker.live" class="back-link">← Back to WW3 Tracker</a>
+        <h1 class="sim-title">Nuclear Effects Simulator</h1>
+        <p class="sim-subtitle">Educational tool for understanding nuclear weapons impact</p>
+        <div class="edu-badge">📚 Educational Simulation</div>
       </div>
       
       <div class="search-section">
-        <label class="section-label">Target Location</label>
+        <label class="section-label">Select Location</label>
         <div class="search-input-group">
           <input type="text" id="desktop-search" placeholder="Search city..." autocomplete="off">
           <button class="search-btn" id="desktop-search-btn">Search</button>
         </div>
         <div class="target-display">
-          <span id="desktop-target-city">Dubai, UAE</span>
-          <span id="desktop-target-coords">25.2048°N, 55.2708°E</span>
+          <span id="desktop-target-city">New York, USA</span>
+          <span id="desktop-target-coords">40.7128°N, 74.0060°W</span>
         </div>
       </div>
       
       <div class="weapons-section">
-        <label class="section-label">Select Weapon</label>
-        <div class="weapon-list" id="desktop-weapon-list">
-          <!-- Weapons injected by JS -->
-        </div>
+        <label class="section-label">Select Warhead</label>
+        <div id="weapon-categories"></div>
+        <div class="weapon-list" id="desktop-weapon-list"></div>
       </div>
       
       <div class="stats-section" id="desktop-stats">
@@ -1044,13 +1069,13 @@
       </div>
       
       <div class="actions-section">
-        <button class="detonate-btn" id="desktop-detonate">DETONATE</button>
+        <button class="detonate-btn" id="desktop-detonate">SIMULATE EFFECTS</button>
         <button class="reset-btn" id="desktop-reset" style="display: none;">Clear Simulation</button>
       </div>
       
-      <button class="share-btn" id="desktop-share">📋 Copy for TikTok</button>
+      <button class="share-btn" id="desktop-share">📋 Copy Link</button>
       
-      <div class="disclaimer">⚠️ EDUCATIONAL SIMULATION ONLY</div>
+      <div class="disclaimer">⚠️ Educational simulation only • Data from public sources</div>
     </aside>
     
     <main class="map-container">
@@ -1064,7 +1089,7 @@
   <div class="mobile-layout">
     <header class="mobile-header">
       <a href="https://ww3tracker.live" class="mobile-back-link">← Back</a>
-      <span class="mobile-title">NUKE SIM</span>
+      <span class="mobile-title">Nuke Effects Sim</span>
       <span class="mobile-disclaimer">EDUCATIONAL</span>
     </header>
     
@@ -1107,44 +1132,38 @@
           <div class="autocomplete-dropdown" id="autocomplete-dropdown"></div>
         </div>
         
-        <!-- Recent Searches -->
         <div class="recent-searches" id="recent-searches" style="display: none;">
           <div class="recent-searches-header">
-            <label class="section-label" style="margin-bottom: 0;">Recently Searched</label>
+            <label class="section-label" style="margin-bottom: 0;">Recent</label>
             <button class="clear-recent" id="clear-recent">Clear</button>
           </div>
           <div class="recent-chips" id="recent-chips"></div>
         </div>
         
-        <!-- Popular Targets -->
         <div class="popular-targets">
-          <label class="section-label">☢️ Popular Targets</label>
+          <label class="section-label">Popular Locations</label>
           <div class="popular-chips" id="popular-chips">
-            <button class="popular-chip" data-city="Dubai, UAE" data-lat="25.2048" data-lng="55.2708">Dubai ☢️</button>
-            <button class="popular-chip" data-city="Tehran, Iran" data-lat="35.6892" data-lng="51.3890">Tehran ☢️</button>
-            <button class="popular-chip" data-city="Tel Aviv, Israel" data-lat="32.0853" data-lng="34.7818">Tel Aviv ☢️</button>
-            <button class="popular-chip" data-city="Moscow, Russia" data-lat="55.7558" data-lng="37.6173">Moscow ☢️</button>
-            <button class="popular-chip" data-city="Beijing, China" data-lat="39.9042" data-lng="116.4074">Beijing ☢️</button>
-            <button class="popular-chip" data-city="New York, USA" data-lat="40.7128" data-lng="-74.0060">New York ☢️</button>
+            <button class="popular-chip" data-city="New York, USA" data-lat="40.7128" data-lng="-74.0060">New York</button>
+            <button class="popular-chip" data-city="Tehran, Iran" data-lat="35.6892" data-lng="51.3890">Tehran</button>
+            <button class="popular-chip" data-city="Tel Aviv, Israel" data-lat="32.0853" data-lng="34.7818">Tel Aviv</button>
+            <button class="popular-chip" data-city="Dubai, UAE" data-lat="25.2048" data-lng="55.2708">Dubai</button>
           </div>
         </div>
         
         <div class="weapon-section">
-          <label class="section-label">Select Weapon</label>
-          <div class="weapon-chips" id="mobile-weapon-chips">
-            <!-- Weapons injected by JS -->
-          </div>
+          <label class="section-label">Select Warhead</label>
+          <div class="weapon-chips" id="mobile-weapon-chips"></div>
         </div>
         
         <div class="target-info">
-          <span id="mobile-target-city">Dubai, UAE</span>
-          <span id="mobile-target-coords">25.2048°N, 55.2708°E</span>
+          <span id="mobile-target-city">New York, USA</span>
+          <span id="mobile-target-coords">40.7128°N, 74.0060°W</span>
         </div>
         
-        <button class="mobile-share-btn" id="mobile-share">📋 Copy for TikTok</button>
+        <button class="mobile-share-btn" id="mobile-share">📋 Copy Link</button>
       </div>
       
-      <button class="mobile-detonate-btn" id="mobile-detonate">DETONATE</button>
+      <button class="mobile-detonate-btn" id="mobile-detonate">SIMULATE EFFECTS</button>
     </div>
   </div>
   
@@ -1152,16 +1171,141 @@
 
   <script>
     /* ============================================
-       CONFIGURATION & DATA
+       CONFIGURATION & DATA - EXPANDED WARHEAD DATABASE
        ============================================ */
     const WEAPONS = [
-      { id: 'hiroshima', name: 'Little Boy', fullName: 'Hiroshima (Little Boy)', yield: 15, country: 'USA' },
-      { id: 'tsar', name: 'Tsar Bomba', fullName: 'Tsar Bomba', yield: 50000, country: 'Russia' },
-      { id: 'w88', name: 'W88 Trident', fullName: 'W88 US Trident', yield: 475, country: 'USA' },
-      { id: 'sarmat', name: 'RS-28 Sarmat', fullName: 'RS-28 Sarmat', yield: 800, country: 'Russia' },
-      { id: 'df41', name: 'DF-41', fullName: 'DF-41 China', yield: 300, country: 'China' },
-      { id: 'b61', name: 'B61-12', fullName: 'B61-12 NATO', yield: 50, country: 'NATO' }
+      // Reference
+      { 
+        id: 'beirut', 
+        name: 'Beirut Blast', 
+        fullName: 'Beirut Blast (Reference)', 
+        yield: 1.1, 
+        country: 'Accident',
+        category: 'reference',
+        description: '2020 port explosion - for comparison',
+        details: 'Ammonium nitrate explosion, NOT nuclear. 2,750 tonnes detonated.'
+      },
+      // Historical
+      { 
+        id: 'hiroshima', 
+        name: 'Little Boy', 
+        fullName: 'Little Boy (Hiroshima)', 
+        yield: 15, 
+        country: 'USA',
+        category: 'historical',
+        description: 'Hiroshima, 1945 - First nuclear weapon used in war',
+        details: 'Gun-type uranium bomb. 80,000 immediate deaths.'
+      },
+      { 
+        id: 'nagasaki', 
+        name: 'Fat Man', 
+        fullName: 'Fat Man (Nagasaki)', 
+        yield: 21, 
+        country: 'USA',
+        category: 'historical',
+        description: 'Nagasaki, 1945 - Plutonium implosion bomb',
+        details: 'More efficient than Little Boy. 74,000 deaths.'
+      },
+      { 
+        id: 'tsar', 
+        name: 'Tsar Bomba', 
+        fullName: 'Tsar Bomba (USSR)', 
+        yield: 50000, 
+        country: 'USSR',
+        category: 'historical',
+        description: 'Largest nuclear weapon ever tested (50 MT)',
+        details: 'Tested 1961. Fireball visible 1,000 km away.'
+      },
+      // Modern
+      { 
+        id: 'b61', 
+        name: 'B61-12', 
+        fullName: 'B61-12 (USA)', 
+        yield: 340, 
+        country: 'USA',
+        category: 'modern',
+        description: 'Modern tactical nuclear bomb',
+        details: 'Dial-a-yield 0.3-340 kt. GPS-guided precision.'
+      },
+      { 
+        id: 'w88', 
+        name: 'W88 Trident', 
+        fullName: 'W88 Trident (USA)', 
+        yield: 475, 
+        country: 'USA',
+        category: 'modern',
+        description: 'US submarine-launched warhead',
+        details: 'Most advanced US warhead. MIRV-capable.'
+      },
+      { 
+        id: 'trident', 
+        name: 'W76 Trident', 
+        fullName: 'W76 Trident (USA)', 
+        yield: 100, 
+        country: 'USA',
+        category: 'modern',
+        description: 'Common submarine warhead (low-yield option)',
+        details: 'Most numerous US warhead. 8-100 kt selectable.'
+      },
+      { 
+        id: 'minuteman', 
+        name: 'W78', 
+        fullName: 'W78 Minuteman (USA)', 
+        yield: 335, 
+        country: 'USA',
+        category: 'modern',
+        description: 'US land-based ICBM warhead',
+        details: '450 missiles on alert. 1-3 warheads each.'
+      },
+      // Regional/Hypothetical
+      { 
+        id: 'shahab3', 
+        name: 'Shahab-3', 
+        fullName: 'Shahab-3 (Iran-est)', 
+        yield: 1000, 
+        country: 'Iran',
+        category: 'hypothetical',
+        description: 'Iran MRBM (estimated nuclear capability)',
+        details: 'Range 1,300 km. Currently conventional only.'
+      },
+      { 
+        id: 'topol', 
+        name: 'Topol-M', 
+        fullName: 'Topol-M (Russia)', 
+        yield: 800, 
+        country: 'Russia',
+        category: 'modern',
+        description: 'Russian mobile ICBM',
+        details: 'Range 11,000 km. Road-mobile, hard to target.'
+      },
+      { 
+        id: 'sarmat', 
+        name: 'Sarmat', 
+        fullName: 'RS-28 Sarmat (Russia)', 
+        yield: 800, 
+        country: 'Russia',
+        category: 'modern',
+        description: 'New Russian heavy ICBM (10 MIRV)',
+        details: 'Entered service 2023. Can attack over South Pole.'
+      },
+      { 
+        id: 'jericho', 
+        name: 'Jericho III', 
+        fullName: 'Jericho III (Israel-est)', 
+        yield: 1000, 
+        country: 'Israel',
+        category: 'hypothetical',
+        description: 'Israel long-range missile (estimated)',
+        details: 'Range 6,500 km. Ambiguous nuclear status.'
+      }
     ];
+
+    const CATEGORIES = {
+      reference: 'Reference (Non-nuclear)',
+      historical: 'Historical Weapons',
+      modern: 'Modern Arsenal',
+      hypothetical: 'Regional Estimates'
+    };
 
     /* ============================================
        STATE
@@ -1170,10 +1314,10 @@
       map: null,
       targetMarker: null,
       blastCircles: [],
-      currentLat: 25.2048,
-      currentLng: 55.2708,
-      currentCity: 'Dubai, UAE',
-      selectedWeapon: 'hiroshima',
+      currentLat: 40.7128,
+      currentLng: -74.0060,
+      currentCity: 'New York, USA',
+      selectedWeapon: 'shahab3',
       isDetonated: false,
       isMobile: window.innerWidth < 769
     };
@@ -1196,11 +1340,8 @@
     const addRecentSearch = (city, lat, lng) => {
       try {
         let searches = getRecentSearches();
-        // Remove if already exists
         searches = searches.filter(s => s.city !== city);
-        // Add to beginning
         searches.unshift({ city, lat, lng, time: Date.now() });
-        // Keep only max
         searches = searches.slice(0, MAX_RECENT_SEARCHES);
         localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
         renderRecentSearches();
@@ -1235,7 +1376,6 @@
         `;
       }).join('');
       
-      // Add click handlers
       chipsContainer.querySelectorAll('.recent-chip').forEach(chip => {
         chip.addEventListener('click', () => {
           const city = chip.dataset.city;
@@ -1267,36 +1407,25 @@
       searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim();
         
-        // Clear previous timeout
-        if (autocompleteTimeout) {
-          clearTimeout(autocompleteTimeout);
-        }
+        if (autocompleteTimeout) clearTimeout(autocompleteTimeout);
+        if (autocompleteController) autocompleteController.abort();
         
-        // Cancel previous request
-        if (autocompleteController) {
-          autocompleteController.abort();
-        }
-        
-        // Hide dropdown if empty
         if (query.length < 2) {
           dropdown.classList.remove('visible');
           return;
         }
         
-        // Debounce: wait 300ms after typing stops
         autocompleteTimeout = setTimeout(() => {
           fetchAutocompleteSuggestions(query);
         }, 300);
       });
       
-      // Hide dropdown when clicking outside
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.autocomplete-container')) {
           dropdown.classList.remove('visible');
         }
       });
       
-      // Keyboard navigation
       searchInput.addEventListener('keydown', (e) => {
         const items = dropdown.querySelectorAll('.autocomplete-item');
         const activeItem = dropdown.querySelector('.autocomplete-item.active');
@@ -1367,7 +1496,6 @@
         
         dropdown.classList.add('visible');
         
-        // Add click handlers
         dropdown.querySelectorAll('.autocomplete-item').forEach(item => {
           item.addEventListener('click', () => {
             const lat = parseFloat(item.dataset.lat);
@@ -1392,7 +1520,6 @@
       state.currentCity = city;
       addRecentSearch(city, lat, lng);
       
-      // Clear search input and hide dropdown
       const searchInput = document.getElementById('mobile-search');
       if (searchInput) searchInput.value = '';
       const dropdown = document.getElementById('autocomplete-dropdown');
@@ -1404,14 +1531,13 @@
         setTarget(lat, lng);
       }, 1200);
       
-      // Expand bottom sheet to show target info
       if (state.isMobile && setSheetSnap) {
         setSheetSnap(0.85);
       }
     };
 
     /* ============================================
-       POPULAR TARGETS
+       POPULAR LOCATIONS
        ============================================ */
     const initPopularTargets = () => {
       const container = document.getElementById('popular-chips');
@@ -1462,7 +1588,7 @@
     };
 
     /* ============================================
-       MAP FUNCTIONS
+       MAP FUNCTIONS - FIXED TILE LAYER
        ============================================ */
     const initMap = () => {
       const mapContainer = state.isMobile ? 'map-mobile' : 'map';
@@ -1470,24 +1596,20 @@
       state.map = L.map(mapContainer, {
         zoomControl: !state.isMobile,
         attributionControl: true,
-        minZoom: 3,
+        minZoom: 2,
         maxZoom: 15,
         worldCopyJump: true,
-        preferCanvas: true,  // Better performance
-        fadeAnimation: false, // Faster tile loading
-        markerZoomAnimation: false // Smoother performance
+        preferCanvas: true
       }).setView([state.currentLat, state.currentLng], 9);
 
-      // CARTO Dark Matter tiles - fast, free, dark aesthetic
+      // FIXED: Use CartoDB Dark Matter tiles with proper attribution
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 15,
-        updateWhenIdle: true,  // Only load tiles when map stops moving
-        updateWhenZooming: false // Don't load tiles during zoom animation
+        updateWhenIdle: true
       }).addTo(state.map);
 
-      // Click to set target
       state.map.on('click', (e) => {
         if (!state.isDetonated) {
           setTarget(e.latlng.lat, e.latlng.lng);
@@ -1495,7 +1617,6 @@
         }
       });
 
-      // Place initial target
       setTarget(state.currentLat, state.currentLng);
     };
 
@@ -1520,8 +1641,6 @@
       });
 
       state.targetMarker = L.marker([lat, lng], { icon: targetIcon, zIndexOffset: 1000 }).addTo(state.map);
-
-      // Update UI
       updateTargetDisplay();
     };
 
@@ -1586,7 +1705,6 @@
       
       const radii = calculateBlastRadii(yieldKT);
       
-      // Zone definitions - OUTERMOST FIRST
       const zones = [
         { key: 'blast1', color: '#88ff44', opacity: 0.06, radius: radii.blast1, weight: 1, dashArray: '20, 10' },
         { key: 'thermal', color: '#ffee00', opacity: 0.10, radius: radii.thermal, weight: 1.5, dashArray: '15, 8' },
@@ -1613,7 +1731,6 @@
           state.blastCircles.push(circle);
           bounds.extend(circle.getBounds());
           
-          // After last zone, fit bounds and show stats
           if (index === zones.length - 1 && bounds.isValid()) {
             setTimeout(() => {
               state.map.flyToBounds(bounds, { padding: [80, 80], duration: 1.5, maxZoom: 11 });
@@ -1640,19 +1757,15 @@
       const radii = calculateBlastRadii(weapon.yield);
       const casualties = calculateFatalities(weapon.yield, radii.blast1);
       
-      // Draw blast zones
       drawBlastZones(weapon.yield);
-      
-      // Update stats
       updateStats(casualties.dead, casualties.injured, radii.blast1, radii.fireball);
       
       state.isDetonated = true;
       
-      // Update UI
       if (state.isMobile) {
         document.getElementById('mobile-stats').classList.add('visible');
         document.getElementById('mobile-detonate').disabled = true;
-        document.getElementById('mobile-detonate').textContent = 'DETONATED';
+        document.getElementById('mobile-detonate').textContent = 'SIMULATED';
         document.getElementById('mobile-share').style.display = 'block';
       } else {
         document.getElementById('desktop-stats').classList.add('visible');
@@ -1683,7 +1796,7 @@
       if (state.isMobile) {
         document.getElementById('mobile-stats').classList.remove('visible');
         document.getElementById('mobile-detonate').disabled = false;
-        document.getElementById('mobile-detonate').textContent = 'DETONATE';
+        document.getElementById('mobile-detonate').textContent = 'SIMULATE EFFECTS';
         document.getElementById('mobile-share').style.display = 'none';
       } else {
         document.getElementById('desktop-stats').classList.remove('visible');
@@ -1692,25 +1805,38 @@
         document.getElementById('desktop-share').classList.remove('visible');
       }
       
-      // Reset view
       state.map.flyTo([state.currentLat, state.currentLng], 9, { duration: 1 });
     };
 
     /* ============================================
-       WEAPON UI
+       WEAPON UI - WITH CATEGORIES
        ============================================ */
     const renderWeapons = () => {
-      // Desktop
+      // Desktop - grouped by category
       const desktopList = document.getElementById('desktop-weapon-list');
-      desktopList.innerHTML = WEAPONS.map(w => `
-        <button class="weapon-item ${w.id === state.selectedWeapon ? 'selected' : ''}" data-weapon="${w.id}">
-          <div class="weapon-info">
-            <span class="weapon-name">${w.fullName}</span>
-            <span class="weapon-meta">${w.yield >= 1000 ? (w.yield/1000).toFixed(0) + ' MT' : w.yield + ' KT'} • ${w.country}</span>
-          </div>
-          <div class="weapon-check">${w.id === state.selectedWeapon ? '✓' : ''}</div>
-        </button>
-      `).join('');
+      let desktopHTML = '';
+      
+      Object.entries(CATEGORIES).forEach(([catKey, catLabel]) => {
+        const catWeapons = WEAPONS.filter(w => w.category === catKey);
+        if (catWeapons.length === 0) return;
+        
+        desktopHTML += `<div class="category-label">${catLabel}</div>`;
+        desktopHTML += catWeapons.map(w => `
+          <button class="weapon-item ${w.id === state.selectedWeapon ? 'selected' : ''} ${w.category === 'reference' ? 'reference' : ''}" data-weapon="${w.id}">
+            <div class="weapon-info">
+              <div class="flex items-center">
+                <span class="weapon-name">${w.name}</span>
+                <span class="weapon-country">${w.country}</span>
+              </div>
+              <span class="weapon-meta">${w.description}</span>
+            </div>
+            <span class="weapon-yield">${w.yield >= 1000 ? (w.yield/1000).toFixed(0) + ' MT' : w.yield + ' KT'}</span>
+            <div class="weapon-check">${w.id === state.selectedWeapon ? '✓' : ''}</div>
+          </button>
+        `).join('');
+      });
+      
+      desktopList.innerHTML = desktopHTML;
       
       desktopList.querySelectorAll('.weapon-item').forEach(btn => {
         btn.addEventListener('click', () => selectWeapon(btn.dataset.weapon));
@@ -1733,7 +1859,6 @@
       state.selectedWeapon = weaponId;
       renderWeapons();
       
-      // Reset if already detonated
       if (state.isDetonated) {
         resetSimulation();
       }
@@ -1841,32 +1966,23 @@
       dragHandle.addEventListener('touchmove', onTouchMove, { passive: false });
       dragHandle.addEventListener('touchend', onTouchEnd);
       
-      // Initial state
       setSheetSnap(SNAP_PEEK, false);
     };
 
     /* ============================================
-       TIKTOK SHARE
+       SHARE
        ============================================ */
-    const generateTikTokText = () => {
+    const generateShareText = () => {
       const weapon = WEAPONS.find(w => w.id === state.selectedWeapon);
-      return `I dropped a ${weapon.fullName} on ${state.currentCity} and the blast radius is INSANE 😳 → ww3tracker.live/nuke #WW3 #nuclear #fyp`;
+      return `[Educational] Simulated ${weapon.fullName} effects on ${state.currentCity}. Understanding nuclear weapons humanitarian impact. Learn more:`;
     };
 
     const copyToClipboard = async (text) => {
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(text + ' https://ww3tracker.live/nuke');
         showToast('Copied to clipboard!');
       } catch (e) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        showToast('Copied to clipboard!');
+        showToast('Copy failed');
       }
     };
 
@@ -1897,7 +2013,7 @@
       document.getElementById('desktop-detonate').addEventListener('click', detonate);
       document.getElementById('desktop-reset').addEventListener('click', resetSimulation);
       document.getElementById('desktop-share').addEventListener('click', () => {
-        copyToClipboard(generateTikTokText());
+        copyToClipboard(generateShareText());
       });
       
       // Mobile
@@ -1916,7 +2032,7 @@
       document.getElementById('mobile-detonate').addEventListener('click', detonate);
       document.getElementById('mobile-reset').addEventListener('click', resetSimulation);
       document.getElementById('mobile-share').addEventListener('click', () => {
-        copyToClipboard(generateTikTokText());
+        copyToClipboard(generateShareText());
       });
     };
 
@@ -1937,23 +2053,20 @@
           renderRecentSearches();
           initPopularTargets();
           
-          // Clear recent searches handler
           document.getElementById('clear-recent')?.addEventListener('click', clearRecentSearches);
         }
       } catch (err) {
         console.error('Initialization error:', err);
-        document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: white; font-family: sans-serif;"><h1>Nuke Simulator</h1><p>Error loading: ' + err.message + '</p><p>Please refresh or <a href="/" style="color: #3b82f6;">go back</a></p></div>';
+        document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: white; font-family: sans-serif;"><h1>Nuclear Effects Simulator</h1><p>Error loading: ' + err.message + '</p><p>Please refresh or <a href="/" style="color: #3b82f6;">go back</a></p></div>';
       }
     };
 
-    // Start
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
     } else {
       init();
     }
 
-    // Handle resize
     window.addEventListener('resize', () => {
       const newIsMobile = window.innerWidth < 769;
       if (newIsMobile !== state.isMobile) {

@@ -218,7 +218,7 @@ export const getRadiusComparison = (radiusKm) => {
 };
 
 /**
- * Generate share text for social media
+ * Generate share text for social media - Educational framing
  */
 export const generateShareText = (warhead, city, casualties) => {
   const yieldText = warhead.yield >= 1000 
@@ -228,12 +228,14 @@ export const generateShareText = (warhead, city, casualties) => {
   const fatalityText = formatNumber(casualties.fatalities);
   const injuryText = formatNumber(casualties.injuries);
   
-  return `I simulated a ${warhead.name} (${yieldText}) on ${city.name}.
+  return `Educational simulation: ${warhead.name} (${yieldText}) effects on ${city.name}.
 
 💀 ${fatalityText} estimated fatalities
 🏥 ${injuryText} estimated injuries
 
-See what a nuke would do to your city:`;
+Nuclear weapons have devastating humanitarian impact. We must prevent nuclear war.
+
+Learn more:`;
 };
 
 export default {

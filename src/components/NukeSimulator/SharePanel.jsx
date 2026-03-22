@@ -69,7 +69,7 @@ export default function SharePanel({ city, warhead, casualties, onClose }) {
   // Share on Reddit
   const handleRedditShare = useCallback(() => {
     const title = encodeURIComponent(
-      `I simulated a ${warhead.name} nuclear strike on ${city.name}. ${formatNumber(casualties.fatalities)} estimated fatalities.`
+      `[Educational] Simulated effects of ${warhead.name} nuclear weapon on ${city.name}: ${formatNumber(casualties.fatalities)} estimated fatalities. Nuclear weapons education matters.`
     );
     const url = encodeURIComponent(shareUrl);
     
@@ -85,7 +85,7 @@ export default function SharePanel({ city, warhead, casualties, onClose }) {
   
   // Share via Email
   const handleEmailShare = useCallback(() => {
-    const subject = encodeURIComponent(`Nuclear Strike Simulation: ${warhead.name} on ${city.name}`);
+    const subject = encodeURIComponent(`[Educational] Nuclear Weapons Effects Simulation: ${warhead.name}`);
     const body = encodeURIComponent(fullShareText);
     
     window.open(
@@ -103,7 +103,7 @@ export default function SharePanel({ city, warhead, casualties, onClose }) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Nuclear Strike Simulator - WW3 Tracker',
+          title: 'Nuclear Weapons Effects Simulator - Educational',
           text: shareText,
           url: shareUrl
         });

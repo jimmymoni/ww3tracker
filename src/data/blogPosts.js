@@ -206,7 +206,7 @@ This isn't about nuclear weapons. That's just the excuse. It's about America wan
     category: "Breaking",
     readTime: "5 min",
     date: "March 21, 2026",
-    image: "/images/blog/iran-shot-down-f35.jpg",
+    image: "/images/blog/iran-shot-down-f35.webp",
     author: {
       name: "WW3 Tracker",
       role: "Defense Analysis",
@@ -617,7 +617,7 @@ The F-35 was supposed to be the future. One missile just called that future into
     category: "Economic",
     readTime: "6 min",
     date: "March 23, 2026",
-    image: "/images/blog/strait-hormuz-closure.jpg",
+    image: "/images/blog/strait-hormuz-closure.avif",
     author: {
       name: "WW3 Tracker",
       role: "Economic Analysis",
@@ -947,7 +947,7 @@ The Strait of Hormuz has been a geopolitical flashpoint for 40 years. We've know
     category: "Analysis",
     readTime: "8 min",
     date: "March 24, 2026",
-    image: "/images/blog/every-strike-mapped.jpg",
+    image: "/images/blog/every-strike-mapped.avif",
     author: {
       name: "WW3 Tracker",
       role: "Conflict Analysis",

@@ -9,7 +9,7 @@ const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
  * Article Schema - For blog posts and news articles
  * Enhanced with NewsArticle type for better Google News visibility
  */
-export const ArticleSchema = ({ post }) => {
+const ArticleSchema = ({ post }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -57,7 +57,7 @@ export const ArticleSchema = ({ post }) => {
  * FAQ Schema - For FAQ sections (triggers rich snippets)
  * Essential for AI citation optimization - ChatGPT, Perplexity, etc.
  */
-export const FAQSchema = ({ faqs }) => {
+const FAQSchema = ({ faqs }) => {
   if (!faqs || faqs.length === 0) return null;
   
   const schema = {
@@ -84,7 +84,7 @@ export const FAQSchema = ({ faqs }) => {
  * Breadcrumb Schema - For navigation breadcrumbs
  * Helps Google show breadcrumb navigation in search results
  */
-export const BreadcrumbSchema = ({ items }) => {
+const BreadcrumbSchema = ({ items }) => {
   // items = [{ name: "Home", url: "/" }, { name: "Blog", url: "/blog" }, ...]
   const schema = {
     "@context": "https://schema.org",
@@ -108,7 +108,7 @@ export const BreadcrumbSchema = ({ items }) => {
  * WebSite Schema - For homepage
  * Includes SearchAction for Google sitelinks search box
  */
-export const WebsiteSchema = () => {
+const WebsiteSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -149,7 +149,7 @@ export const WebsiteSchema = () => {
  * Organization Schema - Enhanced for Google Knowledge Panel
  * Critical for brand recognition and entity SEO
  */
-export const OrganizationSchema = () => {
+const OrganizationSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -197,7 +197,7 @@ export const OrganizationSchema = () => {
  * NewsMediaOrganization Schema - For news credibility
  * Helps establish the site as a news source
  */
-export const NewsMediaOrganizationSchema = () => {
+const NewsMediaOrganizationSchema = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
@@ -230,7 +230,7 @@ export const NewsMediaOrganizationSchema = () => {
  * HowTo Schema - For instructional/military comparison content
  * Triggers rich "How To" snippets in search results
  */
-export const HowToSchema = ({ title, description, steps, totalTime }) => {
+const HowToSchema = ({ title, description, steps, totalTime }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -257,7 +257,7 @@ export const HowToSchema = ({ title, description, steps, totalTime }) => {
  * ClaimReview Schema - For fact-checking content
  * Shows "Fact Check" rich results in Google
  */
-export const ClaimReviewSchema = ({ claim, reviewRating, author = SITE_NAME }) => {
+const ClaimReviewSchema = ({ claim, reviewRating, author = SITE_NAME }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ClaimReview",
@@ -289,7 +289,7 @@ export const ClaimReviewSchema = ({ claim, reviewRating, author = SITE_NAME }) =
  * Identifies content sections optimized for voice assistants
  * Critical for "Hey Google" and Alexa answers
  */
-export const SpeakableSchema = ({ cssSelectors = [".article-summary", ".key-takeaway", ".faq-answer", "h2", ".ai-citation"] }) => {
+const SpeakableSchema = ({ cssSelectors = [".article-summary", ".key-takeaway", ".faq-answer", "h2", ".ai-citation"] }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -309,7 +309,7 @@ export const SpeakableSchema = ({ cssSelectors = [".article-summary", ".key-take
 /**
  * VideoObject Schema - For video content
  */
-export const VideoObjectSchema = ({ 
+const VideoObjectSchema = ({ 
   name, 
   description, 
   thumbnailUrl, 
@@ -350,7 +350,7 @@ export const VideoObjectSchema = ({
 /**
  * Event Schema - For timeline/conflict events
  */
-export const EventSchema = ({ name, startDate, endDate, location, description }) => {
+const EventSchema = ({ name, startDate, endDate, location, description }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -384,7 +384,7 @@ export const EventSchema = ({ name, startDate, endDate, location, description })
  * ItemList Schema - For list-based content (news feeds, rankings)
  * Triggers "Top Stories" style rich results
  */
-export const ItemListSchema = ({ items, itemType = "ListItem" }) => {
+const ItemListSchema = ({ items, itemType = "ListItem" }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -407,7 +407,7 @@ export const ItemListSchema = ({ items, itemType = "ListItem" }) => {
 /**
  * Person Schema - For author/entity pages
  */
-export const PersonSchema = ({ name, description, jobTitle, sameAs = [] }) => {
+const PersonSchema = ({ name, description, jobTitle, sameAs = [] }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -427,7 +427,7 @@ export const PersonSchema = ({ name, description, jobTitle, sameAs = [] }) => {
 /**
  * WebPage Schema - Generic page schema
  */
-export const WebPageSchema = ({ title, description, url, lastReviewed }) => {
+const WebPageSchema = ({ title, description, url, lastReviewed }) => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -450,7 +450,7 @@ export const WebPageSchema = ({ title, description, url, lastReviewed }) => {
   );
 };
 
-export default {
+export {
   ArticleSchema,
   FAQSchema,
   BreadcrumbSchema,
