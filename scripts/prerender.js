@@ -43,6 +43,18 @@ const routes = [
   '/blog/every-strike-us-iran-war-mapped',
   '/blog/could-this-become-world-war-3',
   '/blog/us-iran-military-compared-real-data',
+  // NEW: Additional blog posts (March 22, 2026)
+  '/blog/the-son-who-inherited-war',
+  '/blog/natanz-dimona-nuclear-exchange',
+  '/blog/qatar-lng-complex-destroyed',
+  '/blog/china-yuan-dollar-hormuz',
+  '/blog/diego-garcia-4000km-missile',
+  '/blog/200-billion-winning-cost',
+  '/blog/taiwan-window-xi-opportunity',
+  '/blog/aws-dark-iran-cloud',
+  '/blog/stuxnet-bank-outages-texas-grid',
+  '/blog/houthi-mystery-silence',
+  '/blog/trump-bombing-buying-iran-oil',
 ];
 
 // Read the index.html template
