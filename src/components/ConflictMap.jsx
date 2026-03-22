@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Clock, AlertTriangle, Flame, Zap, Crosshair, Navigation, ChevronUp, ChevronDown, History, ArrowLeft, Plane, Siren, Shield, Bomb, X, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getCachedData } from '../lib/api';
@@ -851,12 +851,14 @@ export default function ConflictMap({ mobile = false }) {
                           {event.relativeTime}
                         </p>
                         <button 
+                          type="button"
                           onClick={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
                             setSelectedEvent(event);
                             setShowDetailModal(true);
                           }}
-                          className="text-[11px] text-gray-400 flex items-center gap-0.5 hover:text-white transition-colors"
+                          className="text-[11px] text-gray-400 flex items-center gap-0.5 hover:text-white transition-colors bg-transparent border-0 cursor-pointer"
                         >
                           View Details <ExternalLink className="w-3 h-3" />
                         </button>
