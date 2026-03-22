@@ -413,13 +413,14 @@ export default function ConflictMap({ mobile = false }) {
     svg.call(zoom);
     
     const { width, height } = dimensions;
-    const scale = isMobile ? 3.0 : 2.4;
+    // Higher zoom for mobile to see details, moderate for desktop
+    const scale = isMobile ? 1.8 : 1.4;
     const centerX = width / 2;
     const centerY = height / 2;
     const initialTransform = d3.zoomIdentity
       .translate(centerX, centerY)
       .scale(scale)
-      .translate(-width / 2 + (isMobile ? 0 : 0), -height / 2 + (isMobile ? 10 : 20));
+      .translate(-width / 2, -height / 2 + (isMobile ? 0 : 10));
     
     svg.call(zoom.transform, initialTransform);
     if (gRef.current) {
@@ -429,9 +430,11 @@ export default function ConflictMap({ mobile = false }) {
   }, [worldData, dimensions.width, dimensions.height, isMobile]);
 
   const projection = useCallback(() => {
-    const scale = isMobile ? dimensions.width * 0.9 : dimensions.width * 0.8;
+    // Better center to frame Israel-Lebanon on left, Tehran on right
+    // Center at [42, 32] - between the two conflict clusters
+    const scale = isMobile ? dimensions.width * 1.4 : dimensions.width * 0.95;
     return d3.geoMercator()
-      .center([47, 30])
+      .center([42, 32])
       .scale(scale)
       .translate([dimensions.width / 2, dimensions.height / 2]);
   }, [dimensions, isMobile]);
