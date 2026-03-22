@@ -65,7 +65,7 @@ const HOURS_WINDOW = 8760; // 1 year - show all historical attacks
 const NEW_THRESHOLD_HOURS = 6;  // Show "NEW" badge
 const RECENT_THRESHOLD_HOURS = 12; // Pulsing animation
 
-// Helper to format relative time
+// Helper to format relative time (based on UTC to avoid timezone confusion)
 const getRelativeTime = (dateString) => {
   const date = new Date(dateString);
   const now = new Date();
@@ -74,17 +74,48 @@ const getRelativeTime = (dateString) => {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
   
-  // Handle future dates (shouldn't happen, but show absolute time)
+  // Handle future dates
   if (diffMs < 0) {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   }
   
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
   
-  // For older attacks, show the actual date
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  // For older attacks, show the actual date in UTC
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+};
+
+// Helper to format local time at attack location
+const getLocalTimeAtLocation = (dateString, country) => {
+  const date = new Date(dateString);
+  
+  // Define timezone offsets for countries (standard time)
+  const timezones = {
+    'Israel': 2,      // UTC+2 (IST)
+    'Iran': 3.5,      // UTC+3:30 (IRST)
+    'Palestine': 2,   // UTC+2
+    'West Bank': 2,   // UTC+2
+    'Qatar': 3,       // UTC+3
+    'Kuwait': 3,      // UTC+3
+    'Iraq': 3,        // UTC+3
+    'Lebanon': 2,     // UTC+2
+    'Syria': 3,       // UTC+3
+    'Jordan': 3,      // UTC+3
+    'Turkey': 3       // UTC+3
+  };
+  
+  const offset = timezones[country] || 0;
+  const localDate = new Date(date.getTime() + offset * 3600000);
+  
+  return localDate.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: true 
+  });
 };
 
 // Check if attack is very recent
@@ -200,7 +231,7 @@ export default function ConflictMap({ mobile = false }) {
                 severity: item.mapAnalysis.severity || item.severity,
                 type: (item.mapAnalysis.attackType || item.attackType || 'unknown').toUpperCase(),
                 attackType: item.mapAnalysis.attackType || item.attackType || 'unknown',
-                time: new Date(attackDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                time: getLocalTimeAtLocation(attackDate, item.country || coords.country),
                 relativeTime: getRelativeTime(attackDate),
                 isNew: isNewAttack(attackDate),
                 isRecent: isRecentAttack(attackDate),
@@ -952,8 +983,9 @@ export default function ConflictMap({ mobile = false }) {
                         <p className="text-sm text-white">{selectedEvent.target || selectedEvent.context || 'Unknown'}</p>
                       </div>
                       <div className="bg-black/30 rounded-lg p-3">
-                        <p className="text-[10px] text-gray-500 uppercase">Time</p>
-                        <p className="text-sm text-white">{selectedEvent.date ? new Date(selectedEvent.date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : 'Unknown'}</p>
+                        <p className="text-[10px] text-gray-500 uppercase">Time (Local)</p>
+                        <p className="text-sm text-white">{selectedEvent.time || 'Unknown'}</p>
+                        <p className="text-[10px] text-gray-600 mt-1">UTC: {selectedEvent.date ? new Date(selectedEvent.date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC'}) : 'Unknown'}</p>
                       </div>
                       <div className="bg-black/30 rounded-lg p-3">
                         <p className="text-[10px] text-gray-500 uppercase">Coordinates</p>
