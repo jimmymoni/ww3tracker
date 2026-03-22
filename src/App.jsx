@@ -37,7 +37,7 @@ const EmailSignup = lazy(() => import('./components/EmailSignup'));
 const LatestBlogHero = lazy(() => import('./components/LatestBlogHero'));
 const BlogPostGrid = lazy(() => import('./components/BlogPostGrid'));
 const NukeSimCTA = lazy(() => import('./components/NukeSimCTA'));
-const ImpactSummaryBar = lazy(() => import('./components/ImpactSummaryBar'));
+
 
 // Data
 import { blogPosts } from './data/blogPosts';
@@ -327,7 +327,7 @@ function HomePage() {
         {/* 3. Impact Summary Bar (compact stats) */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <Suspense fallback={<div className="h-[80px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <ImpactSummaryBar />
+
           </Suspense>
         </motion.section>
 
