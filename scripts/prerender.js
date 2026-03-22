@@ -159,7 +159,7 @@ function getRouteMeta(route) {
   const metas = {
     '/': {
       title: 'WW3 Tracker - Live Conflict Monitor | US vs Iran War Tracker',
-      description: 'Live US-Iran conflict tracker with real-time data, prediction markets, satellite intelligence, and breaking news. Monitor the war with NASA FIRMS, Polymarket odds, and global news aggregation.'
+      description: 'Live US-Iran conflict tracker with real-time data, prediction markets, and breaking news. Monitor the war with Polymarket odds and global news aggregation.'
     },
     '/blog': {
       title: 'WW3 Tracker Blog | Analysis & News',
@@ -385,7 +385,7 @@ function getRouteContent(route) {
         </section>
         <section style="margin-bottom: 40px;">
           <h2 style="font-size: 28px; color: #fbbf24; margin-bottom: 16px;">Live Military Statistics</h2>
-          <p style="color: #d1d5db; line-height: 1.7;">View confirmed military strikes on our interactive conflict map. Data sourced from satellite intelligence (NASA FIRMS), news reports, and official statements.</p>
+          <p style="color: #d1d5db; line-height: 1.7;">View confirmed military strikes on our interactive conflict map. Data sourced from satellite intelligence, news reports, and official statements.</p>
         </section>
       </main>
     `,

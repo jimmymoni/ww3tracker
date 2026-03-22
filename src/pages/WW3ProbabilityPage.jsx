@@ -255,7 +255,7 @@ const WW3ProbabilityPage = () => {
         <footer className="border-t border-white/10 py-8 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-gray-500 text-sm">
-              Data sources: Polymarket, GDELT, NASA FIRMS | Updated every 60 seconds
+              Data sources: Polymarket, GDELT | Updated every 60 seconds
             </p>
             <p className="text-gray-600 text-xs mt-2">
               ⚠️ This is a satirical educational tool. Not actual military intelligence.

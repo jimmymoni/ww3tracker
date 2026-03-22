@@ -43,7 +43,7 @@ const CACHE_KEYS = {
   gameState: 'cached_gameState',
   memes: 'cached_memes',
   ticker: 'cached_ticker',
-  fires: 'cached_fires',
+
   polymarket: 'cached_polymarket',
   timestamp: 'cached_timestamp'
 };
@@ -147,21 +147,7 @@ export const fetchPolymarketData = async () => {
   }
 };
 
-// NASA FIRMS API - with caching
-export const fetchFireData = async () => {
-  try {
-    const data = await fetchJSON(`${API_BASE_URL}/fires`);
-    setCachedData('fires', data);
-    return data;
-  } catch (error) {
-    const cached = getCachedData('fires');
-    if (cached) {
-      console.log('[API] Returning cached fire data');
-      return { ...cached, fromCache: true };
-    }
-    throw error;
-  }
-};
+
 
 // Trump GIF API
 export const fetchTrumpGif = (mood = 'winning') => 

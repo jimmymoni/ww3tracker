@@ -13,7 +13,7 @@ import { createServer } from 'http';
 import { fetchIranMarkets, getEscalationProbability } from './services/polymarketService.js';
 import { emailService } from './services/emailService.js';
 import emailRoutes from './routes/emailRoutes.js';
-import { fetchIranFires } from './services/nasaFirmsService.js';
+
 import { getTrumpGif } from './services/giphyService.js';
 import { getGameState, resetBreakingAlert, initGameState } from './services/gameStateService.js';
 import { getMarkets } from './services/marketService.js';
@@ -36,7 +36,7 @@ const PORT = process.env.PORT || 3001;
 console.log('\n=== ENVIRONMENT VARIABLES CHECK ===');
 console.log('REPLICATE_API_TOKEN:', process.env.REPLICATE_API_TOKEN ? '✅ Set (' + process.env.REPLICATE_API_TOKEN.slice(0, 10) + '...)' : '❌ NOT SET (will use mock)');
 console.log('GIPHY_API_KEY:', process.env.GIPHY_API_KEY ? '✅ Set (' + process.env.GIPHY_API_KEY.slice(0, 10) + '...)' : '❌ NOT SET');
-console.log('NASA_FIRMS_KEY:', process.env.NASA_FIRMS_KEY ? '✅ Set (' + process.env.NASA_FIRMS_KEY.slice(0, 10) + '...)' : '❌ NOT SET');
+
 console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN ? '✅ Set (' + process.env.TELEGRAM_BOT_TOKEN.slice(0, 10) + '...)' : '❌ NOT SET (bot disabled)');
 console.log('TELEGRAM_CHANNEL_ID:', process.env.TELEGRAM_CHANNEL_ID || '❌ NOT SET');
 console.log('PORT:', process.env.PORT || '3001 (default)');
@@ -108,26 +108,7 @@ const testGiphyAPI = async () => {
   }
 };
 
-const testNasaFirmsAPI = async () => {
-  console.log('\n🧪 TESTING NASA FIRMS API...');
-  try {
-    const data = await fetchIranFires();
-    if (data && !data.mock) {
-      console.log('✅ NASA FIRMS API WORKING!');
-      console.log('   Fire count:', data.count);
-      console.log('   Source:', data.source);
-      return { success: true, data };
-    } else {
-      console.log('⚠️ NASA FIRMS API: Using mock data (check API key or endpoint)');
-      console.log('   Mock fire count:', data?.count);
-      return { success: false, error: 'Using mock data', mock: true };
-    }
-  } catch (error) {
-    console.log('❌ NASA FIRMS API FAILED!');
-    console.log('   Error:', error.message);
-    return { success: false, error: error.message };
-  }
-};
+
 
 // Helper to run function with timeout
 const withTimeout = (promise, timeoutMs, label) => {
@@ -152,7 +133,7 @@ const runAPITests = async () => {
   const results = {
     replicate: await withTimeout(testReplicateAPI(), 15000, 'Replicate API test'),
     giphy: await withTimeout(testGiphyAPI(), 15000, 'Giphy API test'),
-    nasa: await withTimeout(testNasaFirmsAPI(), 15000, 'NASA FIRMS API test')
+
   };
   
   console.log('\n╔════════════════════════════════════════════════════════╗');
@@ -160,7 +141,7 @@ const runAPITests = async () => {
   console.log('╚════════════════════════════════════════════════════════╝');
   console.log('Replicate AI:', results.replicate.success ? '✅ WORKING (~$0.0001/request)' : '❌ FAILED');
   console.log('Giphy:', results.giphy.success ? '✅ WORKING' : '❌ FAILED');
-  console.log('NASA FIRMS:', results.nasa.success ? '✅ WORKING' : (results.nasa.mock ? '⚠️ MOCK MODE' : '❌ FAILED'));
+
   console.log('💰 Estimated cost per news cycle: ~$0.001-0.003 (100 analyses = ~$0.02)');
   console.log('');
   
@@ -184,7 +165,7 @@ app.get('/api/health', (req, res) => {
     env: {
       replicate: process.env.REPLICATE_API_TOKEN ? 'configured' : 'not configured',
       giphy: process.env.GIPHY_API_KEY ? 'configured' : 'not configured',
-      nasa: process.env.NASA_FIRMS_KEY ? 'configured' : 'not configured'
+
     }
   });
 });
@@ -436,37 +417,7 @@ app.get('/api/polymarket', async (req, res) => {
   }
 });
 
-// Get NASA FIRMS fire data - Cached
-app.get('/api/fires', async (req, res) => {
-  try {
-    const cached = getCachedData('fires');
-    
-    // Return cached if available
-    if (cached) {
-      res.json({
-        ...cached,
-        cached: true
-      });
-    }
-    
-    // Fetch fresh data
-    const fireData = await fetchIranFires();
-    setCachedData('fires', fireData);
-    
-    // If we didn't send cached response, send fresh
-    if (!cached) {
-      res.json(fireData);
-    }
-  } catch (error) {
-    console.error('[API] /api/fires error:', error);
-    const cached = getCachedData('fires');
-    if (cached) {
-      res.json({ ...cached, stale: true });
-    } else {
-      res.status(500).json({ error: 'Failed to fetch fire data' });
-    }
-  }
-});
+
 
 // Get Trump GIF
 app.get('/api/trump-gif', async (req, res) => {
@@ -1308,7 +1259,7 @@ const startServer = async () => {
 ║     • GET  /api/state            - Current game state        ║
 ║     • GET  /api/memes            - Breaking feed             ║
 ║     • GET  /api/polymarket       - Betting odds              ║
-║     • GET  /api/fires            - NASA FIRMS data           ║
+
 ║     • GET  /api/ticker           - News ticker               ║
 ║     • GET  /api/markets          - Financial data            ║
 ║                                                              ║

@@ -213,7 +213,7 @@ const NewsMediaOrganizationSchema = () => {
       "https://twitter.com/ww3tracker"
     ],
     "ethicsPolicy": `${SITE_URL}/about`,
-    "missionCoveragePrioritiesPolicy": "Track and analyze the US-Iran conflict with verified data from NASA FIRMS, satellite imagery, and confirmed military sources.",
+    "missionCoveragePrioritiesPolicy": "Track and analyze the US-Iran conflict with verified data from satellite imagery and confirmed military sources.",
     "diversityPolicy": "We aggregate data from multiple international sources to ensure balanced coverage.",
     "correctionsPolicy": `${SITE_URL}/about`,
     "verificationFactCheckingPolicy": "All attacks are verified through multiple independent sources before publication."

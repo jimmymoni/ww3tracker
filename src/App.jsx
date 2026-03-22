@@ -32,7 +32,7 @@ const NukeSimulatorPage = lazy(() => import('./pages/NukeSimulatorPage'));
 const WW3Counter = lazy(() => import('./components/WW3Counter'));
 const BreakingAlert = lazy(() => import('./components/BreakingAlert'));
 const ConflictMap = lazy(() => import('./components/ConflictMap'));
-const NasaFirmsStrip = lazy(() => import('./components/NasaFirmsStrip'));
+
 const EmailSignup = lazy(() => import('./components/EmailSignup'));
 const LatestBlogHero = lazy(() => import('./components/LatestBlogHero'));
 const BlogPostGrid = lazy(() => import('./components/BlogPostGrid'));
@@ -189,7 +189,7 @@ const Disclaimer = () => (
       <FooterNav />
       <h3 className="font-heading font-semibold text-base sm:text-lg text-white mb-1.5 sm:mb-2 uppercase tracking-wider">Disclaimer</h3>
       <p className="text-gray-500 text-xs sm:text-sm font-body mb-1.5 sm:mb-2">
-        Live conflict data aggregated from NASA FIRMS, Polymarket, and verified sources.
+        Live conflict data aggregated from Polymarket and verified sources.
       </p>
       <p className="text-gray-600 text-[10px] sm:text-xs font-body">
         Built for educational purposes • Data from verified public sources
@@ -307,7 +307,7 @@ function HomePage() {
       </Suspense>
 
       <Suspense fallback={null}>
-        <NasaFirmsStrip />
+
       </Suspense>
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">

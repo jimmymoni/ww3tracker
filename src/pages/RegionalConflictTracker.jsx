@@ -809,7 +809,6 @@ const Footer = () => {
           <ul className="space-y-2 text-sm text-gray-500">
             <li>Verified news reports from Reuters, AP, BBC</li>
             <li>Government and military official statements</li>
-            <li>NASA FIRMS satellite fire detection</li>
             <li>ACLED conflict data</li>
           </ul>
         </div>

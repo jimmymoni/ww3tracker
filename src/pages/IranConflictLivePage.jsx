@@ -11,7 +11,6 @@ const IranConflictLivePage = () => {
 
   // Simulated live updates
   const liveUpdates = [
-    { time: "2 min ago", source: "NASA FIRMS", content: "Thermal anomalies detected in Eastern Syria near Iranian-backed positions", type: "satellite" },
     { time: "15 min ago", source: "News Feed", content: "Israeli strikes reported in Southern Lebanon targeting Hezbollah infrastructure", type: "breaking" },
     { time: "32 min ago", source: "GDELT", content: "Diplomatic chatter increases between Tehran and Gulf states", type: "diplomatic" },
     { time: "1 hour ago", source: "Polymarket", content: "Iran conflict probability ticked up 0.3% following regional reports", type: "market" },
@@ -130,7 +129,7 @@ const IranConflictLivePage = () => {
           >
             <h2 className="font-heading font-bold text-2xl text-white mb-6 flex items-center gap-3">
               <Flame className="w-6 h-6 text-orange-400" />
-              NASA FIRMS Satellite Monitoring
+              Satellite Monitoring
             </h2>
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -179,9 +178,7 @@ const IranConflictLivePage = () => {
               <p>
                 The tracker focuses on developments between Iran and its adversaries including the United States, Israel, and regional rivals. Key areas of monitoring include proxy militia activities in Syria, Lebanon, Yemen, and Iraq, as well as Iran's nuclear program developments.
               </p>
-              <p>
-                NASA's FIRMS (Fire Information for Resource Management System) provides satellite-based thermal anomaly detection, helping identify fires, explosions, and other heat signatures that may indicate military activity.
-              </p>
+
             </div>
           </motion.div>
 
@@ -225,7 +222,7 @@ const IranConflictLivePage = () => {
         <footer className="border-t border-white/10 py-8 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-gray-500 text-sm">
-              Data from NASA FIRMS, GDELT, News APIs | Refreshed every 60 seconds
+              Data from GDELT, News APIs | Refreshed every 60 seconds
             </p>
             <p className="text-gray-600 text-xs mt-2">
               ⚠️ This is a satirical educational tool. Not actual military intelligence.
