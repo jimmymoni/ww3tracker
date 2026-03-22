@@ -815,12 +815,11 @@ export default function ConflictMap({ mobile = false }) {
               }}
             >
               {events.map(event => (
-                <Link
+                <div
                   key={event.id}
-                  to={`/attack/${event.id}`}
                   onMouseEnter={() => setHoveredEvent(event)}
                   onMouseLeave={() => setHoveredEvent(null)}
-                  className={`flex-shrink-0 w-[300px] snap-start text-left p-4 rounded-xl border transition-all ${
+                  className={`flex-shrink-0 w-[300px] snap-start text-left p-4 rounded-xl border transition-all cursor-pointer ${
                     selectedEvent?.id === event.id 
                       ? 'bg-red-500/10 border-red-500/50' 
                       : event.isNew 
@@ -851,21 +850,28 @@ export default function ConflictMap({ mobile = false }) {
                         <p className={`text-xs ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-500'}`}>
                           {event.relativeTime}
                         </p>
-                        <span className="text-[11px] text-gray-400 flex items-center gap-0.5 group-hover:text-white transition-colors">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedEvent(event);
+                            setShowDetailModal(true);
+                          }}
+                          className="text-[11px] text-gray-400 flex items-center gap-0.5 hover:text-white transition-colors"
+                        >
                           View Details <ExternalLink className="w-3 h-3" />
-                        </span>
+                        </button>
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* MOBILE: Strike Detail Modal */}
+        {/* Strike Detail Modal */}
         <AnimatePresence>
-          {isMobile && showDetailModal && selectedEvent && (
+          {showDetailModal && selectedEvent && (
             <>
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -877,7 +883,7 @@ export default function ConflictMap({ mobile = false }) {
                 animate={{ opacity: 1, scale: 1 }} 
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="fixed inset-x-4 top-[10vh] bottom-[10vh] bg-black/95 border border-white/10 rounded-2xl z-50 overflow-hidden"
+                className="fixed inset-x-4 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-xl sm:max-h-[80vh] top-[10vh] bottom-[10vh] bg-black/95 border border-white/10 rounded-2xl z-50 overflow-hidden"
               >
                 {/* Header with close button */}
                 <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95">
@@ -915,8 +921,29 @@ export default function ConflictMap({ mobile = false }) {
                   <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-4">
                     <h4 className="text-sm font-bold text-gray-500 uppercase mb-3">Incident Details</h4>
                     <p className="text-base text-gray-200 mb-4 leading-relaxed">{selectedEvent.description}</p>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Source: {selectedEvent.source}</span>
+                    
+                    {/* Attack Metadata Grid */}
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      <div className="bg-black/30 rounded-lg p-3">
+                        <p className="text-[10px] text-gray-500 uppercase">Attack Type</p>
+                        <p className="text-sm text-white capitalize">{selectedEvent.attackType}</p>
+                      </div>
+                      <div className="bg-black/30 rounded-lg p-3">
+                        <p className="text-[10px] text-gray-500 uppercase">Target</p>
+                        <p className="text-sm text-white">{selectedEvent.target || selectedEvent.context}</p>
+                      </div>
+                      <div className="bg-black/30 rounded-lg p-3">
+                        <p className="text-[10px] text-gray-500 uppercase">Time</p>
+                        <p className="text-sm text-white">{new Date(selectedEvent.date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</p>
+                      </div>
+                      <div className="bg-black/30 rounded-lg p-3">
+                        <p className="text-[10px] text-gray-500 uppercase">Coordinates</p>
+                        <p className="text-sm text-white font-mono">{selectedEvent.coordinates.lat.toFixed(4)}, {selectedEvent.coordinates.lng.toFixed(4)}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm pt-3 border-t border-white/10">
+                      <span className="text-gray-400">Source: {selectedEvent.source}</span>
                       <div className={`flex items-center gap-1 ${selectedEvent.isNew ? 'text-red-400 font-medium' : selectedEvent.isRecent ? 'text-orange-400' : 'text-gray-400'}`}>
                         <Clock className="w-4 h-4" />
                         {selectedEvent.relativeTime}
