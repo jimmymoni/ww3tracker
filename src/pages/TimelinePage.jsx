@@ -77,10 +77,7 @@ export default function TimelinePage() {
               ← Back to Home
             </Link>
             <span className="text-gray-700">•</span>
-            <Link to="/impact" className="text-gray-500 hover:text-white transition-colors">
-              View Impact Dashboard →
-            </Link>
-            <span className="text-gray-700">•</span>
+
             <Link to="/live-map" className="text-gray-500 hover:text-white transition-colors">
               Live Conflict Map →
             </Link>

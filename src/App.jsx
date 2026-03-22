@@ -24,7 +24,7 @@ const IsWW3HappeningPage = lazy(() => import('./pages/IsWW3HappeningPage'));
 const WorldWar3NewsPage = lazy(() => import('./pages/WorldWar3NewsPage'));
 const IranNuclearDealPage = lazy(() => import('./pages/IranNuclearDealPage'));
 const AttacksArchivePage = lazy(() => import('./pages/AttacksArchivePage'));
-const ImpactPage = lazy(() => import('./pages/ImpactPage'));
+
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const NukeSimulatorPage = lazy(() => import('./pages/NukeSimulatorPage'));
 
@@ -175,8 +175,7 @@ const FooterNav = () => (
     <span className="text-gray-700">•</span>
     <Link to="/blog" className="text-gray-500 hover:text-white text-xs font-body transition-colors">WW3 News</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/impact" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Impact</Link>
-    <span className="text-gray-700">•</span>
+
     <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
     <span className="text-gray-700">•</span>
     <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Nuke Sim</a>
@@ -395,11 +394,6 @@ function App() {
           } />
           
           {/* New Pages */}
-          <Route path="/impact" element={
-            <Suspense fallback={<LoadingScreen />}>
-              <ImpactPage />
-            </Suspense>
-          } />
           <Route path="/timeline" element={
             <Suspense fallback={<LoadingScreen />}>
               <TimelinePage />

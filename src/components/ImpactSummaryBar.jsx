@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Skull, Users, Building2, ArrowRight } from 'lucide-react';
+import { Skull, Users, Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Impact data - summary stats only
@@ -98,14 +98,7 @@ const ImpactSummaryBar = () => {
             </div>
           </div>
 
-          {/* CTA */}
-          <Link
-            to="/impact"
-            className="flex items-center justify-center sm:justify-start gap-2 text-sm text-red-400 hover:text-red-300 transition-colors group"
-          >
-            <span>View Full Impact Dashboard</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
+
         </div>
 
         {/* Disclaimer */}
