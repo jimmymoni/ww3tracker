@@ -205,7 +205,7 @@ const CentralTweetButton = ({ usHP = 75, iranHP = 60 }) => {
             onClick={shareToX}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 rounded text-blue-400 text-xs transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-red-700/10 hover:bg-red-700/20 border border-red-700/30 rounded text-red-400 text-xs transition-colors"
           >
             <Twitter className="w-3 h-3" />
             <span>X / Twitter</span>

@@ -23,17 +23,17 @@ const PullQuote = ({
   const variantStyles = {
     default: {
       container: 'bg-slate-800/60 border-slate-700/50',
-      border: 'from-blue-500 via-purple-500 to-pink-500',
-      icon: 'text-blue-400',
+      border: 'from-red-500 via-purple-500 to-pink-500',
+      icon: 'text-red-400',
       text: 'text-slate-200',
       attribution: 'text-slate-400',
     },
     statistic: {
-      container: 'bg-blue-900/20 border-blue-700/30',
-      border: 'from-blue-400 via-cyan-400 to-teal-400',
-      icon: 'text-cyan-400',
-      text: 'text-cyan-100',
-      attribution: 'text-cyan-400/70',
+      container: 'bg-red-900/20 border-red-700/30',
+      border: 'from-red-400 via-orange-400 to-yellow-400',
+      icon: 'text-orange-400',
+      text: 'text-orange-100',
+      attribution: 'text-orange-400/70',
     },
     testimonial: {
       container: 'bg-purple-900/20 border-purple-700/30',

@@ -72,7 +72,7 @@ const ComparisonTable = ({ title, subtitle, data, usaLabel = "USA", iranLabel = 
                     </span>
                   ) : (
                     <span className={`text-xs ${
-                      row.winner === 'usa' ? 'text-blue-400' : 'text-red-400'
+                      row.winner === 'usa' ? 'text-red-400' : 'text-red-400'
                     }`}>
                       {row.winner === 'usa' ? 'USA' : 'Iran'}
                     </span>

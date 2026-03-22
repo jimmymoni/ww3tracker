@@ -62,15 +62,15 @@ const NasaFirmsStrip = () => {
   else if (count > 20) alertLevel = 'medium';
 
   const levelConfig = {
-    low: { color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
-    medium: { color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/20' },
+    low: { color: 'text-gray-400', bg: 'bg-white/5', border: 'border-white/10' },
+    medium: { color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
     high: { color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20' }
   };
 
   const config = levelConfig[alertLevel];
 
   // Mobile ticker text
-  const tickerText = `🔥 NASA FIRMS: ${count} fire signatures near Iran (24hrs) via ${source}${mock ? ' (Demo)' : ''}`;
+  const tickerText = `NASA FIRMS: ${count} fire signatures near Iran (24hrs) via ${source}${mock ? ' (Demo)' : ''}`;
 
   return (
     <motion.div
@@ -111,7 +111,7 @@ const NasaFirmsStrip = () => {
           
           {/* Text */}
           <span className={`font-body text-sm ${config.color}`}>
-            <span className="font-bold">🔥 Satellite Intel:</span> NASA FIRMS detected{' '}
+            <span className="font-bold">Satellite Intel:</span> NASA FIRMS detected{' '}
             <span className="font-bold text-white">{count}</span> active fire signatures 
             near Iran in the last 24hrs
           </span>

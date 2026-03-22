@@ -71,7 +71,7 @@ export default function CasualtyDisplay({ city, warhead, casualties, blastRadii,
   const scaleFactor = 200 / maxRadius;
   
   return (
-    <div className="comic-panel rounded-2xl p-6 sm:p-8">
+    <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-6 sm:p-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
@@ -291,11 +291,11 @@ export default function CasualtyDisplay({ city, warhead, casualties, blastRadii,
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4"
+            className="bg-red-700/10 border border-red-700/30 rounded-xl p-4"
           >
             <div className="flex items-center justify-between">
               <span className="text-gray-400 text-sm">Total Affected Population</span>
-              <span className="text-2xl font-bold text-blue-400 font-mono">
+              <span className="text-2xl font-bold text-red-400 font-mono">
                 {formatNumber(casualties.affected)}
               </span>
             </div>

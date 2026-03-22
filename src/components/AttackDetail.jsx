@@ -6,7 +6,7 @@ const ATTACK_TYPE_BADGES = {
   missile: { label: 'MISSILE', bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/30', icon: '🚀' },
   drone: { label: 'DRONE', bg: 'bg-purple-500/20', text: 'text-purple-400', border: 'border-purple-500/30', icon: '🛸' },
   bombing: { label: 'BOMBING', bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/30', icon: '💥' },
-  naval: { label: 'NAVAL', bg: 'bg-blue-500/20', text: 'text-blue-400', border: 'border-blue-500/30', icon: '⚓' },
+  naval: { label: 'NAVAL', bg: 'bg-red-700/20', text: 'text-red-400', border: 'border-red-700/30', icon: '⚓' },
   cyber: { label: 'CYBER', bg: 'bg-cyan-500/20', text: 'text-cyan-400', border: 'border-cyan-500/30', icon: '💻' },
   ground: { label: 'GROUND', bg: 'bg-green-500/20', text: 'text-green-400', border: 'border-green-500/30', icon: '🪖' },
 };
@@ -15,7 +15,7 @@ const SEVERITY_BADGES = {
   critical: { color: 'text-red-400', bg: 'bg-red-500/10', indicator: 'bg-red-500' },
   high: { color: 'text-orange-400', bg: 'bg-orange-500/10', indicator: 'bg-orange-500' },
   medium: { color: 'text-yellow-400', bg: 'bg-yellow-500/10', indicator: 'bg-yellow-500' },
-  low: { color: 'text-blue-400', bg: 'bg-blue-500/10', indicator: 'bg-blue-500' },
+  low: { color: 'text-red-400', bg: 'bg-red-500/10', indicator: 'bg-red-500' },
 };
 
 const AttackDetail = ({ isOpen, onClose, attack, onOpenContext }) => {
@@ -185,7 +185,7 @@ const AttackDetail = ({ isOpen, onClose, attack, onOpenContext }) => {
                       href={attack.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                      className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300 transition-colors"
                     >
                       Verify <ExternalLink className="w-3 h-3" />
                     </a>

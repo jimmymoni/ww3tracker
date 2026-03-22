@@ -141,7 +141,7 @@ const WorldWar3NewsPage = () => {
                   <span className="text-gray-600 mx-1">vs</span>
                   <span>☠️</span>
                 </div>
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -216,7 +216,7 @@ const WorldWar3NewsPage = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
           >
             <div className="comic-panel p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">12.4%</div>
+              <div className="text-2xl font-bold text-red-400">12.4%</div>
               <p className="text-xs text-gray-500">WW3 Probability</p>
             </div>
             <div className="comic-panel p-4 text-center">
@@ -248,7 +248,7 @@ const WorldWar3NewsPage = () => {
                 onClick={() => setFilter(filterType)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   filter === filterType
-                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                    ? 'bg-red-500/20 text-red-400 border border-red-500/30'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-transparent'
                 }`}
               >
@@ -266,7 +266,7 @@ const WorldWar3NewsPage = () => {
             className="space-y-4"
           >
             <h2 className="font-heading font-bold text-xl text-white mb-4 flex items-center gap-2">
-              <Newspaper className="w-5 h-5 text-blue-400" />
+              <Newspaper className="w-5 h-5 text-red-400" />
               Latest Updates
             </h2>
 
@@ -296,7 +296,7 @@ const WorldWar3NewsPage = () => {
                 </div>
 
                 <h3 
-                  className="text-lg md:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors"
+                  className="text-lg md:text-xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors"
                   itemProp="headline"
                 >
                   {news.headline}
@@ -309,7 +309,7 @@ const WorldWar3NewsPage = () => {
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-500">Source:</span>
-                    <span className="text-sm text-blue-400" itemProp="author">
+                    <span className="text-sm text-red-400" itemProp="author">
                       {news.source}
                     </span>
                   </div>

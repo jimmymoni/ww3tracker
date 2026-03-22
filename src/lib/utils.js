@@ -92,7 +92,7 @@ export const getNeonText = (color) => {
   const colors = {
     yellow: 'text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]',
     red: 'text-red-400 drop-shadow-[0_0_8px_rgba(248,113,113,0.8)]',
-    blue: 'text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]',
+    blue: 'text-red-400 drop-shadow-[0_0_8px_rgba(204,26,26,0.8)]',
   };
   return colors[color] || colors.yellow;
 };

@@ -16,11 +16,15 @@ export default {
         'impact': ['JetBrains Mono', 'monospace'],
       },
       colors: {
+        // War room palette - red accent only
+        'war-red': '#cc1a1a',
+        'war-red-hover': '#e02020',
+        'war-red-muted': 'rgba(204,26,26,0.15)',
+        'war-amber': '#f59e0b',
+        'war-green': '#22c55e',
+        // Legacy aliases for compatibility
         'comic-yellow': '#FFE500',
-        'comic-red': '#FF2D2D',
-        'comic-blue': '#00D4FF',
-        'comic-dark': '#1a1a2e',
-        'comic-purple': '#16213e',
+        'comic-red': '#cc1a1a',
       },
       animation: {
         'float': 'float 3s ease-in-out infinite',

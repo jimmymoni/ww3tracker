@@ -64,7 +64,7 @@ const UsIranWarTrackerPage = () => {
                   <span className="text-gray-600 mx-1">vs</span>
                   <span>☠️</span>
                 </div>
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -95,7 +95,7 @@ const UsIranWarTrackerPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 bg-blue-600/20 text-blue-400 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-red-600/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-full mb-6">
               <Swords className="w-4 h-4" />
               <span className="font-heading text-sm tracking-wider">ACTIVE CONFLICT</span>
             </div>
@@ -115,13 +115,13 @@ const UsIranWarTrackerPage = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="comic-panel p-6 border-l-4 border-blue-500"
+              className="comic-panel p-6 border-l-4 border-red-500"
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="text-4xl">🇺🇸</div>
                 <div>
                   <h2 className="font-heading font-bold text-xl text-white">United States</h2>
-                  <p className="text-blue-400 text-sm">NATO Alliance Leader</p>
+                  <p className="text-red-400 text-sm">NATO Alliance Leader</p>
                 </div>
               </div>
               <div className="space-y-3">
@@ -203,10 +203,10 @@ const UsIranWarTrackerPage = () => {
                 </p>
               </div>
 
-              <div className="bg-white/5 p-4 rounded-lg border-l-4 border-blue-500">
+              <div className="bg-white/5 p-4 rounded-lg border-l-4 border-red-500">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-bold text-white">Eastern Mediterranean</h3>
-                  <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">MONITORING</span>
+                  <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">MONITORING</span>
                 </div>
                 <p className="text-sm text-gray-400">
                   US carrier groups positioned for rapid response. Hezbollah tensions spillover risk.

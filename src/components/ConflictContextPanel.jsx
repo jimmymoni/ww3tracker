@@ -29,22 +29,22 @@ const ConflictContextPanel = ({ isOpen, onClose, zone }) => {
             </div>
             <div className="p-4 rounded-lg bg-white/5 border border-white/10">
               <h4 className="font-heading font-bold text-white mb-2 flex items-center gap-2">
-                <span className="text-blue-400">🎯</span> Strategic Value
+                <span className="text-red-400">🎯</span> Strategic Value
               </h4>
               <ul className="text-sm text-gray-300 space-y-2">
                 {zone.strategicValue?.map((value, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <ChevronRight className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
                     {value}
                   </li>
                 )) || (
                   <>
                     <li className="flex items-start gap-2">
-                      <ChevronRight className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
                       Critical supply route and logistics hub
                     </li>
                     <li className="flex items-start gap-2">
-                      <ChevronRight className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
                       Proximity to border regions
                     </li>
                   </>
@@ -71,7 +71,7 @@ const ConflictContextPanel = ({ isOpen, onClose, zone }) => {
                 </div>
                 <span className={`text-xs px-2 py-1 rounded ${
                   player.side === 'aggressor' ? 'bg-red-500/20 text-red-400' :
-                  player.side === 'defender' ? 'bg-blue-500/20 text-blue-400' :
+                  player.side === 'defender' ? 'bg-red-700/20 text-red-400' :
                   'bg-yellow-500/20 text-yellow-400'
                 }`}>
                   {player.side === 'aggressor' ? 'Aggressor' : player.side === 'defender' ? 'Defender' : 'Neutral'}

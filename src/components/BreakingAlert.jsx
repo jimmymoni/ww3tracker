@@ -60,10 +60,8 @@ const BreakingAlert = ({ alert, onDismiss }) => {
             </div>
             
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-red-600 text-white font-heading text-sm font-bold px-4 py-2 rounded mb-4">
-              <span>⚠️</span>
-              ALERT
-              <span>⚠️</span>
+            <div className="inline-flex items-center gap-2 bg-red-600 text-white font-heading text-xs font-bold px-3 py-1.5 rounded-sm mb-4 uppercase tracking-wider">
+              Alert
             </div>
             
             {/* Headline */}
@@ -77,10 +75,10 @@ const BreakingAlert = ({ alert, onDismiss }) => {
             </p>
             
             {/* Badge */}
-            <div className={`inline-block px-4 py-2 rounded-lg border text-sm font-heading ${
+            <div className={`inline-block px-3 py-1.5 rounded-sm border text-xs font-medium uppercase tracking-wider ${
               alert.badge?.includes('BREAKING') ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-              alert.badge?.includes('ESCALATION') ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
-              alert.badge?.includes('CONFIRMED') ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+              alert.badge?.includes('ESCALATION') ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' :
+              alert.badge?.includes('CONFIRMED') ? 'bg-gray-500/20 text-gray-400 border-gray-500/30' :
               'bg-gray-500/20 text-gray-400 border-gray-500/30'
             }`}>
               {alert.badge || 'UPDATE'}

@@ -49,7 +49,7 @@ const CONFLICT_ZONES = [
     rootCause: 'Nuclear program tensions & proxy warfare escalation',
     description: 'Long-standing tensions over Iran\'s nuclear program have escalated into direct military confrontations involving missile strikes, drone attacks, and naval incidents across the Persian Gulf.',
     color: 'blue',
-    hexColor: '#3b82f6',
+    hexColor: '#cc1a1a',
     lastEscalation: '2026-03-18T02:00:00Z',
     keyActors: ['United States', 'Iran', 'Israel', 'UAE', 'Saudi Arabia'],
     link: '/us-iran-war-tracker'
@@ -216,12 +216,12 @@ const getRelativeTime = (dateString) => {
  */
 const getZoneColorClasses = (color) => {
   const colorMap = {
-    blue: {
-      bg: 'bg-blue-500/10',
-      border: 'border-blue-500/30',
-      text: 'text-blue-400',
-      badge: 'bg-blue-500/20 text-blue-300',
-      dot: 'bg-blue-500'
+    red: {
+      bg: 'bg-red-500/10',
+      border: 'border-red-500/30',
+      text: 'text-red-400',
+      badge: 'bg-red-500/20 text-red-300',
+      dot: 'bg-red-500'
     },
     amber: {
       bg: 'bg-amber-500/10',
@@ -333,7 +333,7 @@ const HeroMapSection = ({ selectedZone, onZoneSelect }) => {
           {isLoading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin" />
                 <span className="text-gray-500 text-sm">Loading conflict data...</span>
               </div>
             </div>
@@ -597,7 +597,7 @@ const RelationshipWebSection = () => {
                   y1={`${source.y}%`}
                   x2={`${target.x}%`}
                   y2={`${target.y}%`}
-                  stroke={isConflict ? '#ef4444' : '#3b82f6'}
+                  stroke={isConflict ? '#ef4444' : '#cc1a1a'}
                   strokeWidth={isHighlighted ? 3 : isConflict ? 2 : 1}
                   strokeOpacity={isHighlighted ? 1 : 0.3}
                   strokeDasharray={link.type === 'support' ? '5,5' : link.type === 'proxy-conflict' ? '10,5' : '0'}
@@ -633,7 +633,7 @@ const RelationshipWebSection = () => {
                     ? 'bg-white/10 border-white/30 text-white scale-110' 
                     : hasConflict
                       ? 'bg-red-500/10 border-red-500/30 text-red-300'
-                      : 'bg-blue-500/10 border-blue-500/30 text-blue-300'
+                      : 'bg-red-500/10 border-red-500/30 text-red-300'
                   }
                 `}>
                   {actor.name}
@@ -660,11 +660,11 @@ const RelationshipWebSection = () => {
               <span className="text-gray-400">Proxy Conflict</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-0.5 bg-blue-500" />
+              <div className="w-3 h-0.5 bg-red-500" />
               <span className="text-gray-400">Alliance</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-0.5 bg-blue-500" style={{ background: 'repeating-linear-gradient(90deg, #3b82f6, #3b82f6 3px, transparent 3px, transparent 6px)' }} />
+              <div className="w-3 h-0.5 bg-red-500" style={{ background: 'repeating-linear-gradient(90deg, #cc1a1a, #cc1a1a 3px, transparent 3px, transparent 6px)' }} />
               <span className="text-gray-400">Support</span>
             </div>
           </div>
@@ -775,11 +775,11 @@ const RecentEscalationsSection = () => {
         </div>
 
         {/* Context Note */}
-        <div className="mt-6 p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl">
+        <div className="mt-6 p-4 bg-red-500/5 border border-red-500/10 rounded-xl">
           <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+            <Info className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-blue-300 mb-1">Understanding the Context</h4>
+              <h4 className="text-sm font-medium text-red-300 mb-1">Understanding the Context</h4>
               <p className="text-sm text-gray-400">
                 Each escalation has historical and political context. Click "Why?" to understand the background, 
                 root causes, and potential implications of each military action.
@@ -825,9 +825,9 @@ const Footer = () => {
             conflicts. We focus on accuracy and context to help you understand why wars are happening.
           </p>
           <div className="flex gap-4">
-            <Link to="/about" className="text-sm text-blue-400 hover:text-blue-300">About us</Link>
-            <Link to="/methodology" className="text-sm text-blue-400 hover:text-blue-300">Methodology</Link>
-            <Link to="/contact" className="text-sm text-blue-400 hover:text-blue-300">Contact</Link>
+            <Link to="/about" className="text-sm text-red-400 hover:text-red-300">About us</Link>
+            <Link to="/methodology" className="text-sm text-red-400 hover:text-red-300">Methodology</Link>
+            <Link to="/contact" className="text-sm text-red-400 hover:text-red-300">Contact</Link>
           </div>
         </div>
 

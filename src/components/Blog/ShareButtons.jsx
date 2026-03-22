@@ -48,14 +48,14 @@ const ShareButtons = ({
       name: 'Facebook',
       icon: Facebook,
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-      color: 'hover:bg-blue-600 hover:text-white hover:border-blue-600',
+      color: 'hover:bg-red-700 hover:text-white hover:border-red-700',
       bgColor: 'bg-slate-800',
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-      color: 'hover:bg-blue-700 hover:text-white hover:border-blue-700',
+      color: 'hover:bg-red-800 hover:text-white hover:border-red-800',
       bgColor: 'bg-slate-800',
     },
   ];
@@ -130,7 +130,7 @@ const ShareButtons = ({
         <div className="lg:hidden">
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/30 flex items-center justify-center"
+            className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-red-800 text-white shadow-lg shadow-red-600/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

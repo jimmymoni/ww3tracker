@@ -109,21 +109,21 @@ export default function NukeSimulator() {
   }, [selectedCity, selectedWarhead]);
   
   return (
-    <div className="min-h-screen bg-[#0d0d12] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-50" />
         <div 
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-10"
           style={{
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(204, 26, 26, 0.2) 0%, transparent 70%)',
             filter: 'blur(60px)'
           }}
         />
         <div 
           className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full opacity-5"
           style={{
-            background: 'radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(204, 26, 26, 0.2) 0%, transparent 70%)',
             filter: 'blur(60px)'
           }}
         />
@@ -139,11 +139,11 @@ export default function NukeSimulator() {
           className="text-center mb-6"
         >
           <div className="inline-flex items-center gap-3 mb-3">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-500/30 flex items-center justify-center">
-              <BookOpen className="w-7 h-7 text-blue-400" />
+            <div className="w-14 h-14 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+              <BookOpen className="w-7 h-7 text-red-400" />
             </div>
             <div className="text-left">
-              <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white">
                 Nuclear Weapons Effects Simulator
               </h1>
               <p className="text-gray-400 text-sm">
@@ -153,9 +153,9 @@ export default function NukeSimulator() {
           </div>
           
           {/* Educational Disclaimer */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full">
-            <Info className="w-4 h-4 text-blue-400" />
-            <span className="text-xs text-blue-300">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full">
+            <Info className="w-4 h-4 text-red-400" />
+            <span className="text-xs text-red-300">
               Educational simulation based on Glasstone & Dolan &quot;Effects of Nuclear Weapons&quot;
             </span>
           </div>
@@ -172,9 +172,9 @@ export default function NukeSimulator() {
             className="lg:col-span-1 space-y-3"
           >
             {/* Location Search */}
-            <div className="comic-panel rounded-2xl p-4">
+            <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-4">
               <h2 className="font-heading text-base font-bold text-white mb-3 flex items-center gap-2">
-                <Globe className="w-4 h-4 text-blue-400" />
+                <Globe className="w-4 h-4 text-red-400" />
                 Select Location
               </h2>
               <CitySearch 
@@ -187,7 +187,7 @@ export default function NukeSimulator() {
             </div>
             
             {/* Warhead Selector */}
-            <div className="comic-panel rounded-2xl p-4">
+            <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-4">
               <h2 className="font-heading text-base font-bold text-white mb-3 flex items-center gap-2">
                 <Shield className="w-4 h-4 text-orange-400" />
                 Select Warhead
@@ -203,7 +203,7 @@ export default function NukeSimulator() {
             </div>
             
             {/* Current Selection Summary */}
-            <div className="comic-panel rounded-2xl p-4">
+            <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-4">
               <h3 className="font-heading text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                 Simulation Parameters
               </h3>
@@ -235,7 +235,7 @@ export default function NukeSimulator() {
               {/* Show Detail Button */}
               <button
                 onClick={() => setShowWarheadDetail(true)}
-                className="w-full mt-3 py-2 px-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-blue-400 flex items-center justify-center gap-1 transition-colors"
+                className="w-full mt-3 py-2 px-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-gray-400 hover:text-white flex items-center justify-center gap-1 transition-colors"
               >
                 <BookOpen className="w-3 h-3" />
                 View Full Warhead Information
@@ -248,7 +248,7 @@ export default function NukeSimulator() {
                 onClick={handleDetonate}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-3 rounded-xl text-base shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-transparent border border-[#cc1a1a] hover:bg-[#cc1a1a] text-white font-semibold py-3 rounded text-base transition-all flex items-center justify-center gap-2"
               >
                 <Flame className="w-4 h-4" />
                 SIMULATE EFFECTS
@@ -259,7 +259,7 @@ export default function NukeSimulator() {
                   onClick={handleReset}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+                  className="bg-white/5 hover:bg-white/10 text-white font-medium py-3 rounded transition-all flex items-center justify-center gap-2"
                 >
                   <RotateCcw className="w-4 h-4" />
                   Reset
@@ -268,7 +268,7 @@ export default function NukeSimulator() {
                   onClick={handleShare}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+                  className="bg-transparent border border-[#cc1a1a] hover:bg-[#cc1a1a] text-white font-medium py-3 rounded transition-all flex items-center justify-center gap-2"
                 >
                   <Share2 className="w-4 h-4" />
                   Share
@@ -334,7 +334,7 @@ export default function NukeSimulator() {
           transition={{ delay: 0.3 }}
           className="mt-6"
         >
-          <div className="comic-panel rounded-2xl p-5">
+          <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-5">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-center md:text-left">
                 <h3 className="font-heading text-base font-bold text-white mb-1">
@@ -349,7 +349,7 @@ export default function NukeSimulator() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
                   to="/live-map"
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/50 text-blue-400 rounded-xl font-medium transition-all text-sm"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-lg font-medium transition-all text-sm"
                 >
                   <MapPin className="w-4 h-4" />
                   View Live War Map
@@ -357,7 +357,7 @@ export default function NukeSimulator() {
                 </Link>
                 <Link
                   to="/blog"
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/20 text-white rounded-xl font-medium transition-all text-sm"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white rounded-lg font-medium transition-all text-sm"
                 >
                   <BookOpen className="w-4 h-4" />
                   Read Updates
@@ -422,7 +422,7 @@ export default function NukeSimulator() {
           </div>
           <p className="text-gray-600 text-xs">
             Built for educational purposes • Data from verified public sources • 
-            <a href="https://fas.org/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 ml-1">
+            <a href="https://fas.org/" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-400 ml-1">
               FAS Nuclear Notebook
             </a>
           </p>

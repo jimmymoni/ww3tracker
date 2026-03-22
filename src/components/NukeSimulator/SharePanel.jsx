@@ -128,7 +128,7 @@ export default function SharePanel({ city, warhead, casualties, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/20">
           <div className="flex items-center gap-2">
-            <Share2 className="w-4 h-4 text-blue-400" />
+            <Share2 className="w-4 h-4 text-red-400" />
             <span className="font-bold text-white">Share Results</span>
           </div>
           <button 
@@ -219,7 +219,7 @@ export default function SharePanel({ city, warhead, casualties, onClose }) {
           {navigator.share && (
             <button
               onClick={handleNativeShare}
-              className="w-full mt-3 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
+              className="w-full mt-3 py-3 bg-red-800 hover:bg-red-700 text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
             >
               <Share2 className="w-4 h-4" />
               Share via Device

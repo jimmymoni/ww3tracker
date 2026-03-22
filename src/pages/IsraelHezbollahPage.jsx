@@ -104,8 +104,8 @@ const ZoneMap = ({ zone }) => {
 
 // Key Player Card Component
 const KeyPlayerCard = ({ flag, name, role, objective, side }) => {
-  const borderColor = side === 'israel' ? 'border-blue-500/30' : side === 'hezbollah' ? 'border-green-500/30' : 'border-yellow-500/30';
-  const bgColor = side === 'israel' ? 'bg-blue-500/10' : side === 'hezbollah' ? 'bg-green-500/10' : 'bg-yellow-500/10';
+  const borderColor = side === 'israel' ? 'border-red-500/30' : side === 'hezbollah' ? 'border-green-500/30' : 'border-yellow-500/30';
+  const bgColor = side === 'israel' ? 'bg-red-500/10' : side === 'hezbollah' ? 'bg-green-500/10' : 'bg-yellow-500/10';
   
   return (
     <motion.div 
@@ -129,12 +129,12 @@ const TimelineItem = ({ date, title, description, severity }) => {
   const severityColors = {
     high: 'bg-red-500/20 text-red-400 border-red-500/30',
     medium: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    low: 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+    low: 'bg-red-500/20 text-red-400 border-red-500/30'
   };
 
   return (
     <div className="flex gap-4 pb-6 border-l-2 border-white/10 pl-4 last:pb-0 relative">
-      <div className={`absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full ${severity === 'high' ? 'bg-red-500' : severity === 'medium' ? 'bg-orange-500' : 'bg-blue-500'}`} />
+      <div className={`absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full ${severity === 'high' ? 'bg-red-500' : severity === 'medium' ? 'bg-orange-500' : 'bg-red-500'}`} />
       <div className="flex-1">
         <span className={`text-xs px-2 py-0.5 rounded border ${severityColors[severity]}`}>{date}</span>
         <h4 className="font-bold text-white mt-2">{title}</h4>
@@ -148,14 +148,14 @@ const TimelineItem = ({ date, title, description, severity }) => {
 const DevelopmentItem = ({ time, source, content, type }) => {
   const typeColors = {
     breaking: 'bg-red-500/20 text-red-400',
-    diplomatic: 'bg-blue-500/20 text-blue-400',
+    diplomatic: 'bg-red-500/20 text-red-400',
     military: 'bg-orange-500/20 text-orange-400',
     border: 'bg-yellow-500/20 text-yellow-400'
   };
 
   return (
     <div className="flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-      <div className={`w-2 h-2 rounded-full mt-2 ${type === 'breaking' ? 'bg-red-500 animate-pulse' : type === 'military' ? 'bg-orange-500' : 'bg-blue-500'}`} />
+      <div className={`w-2 h-2 rounded-full mt-2 ${type === 'breaking' ? 'bg-red-500 animate-pulse' : type === 'military' ? 'bg-orange-500' : 'bg-red-500'}`} />
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">
           <span className={`text-xs px-2 py-0.5 rounded ${typeColors[type]}`}>{type.toUpperCase()}</span>
@@ -208,7 +208,7 @@ const IsraelHezbollahPage = () => {
 
   // What's at Stake
   const stakes = [
-    { icon: <Shield className="w-5 h-5 text-blue-400" />, title: 'Northern Israel Security', description: '60,000 Israelis displaced; border communities under daily rocket threat' },
+    { icon: <Shield className="w-5 h-5 text-red-400" />, title: 'Northern Israel Security', description: '60,000 Israelis displaced; border communities under daily rocket threat' },
     { icon: <Globe className="w-5 h-5 text-green-400" />, title: 'Lebanese Sovereignty', description: 'Risk of Lebanon becoming failed state or Iranian satellite' },
     { icon: <TrendingUp className="w-5 h-5 text-red-400" />, title: 'Regional Escalation', description: 'Conflict could expand to include Iran, Syria, and other proxies' },
     { icon: <Users className="w-5 h-5 text-yellow-400" />, title: 'Civilian Casualties', description: 'Both sides operating in densely populated areas' }
@@ -326,7 +326,7 @@ const IsraelHezbollahPage = () => {
             className="mb-12"
           >
             <h2 className="font-heading font-bold text-xl text-white mb-4 flex items-center gap-3">
-              <Users className="w-5 h-5 text-blue-400" />
+              <Users className="w-5 h-5 text-red-400" />
               Key Players
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -417,12 +417,12 @@ const IsraelHezbollahPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="comic-panel p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/20"
+            className="comic-panel p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-red-500/20"
           >
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="flex-1">
                 <h2 className="font-heading font-bold text-xl text-white mb-2 flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-blue-400" />
+                  <Mail className="w-5 h-5 text-red-400" />
                   Get Conflict Updates
                 </h2>
                 <p className="text-gray-400 text-sm">Receive breaking alerts when new attacks are confirmed in this zone.</p>
@@ -431,9 +431,9 @@ const IsraelHezbollahPage = () => {
                 <input 
                   type="email" 
                   placeholder="Enter your email"
-                  className="flex-1 md:w-64 px-4 py-2 bg-black/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  className="flex-1 md:w-64 px-4 py-2 bg-black/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-red-500"
                 />
-                <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors">
+                <button className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors">
                   Subscribe
                 </button>
               </div>

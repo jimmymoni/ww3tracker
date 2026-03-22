@@ -30,7 +30,7 @@ const DEFAULT_EDGES = [
 
 const EDGE_STYLES = {
   alliance: { 
-    stroke: '#3b82f6', 
+    stroke: '#cc1a1a', 
     strokeWidth: 2, 
     strokeDasharray: '0',
     label: 'Direct Alliance'
@@ -95,7 +95,7 @@ const RelationshipWeb = ({ nodes = DEFAULT_NODES, edges = DEFAULT_EDGES }) => {
     <div className="w-full">
       {/* Header */}
       <div className="section-header mb-4">
-        <div className="section-icon text-blue-400">
+        <div className="section-icon text-red-400">
           <span className="text-lg">🕸️</span>
         </div>
         <div className="flex-1">
@@ -206,7 +206,7 @@ const RelationshipWeb = ({ nodes = DEFAULT_NODES, edges = DEFAULT_EDGES }) => {
                     cy={node.y}
                     r={size.r + 4}
                     fill="none"
-                    stroke={node.id === 'us' ? '#3b82f6' : '#ef4444'}
+                    stroke={node.id === 'us' ? '#cc1a1a' : '#ef4444'}
                     strokeWidth="0.5"
                     opacity={isHovered ? 0.5 : 0.2}
                     className="transition-opacity duration-300"
@@ -218,7 +218,7 @@ const RelationshipWeb = ({ nodes = DEFAULT_NODES, edges = DEFAULT_EDGES }) => {
                   cy={node.y}
                   r={isHovered ? size.r + 2 : size.r}
                   fill="#1a1a24"
-                  stroke={node.id === 'us' ? '#3b82f6' : node.id === 'iran' ? '#ef4444' : 'rgba(255,255,255,0.2)'}
+                  stroke={node.id === 'us' ? '#cc1a1a' : node.id === 'iran' ? '#ef4444' : 'rgba(255,255,255,0.2)'}
                   strokeWidth={isHovered ? 2 : 1}
                   className="transition-all duration-300"
                 />

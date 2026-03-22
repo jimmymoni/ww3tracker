@@ -102,7 +102,7 @@ const IsWW3HappeningPage = () => {
                   <span className="text-gray-600 mx-1">vs</span>
                   <span>☠️</span>
                 </div>
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -179,13 +179,13 @@ const IsWW3HappeningPage = () => {
             className="comic-panel p-8 mb-8"
           >
             <h2 className="font-heading font-bold text-2xl text-white mb-6 flex items-center gap-2">
-              <Activity className="w-6 h-6 text-blue-400" />
+              <Activity className="w-6 h-6 text-red-400" />
               Current WW3 Probability
             </h2>
             
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center p-6 bg-white/5 rounded-xl">
-                <div className="text-4xl font-bold text-blue-400 mb-2">12.4%</div>
+                <div className="text-4xl font-bold text-red-400 mb-2">12.4%</div>
                 <p className="text-gray-400 text-sm">WW3 Probability</p>
                 <p className="text-xs text-gray-500 mt-1">via Polymarket</p>
               </div>

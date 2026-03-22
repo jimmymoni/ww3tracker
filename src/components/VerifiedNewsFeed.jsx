@@ -68,7 +68,7 @@ const ShareButtons = ({ news, cardRef, isWW3 = false, ww3Data = null }) => {
   };
 
   const buttons = [
-    { id: 'x', icon: Twitter, action: shareToX, color: 'hover:text-blue-400', label: 'Share on X' },
+    { id: 'x', icon: Twitter, action: shareToX, color: 'hover:text-red-400', label: 'Share on X' },
     { id: 'reddit', icon: MessageCircle, action: shareToReddit, color: 'hover:text-orange-400', label: 'Share on Reddit' },
     { id: 'copy', icon: Link, action: copyLink, color: 'hover:text-green-400', label: 'Copy link' },
     { id: 'download', icon: Download, action: downloadCard, color: 'hover:text-purple-400', label: 'Download card' },
@@ -144,7 +144,7 @@ const Card = ({ news, index }) => {
     'CONFIRMED': 'bg-green-500/20 text-green-400 border-green-500/30',
     'DISPUTED': 'bg-red-700/20 text-red-500 border-red-700/30',
     'ATTACK': 'bg-red-600/20 text-red-500 border-red-600/30',
-    'DIPLOMACY': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    'DIPLOMACY': 'bg-red-700/20 text-red-400 border-red-500/30',
     'MILITARY': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
     'UPDATE': 'bg-gray-600/20 text-gray-400 border-gray-600/30',
   };
@@ -166,7 +166,7 @@ const Card = ({ news, index }) => {
           {badge}
         </span>
         <span className={`w-2 h-2 rounded-full ${
-          side === 'US' ? 'bg-blue-400' : side === 'IRAN' ? 'bg-red-400' : 'bg-gray-400'
+          side === 'US' ? 'bg-red-400' : side === 'IRAN' ? 'bg-red-400' : 'bg-gray-400'
         }`} />
       </div>
 
@@ -231,8 +231,8 @@ const VerifiedNewsFeed = () => {
     <div className="w-full">
       {/* Header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-          <ExternalLink className="w-4 h-4 text-blue-400" />
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-red-700/10 flex items-center justify-center border border-red-700/20">
+          <ExternalLink className="w-4 h-4 text-red-400" />
         </div>
         <div>
           <h2 className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">VERIFIED NEWS</h2>

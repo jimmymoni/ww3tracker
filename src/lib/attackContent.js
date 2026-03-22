@@ -396,7 +396,7 @@ export function getSeverityDisplay(severity) {
     },
     'low': {
       label: 'Low Severity',
-      color: 'text-blue-600 bg-blue-100',
+      color: 'text-red-600 bg-red-100',
       icon: '🔵',
       description: 'Limited attack with minor impact'
     }

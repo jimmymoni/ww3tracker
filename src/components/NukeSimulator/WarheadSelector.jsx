@@ -72,7 +72,7 @@ export default function WarheadSelector({ selectedWarhead, onSelect, onShowDetai
                   onClick={() => onSelect(warhead)}
                   className={`w-full flex items-center gap-2 p-2.5 rounded-xl border transition-all text-left ${
                     selectedWarhead.id === warhead.id
-                      ? 'bg-blue-500/10 border-blue-500/50 shadow-lg shadow-blue-500/5'
+                      ? 'bg-red-700/10 border-red-700/50 shadow-lg shadow-red-500/5'
                       : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
                   }`}
                 >
@@ -88,7 +88,7 @@ export default function WarheadSelector({ selectedWarhead, onSelect, onShowDetai
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
                       <span className={`text-sm font-bold truncate ${
-                        selectedWarhead.id === warhead.id ? 'text-blue-400' : 'text-white'
+                        selectedWarhead.id === warhead.id ? 'text-red-400' : 'text-white'
                       }`}>
                         {warhead.shortName || warhead.name}
                       </span>
@@ -129,7 +129,7 @@ export default function WarheadSelector({ selectedWarhead, onSelect, onShowDetai
                     </ul>
                     <button
                       onClick={() => onShowDetail && onShowDetail(true)}
-                      className="w-full mt-2 py-1.5 text-xs text-blue-400 hover:text-blue-300 flex items-center justify-center gap-1 bg-blue-500/10 rounded transition-colors"
+                      className="w-full mt-2 py-1.5 text-xs text-red-400 hover:text-red-300 flex items-center justify-center gap-1 bg-red-700/10 rounded transition-colors"
                     >
                       <BookOpen className="w-3 h-3" />
                       View Full Details

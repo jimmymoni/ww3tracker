@@ -64,7 +64,7 @@ const WW3ProbabilityPage = () => {
                   <span className="text-gray-600 mx-1">vs</span>
                   <span>☠️</span>
                 </div>
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -117,10 +117,10 @@ const WW3ProbabilityPage = () => {
               transition={{ delay: 0.1 }}
               className="comic-panel p-6 text-center"
             >
-              <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Globe className="w-6 h-6 text-blue-400" />
+              <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Globe className="w-6 h-6 text-red-400" />
               </div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">12.4%</div>
+              <div className="text-3xl font-bold text-red-400 mb-2">12.4%</div>
               <p className="text-gray-400 text-sm">Global Conflict Probability</p>
               <p className="text-xs text-gray-500 mt-2">via Polymarket</p>
             </motion.div>
@@ -173,7 +173,7 @@ const WW3ProbabilityPage = () => {
               <div className="grid md:grid-cols-2 gap-6 mt-6">
                 <div className="bg-white/5 p-4 rounded-lg">
                   <h3 className="font-bold text-white mb-2 flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4 text-blue-400" />
+                    <BarChart3 className="w-4 h-4 text-red-400" />
                     Prediction Markets
                   </h3>
                   <p className="text-sm text-gray-400">

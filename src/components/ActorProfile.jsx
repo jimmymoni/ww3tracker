@@ -4,7 +4,7 @@ import { ChevronDown, Target, Shield, Zap, Skull, TrendingUp, Users } from 'luci
 
 const ROLE_BADGES = {
   'Primary Aggressor': { bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/30', icon: Target },
-  'Defender': { bg: 'bg-blue-500/20', text: 'text-blue-400', border: 'border-blue-500/30', icon: Shield },
+  'Defender': { bg: 'bg-red-700/20', text: 'text-red-400', border: 'border-red-700/30', icon: Shield },
   'Proxy Force': { bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/30', icon: Zap },
   'Regional Power': { bg: 'bg-purple-500/20', text: 'text-purple-400', border: 'border-purple-500/30', icon: TrendingUp },
   'Superpower': { bg: 'bg-indigo-500/20', text: 'text-indigo-400', border: 'border-indigo-500/30', icon: TrendingUp },
@@ -119,7 +119,7 @@ const ActorProfile = ({ actor, index = 0 }) => {
                           key={i}
                           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-300"
                         >
-                          <Icon className="w-3 h-3 text-blue-400" />
+                          <Icon className="w-3 h-3 text-red-400" />
                           {cap}
                         </span>
                       );

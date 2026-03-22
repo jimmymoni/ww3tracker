@@ -27,7 +27,7 @@ const TimelineItem = ({
   const variantStyles = {
     default: {
       node: 'bg-slate-700 border-slate-600',
-      activeNode: 'bg-blue-500 border-blue-400 shadow-lg shadow-blue-500/30',
+      activeNode: 'bg-red-500 border-red-400 shadow-lg shadow-red-500/30',
       line: 'bg-slate-700',
       date: 'text-slate-400',
       title: 'text-slate-100',

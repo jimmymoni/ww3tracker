@@ -384,7 +384,7 @@ export const WARHEADS = [
     category: 'modern',
     description: 'US land-based ICBM warhead',
     icon: '🚀',
-    color: '#3b82f6',
+    color: '#cc1a1a',
     year: 1979,
     status: 'Active',
     facts: [
@@ -508,7 +508,7 @@ export const getWarheadsByCategory = (category) => WARHEADS.filter(w => w.catego
 export const CATEGORIES = {
   reference: { label: 'Reference (Non-nuclear)', color: '#f59e0b' },
   historical: { label: 'Historical Weapons', color: '#eab308' },
-  modern: { label: 'Modern Arsenal', color: '#3b82f6' },
+  modern: { label: 'Modern Arsenal', color: '#cc1a1a' },
   hypothetical: { label: 'Estimated/Regional', color: '#ef4444' }
 };
 

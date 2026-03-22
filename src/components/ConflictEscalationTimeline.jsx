@@ -221,26 +221,26 @@ const severityConfig = {
     label: 'MEDIUM'
   },
   low: {
-    color: '#22c55e',
-    bgColor: 'bg-green-500',
-    textColor: 'text-green-400',
-    borderColor: 'border-green-500',
-    glowColor: 'shadow-green-500/50',
+    color: '#666666',
+    bgColor: 'bg-gray-500',
+    textColor: 'text-gray-400',
+    borderColor: 'border-gray-500',
+    glowColor: 'shadow-gray-500/50',
     size: 28,
     icon: Shield,
     label: 'LOW'
   }
 };
 
-// Zone colors for actor badges
+// Zone colors for actor badges - all red/amber/grey scale
 const zoneColors = {
-  'pak-afghan': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+  'pak-afghan': 'bg-red-500/10 text-red-400 border-red-500/20',
   'israel-hamas': 'bg-red-500/20 text-red-400 border-red-500/30',
-  'israel-hezbollah': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-  'red-sea': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  'syria': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-  'yemen': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  'iraq': 'bg-pink-500/20 text-pink-400 border-pink-500/30',
+  'israel-hezbollah': 'bg-red-400/20 text-red-300 border-red-400/30',
+  'red-sea': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+  'syria': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+  'yemen': 'bg-gray-400/20 text-gray-300 border-gray-400/30',
+  'iraq': 'bg-gray-600/20 text-gray-400 border-gray-600/30',
   'us-iran': 'bg-red-600/20 text-red-500 border-red-600/30'
 };
 
@@ -687,7 +687,7 @@ const ConflictEscalationTimeline = () => {
       </div>
       
       {/* Timeline Container */}
-      <div className="comic-panel rounded-2xl p-4 md:p-6 relative overflow-hidden">
+      <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-4 md:p-6 relative overflow-hidden">
         {/* Scroll Progress Bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-white/5">
           <motion.div 

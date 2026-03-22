@@ -20,7 +20,7 @@ const BlogPostGrid = ({ posts = [] }) => {
         {/* Section Header */}
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-heading font-bold text-white flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-blue-400" />
+            <span className="w-2 h-2 rounded-full bg-red-500" />
             More Stories
           </h3>
         </div>
@@ -51,7 +51,7 @@ const BlogPostGrid = ({ posts = [] }) => {
                   
                   {/* Category Badge */}
                   <div className="absolute top-2 left-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-red-500/20 text-red-400 border border-red-500/30">
                       {post.category}
                     </span>
                   </div>
@@ -72,12 +72,12 @@ const BlogPostGrid = ({ posts = [] }) => {
                   </div>
 
                   {/* Title */}
-                  <h4 className="text-sm font-bold text-white mb-1.5 line-clamp-2 group-hover:text-blue-400 transition-colors leading-snug">
+                  <h4 className="text-sm font-bold text-white mb-1.5 line-clamp-2 group-hover:text-red-400 transition-colors leading-snug">
                     {post.title}
                   </h4>
 
                   {/* Read More */}
-                  <span className="inline-flex items-center gap-1 text-[11px] text-blue-400 group-hover:text-blue-300 transition-colors">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-gray-400 group-hover:text-white transition-colors">
                     Read
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </span>

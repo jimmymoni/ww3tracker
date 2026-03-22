@@ -101,7 +101,7 @@ const ImpactSummaryBar = () => {
           {/* CTA */}
           <Link
             to="/impact"
-            className="flex items-center justify-center sm:justify-start gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors group"
+            className="flex items-center justify-center sm:justify-start gap-2 text-sm text-red-400 hover:text-red-300 transition-colors group"
           >
             <span>View Full Impact Dashboard</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

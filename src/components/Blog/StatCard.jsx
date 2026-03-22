@@ -3,7 +3,7 @@ import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 const StatCard = ({ label, value, subtext, trend, trendValue, icon: Icon, color = 'blue' }) => {
   const colorClasses = {
-    blue: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30 text-blue-400',
+    blue: 'from-red-500/20 to-orange-500/20 border-red-500/30 text-red-400',
     red: 'from-red-500/20 to-orange-500/20 border-red-500/30 text-red-400',
     green: 'from-green-500/20 to-emerald-500/20 border-green-500/30 text-green-400',
     purple: 'from-purple-500/20 to-pink-500/20 border-purple-500/30 text-purple-400',

@@ -149,7 +149,7 @@ export default function NukeSimHero() {
                     onClick={() => { setSelectedCity(city); handleReset(); }}
                     className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                       selectedCity.name === city.name
-                        ? 'bg-blue-500/20 border border-blue-500/50 text-blue-400'
+                        ? 'bg-red-500/20 border border-red-500/50 text-red-400'
                         : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
                     }`}
                   >
@@ -162,7 +162,7 @@ export default function NukeSimHero() {
                 value={customCity}
                 onChange={(e) => setCustomCity(e.target.value)}
                 placeholder="Or type any city..."
-                className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-red-500"
               />
             </div>
 
@@ -219,7 +219,7 @@ export default function NukeSimHero() {
                 </button>
                 <button
                   onClick={handleShare}
-                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+                  className="flex-1 bg-transparent border border-[#cc1a1a] hover:bg-[#cc1a1a] text-white font-medium py-3 rounded transition-all flex items-center justify-center gap-2"
                 >
                   <Share2 className="w-4 h-4" />
                   {showShare ? 'Copied!' : 'Share'}
@@ -231,7 +231,7 @@ export default function NukeSimHero() {
             <div className="mt-4 text-center">
               <Link 
                 to="/live-map" 
-                className="text-xs text-gray-500 hover:text-blue-400 transition-colors inline-flex items-center gap-1"
+                className="text-xs text-gray-500 hover:text-red-400 transition-colors inline-flex items-center gap-1"
               >
                 Track the real conflict 
                 <ExternalLink className="w-3 h-3" />
@@ -257,10 +257,10 @@ export default function NukeSimHero() {
                   className="text-center z-10"
                 >
                   <div className="w-32 h-32 mx-auto mb-4 relative">
-                    <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-pulse" />
-                    <div className="absolute inset-4 bg-blue-500/30 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                    <div className="absolute inset-0 bg-red-500/20 rounded-full animate-pulse" />
+                    <div className="absolute inset-4 bg-red-500/30 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <MapPin className="w-8 h-8 text-blue-400" />
+                      <MapPin className="w-8 h-8 text-red-400" />
                     </div>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">{selectedCity.name}</h3>
@@ -382,7 +382,7 @@ export default function NukeSimHero() {
             </p>
             <Link
               to="/live-map"
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition-all whitespace-nowrap"
+              className="flex items-center gap-2 px-6 py-3 bg-transparent border border-[#cc1a1a] hover:bg-[#cc1a1a] text-white rounded font-medium transition-all whitespace-nowrap"
             >
               View Live War Map
               <ChevronDown className="w-4 h-4 rotate-[-90deg]" />

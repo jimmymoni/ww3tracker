@@ -231,8 +231,8 @@ export default function WarheadDetailModal({ warhead, onClose }) {
 
           {/* Additional Context */}
           {warhead.context && (
-            <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-              <p className="text-sm text-blue-300/80">
+            <div className="p-3 bg-red-700/10 border border-red-700/20 rounded-lg">
+              <p className="text-sm text-red-300/80">
                 <strong>Context:</strong> {warhead.context}
               </p>
             </div>

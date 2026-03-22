@@ -207,7 +207,7 @@ const HumanImpactDashboard = () => {
       animate={{ opacity: 1 }}
       className="w-full"
     >
-      <div className="bg-[#14141c] border border-white/10 rounded-xl p-4 sm:p-6">
+      <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-4 sm:p-6">
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
@@ -321,7 +321,7 @@ const HumanImpactDashboard = () => {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-blue-400" />
+                <MapPin className="w-5 h-5 text-gray-400" />
                 <div>
                   <div className="font-mono text-2xl text-white">
                     {formatNumber(displaced.refugees)}
@@ -348,7 +348,7 @@ const HumanImpactDashboard = () => {
                   </div>
                 ))}
               </div>
-              <button className="mt-3 flex items-center gap-1 text-[11px] text-blue-400 hover:text-blue-300 transition-colors">
+              <button className="mt-3 flex items-center gap-1 text-[11px] text-gray-400 hover:text-white transition-colors">
                 <span>View refugee map</span>
                 <ExternalLink className="w-3 h-3" />
               </button>

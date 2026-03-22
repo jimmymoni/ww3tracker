@@ -3,7 +3,7 @@ import { Quote } from 'lucide-react';
 
 const QuoteBlock = ({ quote, author, role, source, variant = 'default' }) => {
   const variants = {
-    default: 'border-l-4 border-blue-500 bg-blue-500/5',
+    default: 'border-l-4 border-red-500 bg-red-500/5',
     warning: 'border-l-4 border-orange-500 bg-orange-500/5',
     danger: 'border-l-4 border-red-500 bg-red-500/5',
     success: 'border-l-4 border-green-500 bg-green-500/5',

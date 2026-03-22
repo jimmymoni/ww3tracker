@@ -114,7 +114,7 @@ const AIFriendlyFAQ = () => {
   return (
     <section className="mt-16 pt-12 border-t border-white/10">
       <div className="flex items-center gap-2 mb-8">
-        <AlertCircle className="w-6 h-6 text-blue-400" />
+        <AlertCircle className="w-6 h-6 text-red-400" />
         <h2 className="text-2xl md:text-3xl font-bold text-white">
           Common Questions About the US-Iran War
         </h2>
@@ -234,7 +234,7 @@ export default function BlogPage() {
               placeholder="Search topics..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition-colors"
             />
           </div>
 
@@ -259,7 +259,7 @@ export default function BlogPage() {
                       <Clock className="w-4 h-4" />
                       <span>{featuredPost.readTime}</span>
                     </div>
-                    <h2 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                    <h2 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors">
                       {featuredPost.title}
                     </h2>
                     <p className="text-gray-400">{featuredPost.excerpt}</p>
@@ -295,7 +295,7 @@ export default function BlogPage() {
                         <span>•</span>
                         <span>{post.readTime}</span>
                       </div>
-                      <h3 className="font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-2">
+                      <h3 className="font-bold text-white group-hover:text-red-400 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                       <p className="text-gray-500 text-sm mt-1 line-clamp-1">{post.excerpt}</p>

@@ -66,7 +66,7 @@ const AIFriendlyFAQ = ({
   return (
     <section className={`mt-16 pt-12 border-t border-white/10 ${className}`}>
       <div className="flex items-center gap-3 mb-8">
-        <Icon className="w-6 h-6 text-blue-400" />
+        <Icon className="w-6 h-6 text-red-400" />
         <h2 className="text-2xl md:text-3xl font-bold text-white">
           {title}
         </h2>
@@ -117,9 +117,9 @@ export const CompactFAQ = ({
           key={index} 
           className="bg-[#14141c] border border-white/10 rounded-lg group ai-citation"
         >
-          <summary className="p-4 cursor-pointer font-medium text-white hover:text-blue-400 transition-colors list-none flex items-center justify-between">
+          <summary className="p-4 cursor-pointer font-medium text-white hover:text-red-400 transition-colors list-none flex items-center justify-between">
             <span>{faq.question}</span>
-            <HelpCircle className="w-4 h-4 text-gray-500 group-open:text-blue-400 transition-colors" />
+            <HelpCircle className="w-4 h-4 text-gray-500 group-open:text-red-400 transition-colors" />
           </summary>
           <div className="px-4 pb-4 text-gray-400 text-sm leading-relaxed faq-answer">
             {faq.answer}

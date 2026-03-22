@@ -66,15 +66,15 @@ const SIGNIFICANCE_CONFIG = {
   },
   development: { 
     label: 'DEVELOPMENT', 
-    color: 'text-blue-400', 
-    bg: 'bg-blue-500/10',
-    border: 'border-blue-500/20'
+    color: 'text-gray-400', 
+    bg: 'bg-white/5',
+    border: 'border-white/10'
   }
 };
 
 const CATEGORY_CONFIG = {
-  military: { label: 'MILITARY', color: 'text-rose-400', bg: 'bg-rose-500/10' },
-  diplomatic: { label: 'DIPLOMATIC', color: 'text-emerald-400', bg: 'bg-emerald-500/10' }
+  military: { label: 'MILITARY', color: 'text-red-400', bg: 'bg-red-500/10' },
+  diplomatic: { label: 'DIPLOMATIC', color: 'text-gray-400', bg: 'bg-white/5' }
 };
 
 // Format relative time
@@ -98,7 +98,7 @@ const DevelopmentCard = ({ development, isExpanded, onToggle }) => {
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-[#14141c] border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-colors"
+      className="bg-[#111111] border border-[#2a2a2a] rounded-lg overflow-hidden hover:border-[#3a3a3a] transition-colors"
     >
       <div className="p-3">
         {/* Compact Header Row */}
@@ -184,12 +184,12 @@ const KeyDevelopmentsFeed = () => {
 
   return (
     <section className="w-full">
-      <div className="bg-[#14141c] border border-white/10 rounded-xl p-4">
+      <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="font-heading text-lg text-white flex items-center gap-2">
-              <Radio className="w-5 h-5 text-blue-400" />
+              <Radio className="w-5 h-5 text-red-400" />
               Key Developments
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">

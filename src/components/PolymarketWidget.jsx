@@ -128,8 +128,8 @@ const MarketCard = ({ market }) => {
               exit={{ opacity: 0, x: 10 }}
               className="flex items-center gap-1"
             >
-              <button onClick={shareToX} className="p-1.5 rounded hover:bg-blue-500/20 transition-colors">
-                <Twitter className="w-3.5 h-3.5 text-gray-400 hover:text-blue-400" />
+              <button onClick={shareToX} className="p-1.5 rounded hover:bg-red-700/20 transition-colors">
+                <Twitter className="w-3.5 h-3.5 text-gray-400 hover:text-red-400" />
               </button>
               <button onClick={copyLink} className="p-1.5 rounded hover:bg-green-500/20 transition-colors relative">
                 <LinkIcon className="w-3.5 h-3.5 text-gray-400 hover:text-green-400" />

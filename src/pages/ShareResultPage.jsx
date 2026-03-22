@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 const archetypes = {
   bunker: { name: "BUNKER DADDY", emoji: "☢️", color: "#ef4444" },
-  informed: { name: "THE INFORMED NORMIE", emoji: "📱", color: "#3b82f6" },
+  informed: { name: "THE INFORMED NORMIE", emoji: "📱", color: "#cc1a1a" },
   coping: { name: "COPING CHRONICALLY ONLINE", emoji: "🎭", color: "#eab308" },
   main: { name: "MAIN CHARACTER SYNDROME", emoji: "🎬", color: "#a855f7" },
   npc: { name: "NPC VIBES", emoji: "🤖", color: "#22c55e" }

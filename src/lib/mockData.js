@@ -65,7 +65,7 @@ export const NEWS_CATEGORIES = [
     category: "Nuclear Program",
     analysis: "Uranium enrichment levels approach weapons-grade threshold",
     badge: "CONFIRMED",
-    badgeColor: "bg-blue-500",
+    badgeColor: "bg-red-500",
   },
   {
     id: 6,
@@ -146,8 +146,8 @@ export const FIGHTER_STATS = {
       allies: "NATO",
       ego: 100,
     },
-    color: "bg-blue-500",
-    borderColor: "border-blue-500",
+    color: "bg-red-500",
+    borderColor: "border-red-500",
   },
   iran: {
     name: "THE SHADOW 🕶️",
@@ -165,12 +165,12 @@ export const FIGHTER_STATS = {
 };
 
 export const COMBO_MESSAGES = [
-  { text: "CRITICAL HIT! +3 to US 💥", type: "us", color: "text-blue-400" },
+  { text: "CRITICAL HIT! +3 to US 💥", type: "us", color: "text-red-400" },
   { text: "IRAN DODGES! Neutralized 🌀", type: "iran", color: "text-red-400" },
   { text: "DOUBLE KO! Both sides lose 😭", type: "neutral", color: "text-yellow-400" },
-  { text: "SUPER EFFECTIVE! 🎯", type: "us", color: "text-blue-400" },
+  { text: "SUPER EFFECTIVE! 🎯", type: "us", color: "text-red-400" },
   { text: "COUNTER ATTACK! ⚔️", type: "iran", color: "text-red-400" },
   { text: "COMBO BREAKER! 🛑", type: "neutral", color: "text-purple-400" },
-  { text: "FINISH HIM! 💀", type: "us", color: "text-blue-400" },
+  { text: "FINISH HIM! 💀", type: "us", color: "text-red-400" },
   { text: "PARRY! Missed opportunity 🛡️", type: "iran", color: "text-red-400" },
 ];

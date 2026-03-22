@@ -26,7 +26,7 @@ const WorldMapBackground = () => (
     <rect width="100%" height="100%" fill="url(#grid)" />
     
     {/* Simplified world representation */}
-    <g fill="rgba(59, 130, 246, 0.1)" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="1">
+    <g fill="rgba(204, 26, 26, 0.1)" stroke="rgba(204, 26, 26, 0.2)" strokeWidth="1">
       {/* North America rough shape */}
       <path d="M 150 120 Q 200 80 280 100 L 320 150 L 280 250 L 200 280 L 120 200 Z" />
       {/* South America */}
@@ -45,7 +45,7 @@ const WorldMapBackground = () => (
 
 export default function BlastVisualization({ city, warhead }) {
   return (
-    <div className="h-full min-h-[450px] comic-panel rounded-2xl p-6 relative overflow-hidden">
+    <div className="h-full min-h-[450px] bg-[#111111] border border-[#2a2a2a] rounded-lg p-6 relative overflow-hidden">
       {/* Background */}
       <WorldMapBackground />
       
@@ -63,7 +63,7 @@ export default function BlastVisualization({ city, warhead }) {
             <motion.div
               animate={{ scale: [1, 2.5, 1], opacity: [0.3, 0, 0.3] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="w-32 h-32 rounded-full border-2 border-blue-500/20"
+              className="w-32 h-32 rounded-full border-2 border-red-500/20"
             />
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
@@ -75,8 +75,8 @@ export default function BlastVisualization({ city, warhead }) {
           </div>
           
           {/* Center marker */}
-          <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border-2 border-blue-500/40 flex items-center justify-center">
-            <Globe className="w-8 h-8 text-blue-400" />
+          <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 border-2 border-red-500/40 flex items-center justify-center">
+            <Globe className="w-8 h-8 text-red-400" />
           </div>
           
           {/* Coordinates */}
@@ -141,7 +141,7 @@ export default function BlastVisualization({ city, warhead }) {
           transition={{ delay: 0.4 }}
           className="mt-8 flex items-center gap-3 text-gray-500"
         >
-          <BookOpen className="w-4 h-4 text-blue-400" />
+          <BookOpen className="w-4 h-4 text-red-400" />
           <span className="text-sm">Click SIMULATE EFFECTS to see the humanitarian impact</span>
         </motion.div>
 

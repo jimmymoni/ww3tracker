@@ -27,8 +27,8 @@ export default function ManageAlertsPage() {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Bell className="w-8 h-8 text-blue-400" />
+          <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Bell className="w-8 h-8 text-red-400" />
           </div>
           <h1 className="font-heading text-3xl text-white mb-2">
             Manage Your Alerts
@@ -48,7 +48,7 @@ export default function ManageAlertsPage() {
         <div className="mt-6 text-center">
           <p className="text-gray-500 text-sm">
             Having trouble? Contact us at{' '}
-            <a href="mailto:support@ww3tracker.live" className="text-blue-400 hover:underline">
+            <a href="mailto:support@ww3tracker.live" className="text-red-400 hover:underline">
               support@ww3tracker.live
             </a>
           </p>

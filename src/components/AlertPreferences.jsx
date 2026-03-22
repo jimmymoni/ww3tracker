@@ -168,7 +168,7 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
   if (loading) {
     return (
       <div className={`comic-panel p-8 text-center ${className}`}>
-        <Loader2 className="w-8 h-8 text-blue-400 animate-spin mx-auto mb-4" />
+        <Loader2 className="w-8 h-8 text-red-400 animate-spin mx-auto mb-4" />
         <p className="text-gray-400">Loading your preferences...</p>
       </div>
     );
@@ -184,7 +184,7 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
         <p className="text-gray-400 text-sm mb-4">{error}</p>
         <a 
           href="/"
-          className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300"
+          className="inline-flex items-center gap-2 text-red-400 hover:text-red-300"
         >
           <ExternalLink className="w-4 h-4" />
           Return to Dashboard
@@ -242,8 +242,8 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-            <Settings className="w-5 h-5 text-blue-400" />
+          <div className="w-10 h-10 bg-red-700/20 rounded-lg flex items-center justify-center">
+            <Settings className="w-5 h-5 text-red-400" />
           </div>
           <div className="flex-1">
             <h3 className="font-heading text-lg text-white">Alert Preferences</h3>
@@ -292,7 +292,7 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
                     onClick={() => handleZoneToggle(zone.id)}
                     className={`p-3 rounded-lg border text-left transition-all ${
                       selectedZones.includes(zone.id)
-                        ? 'bg-blue-500/20 border-blue-500/50'
+                        ? 'bg-red-700/20 border-red-700/50'
                         : 'bg-black/20 border-gray-700 hover:border-gray-600'
                     }`}
                   >
@@ -330,7 +330,7 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
                     key={opt.id}
                     className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all ${
                       frequency === opt.id
-                        ? 'bg-blue-500/20 border-blue-500/50'
+                        ? 'bg-red-700/20 border-red-700/50'
                         : 'bg-black/20 border-gray-700 hover:border-gray-600'
                     }`}
                   >
@@ -346,9 +346,9 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
                       className="sr-only"
                     />
                     <div className={`w-4 h-4 rounded-full border-2 mr-3 flex items-center justify-center ${
-                      frequency === opt.id ? 'border-blue-400' : 'border-gray-500'
+                      frequency === opt.id ? 'border-red-400' : 'border-gray-500'
                     }`}>
-                      {frequency === opt.id && <div className="w-2 h-2 rounded-full bg-blue-400" />}
+                      {frequency === opt.id && <div className="w-2 h-2 rounded-full bg-red-400" />}
                     </div>
                     <div className="flex-1">
                       <div className="font-medium text-white text-sm">{opt.label}</div>
@@ -379,7 +379,7 @@ export default function AlertPreferences({ token, onUnsubscribe, className = '' 
         <button
           onClick={handleSave}
           disabled={saving || !hasChanges}
-          className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 mb-3"
+          className="w-full bg-red-800 hover:bg-red-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 mb-3"
         >
           {saving ? (
             <>

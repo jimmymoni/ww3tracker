@@ -344,7 +344,7 @@ const AttackCard = ({ attack, index }) => {
 
       {/* Content */}
       <div className="mb-4">
-        <h3 className="font-heading font-bold text-lg text-white mb-2 group-hover:text-blue-400 transition-colors">
+        <h3 className="font-heading font-bold text-lg text-white mb-2 group-hover:text-red-400 transition-colors">
           {attack.headline}
         </h3>
         <p className="text-gray-400 text-sm line-clamp-2 leading-relaxed">
@@ -359,7 +359,7 @@ const AttackCard = ({ attack, index }) => {
         </span>
         <Link 
           to={`/attack/${attack.id}`}
-          className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition-colors group/link"
+          className="text-sm text-red-400 hover:text-red-300 flex items-center gap-1.5 transition-colors group/link"
         >
           Read full report
           <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
@@ -492,7 +492,7 @@ export default function AttacksArchivePage() {
                 <select
                   value={countryFilter}
                   onChange={(e) => setCountryFilter(e.target.value)}
-                  className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-white focus:outline-none focus:border-blue-500/50 min-w-[140px]"
+                  className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-white focus:outline-none focus:border-red-500/50 min-w-[140px]"
                 >
                   <option value="all">All Countries</option>
                   {countries.map(country => (
@@ -509,7 +509,7 @@ export default function AttacksArchivePage() {
                 <select
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
-                  className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-white focus:outline-none focus:border-blue-500/50 min-w-[140px]"
+                  className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-white focus:outline-none focus:border-red-500/50 min-w-[140px]"
                 >
                   <option value="all">All Types</option>
                   {attackTypes.map(type => (
@@ -526,7 +526,7 @@ export default function AttacksArchivePage() {
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
-                  className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-white focus:outline-none focus:border-blue-500/50 min-w-[140px]"
+                  className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-white focus:outline-none focus:border-red-500/50 min-w-[140px]"
                 >
                   <option value="newest">Newest First</option>
                   <option value="oldest">Oldest First</option>

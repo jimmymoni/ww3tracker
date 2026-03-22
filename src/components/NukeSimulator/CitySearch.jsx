@@ -135,12 +135,12 @@ export default function CitySearch({ selectedCity, onSelect }) {
           }}
           onKeyDown={handleKeyDown}
           placeholder="Search any city..."
-          className="w-full bg-black/30 border border-white/10 rounded-xl pl-10 pr-12 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all"
+          className="w-full bg-black/30 border border-white/10 rounded-xl pl-10 pr-12 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all"
         />
         <button
           onClick={handleLocate}
           disabled={isLocating}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-500 hover:text-blue-400 transition-colors disabled:opacity-50"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-500 hover:text-red-400 transition-colors disabled:opacity-50"
           title="Use my location"
         >
           <Locate className={`w-4 h-4 ${isLocating ? 'animate-pulse' : ''}`} />
@@ -167,7 +167,7 @@ export default function CitySearch({ selectedCity, onSelect }) {
                       onClick={() => selectCity(city)}
                       className={`px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
                         index === highlightedIndex 
-                          ? 'bg-blue-500/20' 
+                          ? 'bg-red-700/20' 
                           : 'hover:bg-white/5'
                       }`}
                     >
@@ -236,7 +236,7 @@ export default function CitySearch({ selectedCity, onSelect }) {
           animate={{ opacity: 1 }}
           className="mt-3 flex items-center gap-2 text-sm text-gray-400"
         >
-          <MapPin className="w-4 h-4 text-blue-400" />
+          <MapPin className="w-4 h-4 text-red-400" />
           <span>{selectedCity.name}, {selectedCity.country}</span>
           <span className="text-gray-600">•</span>
           <span>Pop: {(selectedCity.population / 1000000).toFixed(1)}M</span>

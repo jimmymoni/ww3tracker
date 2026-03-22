@@ -40,7 +40,7 @@ const IranConflictLivePage = () => {
                   <span className="text-gray-600 mx-1">vs</span>
                   <span>☠️</span>
                 </div>
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -101,14 +101,14 @@ const IranConflictLivePage = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + (index * 0.1) }}
-                  className="bg-white/5 p-4 rounded-lg border-l-4 border-blue-500 hover:bg-white/10 transition-colors"
+                  className="bg-white/5 p-4 rounded-lg border-l-4 border-red-500 hover:bg-white/10 transition-colors"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className={`w-2 h-2 rounded-full ${
                         update.type === 'breaking' ? 'bg-red-500 animate-pulse' :
                         update.type === 'satellite' ? 'bg-green-500' :
-                        update.type === 'diplomatic' ? 'bg-blue-500' :
+                        update.type === 'diplomatic' ? 'bg-red-500' :
                         'bg-yellow-500'
                       }`} />
                       <span className="text-xs font-mono text-gray-500">{update.source}</span>

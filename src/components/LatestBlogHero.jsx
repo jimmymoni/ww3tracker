@@ -19,12 +19,12 @@ const LatestBlogHero = ({ post }) => {
         {/* Section Header */}
         <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-400" />
+            <BookOpen className="w-5 h-5 text-red-400" />
             <h2 className="font-heading font-bold text-lg text-white">Latest Analysis</h2>
           </div>
           <Link 
             to="/blog" 
-            className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
+            className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1"
           >
             View All
             <ArrowRight className="w-3 h-3" />
@@ -45,7 +45,7 @@ const LatestBlogHero = ({ post }) => {
             
             {/* Category Badge */}
             <div className="absolute top-4 left-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border bg-blue-500/20 text-blue-400 border-blue-500/30">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border bg-red-500/20 text-red-400 border-red-500/30">
                 <Tag className="w-3 h-3" />
                 {post.category}
               </span>
@@ -79,7 +79,7 @@ const LatestBlogHero = ({ post }) => {
             {/* CTA Button */}
             <Link
               to={`/blog/${post.slug}`}
-              className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-6 rounded-xl transition-colors w-fit"
+              className="inline-flex items-center justify-center gap-2 bg-transparent border border-[#cc1a1a] hover:bg-[#cc1a1a] text-white font-medium py-3 px-6 rounded transition-colors w-fit"
             >
               Read Analysis
               <ArrowRight className="w-4 h-4" />

@@ -124,7 +124,7 @@ const ConflictDetailPage = () => {
       <div className="min-h-screen bg-grid text-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white mb-4">Conflict Not Found</h1>
-          <Link to="/conflict-tracker" className="text-blue-400 hover:text-blue-300">
+          <Link to="/conflict-tracker" className="text-red-400 hover:text-red-300">
             Return to Conflict Tracker
           </Link>
         </div>
@@ -153,8 +153,8 @@ const ConflictDetailPage = () => {
           <div className="max-w-7xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Globe className="w-6 h-6 text-blue-400" />
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Globe className="w-6 h-6 text-red-400" />
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -214,7 +214,7 @@ const ConflictDetailPage = () => {
             className="comic-panel p-6 mb-8"
           >
             <h2 className="font-heading font-bold text-xl text-white mb-4 flex items-center gap-3">
-              <Users className="w-5 h-5 text-blue-400" />
+              <Users className="w-5 h-5 text-red-400" />
               Key Players
             </h2>
             <div className="space-y-4">
@@ -222,7 +222,7 @@ const ConflictDetailPage = () => {
                 <div key={index} className="bg-white/5 p-4 rounded-lg">
                   <div className="flex items-center justify-between mb-1">
                     <h3 className="font-bold text-white">{actor.name}</h3>
-                    <span className="text-xs text-blue-400">{actor.role}</span>
+                    <span className="text-xs text-red-400">{actor.role}</span>
                   </div>
                   <p className="text-sm text-gray-400">{actor.stance}</p>
                 </div>

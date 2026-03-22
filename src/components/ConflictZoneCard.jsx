@@ -15,10 +15,10 @@ const CONFLICT_TYPES = {
     indicator: 'bg-orange-500 animate-pulse-orange',
   },
   diplomatic: {
-    border: 'border-blue-500/50',
-    glow: 'shadow-blue-500/20',
-    badge: 'bg-blue-500/20 text-blue-400',
-    indicator: 'bg-blue-500 animate-pulse-blue',
+    border: 'border-red-700/50',
+    glow: 'shadow-red-500/20',
+    badge: 'bg-red-700/20 text-red-400',
+    indicator: 'bg-red-500 animate-pulse-blue',
   },
   frozen: {
     border: 'border-gray-500/50',

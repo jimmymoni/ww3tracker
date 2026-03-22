@@ -27,12 +27,12 @@ const ArticleCard = ({
   featured = false,
 }) => {
   const colorVariants = {
-    blue: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    blue: 'bg-red-500/20 text-red-400 border-red-500/30',
     red: 'bg-red-500/20 text-red-400 border-red-500/30',
     green: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    purple: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    purple: 'bg-red-500/20 text-red-400 border-red-500/30',
     orange: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    yellow: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    yellow: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
   };
 
   return (
@@ -44,7 +44,7 @@ const ArticleCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      whileHover={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}
+      whileHover={{ borderColor: 'rgba(204, 26, 26, 0.3)' }}
     >
       {/* Image Container */}
       <div className={`relative overflow-hidden ${featured ? 'md:h-full h-48' : 'h-48'}`}>
@@ -89,7 +89,7 @@ const ArticleCard = ({
 
         {/* Title */}
         <h3
-          className={`font-bold text-slate-100 mb-3 leading-tight transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 group-hover:bg-clip-text group-hover:text-transparent ${
+          className={`font-bold text-slate-100 mb-3 leading-tight transition-all duration-300 group-hover:text-red-400 ${
             featured ? 'text-2xl md:text-3xl' : 'text-lg'
           }`}
         >
@@ -106,13 +106,12 @@ const ArticleCard = ({
         {/* Read More Button */}
         <motion.a
           href={href}
-          className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm group/btn"
+          className="inline-flex items-center gap-2 text-white font-semibold text-sm group/btn border border-[#cc1a1a] px-4 py-2 rounded hover:bg-[#cc1a1a] transition-colors"
           whileHover={{ x: 4 }}
           transition={{ duration: 0.2 }}
         >
           <span className="relative">
-            Read More
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-blue-400 transition-all duration-300 group-hover/btn:w-full" />
+            Read Analysis
           </span>
           <motion.span
             initial={{ x: 0 }}
@@ -126,7 +125,7 @@ const ArticleCard = ({
 
       {/* Hover Glow Effect */}
       <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-red-500/5 to-red-500/5" />
       </div>
     </motion.article>
   );

@@ -566,7 +566,7 @@ export default function AttackPage() {
           className="mb-8"
         >
           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Info className="w-5 h-5 text-blue-400" />
+            <Info className="w-5 h-5 text-red-400" />
             The Details
           </h2>
           
@@ -679,7 +679,7 @@ export default function AttackPage() {
             className="mb-8"
           >
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-blue-400" />
+              <Clock className="w-5 h-5 text-red-400" />
               What Else Happened That Day
             </h2>
             
@@ -732,7 +732,7 @@ export default function AttackPage() {
             className="w-full flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/[0.07] transition-colors"
           >
             <div className="flex items-center gap-3">
-              <Shield className="w-5 h-5 text-blue-400" />
+              <Shield className="w-5 h-5 text-red-400" />
               <div className="text-left">
                 <div className="font-semibold text-white">Sources & Verification</div>
                 <div className="text-sm text-gray-500">How we confirm what happened</div>

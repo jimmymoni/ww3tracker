@@ -148,7 +148,7 @@ const IranNuclearDealPage = () => {
                   <span className="text-gray-600 mx-1">vs</span>
                   <span>☠️</span>
                 </div>
-                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-blue-400 transition-colors">
+                <Link to="/" className="font-heading font-bold text-xl text-white hover:text-red-400 transition-colors">
                   WW3 TRACKER
                 </Link>
               </div>
@@ -229,7 +229,7 @@ const IranNuclearDealPage = () => {
             className="comic-panel p-8 mb-8"
           >
             <h2 className="font-heading font-bold text-2xl text-white mb-6 flex items-center gap-2">
-              <FileText className="w-6 h-6 text-blue-400" />
+              <FileText className="w-6 h-6 text-red-400" />
               What Was the Iran Nuclear Deal?
             </h2>
             
@@ -256,8 +256,8 @@ const IranNuclearDealPage = () => {
                     <li>• Export spent fuel</li>
                   </ul>
                 </div>
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6">
-                  <h3 className="font-bold text-blue-400 mb-4 flex items-center gap-2">
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-6">
+                  <h3 className="font-bold text-red-400 mb-4 flex items-center gap-2">
                     <Globe className="w-5 h-5" />
                     World Powers Agreed To:
                   </h3>
@@ -306,7 +306,7 @@ const IranNuclearDealPage = () => {
                     }`} />
                     
                     <div className="flex flex-wrap items-baseline gap-3 mb-1">
-                      <span className="text-lg font-bold text-blue-400">{item.year}</span>
+                      <span className="text-lg font-bold text-red-400">{item.year}</span>
                       <span className="text-white font-semibold">{item.event}</span>
                     </div>
                     <p className="text-gray-400">{item.description}</p>

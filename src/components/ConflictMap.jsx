@@ -54,10 +54,10 @@ const CITY_LABELS = [
 ];
 
 const SEVERITY_CONFIG = {
-  critical: { color: '#dc2626', bg: 'bg-red-600', label: 'CRITICAL' },
-  high: { color: '#ef4444', bg: 'bg-red-500', label: 'HIGH' },
-  medium: { color: '#f97316', bg: 'bg-orange-500', label: 'ELEVATED' },
-  low: { color: '#eab308', bg: 'bg-yellow-500', label: 'MONITORING' }
+  critical: { color: '#cc1a1a', bg: 'bg-red-600', label: 'CRITICAL' },
+  high: { color: '#e02020', bg: 'bg-red-500', label: 'HIGH' },
+  medium: { color: '#f59e0b', bg: 'bg-amber-500', label: 'ELEVATED' },
+  low: { color: '#666666', bg: 'bg-gray-500', label: 'MONITORING' }
 };
 
 // Time window config - SHOW ALL ATTACKS
@@ -498,9 +498,9 @@ export default function ConflictMap({ mobile = false }) {
             </filter>
           </defs>
           
-          <rect width="100%" height="100%" fill="#020617" />
+          <rect width="100%" height="100%" fill="#0a0a0a" />
           <rect width="100%" height="100%" fill="url(#grid)" />
-          <rect width="100%" height="100%" fill="rgba(15, 23, 42, 0.3)" />
+          <rect width="100%" height="100%" fill="rgba(17, 17, 17, 0.3)" />
 
           <g ref={gRef}>
             {worldData && (
@@ -655,7 +655,7 @@ export default function ConflictMap({ mobile = false }) {
         </svg>
       )}
 
-      <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md border border-white/10 rounded-lg p-2.5">
+      <div className="absolute top-3 left-3 bg-[#111111] border border-[#2a2a2a] rounded-lg p-2.5">
         <div className="space-y-1.5">
           {Object.entries(SEVERITY_CONFIG).map(([key, config]) => (
             <div key={key} className="flex items-center gap-1.5">
@@ -676,10 +676,10 @@ export default function ConflictMap({ mobile = false }) {
 
   return (
     <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-      <div className="bg-black/60 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
+      <div className="bg-[#111111] border border-[#2a2a2a] rounded-lg overflow-hidden">
         
         {/* Header */}
-        <div className="p-3 md:p-4 border-b border-white/10 bg-gradient-to-r from-black/60 to-black/40">
+        <div className="p-3 md:p-4 border-b border-[#2a2a2a] bg-[#0a0a0a]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 md:gap-3">
               <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30 flex items-center justify-center">
@@ -698,15 +698,15 @@ export default function ConflictMap({ mobile = false }) {
               </div>
             </div>
 
-            <div className="hidden md:flex items-center gap-1 bg-white/5 rounded-lg p-1">
+            <div className="hidden md:flex items-center gap-1 bg-[#0a0a0a] rounded p-1">
               <button 
                 onClick={zoomOut} 
-                className="w-8 h-8 rounded hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white text-sm"
+                className="w-8 h-8 rounded hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white text-sm transition-colors"
               >−</button>
               <span className="text-[10px] text-gray-500 px-1">Zoom</span>
               <button 
                 onClick={zoomIn} 
-                className="w-8 h-8 rounded hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white text-sm"
+                className="w-8 h-8 rounded hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white text-sm transition-colors"
               >+</button>
             </div>
           </div>
@@ -775,7 +775,7 @@ export default function ConflictMap({ mobile = false }) {
                             <p className={`text-[10px] ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-600'}`}>
                               {event.relativeTime}
                             </p>
-                            <span className="text-[10px] text-blue-400 flex items-center gap-0.5">
+                            <span className="text-[10px] text-gray-400 flex items-center gap-0.5 group-hover:text-white transition-colors">
                               Details <ExternalLink className="w-3 h-3" />
                             </span>
                           </div>
@@ -851,7 +851,7 @@ export default function ConflictMap({ mobile = false }) {
                         <p className={`text-xs ${event.isNew ? 'text-red-400 font-medium' : event.isRecent ? 'text-orange-400' : 'text-gray-500'}`}>
                           {event.relativeTime}
                         </p>
-                        <span className="text-[11px] text-blue-400 flex items-center gap-0.5 hover:text-blue-300">
+                        <span className="text-[11px] text-gray-400 flex items-center gap-0.5 group-hover:text-white transition-colors">
                           View Details <ExternalLink className="w-3 h-3" />
                         </span>
                       </div>

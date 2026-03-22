@@ -63,7 +63,7 @@ const NavLinks = ({ mobile = false, onClose }) => {
             key={link.to}
             to={link.to}
             onClick={onClose}
-            className="text-gray-300 hover:text-white font-body text-sm py-2 px-3 rounded hover:bg-white/10 transition-colors"
+            className="text-gray-300 hover:text-white font-body text-sm py-2 px-3 rounded transition-colors"
           >
             {link.label}
           </Link>
@@ -84,16 +84,16 @@ const DesktopNav = () => (
       <Link
         key={link.to}
         to={link.to}
-        className="text-gray-400 hover:text-white font-body text-sm px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        className="text-gray-400 hover:text-white font-body text-sm px-3 py-2 rounded transition-colors"
       >
         {link.label}
       </Link>
     ))}
     <a
       href="/nuke"
-      className="text-gray-400 hover:text-white font-body text-sm px-3 py-2 rounded hover:bg-white/5 transition-colors"
+      className="text-gray-400 hover:text-white font-body text-sm px-3 py-2 rounded transition-colors"
     >
-      ☢️ Nuke Sim
+      Nuke Sim
     </a>
   </nav>
 );
@@ -119,7 +119,7 @@ const Header = ({ isLoading }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-b border-white/10">
+    <header className="sticky top-0 z-40 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-[#2a2a2a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -128,8 +128,8 @@ const Header = ({ isLoading }) => {
               <img src="/logo/globe-radar.svg" alt="WW3 Tracker" className="w-full h-full" />
             </div>
             <div>
-              <h1 className="font-heading font-bold text-xl text-white tracking-wide">
-                WW3 TRACKER
+              <h1 className="font-heading font-bold text-xl text-white">
+                WW3 Tracker
               </h1>
               <p className="text-xs text-gray-500 font-mono">
                 Understanding Escalation Before It Spreads
@@ -179,7 +179,7 @@ const FooterNav = () => (
     <span className="text-gray-700">•</span>
     <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
     <span className="text-gray-700">•</span>
-    <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">☢️ Nuke Sim</a>
+    <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Nuke Sim</a>
   </div>
 );
 
@@ -187,8 +187,7 @@ const Disclaimer = () => (
   <div className="border-t border-white/10 py-6 sm:py-8 px-3 sm:px-4">
     <div className="max-w-2xl mx-auto text-center">
       <FooterNav />
-      <div className="text-xl sm:text-2xl mb-2">⚠️</div>
-      <h3 className="font-heading font-bold text-base sm:text-lg text-white mb-1.5 sm:mb-2">DISCLAIMER</h3>
+      <h3 className="font-heading font-semibold text-base sm:text-lg text-white mb-1.5 sm:mb-2 uppercase tracking-wider">Disclaimer</h3>
       <p className="text-gray-500 text-xs sm:text-sm font-body mb-1.5 sm:mb-2">
         Live conflict data aggregated from NASA FIRMS, Polymarket, and verified sources.
       </p>
@@ -204,8 +203,8 @@ const Disclaimer = () => (
 const LoadingScreen = () => (
   <div className="min-h-screen bg-grid flex items-center justify-center px-4">
     <div className="text-center">
-      <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin mx-auto mb-3 sm:mb-4" />
-      <p className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">LOADING...</p>
+      <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-red-500/30 border-t-red-500 rounded-full animate-spin mx-auto mb-3 sm:mb-4" />
+      <p className="font-heading font-bold text-lg sm:text-xl text-white">Loading...</p>
     </div>
   </div>
 );

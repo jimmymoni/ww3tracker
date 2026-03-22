@@ -108,7 +108,7 @@ const WW3Counter = ({ tension = 65 }) => {
     >
       <div 
         ref={cardRef}
-        className="bg-[#14141c] border border-white/10 rounded-xl p-3 sm:p-5 relative overflow-hidden"
+        className="bg-[#111111] border border-[#2a2a2a] rounded-lg p-3 sm:p-5 relative overflow-hidden"
       >
         {/* MOBILE: Compact horizontal layout */}
         <div className="flex items-center justify-between sm:hidden">
@@ -141,15 +141,17 @@ const WW3Counter = ({ tension = 65 }) => {
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="text-3xl">📊</div>
+              <div className="w-10 h-10 rounded bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                <span className="font-heading font-bold text-red-400">CTI</span>
+              </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-heading font-bold text-xl text-white tracking-wide">
+                  <h2 className="font-heading font-bold text-xl text-white">
                     Conflict Tension Index
                   </h2>
                   <button 
                     onClick={() => setShowInfo(!showInfo)}
-                    className="text-gray-500 hover:text-gray-400 transition-colors"
+                    className="text-gray-500 hover:text-white transition-colors"
                     title="What is this?"
                   >
                     <Info className="w-4 h-4" />
@@ -164,38 +166,38 @@ const WW3Counter = ({ tension = 65 }) => {
             {/* Share Buttons */}
             <div className="flex items-center gap-1">
               <motion.button
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={shareToX}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-2 rounded hover:bg-white/5 transition-colors"
                 title="Share on X"
               >
-                <Twitter className="w-4 h-4" style={{ color }} />
+                <Twitter className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
               </motion.button>
 
               <motion.button
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={copyLink}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors relative"
+                className="p-2 rounded hover:bg-white/5 transition-colors relative"
                 title="Copy link"
               >
-                <Link className="w-4 h-4 text-gray-400 hover:text-green-400" />
+                <Link className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
                 {copied && (
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-10">
+                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded whitespace-nowrap z-10">
                     Copied!
                   </span>
                 )}
               </motion.button>
 
               <motion.button
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={downloadCard}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-2 rounded hover:bg-white/5 transition-colors"
                 title="Download card"
               >
-                <Download className="w-4 h-4 text-gray-400 hover:text-purple-400" />
+                <Download className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
               </motion.button>
             </div>
           </div>
@@ -206,10 +208,10 @@ const WW3Counter = ({ tension = 65 }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg"
+              className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg"
             >
               <p className="text-xs text-gray-400">
-                <strong className="text-blue-400">What is this?</strong> An aggregate measure combining 
+                <strong className="text-red-400">What is this?</strong> An aggregate measure combining 
                 prediction market data (Polymarket), geopolitical tension metrics, and news sentiment analysis. 
                 It tracks the perceived risk of major escalation, not a literal probability of World War 3.
               </p>
