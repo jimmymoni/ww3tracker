@@ -240,6 +240,75 @@ function getRouteMeta(route) {
     '/blog/can-prediction-markets-predict-ww3': {
       title: 'Can Prediction Markets Predict WW3? We Analyzed The Data | WW3 Tracker',
       description: 'Polymarket says 12% WW3 probability. Should you believe it? Here\'s what 10 years of data says about prediction markets and war forecasting.'
+    },
+    // NEW: March 22, 2026 blog posts
+    '/blog/iran-shot-down-f35': {
+      title: 'Iran Just Shot Down an F-35 — Why That\'s Never Happened Before | WW3 Tracker',
+      description: 'A $80 million stealth fighter was supposed to be invisible. Iran just proved it isn\'t. The first F-35 combat loss in history.'
+    },
+    '/blog/how-iran-hit-stealth-tech-breakdown': {
+      title: 'How Iran Actually Hit a Stealth Jet — The Technology Breakdown | WW3 Tracker',
+      description: 'The science behind defeating billion-dollar stealth tech with missiles that cost under $1 million. Technical deep-dive on radar, stealth, and air defense.'
+    },
+    '/blog/strait-hormuz-closure-economic-impact': {
+      title: 'What Happens If Iran Closes the Strait of Hormuz — In Numbers | WW3 Tracker',
+      description: '21% of global oil passes through one narrow waterway. Here\'s exactly what happens if it shuts down, in dollars, barrels, and economic chaos.'
+    },
+    '/blog/every-strike-us-iran-war-mapped': {
+      title: 'Every Strike in the US-Iran War Mapped | WW3 Tracker',
+      description: 'Verified locations of every confirmed military strike in the US-Iran war. Interactive map with satellite imagery and casualty data.'
+    },
+    '/blog/could-this-become-world-war-3': {
+      title: 'Could This Become World War 3? | WW3 Tracker',
+      description: '5 paths from regional war to global conflict. Russia, China, NATO — who enters and when? Analysis of WW3 escalation scenarios.'
+    },
+    '/blog/us-iran-military-compared-real-data': {
+      title: 'US vs Iran Military Compared: Real Data from the First Week | WW3 Tracker',
+      description: 'Spreadsheets vs reality. What the first week of actual war taught us about F-35 stealth, missile accuracy, and air superiority.'
+    },
+    '/blog/the-son-who-inherited-war': {
+      title: 'The Son Who Inherited a War | WW3 Tracker',
+      description: 'Iran\'s new Supreme Leader has never held public office, never made a public appearance, and nobody had heard his voice. Meet Mojtaba Khamenei.'
+    },
+    '/blog/natanz-dimona-nuclear-exchange': {
+      title: 'Natanz. Then Dimona. The Nuclear Exchange Nobody Expected. | WW3 Tracker',
+      description: 'For the first time in history, two states traded missile strikes on each other\'s nuclear sites in a single day. The unwritten rule that kept the nuclear age stable just broke.'
+    },
+    '/blog/qatar-lng-complex-destroyed': {
+      title: 'The $26 Billion Fireball — Iran Destroys Qatar\'s LNG Complex | WW3 Tracker',
+      description: 'Qatar and Iran were allies sharing the world\'s largest gas field. Then Iran turned Qatar\'s crown jewel into a fireball visible from space.'
+    },
+    '/blog/china-yuan-dollar-hormuz': {
+      title: 'China\'s Silent Yuan Play — The Dollar\'s Slow Funeral | WW3 Tracker',
+      description: 'Iran didn\'t just close the Strait of Hormuz. It opened it for China — on one condition. Pay in yuan. The most consequential financial story of the decade.'
+    },
+    '/blog/diego-garcia-4000km-missile': {
+      title: 'The 4,000km Secret — What the Diego Garcia Strike Really Revealed | WW3 Tracker',
+      description: 'Iran\'s missiles were supposed to max out at 2,000km. Diego Garcia is 4,000km away. Both missiles failed. But the launch itself changed everything.'
+    },
+    '/blog/200-billion-winning-cost': {
+      title: 'The $200 Billion Question — What Does "Winning" Actually Cost? | WW3 Tracker',
+      description: 'The Pentagon asked Congress for $200 billion. Hegseth said "it takes money to kill bad guys." The war costs $4 billion a week. Trump says the US is "winding down."'
+    },
+    '/blog/taiwan-window-xi-opportunity': {
+      title: 'The Taiwan Window — Is This the Moment Xi Has Been Waiting For? | WW3 Tracker',
+      description: 'US arsenal draining. F-35 stealth broken. 50,000 troops in the wrong ocean. China studying every engagement. Trump-Xi summit April 1st. This is the meta-story.'
+    },
+    '/blog/aws-dark-iran-cloud': {
+      title: 'AWS Goes Dark — Iran Hits the Cloud | WW3 Tracker',
+      description: 'Three Amazon Web Services data centers were destroyed by Iranian drones in the UAE. First time a hyperscale cloud provider\'s physical infrastructure has been taken out in a live war.'
+    },
+    '/blog/stuxnet-bank-outages-texas-grid': {
+      title: 'Stuxnet 2.0, Bank Outages, and the Texas Power Grid — The War Nobody Can See | WW3 Tracker',
+      description: 'While cameras track missile contrails, a second war runs in silence — Iranian attacks on US banks, Israeli malware in Iranian nuclear systems, Chinese zero-days, and three dead scientists.'
+    },
+    '/blog/houthi-mystery-silence': {
+      title: 'The Houthi Mystery — Why Haven\'t They Fired a Single Shot? | WW3 Tracker',
+      description: 'The group that shut down Red Sea shipping for 18 months has been completely silent for 23 days of the biggest war in the Middle East in decades.'
+    },
+    '/blog/trump-bombing-buying-iran-oil': {
+      title: 'Trump Is Bombing Iran and Buying Its Oil at the Same Time | WW3 Tracker',
+      description: 'The Trump administration lifted sanctions on Iranian oil while US warplanes were mid-mission over Iran. This sentence is not a joke.'
     }
   };
   
