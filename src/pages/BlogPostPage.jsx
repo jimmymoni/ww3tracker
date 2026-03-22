@@ -13,6 +13,16 @@ import { blogPosts } from '../data/blogPosts';
 import { BlogSEO } from '../components/SEO';
 import { ArticleSchema, FAQSchema, BreadcrumbSchema, SpeakableSchema, NewsMediaOrganizationSchema } from '../components/StructuredData';
 
+// Category color mapping
+const categoryColors = {
+  military: { border: '#c41c1c', text: '#c41c1c' },
+  economic: { border: '#0d9488', text: '#14b8a6' },
+  political: { border: '#475569', text: '#64748b' },
+  nuclear: { border: '#7c3aed', text: '#8b5cf6' },
+  analysis: { border: '#0369a1', text: '#38bdf8' },
+  default: { border: '#c41c1c', text: '#c41c1c' }
+};
+
 const BlogPostPage = () => {
   const { slug } = useParams();
   const post = blogPosts.find(p => p.slug === slug);
@@ -63,43 +73,62 @@ const BlogPostPage = () => {
     "Iran conflict"
   ].join(", ");
 
-  // Simple markdown components
+  // Get category colors
+  const catKey = post.category?.toLowerCase() || 'default';
+  const catColor = categoryColors[catKey] || categoryColors.default;
+
+  // Enhanced markdown components with editorial styling
   const markdownComponents = {
     h2: ({ children }) => (
       <h2 id={children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-')} 
-          className="text-2xl md:text-3xl font-bold text-white mt-12 mb-4 ai-citation">
+          className="editorial-h2">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-xl font-semibold text-zinc-200 mt-8 mb-3 ai-citation">
+      <h3 className="editorial-h3">
         {children}
       </h3>
     ),
     p: ({ children }) => (
-      <p className="text-zinc-400 leading-relaxed mb-4 text-base">
+      <p className="editorial-paragraph">
         {children}
       </p>
     ),
     ul: ({ children }) => (
-      <ul className="list-disc list-inside space-y-2 mb-4 text-zinc-400">
+      <ul className="editorial-list">
         {children}
       </ul>
     ),
+    ol: ({ children }) => (
+      <ol className="editorial-list-ordered">
+        {children}
+      </ol>
+    ),
     li: ({ children }) => (
-      <li className="text-zinc-400 leading-relaxed ml-4">
+      <li className="editorial-list-item">
         {children}
       </li>
     ),
     strong: ({ children }) => (
-      <strong className="text-zinc-200 font-semibold">
+      <strong className="editorial-bold">
         {children}
       </strong>
     ),
+    em: ({ children }) => (
+      <em className="editorial-italic">
+        {children}
+      </em>
+    ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-red-500/50 bg-red-500/5 pl-4 pr-4 py-3 my-4 rounded-r">
+      <blockquote className="pull-quote">
         {children}
       </blockquote>
+    ),
+    a: ({ href, children }) => (
+      <a href={href} className="editorial-link">
+        {children}
+      </a>
     ),
   };
 
@@ -116,6 +145,16 @@ const BlogPostPage = () => {
         console.log('Share cancelled');
       }
     }
+  };
+
+  // Format date
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { 
+      month: 'long', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
   };
 
   return (
@@ -151,200 +190,205 @@ const BlogPostPage = () => {
       <SpeakableSchema cssSelectors={["h1", "h2", "h3", ".key-takeaway", ".ai-citation"]} />
       <NewsMediaOrganizationSchema />
 
-      <div className="min-h-screen bg-zinc-950 text-white">
-        {/* Navigation */}
-        <div className="sticky top-0 z-40 bg-zinc-950/95 border-b border-zinc-800">
-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <Link to="/blog" className="flex items-center gap-2 text-zinc-400 hover:text-white text-sm">
+      <div className="min-h-screen bg-editorial text-editorial-body">
+        {/* Navigation - Full Width */}
+        <nav className="editorial-nav">
+          <div className="editorial-nav-inner">
+            <Link to="/blog" className="editorial-nav-back">
               <ArrowLeft className="w-4 h-4" />
               Back to WW3 News
             </Link>
             <div className="flex items-center gap-3">
-              <span className="text-zinc-500 text-sm hidden sm:block">{post.category}</span>
+              <span className="editorial-category-pill" style={{ 
+                borderColor: catColor.border, 
+                color: catColor.text 
+              }}>
+                {post.category}
+              </span>
               <button 
                 onClick={handleShare}
-                className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                className="editorial-share-btn"
                 aria-label="Share article"
               >
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
           </div>
-        </div>
+        </nav>
 
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          {/* Header */}
-          <header className="mb-8">
-            <div className="flex items-center gap-2 text-sm text-zinc-500 mb-4">
-              <span className="text-red-400 font-medium">{post.category}</span>
-              <span>•</span>
-              <Clock className="w-4 h-4" />
-              <span>{post.readTime} read</span>
-            </div>
-            
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-              {post.title}
-            </h1>
-            
-            <p className="text-lg text-zinc-400 mb-6">{post.excerpt}</p>
-            
-            <div className="flex items-center gap-3 text-sm text-zinc-500 pb-6 border-b border-zinc-800">
-              <Calendar className="w-4 h-4" />
-              {post.date}
-            </div>
-          </header>
-
-          {/* Key Takeaways Box - For beginners and AI citations */}
-          {post.keyTakeaway && (
-            <div className="bg-gradient-to-r from-red-500/10 to-orange-500/10 border border-red-500/20 rounded-xl p-5 mb-8 key-takeaway">
-              <div className="flex items-center gap-2 mb-3">
-                <Lightbulb className="w-5 h-5 text-yellow-400" />
-                <h2 className="font-bold text-white">Key Takeaways</h2>
-              </div>
-              <ul className="space-y-2">
-                {post.keyTakeaway.points.map((point, i) => (
-                  <li key={i} className="flex items-start gap-2 text-zinc-300">
-                    <span className="text-red-400 mt-1">•</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Quick Facts - Visual cards */}
-          {post.quickFacts && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-              {post.quickFacts.map((fact, i) => (
-                <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-red-400 mb-1">{fact.value}</div>
-                  <div className="text-xs text-zinc-500">{fact.label}</div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Main Image with proper alt text */}
-          <div className="aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-8">
+        {/* Hero Section - Full Width with Title Overlay */}
+        <header className="editorial-hero">
+          <div className="editorial-hero-image-container">
             <img 
               src={post.image} 
               alt={post.title}
-              className="w-full h-full object-cover"
+              className="editorial-hero-image"
               loading="eager"
             />
+            <div className="editorial-hero-gradient" />
           </div>
+          <div className="editorial-hero-content">
+            <div className="editorial-hero-inner">
+              <div className="editorial-hero-meta">
+                <span className="editorial-kicker">{post.category}</span>
+                <span className="editorial-meta-divider">|</span>
+                <span className="editorial-read-time">
+                  <Clock className="w-3 h-3" />
+                  {post.readTime} read
+                </span>
+              </div>
+              <h1 className="editorial-hero-title">
+                {post.title}
+              </h1>
+              <p className="editorial-hero-excerpt">
+                {post.excerpt}
+              </p>
+              <div className="editorial-hero-date">
+                <Calendar className="w-4 h-4" />
+                {formatDate(post.date)}
+              </div>
+            </div>
+          </div>
+        </header>
 
-          {/* Article Content */}
-          <article ref={contentRef} className="prose prose-invert max-w-none article-summary">
-            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-              {post.content}
-            </ReactMarkdown>
-          </article>
+        {/* Main Content - Constrained Width */}
+        <main className="editorial-main">
+          <div className="editorial-content-wrapper">
+            
+            {/* Key Takeaways Box */}
+            {post.keyTakeaway && (
+              <div className="editorial-takeaways">
+                <div className="editorial-takeaways-label">Key Takeaways</div>
+                <ul className="editorial-takeaways-list">
+                  {post.keyTakeaway.points.map((point, i) => (
+                    <li key={i} className="editorial-takeaways-item">
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-          {/* Timeline - If available */}
-          {post.timeline && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <History className="w-6 h-6 text-red-400" />
-                Timeline of Events
-              </h2>
-              <div className="space-y-4">
-                {post.timeline.slice(0, 6).map((event, i) => (
-                  <div key={i} className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      {i < post.timeline.length - 1 && <div className="w-px h-full bg-zinc-800 mt-1" />}
-                    </div>
-                    <div className="pb-4">
-                      <span className="text-red-400 font-bold">{event.year}</span>
-                      <h3 className="text-white font-semibold mt-1">{event.title}</h3>
-                      <p className="text-zinc-400 text-sm mt-1">{event.description}</p>
-                    </div>
+            {/* Quick Facts - Visual cards */}
+            {post.quickFacts && (
+              <div className="editorial-quick-facts">
+                {post.quickFacts.map((fact, i) => (
+                  <div key={i} className="editorial-fact-card">
+                    <div className="editorial-fact-value">{fact.value}</div>
+                    <div className="editorial-fact-label">{fact.label}</div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* FAQ - Enhanced for AI citations */}
-          {post.faq && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <AlertCircle className="w-6 h-6 text-blue-400" />
-                Common Questions
-              </h2>
-              <div className="space-y-4">
-                {post.faq.slice(0, 4).map((item, i) => (
-                  <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 ai-citation">
-                    <h3 className="font-semibold text-white mb-2">{item.question}</h3>
-                    <p className="text-zinc-400 text-sm faq-answer">{item.answer}</p>
-                  </div>
-                ))}
+            {/* Article Body */}
+            <article ref={contentRef} className="editorial-body">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                {post.content}
+              </ReactMarkdown>
+            </article>
+
+            {/* Timeline - If available */}
+            {post.timeline && (
+              <section className="editorial-timeline-section">
+                <h2 className="editorial-section-title">
+                  <History className="w-5 h-5" />
+                  Timeline of Events
+                </h2>
+                <div className="editorial-timeline">
+                  {post.timeline.slice(0, 6).map((event, i) => (
+                    <div key={i} className="editorial-timeline-item">
+                      <div className="editorial-timeline-date">{event.year}</div>
+                      <div className="editorial-timeline-content">
+                        <h3 className="editorial-timeline-title">{event.title}</h3>
+                        <p className="editorial-timeline-desc">{event.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* FAQ - Enhanced for AI citations */}
+            {post.faq && (
+              <section className="editorial-faq-section">
+                <h2 className="editorial-section-title">
+                  <AlertCircle className="w-5 h-5" />
+                  Common Questions
+                </h2>
+                <div className="editorial-faq-list">
+                  {post.faq.slice(0, 4).map((item, i) => (
+                    <div key={i} className="editorial-faq-item">
+                      <h3 className="editorial-faq-question">{item.question}</h3>
+                      <p className="editorial-faq-answer">{item.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Was this helpful? */}
+            <div className="editorial-feedback">
+              <h3 className="editorial-feedback-title">Was this article helpful?</h3>
+              <div className="editorial-feedback-buttons">
+                <button
+                  onClick={() => setHelpful('yes')}
+                  className={`editorial-feedback-btn ${helpful === 'yes' ? 'active-yes' : ''}`}
+                >
+                  <ThumbsUp className="w-4 h-4" />
+                  Yes
+                </button>
+                <button
+                  onClick={() => setHelpful('no')}
+                  className={`editorial-feedback-btn ${helpful === 'no' ? 'active-no' : ''}`}
+                >
+                  <ThumbsDown className="w-4 h-4" />
+                  No
+                </button>
               </div>
             </div>
-          )}
 
-          {/* Was this helpful? */}
-          <div className="mt-12 p-6 bg-zinc-900 border border-zinc-800 rounded-xl text-center">
-            <h3 className="font-semibold text-white mb-4">Was this article helpful?</h3>
-            <div className="flex items-center justify-center gap-3">
-              <button
-                onClick={() => setHelpful('yes')}
-                className={`flex items-center gap-2 px-6 py-2 rounded-lg transition-all ${
-                  helpful === 'yes' 
-                    ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-                }`}
-              >
-                <ThumbsUp className="w-4 h-4" />
-                Yes
-              </button>
-              <button
-                onClick={() => setHelpful('no')}
-                className={`flex items-center gap-2 px-6 py-2 rounded-lg transition-all ${
-                  helpful === 'no' 
-                    ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
-                    : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-                }`}
-              >
-                <ThumbsDown className="w-4 h-4" />
-                No
-              </button>
-            </div>
-          </div>
-
-          {/* Related Articles */}
-          {relatedPosts.length > 0 && (
-            <div className="mt-12">
-              <h3 className="text-xl font-bold text-white mb-4">Related Reading</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                {relatedPosts.map(relatedPost => (
-                  <Link key={relatedPost.id} to={`/blog/${relatedPost.slug}`} className="group block">
-                    <div className="flex gap-4 bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-all">
+            {/* Related Articles */}
+            {relatedPosts.length > 0 && (
+              <section className="editorial-related">
+                <h3 className="editorial-related-title">Related Reading</h3>
+                <div className="editorial-related-grid">
+                  {relatedPosts.map(relatedPost => (
+                    <Link key={relatedPost.id} to={`/blog/${relatedPost.slug}`} className="editorial-related-card">
                       <img 
                         src={relatedPost.image} 
                         alt={relatedPost.title}
-                        className="w-20 h-20 object-cover rounded-lg"
+                        className="editorial-related-image"
                         loading="lazy"
                       />
-                      <div>
-                        <span className="text-red-400 text-xs">{relatedPost.category}</span>
-                        <h4 className="text-white text-sm font-medium group-hover:text-red-400 transition-colors line-clamp-2">
+                      <div className="editorial-related-content">
+                        <span className="editorial-related-category">{relatedPost.category}</span>
+                        <h4 className="editorial-related-card-title">
                           {relatedPost.title}
                         </h4>
                       </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="editorial-footer">
+          <div className="editorial-footer-inner">
+            <p>WW3 Tracker — Live US-Iran War Monitor</p>
+            <p className="editorial-footer-copy">
+              © 2026 WW3 Tracker. Data aggregated from verified sources.
+            </p>
+          </div>
+        </footer>
 
         {/* Back to Top */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 p-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 rounded-lg border border-zinc-700"
+          className="editorial-back-to-top"
           aria-label="Back to top"
         >
           <ChevronUp className="w-5 h-5" />
