@@ -65,57 +65,19 @@ const HOURS_WINDOW = 8760; // 1 year - show all historical attacks
 const NEW_THRESHOLD_HOURS = 6;  // Show "NEW" badge
 const RECENT_THRESHOLD_HOURS = 12; // Pulsing animation
 
-// Helper to format relative time (based on UTC to avoid timezone confusion)
-const getRelativeTime = (dateString) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-  
-  // Handle future dates
-  if (diffMs < 0) {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
-  }
-  
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  
-  // For older attacks, show the actual date in UTC
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
-};
-
-// Helper to format local time at attack location
-const getLocalTimeAtLocation = (dateString, country) => {
+// Helper to format time - show clear date/time without confusing relative times
+const getFormattedTime = (dateString) => {
   const date = new Date(dateString);
   
-  // Define timezone offsets for countries (standard time)
-  const timezones = {
-    'Israel': 2,      // UTC+2 (IST)
-    'Iran': 3.5,      // UTC+3:30 (IRST)
-    'Palestine': 2,   // UTC+2
-    'West Bank': 2,   // UTC+2
-    'Qatar': 3,       // UTC+3
-    'Kuwait': 3,      // UTC+3
-    'Iraq': 3,        // UTC+3
-    'Lebanon': 2,     // UTC+2
-    'Syria': 3,       // UTC+3
-    'Jordan': 3,      // UTC+3
-    'Turkey': 3       // UTC+3
-  };
-  
-  const offset = timezones[country] || 0;
-  const localDate = new Date(date.getTime() + offset * 3600000);
-  
-  return localDate.toLocaleDateString('en-US', { 
+  // Format as: "Mar 22, 8:00 PM UTC"
+  return date.toLocaleDateString('en-US', { 
     month: 'short', 
     day: 'numeric',
-    hour: '2-digit', 
+    hour: 'numeric', 
     minute: '2-digit',
-    hour12: true 
-  });
+    hour12: true,
+    timeZone: 'UTC'
+  }) + ' UTC';
 };
 
 // Check if attack is very recent
@@ -231,8 +193,8 @@ export default function ConflictMap({ mobile = false }) {
                 severity: item.mapAnalysis.severity || item.severity,
                 type: (item.mapAnalysis.attackType || item.attackType || 'unknown').toUpperCase(),
                 attackType: item.mapAnalysis.attackType || item.attackType || 'unknown',
-                time: getLocalTimeAtLocation(attackDate, item.country || coords.country),
-                relativeTime: getRelativeTime(attackDate),
+                time: getFormattedTime(attackDate),
+                relativeTime: getFormattedTime(attackDate),
                 isNew: isNewAttack(attackDate),
                 isRecent: isRecentAttack(attackDate),
                 pubDate: attackDate,
@@ -928,13 +890,14 @@ export default function ConflictMap({ mobile = false }) {
                 className="fixed inset-0 bg-black/80 z-40"
                 onClick={() => setShowDetailModal(false)}
               />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }} 
-                animate={{ opacity: 1, scale: 1 }} 
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="fixed inset-x-4 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-xl sm:max-h-[80vh] top-[10vh] bottom-[10vh] bg-black/95 border border-white/10 rounded-2xl z-50 overflow-hidden"
-              >
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }} 
+                  animate={{ opacity: 1, scale: 1 }} 
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                  className="w-full max-w-xl max-h-[80vh] bg-black/95 border border-white/10 rounded-2xl overflow-hidden pointer-events-auto"
+                >
                 {/* Header with close button */}
                 <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/95">
                   <h3 className="font-bold text-white">Strike Details</h3>
@@ -1010,7 +973,8 @@ export default function ConflictMap({ mobile = false }) {
                     Close
                   </button>
                 </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </>
           )}
         </AnimatePresence>
