@@ -414,7 +414,7 @@ export default function ConflictMap({ mobile = false }) {
     
     const { width, height } = dimensions;
     // Higher zoom for mobile to see details, moderate for desktop
-    const scale = isMobile ? 1.8 : 1.4;
+    const scale = isMobile ? 2.5 : 1.4;
     const centerX = width / 2;
     const centerY = height / 2;
     const initialTransform = d3.zoomIdentity
@@ -432,7 +432,7 @@ export default function ConflictMap({ mobile = false }) {
   const projection = useCallback(() => {
     // Better center to frame Israel-Lebanon on left, Tehran on right
     // Center at [42, 32] - between the two conflict clusters
-    const scale = isMobile ? dimensions.width * 1.4 : dimensions.width * 0.95;
+    const scale = isMobile ? dimensions.width * 2.0 : dimensions.width * 0.95;
     return d3.geoMercator()
       .center([42, 32])
       .scale(scale)
