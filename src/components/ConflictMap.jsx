@@ -74,9 +74,17 @@ const getRelativeTime = (dateString) => {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
   
+  // Handle future dates (shouldn't happen, but show absolute time)
+  if (diffMs < 0) {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+  
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
-  return `${diffDays}d ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  
+  // For older attacks, show the actual date
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
 // Check if attack is very recent
@@ -182,22 +190,28 @@ export default function ConflictMap({ mobile = false }) {
             const mapEvents = data.attacks.map((item, idx) => {
               // Backend now provides coordinates - use them directly
               const coords = item.coordinates || getLocationCoords(item.mapAnalysis.location);
+              const attackDate = item.pubDate || item.date || Date.now();
               return {
-                id: idx + 1,
+                id: item.id || idx + 1,
                 lat: coords.lat,
                 lng: coords.lng,
-                city: item.mapAnalysis.location || 'Unknown',
-                country: coords.country,
-                severity: item.mapAnalysis.severity,
-                type: item.mapAnalysis.attackType.toUpperCase(),
-                time: new Date(item.pubDate || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                relativeTime: getRelativeTime(item.pubDate),
-                isNew: isNewAttack(item.pubDate),
-                isRecent: isRecentAttack(item.pubDate),
-                pubDate: item.pubDate,
-                description: item.headline,
-                icon: item.mapAnalysis.attackType,
-                source: item.source
+                city: item.mapAnalysis.location || item.location || 'Unknown',
+                country: item.country || coords.country,
+                severity: item.mapAnalysis.severity || item.severity,
+                type: (item.mapAnalysis.attackType || item.attackType || 'unknown').toUpperCase(),
+                attackType: item.mapAnalysis.attackType || item.attackType || 'unknown',
+                time: new Date(attackDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                relativeTime: getRelativeTime(attackDate),
+                isNew: isNewAttack(attackDate),
+                isRecent: isRecentAttack(attackDate),
+                pubDate: attackDate,
+                date: attackDate,
+                description: item.headline || item.description,
+                icon: item.mapAnalysis.attackType || item.attackType || 'alert',
+                source: item.source,
+                target: item.target,
+                context: item.context,
+                coordinates: coords
               };
             });
             setEvents(mapEvents);
@@ -928,19 +942,19 @@ export default function ConflictMap({ mobile = false }) {
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <div className="bg-black/30 rounded-lg p-3">
                         <p className="text-[10px] text-gray-500 uppercase">Attack Type</p>
-                        <p className="text-sm text-white capitalize">{selectedEvent.attackType}</p>
+                        <p className="text-sm text-white capitalize">{selectedEvent.attackType || 'Unknown'}</p>
                       </div>
                       <div className="bg-black/30 rounded-lg p-3">
                         <p className="text-[10px] text-gray-500 uppercase">Target</p>
-                        <p className="text-sm text-white">{selectedEvent.target || selectedEvent.context}</p>
+                        <p className="text-sm text-white">{selectedEvent.target || selectedEvent.context || 'Unknown'}</p>
                       </div>
                       <div className="bg-black/30 rounded-lg p-3">
                         <p className="text-[10px] text-gray-500 uppercase">Time</p>
-                        <p className="text-sm text-white">{new Date(selectedEvent.date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</p>
+                        <p className="text-sm text-white">{selectedEvent.date ? new Date(selectedEvent.date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : 'Unknown'}</p>
                       </div>
                       <div className="bg-black/30 rounded-lg p-3">
                         <p className="text-[10px] text-gray-500 uppercase">Coordinates</p>
-                        <p className="text-sm text-white font-mono">{selectedEvent.coordinates.lat.toFixed(4)}, {selectedEvent.coordinates.lng.toFixed(4)}</p>
+                        <p className="text-sm text-white font-mono">{selectedEvent.coordinates ? `${selectedEvent.coordinates.lat.toFixed(4)}, ${selectedEvent.coordinates.lng.toFixed(4)}` : `${selectedEvent.lat.toFixed(4)}, ${selectedEvent.lng.toFixed(4)}`}</p>
                       </div>
                     </div>
                     
