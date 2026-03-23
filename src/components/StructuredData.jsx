@@ -116,14 +116,7 @@ const WebsiteSchema = () => {
     "alternateName": "WW3 Tracker - Live US-Iran War Monitor",
     "url": SITE_URL,
     "description": "Real-time tracking of the US-Iran conflict. Interactive map of every strike, verified news, and military analysis.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": `${SITE_URL}/blog?q={search_term_string}`
-      },
-      "query-input": "required name=search_term_string"
-    },
+
     "publisher": {
       "@type": "Organization",
       "name": SITE_NAME,

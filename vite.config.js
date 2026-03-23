@@ -88,8 +88,8 @@ export default defineConfig(({ mode }) => ({
           ],
           // Map libraries (heavy) - only loaded when map is shown (no React dependency)
           maps: ['d3', 'd3-geo', 'topojson-client'],
-          // Data fetching and utilities (no React dependency)
-          utils: ['node-fetch', 'xml2js'],
+          // Data fetching and utilities
+          // Note: node-fetch and xml2js are server-side only, not included here
         },
         // Asset naming for better caching with content hash
         entryFileNames: 'assets/[name]-[hash].js',

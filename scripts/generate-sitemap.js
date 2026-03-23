@@ -1,3 +1,9 @@
+/**
+ * Sitemap Generator
+ * Generates sitemap.xml for SEO
+ * Updated to match current live routes (March 2026)
+ */
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -18,6 +24,8 @@ for (const match of postMatches) {
 const baseUrl = process.env.SITE_URL || 'https://ww3tracker.live';
 const today = new Date().toISOString().split('T')[0];
 
+// UPDATED: Removed deleted routes (/live-updates, /losses, /ww3, /ww3-probability, etc.)
+// Added current live routes (/live-map, /attacks, /iran-us-conflict, etc.)
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
@@ -31,30 +39,23 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <priority>1.0</priority>
     <image:image>
       <image:loc>${baseUrl}/og-image.png</image:loc>
-      <image:title>WW3 Tracker - Live Conflict Monitor</image:title>
+      <image:title>WW3 Tracker - Live US-Iran War Map</image:title>
     </image:image>
   </url>
   
   <!-- Core Feature Pages -->
   <url>
-    <loc>${baseUrl}/live-updates</loc>
+    <loc>${baseUrl}/live-map</loc>
     <lastmod>${today}</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
-    <loc>${baseUrl}/losses</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>${baseUrl}/ww3</loc>
+    <loc>${baseUrl}/attacks</loc>
     <lastmod>${today}</lastmod>
     <changefreq>hourly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.90</priority>
   </url>
   
   <url>
@@ -64,28 +65,14 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <priority>0.85</priority>
   </url>
   
+  <url>
+    <loc>${baseUrl}/nuke</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  
   <!-- SEO Landing Pages -->
-  <url>
-    <loc>${baseUrl}/ww3-probability</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  
-  <url>
-    <loc>${baseUrl}/us-iran-war-tracker</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  
-  <url>
-    <loc>${baseUrl}/iran-conflict-live</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  
   <url>
     <loc>${baseUrl}/is-ww3-happening</loc>
     <lastmod>${today}</lastmod>
@@ -107,25 +94,39 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <priority>0.90</priority>
   </url>
   
-  <!-- Viral Quiz Pages -->
   <url>
-    <loc>${baseUrl}/ww3-risk-calculator</loc>
+    <loc>${baseUrl}/iran-us-conflict</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>hourly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <url>
+    <loc>${baseUrl}/israel-hezbollah-conflict</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>hourly</changefreq>
     <priority>0.90</priority>
   </url>
   
   <url>
-    <loc>${baseUrl}/ready</loc>
+    <loc>${baseUrl}/pak-afghan-conflict</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
+  <!-- Trust Pages -->
+  <url>
+    <loc>${baseUrl}/about</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
   
   <url>
-    <loc>${baseUrl}/share</loc>
+    <loc>${baseUrl}/privacy</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   
@@ -146,6 +147,15 @@ ${posts.map(post => `  <url>
   </url>`).join('\n')}
 </urlset>`;
 
+// Write to dist folder (production)
 const distPath = path.join(__dirname, '../dist/sitemap.xml');
 fs.writeFileSync(distPath, sitemap);
-console.log(`✅ Sitemap generated with ${posts.length + 14} URLs at ${distPath}`);
+
+// Also write to public folder (source)
+const publicPath = path.join(__dirname, '../public/sitemap.xml');
+fs.writeFileSync(publicPath, sitemap);
+
+console.log(`✅ Sitemap generated with ${posts.length + 11} URLs`);
+console.log(`   - ${posts.length} blog posts`);
+console.log(`   - 11 static pages`);
+console.log(`   Output: ${distPath}`);

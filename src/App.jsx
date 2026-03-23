@@ -5,9 +5,6 @@ import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// DEBUG: Verify fresh code load
-console.log('[DEBUG] App.jsx loaded - BlogPage is direct import, not lazy');
-
 // SEO Components
 import { PageSEO } from './components/SEO';
 import { WebsiteSchema, OrganizationSchema, FAQSchema } from './components/StructuredData';
@@ -27,6 +24,10 @@ const AttacksArchivePage = lazy(() => import('./pages/AttacksArchivePage'));
 
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const NukeSimulatorPage = lazy(() => import('./pages/NukeSimulatorPage'));
+
+// Trust Pages
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 
 // Components
 const WW3Counter = lazy(() => import('./components/WW3Counter'));
@@ -110,7 +111,7 @@ const LiveTimestamp = () => {
   
   return (
     <span className="text-[10px] text-green-400/70 font-mono hidden lg:inline">
-      UPDATED: {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })} UTC
+      UPDATED: {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })} UTC
     </span>
   );
 };
@@ -175,10 +176,13 @@ const FooterNav = () => (
     <span className="text-gray-700">•</span>
     <Link to="/blog" className="text-gray-500 hover:text-white text-xs font-body transition-colors">WW3 News</Link>
     <span className="text-gray-700">•</span>
-
     <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
     <span className="text-gray-700">•</span>
     <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Nuke Sim</a>
+    <span className="text-gray-700">•</span>
+    <Link to="/about" className="text-gray-500 hover:text-white text-xs font-body transition-colors">About</Link>
+    <span className="text-gray-700">•</span>
+    <Link to="/privacy" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Privacy</Link>
   </div>
 );
 
@@ -458,6 +462,18 @@ function App() {
           <Route path="/us-iran-war-tracker" element={<Navigate to="/iran-us-conflict" replace />} />
           <Route path="/iran-conflict-live" element={<Navigate to="/live-map" replace />} />
           <Route path="/ww3-probability" element={<Navigate to="/" replace />} />
+          
+          {/* Trust Pages */}
+          <Route path="/about" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <AboutPage />
+            </Suspense>
+          } />
+          <Route path="/privacy" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <PrivacyPage />
+            </Suspense>
+          } />
           
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />

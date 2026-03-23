@@ -1132,20 +1132,22 @@ app.get('/robots.txt', (req, res) => {
 // ==================== SPA CATCH-ALL (MUST BE LAST) ====================
 
 // Serve prerendered HTML files for specific routes
+// UPDATED: Removed deleted routes, added current live routes
 const prerenderedRoutes = [
   '/',
   '/blog',
-  '/ww3-probability',
-  '/us-iran-war-tracker', 
-  '/iran-conflict-live',
+  '/live-map',
   '/timeline',
-  '/impact',
-  '/ww3-risk-calculator',
-  '/ready',
-  '/share',
+  '/attacks',
+  '/nuke',
   '/is-ww3-happening',
   '/world-war-3-news',
-  '/iran-nuclear-deal'
+  '/iran-nuclear-deal',
+  '/iran-us-conflict',
+  '/israel-hezbollah-conflict',
+  '/pak-afghan-conflict',
+  '/about',
+  '/privacy'
 ];
 
 // Get ticker text (for comic ticker) - Uses verified attacks
@@ -1200,6 +1202,23 @@ app.get('/api/ticker', async (req, res) => {
   }
 });
 
+// ==================== 301 REDIRECTS FOR DELETED ROUTES ====================
+// Server-side 301 redirects for SEO equity transfer (must be before SPA catch-all)
+
+app.get('/conflict-tracker', (req, res) => res.redirect(301, '/live-map'));
+app.get('/live-monitor', (req, res) => res.redirect(301, '/live-map'));
+app.get('/global-risk-monitor', (req, res) => res.redirect(301, '/'));
+app.get('/ww3-risk-calculator', (req, res) => res.redirect(301, '/'));
+app.get('/why-conflicts-happen', (req, res) => res.redirect(301, '/blog'));
+app.get('/relationships', (req, res) => res.redirect(301, '/blog'));
+app.get('/multi-conflict-timeline', (req, res) => res.redirect(301, '/timeline'));
+app.get('/us-iran-war-tracker', (req, res) => res.redirect(301, '/iran-us-conflict'));
+app.get('/iran-conflict-live', (req, res) => res.redirect(301, '/live-map'));
+app.get('/ww3-probability', (req, res) => res.redirect(301, '/'));
+app.get('/impact', (req, res) => res.redirect(301, '/'));
+app.get('/ready', (req, res) => res.redirect(301, '/'));
+app.get('/share', (req, res) => res.redirect(301, '/'));
+
 // ==================== SPA CATCH-ALL (MUST BE LAST) ====================
 
 // Catch-all route for Single Page Application - serves index.html for all non-API routes
@@ -1212,19 +1231,27 @@ app.get('*', (req, res) => {
     return res.status(404).send('Not found');
   }
   
-  // Check if this is a known route with a prerendered HTML file
-  const hasPrerendered = prerenderedRoutes.some(r => route === r || route.startsWith(r + '/'));
+  // Known SPA routes — serve index.html with 200
+  const knownRoutes = ['/', '/live-map', '/blog', '/nuke', '/timeline', '/attacks',
+    '/is-ww3-happening', '/world-war-3-news', '/iran-nuclear-deal',
+    '/iran-us-conflict', '/israel-hezbollah-conflict', '/pak-afghan-conflict',
+    '/about', '/privacy'];
   
-  if (hasPrerendered) {
-    // Try to serve the prerendered index.html for this route
+  const isKnownRoute = knownRoutes.some(r => route === r) 
+    || route.startsWith('/blog/') 
+    || route.startsWith('/attack/');
+  
+  if (isKnownRoute) {
+    // Try prerendered file first
     const prerenderedPath = path.join(__dirname, '../dist', route, 'index.html');
     if (fs.existsSync(prerenderedPath)) {
       return res.sendFile(prerenderedPath);
     }
+    return res.sendFile(path.join(__dirname, '../dist/index.html'));
   }
   
-  // Fall back to the main index.html for SPA routing
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  // Unknown route — return 404 with the SPA (for client-side handling)
+  res.status(404).sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 // ==================== INITIALIZATION ====================
