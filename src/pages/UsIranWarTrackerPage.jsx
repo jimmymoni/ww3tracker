@@ -299,7 +299,7 @@ const UsIranWarTrackerPage = () => {
               Real-time data from multiple intelligence sources | Updated continuously
             </p>
             <p className="text-gray-600 text-xs mt-2">
-              ⚠️ This is a satirical educational tool. Not actual military intelligence.
+              ⚠️ Data-driven analysis for educational purposes. Not official military intelligence.
             </p>
           </div>
         </footer>

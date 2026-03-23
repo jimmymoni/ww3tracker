@@ -1,21 +1,23 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /preview/
 
-# AI Bots - Allowed to crawl for training/indexing
+Sitemap: https://ww3tracker.live/sitemap.xml
+
+# Block AI training crawlers
 User-agent: GPTBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
+Disallow: /
 
 User-agent: ChatGPT-User
-Allow: /
+Disallow: /
 
-# Sitemap
-Sitemap: https://ww3tracker.live/sitemap.xml
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
