@@ -2,14 +2,14 @@
  * VERIFIED ATTACKS DATABASE
  * Manually curated by admin - 100% verified facts only
  * No RSS, no AI hallucination, no expiration
- * Last updated: 2026-03-22
+ * Last updated: 2026-03-23
  * 
  * NEW: Added conflictZone field linking to conflictZones.js
  */
 
 export const VERIFIED_ATTACKS = [
-  // ==================== MARCH 22, 2026 - LATEST VERIFIED ATTACKS ====================
-  // Source: Guardian, Times of Israel, Al Jazeera, Politico, Haaretz, Reuters
+  // ==================== MARCH 22-23, 2026 - LATEST VERIFIED ATTACKS ====================
+  // Source: Guardian, Times of Israel, Al Jazeera, Politico, Haaretz, Reuters, WSJ
 
   // 🇮🇷 Iran → 🇮🇱 Israel - Missile Strikes on Southern Israel
   {
@@ -92,6 +92,23 @@ export const VERIFIED_ATTACKS = [
     coordinates: { lat: 31.5, lng: 34.4667 },
     context: 'Hamas positions and urban zones',
     conflictZone: 'israel-hamas-gaza-conflict'
+  },
+
+  // 🇮🇱 Israel → 🇱🇧 Lebanon - Qasmiyeh Bridge Destruction
+  {
+    id: '2026-03-22-qasmiyeh-bridge',
+    headline: 'Israeli airstrike destroys Qasmiyeh Bridge in southern Lebanon',
+    description: 'An Israeli airstrike destroyed the Qasmiyeh Bridge over the Litani River in southern Lebanon, a key transport artery. Visuals confirm the bridge has been completely demolished, severing a critical logistics route in the region.',
+    location: 'Qasmiyeh',
+    country: 'Lebanon',
+    attackType: 'airstrike',
+    severity: 'high',
+    date: '2026-03-22T14:00:00Z',
+    reportedAt: '2026-03-22',
+    source: 'Reuters, X/visuals',
+    coordinates: { lat: 33.2833, lng: 35.3167 },
+    context: 'Key transport bridge over Litani River',
+    conflictZone: 'israel-hezbollah-conflict'
   }
 ];
 
