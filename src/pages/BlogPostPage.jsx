@@ -229,8 +229,9 @@ const BlogPostPage = () => {
           </div>
         </nav>
 
-        {/* Hero Section - Full Width with Title Overlay */}
+        {/* Hero Section - Clean layout: Image first, then text */}
         <header className="editorial-hero">
+          {/* Featured Image - Constrained, not stretched */}
           <div className="editorial-hero-image-container">
             <img 
               src={post.image} 
@@ -238,8 +239,9 @@ const BlogPostPage = () => {
               className="editorial-hero-image"
               loading="eager"
             />
-            <div className="editorial-hero-gradient" />
           </div>
+          
+          {/* Text Content - Below image, clean and readable */}
           <div className="editorial-hero-content">
             <div className="editorial-hero-inner">
               <div className="editorial-hero-meta">
