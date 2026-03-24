@@ -14,7 +14,7 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { addAttack, VERIFIED_ATTACKS } from '../data/verifiedAttacks.js';
+import { VERIFIED_ATTACKS } from '../data/verifiedAttacks.js';
 import scheduler from './scheduler.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
