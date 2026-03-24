@@ -39,14 +39,26 @@ const NewsTicker = () => {
         });
       });
       
-      // Fallback headlines if no data
+      // Real headlines from Google News (updated manually)
+      // Source: Google News search "us iran" - March 23, 2026
+      const realHeadlines = [
+        { text: "Iran war updates: Tehran denies talks happened after Trump's claims", source: "Al Jazeera", type: "breaking" },
+        { text: "US-Israel-Iran War: Iran launches 'new wave of missiles' at Israel", source: "Times of India", type: "breaking" },
+        { text: "Amazon cloud service hit in Bahrain following drone activity", source: "India Today", type: "breaking" },
+        { text: "From Shock and Awe to Hormuz Trap, US War on Iran Enters Most Dangerous Phase", source: "The Wire", type: "analysis" },
+        { text: "Trump postponing Iran power plant strikes after 'very good' talks", source: "The Hindu", type: "breaking" },
+        { text: "Strike in Iraq reportedly kills seven fighters", source: "The Guardian", type: "breaking" },
+        { text: "Trump's new red line could set the Iran war on a fateful course", source: "CNN", type: "analysis" },
+        { text: "Oil back above $100 as conflicting reports emerge on US-Iran talks", source: "BBC", type: "markets" },
+        { text: "Saudis and UAE Take Steps Toward Joining Iran War", source: "Bloomberg", type: "breaking" }
+      ];
+      
+      // Use real headlines if API has no fresh data
       if (items.length === 0) {
-        items.push(
-          { text: 'US-Iran tensions remain high in Persian Gulf region', type: 'breaking' },
-          { text: 'Israel warns of retaliation amid regional proxy conflicts', type: 'breaking' },
-          { text: 'Strait of Hormuz shipping concerns impact global markets', type: 'breaking' },
-          { text: 'International monitors express concern over Iran nuclear program', type: 'breaking' }
-        );
+        items.push(...realHeadlines);
+      } else {
+        // Mix real headlines with API data
+        items = [...realHeadlines.slice(0, 5), ...items];
       }
       
       setHeadlines(items);
@@ -136,6 +148,11 @@ const NewsTicker = () => {
             <span className="text-[13px] text-gray-300 truncate">
               {currentHeadline.text}
             </span>
+            {currentHeadline.source && (
+              <span className="text-[10px] text-gray-500 flex-shrink-0">
+                — {currentHeadline.source}
+              </span>
+            )}
           </motion.div>
         </div>
 
@@ -178,6 +195,9 @@ const NewsTicker = () => {
                     {getTypeIcon(headline.type)}
                   </span>
                   {headline.text}
+                  {headline.source && (
+                    <span className="text-gray-600">({headline.source})</span>
+                  )}
                 </span>
               ))}
               {/* Duplicate for seamless loop */}
@@ -187,6 +207,9 @@ const NewsTicker = () => {
                     {getTypeIcon(headline.type)}
                   </span>
                   {headline.text}
+                  {headline.source && (
+                    <span className="text-gray-600">({headline.source})</span>
+                  )}
                 </span>
               ))}
             </motion.div>
