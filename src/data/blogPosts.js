@@ -6,7 +6,7 @@ export const blogPosts = [
     id: "why-america-fighting-iran",
     slug: "why-america-fighting-iran",
     title: "Why Are America and Iran Fighting? The Full Story",
-    excerpt: "America and Iran have been enemies for 70 years. Here's what actually happenedâ€”no politics degree required.",
+    excerpt: "America and Iran have been enemies for 70 years. Here's what actually happened—no politics degree required.",
     category: "Explainer",
     readTime: "8 min",
     date: "March 5, 2026",
@@ -31,9 +31,9 @@ export const blogPosts = [
     ],
     keyTakeaway: {
       points: [
-        "In 1953, the CIA helped overthrow Iran's elected government â€” an event Iranians call 'The Original Sin' of US-Iran relations",
+        "In 1953, the CIA helped overthrow Iran's elected government — an event Iranians call 'The Original Sin' of US-Iran relations",
         "Many historians and Iranian officials argue the conflict has always been about regional influence and oil, not just nuclear weapons",
-        "Iran signed a nuclear deal in 2015 and was complying â€” the US withdrew from it anyway in 2018, deepening Iranian distrust",
+        "Iran signed a nuclear deal in 2015 and was complying — the US withdrew from it anyway in 2018, deepening Iranian distrust",
         "Understanding why Iranians distrust America requires going back 70 years, not 10"
       ]
     },
@@ -55,7 +55,7 @@ export const blogPosts = [
       {
         year: "2015",
         title: "Obama Makes a Deal",
-        description: "Iran agrees to stop making nuclear weapons in exchange for lifted sanctions. It's workingâ€”everyone's happy.",
+        description: "Iran agrees to stop making nuclear weapons in exchange for lifted sanctions. It's working—everyone's happy.",
         icon: "peace"
       },
       {
@@ -80,7 +80,7 @@ export const blogPosts = [
       }
     ],
     content: `
-## TL;DR â€” The 30-Second Version
+## TL;DR — The 30-Second Version
 
 **America overthrew Iran's government in 1953 to steal their oil.** Iranians never forgot. In 1979, they kicked out America's puppet dictator. America has been trying to control or destroy Iran ever since. The "nuclear weapons" thing is just the latest excuse.
 
@@ -116,7 +116,7 @@ By 1979, Iranians had enough. Mass protests forced the Shah to flee. Religious l
 Revolutionary students stormed the US embassy and took 52 Americans hostage for 444 days. Why? They were terrified America would do another 1953-style coup. They wanted leverage.
 
 **America's Response:**
-America cut all ties with Iran. Froze their assets. Started calling them evil. This is why they chant "Death to America"â€”they see America as the country that destroyed their democracy and supported their dictator.
+America cut all ties with Iran. Froze their assets. Started calling them evil. This is why they chant "Death to America"—they see America as the country that destroyed their democracy and supported their dictator.
 
 ---
 
@@ -126,10 +126,10 @@ America cut all ties with Iran. Froze their assets. Started calling them evil. T
 Iran says they want nuclear power for electricity. America and Israel say "nah, you're making bombs." 
 
 **The Real Reasons:**
-1. **Oil** â€” Iran has massive oil reserves. America wants influence over them.
-2. **Israel** â€” Iran supports groups that oppose Israel. Israel wants Iran destroyed.
-3. **Power** â€” America doesn't want any country in the Middle East that doesn't obey them.
-4. **Old Grudges** â€” Neither side can back down without looking weak.
+1. **Oil** — Iran has massive oil reserves. America wants influence over them.
+2. **Israel** — Iran supports groups that oppose Israel. Israel wants Iran destroyed.
+3. **Power** — America doesn't want any country in the Middle East that doesn't obey them.
+4. **Old Grudges** — Neither side can back down without looking weak.
 
 **Bottom Line:**
 This isn't about nuclear weapons. That's just the excuse. It's about America wanting to control the Middle East, and Iran refusing to be controlled.
@@ -174,18 +174,18 @@ This isn't about nuclear weapons. That's just the excuse. It's about America wan
       { id: "reality", title: "The Reality" }
     ],
     quickFacts: [
-      { label: "Main Issue", value: "Active War â€” March 2026" },
+      { label: "Main Issue", value: "Active War — March 2026" },
       { label: "Iran Military Budget", value: "$25B" },
       { label: "US Active Troops", value: "1.3M" },
       { label: "Iran Active Troops", value: "580K" }
     ],
     keyTakeaway: {
       points: [
-        "America has way more money and weaponsâ€”on paper they should win easily",
-        "But Iran is huge (4x California) with mountains everywhereâ€”hard to invade",
+        "America has way more money and weapons—on paper they should win easily",
+        "But Iran is huge (4x California) with mountains everywhere—hard to invade",
         "Iran has thousands of missiles that can hit US bases and Israel",
         "Iran's allies (Hezbollah, Houthis) can attack from multiple directions",
-        "Occupying Iran would be impossibleâ€”85 million people would resist"
+        "Occupying Iran would be impossible—85 million people would resist"
       ]
     },
     content: `
@@ -201,11 +201,11 @@ This isn't about nuclear weapons. That's just the excuse. It's about America wan
 
 The first week of the actual war (March 17-24, 2026) revealed several realities that the pre-war spreadsheets missed:
 
-**1. Stealth is not invisible.** An F-35 was shot down on March 21 â€” the first combat loss of America's "untouchable" fighter. The assumption that US planes could operate with impunity just died.
+**1. Stealth is not invisible.** An F-35 was shot down on March 21 — the first combat loss of America's "untouchable" fighter. The assumption that US planes could operate with impunity just died.
 
-**2. Missile accuracy is terrifying.** Iranian strikes hit specific buildings in Tel Aviv and military bases in the Gulf. This wasn't random fire â€” it was precision targeting that caused real damage.
+**2. Missile accuracy is terrifying.** Iranian strikes hit specific buildings in Tel Aviv and military bases in the Gulf. This wasn't random fire — it was precision targeting that caused real damage.
 
-**3. No quick air superiority.** Three weeks in, US and Israeli jets are still facing contested airspace. Iran's air defense network â€” a mix of Russian S-400s and indigenous systems â€” is still operational.
+**3. No quick air superiority.** Three weeks in, US and Israeli jets are still facing contested airspace. Iran's air defense network — a mix of Russian S-400s and indigenous systems — is still operational.
 
 **4. The invasion math is unchanged.** Even if America "wins" the air war, occupying Iran means 85 million hostiles and mountainous terrain. No military planner has figured out how to solve that equation.
 
@@ -228,7 +228,7 @@ Neither side can achieve decisive victory. America cannot occupy Iran. Iran cann
   {
     id: "iran-shot-down-f35",
     slug: "iran-shot-down-f35",
-    title: "Iran Just Shot Down an F-35 â€” Why That's Never Happened Before",
+    title: "Iran Just Shot Down an F-35 — Why That's Never Happened Before",
     excerpt: "A $80 million stealth fighter was supposed to be invisible. Iran just proved it isn't.",
     category: "Breaking",
     readTime: "5 min",
@@ -255,10 +255,10 @@ Neither side can achieve decisive victory. America cannot occupy Iran. Iran cann
     keyTakeaway: {
       points: [
         "This is the first time any F-35 has been shot down in combat anywhere in the world",
-        "The F-35 program cost $1.7 trillionâ€”it's America's most expensive weapon system ever",
-        "Stealth doesn't mean invisibleâ€”it means harder to detect, not impossible",
+        "The F-35 program cost $1.7 trillion—it's America's most expensive weapon system ever",
+        "Stealth doesn't mean invisible—it means harder to detect, not impossible",
         "Iran used either Russian S-400 systems or their homemade Bavar-373 missiles",
-        "If Iran can do this, Russia and China definitely canâ€”US air dominance is now questioned"
+        "If Iran can do this, Russia and China definitely can—US air dominance is now questioned"
       ]
     },
     content: `
@@ -270,7 +270,7 @@ The pilot ejected. The wreckage fell near Isfahan. And military analysts worldwi
 
 Why? Because this has never happened before. Not once. Not in 15 years of F-35 operations. Not in Syria, not in Yemen, not anywhere.
 
-**The F-35 was supposed to be untouchable.** It's America's most advanced fighter jet, designed to slip through enemy radar like a ghost. Each one costs $82 million. The entire program cost taxpayers $1.7 trillionâ€”more than the GDP of most countries.
+**The F-35 was supposed to be untouchable.** It's America's most advanced fighter jet, designed to slip through enemy radar like a ghost. Each one costs $82 million. The entire program cost taxpayers $1.7 trillion—more than the GDP of most countries.
 
 And Iran just swatted one out of the sky.
 
@@ -357,7 +357,7 @@ At $82 million per plane (and $1.7 trillion for the whole program), how many can
 Israel has been striking Iran with impunity because they believed their planes were untouchable. That calculus just changed. Will they risk more F-35s? Or will they back off?
 
 **The Bigger Picture:**
-This war just entered a new phase. Iran isn't just absorbing strikes anymoreâ€”they're fighting back effectively.
+This war just entered a new phase. Iran isn't just absorbing strikes anymore—they're fighting back effectively.
 
 ---
 
@@ -365,12 +365,12 @@ This war just entered a new phase. Iran isn't just absorbing strikes anymoreâ�
 
 **If a $1.7 trillion weapons program can be defeated by Iranian air defense, what does that tell us about the future of warfare? Are we preparing for the wrong kind of wars?**
 
-Share your thoughts. This isn't just about one planeâ€”it's about whether military technology has outpaced military strategy.
+Share your thoughts. This isn't just about one plane—it's about whether military technology has outpaced military strategy.
 `,
     faq: [
       {
         question: "What is 'stealth' technology?",
-        answer: "Stealth doesn't make planes invisible. It uses special shapes and radar-absorbing materials to make them much harder to detect on radar. Think of it like camouflageâ€”you're still there, but harder to spot."
+        answer: "Stealth doesn't make planes invisible. It uses special shapes and radar-absorbing materials to make them much harder to detect on radar. Think of it like camouflage—you're still there, but harder to spot."
       },
       {
         question: "Why is the F-35 so expensive?",
@@ -393,7 +393,7 @@ Share your thoughts. This isn't just about one planeâ€”it's about whether m
   {
     id: "how-iran-hit-stealth-tech-breakdown",
     slug: "how-iran-hit-stealth-tech-breakdown",
-    title: "How Iran Actually Hit a Stealth Jet â€” The Technology Breakdown",
+    title: "How Iran Actually Hit a Stealth Jet — The Technology Breakdown",
     excerpt: "The science behind defeating billion-dollar stealth tech with missiles that cost under $1 million.",
     category: "Military",
     readTime: "7 min",
@@ -420,9 +420,9 @@ Share your thoughts. This isn't just about one planeâ€”it's about whether m
     ],
     keyTakeaway: {
       points: [
-        "Stealth planes have a radar cross-section 1/1000th the size of normal jetsâ€”they're not invisible, just tiny",
-        "Low-frequency radars can detect stealth but can't guide missilesâ€” Iran may have used networked systems",
-        "Infrared sensors see heat, not shapesâ€”F-35 engines produce massive heat signatures",
+        "Stealth planes have a radar cross-section 1/1000th the size of normal jets—they're not invisible, just tiny",
+        "Low-frequency radars can detect stealth but can't guide missiles— Iran may have used networked systems",
+        "Infrared sensors see heat, not shapes—F-35 engines produce massive heat signatures",
         "Russia's S-400 was specifically designed to counter stealth aircraft using multiple radar bands",
         "The cost asymmetry is staggering: a $1 million missile can destroy an $82 million fighter"
       ]
@@ -436,10 +436,10 @@ Share your thoughts. This isn't just about one planeâ€”it's about whether m
 Radar is like echolocation. You send out radio waves. They bounce off objects and come back. The time it takes tells you how far away something is.
 
 **The Problem with Stealth:**
-Normal planes are like screaming in a canyonâ€”you hear the echo clearly. Stealth planes are like whispering. The echo is so faint, radar thinks it's just background noise.
+Normal planes are like screaming in a canyon—you hear the echo clearly. Stealth planes are like whispering. The echo is so faint, radar thinks it's just background noise.
 
 **Radar Cross-Section (RCS):**
-This is the key number. A normal fighter jet has an RCS of about 5 square meters. An F-35? 0.001 square metersâ€”the size of a bird. Radar operators routinely filter out birds to avoid false alarms.
+This is the key number. A normal fighter jet has an RCS of about 5 square meters. An F-35? 0.001 square meters—the size of a bird. Radar operators routinely filter out birds to avoid false alarms.
 
 ---
 
@@ -462,7 +462,7 @@ Special coatings convert radar energy into heat instead of reflecting it.
 
 ### Method 1: Low-Frequency Radar (VHF/UHF)
 
-Old Soviet-era radars use longer wavelengths that wrap around stealth shaping instead of bouncing off. The catch: they can detect stealth but can't guide missilesâ€”the resolution is too poor.
+Old Soviet-era radars use longer wavelengths that wrap around stealth shaping instead of bouncing off. The catch: they can detect stealth but can't guide missiles—the resolution is too poor.
 
 Iran has plenty of old Soviet radars. They likely use these for early warning, then hand off to other systems for targeting.
 
@@ -476,7 +476,7 @@ Iran has been building integrated air defense networks for years, sharing data b
 
 Stealth hides from radio waves, not heat. An F-35's engine puts out enough heat to be visible from miles away.
 
-Infrared search and track (IRST) systems are completely passiveâ€”the F-35 can't jam what it can't detect. Modern IRST can spot fighter jets from 50+ km away.
+Infrared search and track (IRST) systems are completely passive—the F-35 can't jam what it can't detect. Modern IRST can spot fighter jets from 50+ km away.
 
 ### Method 4: Bistatic Radar
 
@@ -542,12 +542,12 @@ An old Soviet radar costs basically nothing.
 America built its entire air strategy around the assumption that stealth planes would dominate uncontested. If that assumption is wrong, the entire strategy collapses.
 
 **The Historical Parallel:**
-In 1999, Serbia shot down an F-117 stealth bomber using an old Soviet missile systemâ€”the first time stealth was defeated. But that was one plane, one time. This is happening in an active war zone with dozens of strikes. The lessons will reshape air warfare for decades.
+In 1999, Serbia shot down an F-117 stealth bomber using an old Soviet missile system—the first time stealth was defeated. But that was one plane, one time. This is happening in an active war zone with dozens of strikes. The lessons will reshape air warfare for decades.
 `,
     faq: [
       {
         question: "What is 'radar cross-section'?",
-        answer: "Radar cross-section (RCS) measures how detectable an object is by radar. A normal plane might be 5 square meters. An F-35 is 0.001 square metersâ€”about the size of a bird. Lower RCS means harder to detect."
+        answer: "Radar cross-section (RCS) measures how detectable an object is by radar. A normal plane might be 5 square meters. An F-35 is 0.001 square meters—about the size of a bird. Lower RCS means harder to detect."
       },
       {
         question: "Can stealth be completely invisible?",
@@ -570,7 +570,7 @@ In 1999, Serbia shot down an F-117 stealth bomber using an old Soviet missile sy
   {
     id: "strait-hormuz-closure-economic-impact",
     slug: "strait-hormuz-closure-economic-impact",
-    title: "What Happens If Iran Closes the Strait of Hormuz â€” In Numbers",
+    title: "What Happens If Iran Closes the Strait of Hormuz — In Numbers",
     excerpt: "21% of global oil passes through one narrow waterway. Here's exactly what happens if it shuts down.",
     category: "Economic",
     readTime: "6 min",
@@ -599,8 +599,8 @@ In 1999, Serbia shot down an F-117 stealth bomber using an old Soviet missile sy
     ],
     keyTakeaway: {
       points: [
-        "21% of global oil passes through a strait just 33 km wideâ€”it's the world's most important chokepoint",
-        "If closed, oil prices could spike 50-100% within daysâ€”expect $6-8/gallon gas in the US",
+        "21% of global oil passes through a strait just 33 km wide—it's the world's most important chokepoint",
+        "If closed, oil prices could spike 50-100% within days—expect $6-8/gallon gas in the US",
         "Saudi Arabia and UAE have pipeline alternatives but they only handle 30% of Hormuz capacity",
         "Insurance rates for tankers would skyrocket, effectively halting commercial shipping even without blockade",
         "The economic impact would be measured in trillions of dollars and could trigger global recession"
@@ -746,10 +746,10 @@ Already up 400% since March 17. If Hormuz closes:
 ### Military Response
 
 **US Options:**
-1. **Naval escort** â€” US Navy escorts tankers through
-2. **Minesweeping** â€” Clear Iranian mines
-3. **Strike Iranian missile sites** â€” Try to reopen by force
-4. **Diplomatic pressure** â€” Sanctions, negotiations
+1. **Naval escort** — US Navy escorts tankers through
+2. **Minesweeping** — Clear Iranian mines
+3. **Strike Iranian missile sites** — Try to reopen by force
+4. **Diplomatic pressure** — Sanctions, negotiations
 
 **The Risk:**
 Any military action to reopen Hormuz could escalate to wider war. Iran has thousands of anti-ship missiles aimed at the strait.
@@ -847,13 +847,13 @@ That $42 billion becomes $42 billion **per week**.
 
 **The World's Achilles Heel:**
 
-We've built a global economy that depends on 21% of its oil passing through a gap 33 km wide. One countryâ€”Iranâ€”controls one side completely.
+We've built a global economy that depends on 21% of its oil passing through a gap 33 km wide. One country—Iran—controls one side completely.
 
 This isn't a design flaw. It's geography. But it's also a vulnerability that shapes geopolitics.
 
 **The Deterrence Game:**
 
-Iran knows this. Closing Hormuz is their nuclear optionâ€”literally more economically damaging than a nuclear strike on a single city. They won't do it lightly because:
+Iran knows this. Closing Hormuz is their nuclear option—literally more economically damaging than a nuclear strike on a single city. They won't do it lightly because:
 1. They also need to export oil
 2. It guarantees massive military retaliation
 3. It makes them a global pariah
@@ -893,14 +893,14 @@ The Strait of Hormuz has been a geopolitical flashpoint for 40 years. We've know
       },
       {
         question: "Are there alternative routes for oil?",
-        answer: "Limited. Saudi Arabia has pipelines that can move 5 million barrels/day to the Red Sea. The UAE has 1.5 million barrels/day capacity. Combined, that's only 6.5 million vs 21 million through Hormuzâ€”nowhere near enough."
+        answer: "Limited. Saudi Arabia has pipelines that can move 5 million barrels/day to the Red Sea. The UAE has 1.5 million barrels/day capacity. Combined, that's only 6.5 million vs 21 million through Hormuz—nowhere near enough."
       }
     ]
   },
   {
     id: "every-strike-us-iran-war-mapped",
     slug: "every-strike-us-iran-war-mapped",
-    title: "Every Strike in the US-Iran War â€” Mapped and Explained",
+    title: "Every Strike in the US-Iran War — Mapped and Explained",
     excerpt: "26 verified attacks. 8 countries. One interactive breakdown of every confirmed strike since March 17.",
     category: "Analysis",
     readTime: "8 min",
@@ -929,7 +929,7 @@ The Strait of Hormuz has been a geopolitical flashpoint for 40 years. We've know
     ],
     keyTakeaway: {
       points: [
-        "26 verified attacks across 8 countries in just 5 daysâ€”this is the most intense regional conflict since 1973",
+        "26 verified attacks across 8 countries in just 5 days—this is the most intense regional conflict since 1973",
         "Israel has conducted 9 strikes on Iran and Lebanon combined; Iran and allies have conducted 13",
         "The war has expanded beyond Iran-Israel to include Qatar, Kuwait, Saudi Arabia, and Iraq",
         "Assassination of leaders (Khatib, Basij chief) shows Israel is targeting command structure",
@@ -968,7 +968,7 @@ The Strait of Hormuz has been a geopolitical flashpoint for 40 years. We've know
       {
         year: "Mar 19",
         title: "Qatar Targeted: LNG Facility Hit",
-        description: "Iranian missiles strike Ras Laffanâ€”world's largest LNG hub. Global energy markets react. Saudi refineries also hit.",
+        description: "Iranian missiles strike Ras Laffan—world's largest LNG hub. Global energy markets react. Saudi refineries also hit.",
         icon: "fire",
         highlight: true
       },
@@ -1025,7 +1025,7 @@ Every attack mentioned here is plotted on our [interactive conflict map](/live-m
 | Mar 21 | Military targets | Critical severity strikes |
 
 **What This Tells Us:**
-Israel is conducting a sustained campaign against Iran's command structure. This isn't random bombingâ€”it's targeted decapitation.
+Israel is conducting a sustained campaign against Iran's command structure. This isn't random bombing—it's targeted decapitation.
 
 **The F-35 Factor:**
 On March 21, Iran shot down an Israeli F-35 over Isfahan province. This was the first Israeli aircraft loss of the war.
@@ -1077,7 +1077,7 @@ On March 21, Iran shot down an Israeli F-35 over Isfahan province. This was the 
 ## Gulf States: Collateral Damage
 
 **The Pattern:**
-Iran is targeting US allies' energy infrastructure. This is economic warfareâ€”hitting where it hurts most.
+Iran is targeting US allies' energy infrastructure. This is economic warfare—hitting where it hurts most.
 
 ### Kuwait
 
@@ -1201,7 +1201,7 @@ Both sides are targeting energy infrastructure:
 - Iran: Ras Laffan LNG, Riyadh refineries, Kuwait oil
 
 **What It Means:**
-This war isn't just militaryâ€”it's economic. Both sides want to hurt the other's economy and their allies' economies.
+This war isn't just military—it's economic. Both sides want to hurt the other's economy and their allies' economies.
 
 ### Pattern 3: Geographic Expansion
 
@@ -1212,7 +1212,7 @@ The conflict has spread from Iran-Israel to:
 - West Bank (Iranian missiles)
 
 **What It Means:**
-This is becoming a regional war. The question isn't whether it expands furtherâ€”it's how much further.
+This is becoming a regional war. The question isn't whether it expands further—it's how much further.
 
 ### Pattern 4: Missile vs. Airpower
 
@@ -1237,7 +1237,7 @@ Other news sources give you text descriptions. We give you exact locations, plot
 
 **No Other Source Has This:**
 
-We've verified every attack. Every coordinate. Every timestamp. This isn't aggregationâ€”this is journalism with standards.
+We've verified every attack. Every coordinate. Every timestamp. This isn't aggregation—this is journalism with standards.
 
 **What Happens Next:**
 
@@ -1250,7 +1250,7 @@ Both sides say they're winning. The map shows you what's actually happening.
 
 ## Discussion Question
 
-**Is this containmentâ€”keeping the war limited to the current geographyâ€”or is this the early stage of a much wider conflict? What would you be watching for as an escalation signal?**
+**Is this containment—keeping the war limited to the current geography—or is this the early stage of a much wider conflict? What would you be watching for as an escalation signal?**
 
 Use the map. Look at the patterns. Geography tells the story that propaganda tries to hide.
 `,
@@ -1273,7 +1273,7 @@ Use the map. Look at the patterns. Geography tells the story that propaganda tri
       },
       {
         question: "How often is the map updated?",
-        answer: "We update as attacks are verifiedâ€”typically within 1-6 hours of confirmation. The database is manually curated to prevent false information. Check the timestamp on each marker for verification time."
+        answer: "We update as attacks are verified—typically within 1-6 hours of confirmation. The database is manually curated to prevent false information. Check the timestamp on each marker for verification time."
       }
     ]
   },
@@ -1281,7 +1281,7 @@ Use the map. Look at the patterns. Geography tells the story that propaganda tri
     id: "could-this-become-world-war-3",
     slug: "could-this-become-world-war-3",
     title: "Could This Become World War 3? What Would Have to Happen",
-    excerpt: "The question everyone is asking. Here's the realistic path from regional war to global conflictâ€”and why it's not inevitable.",
+    excerpt: "The question everyone is asking. Here's the realistic path from regional war to global conflict—and why it's not inevitable.",
     category: "Analysis",
     readTime: "7 min",
     date: "March 25, 2026",
@@ -1309,10 +1309,10 @@ Use the map. Look at the patterns. Geography tells the story that propaganda tri
     ],
     keyTakeaway: {
       points: [
-        "Currently this is a regional warâ€”escalation to global conflict requires specific triggers",
-        "NATO Article 5 is NOT triggered unless a member state is attackedâ€”Israel is not a NATO member",
+        "Currently this is a regional war—escalation to global conflict requires specific triggers",
+        "NATO Article 5 is NOT triggered unless a member state is attacked—Israel is not a NATO member",
         "Russia might support Iran indirectly but direct military intervention against US forces is unlikely",
-        "China has too much economic exposure to risk direct involvementâ€” they'll stay neutral publicly",
+        "China has too much economic exposure to risk direct involvement— they'll stay neutral publicly",
         "The most likely path to WW3 is miscalculation: an attack on Russian forces or accidental NATO involvement"
       ]
     },
@@ -1456,7 +1456,7 @@ Not unless a NATO member is attacked.
 America is both a NATO member AND Israel's closest ally. If the US gets heavily involved:
 - NATO allies may support logistically (as in Iraq 2003)
 - But they won't invoke Article 5 unless NATO territory hit
-- European allies are reluctantâ€”energy crisis makes them cautious
+- European allies are reluctant—energy crisis makes them cautious
 
 ---
 
@@ -1617,11 +1617,11 @@ There's no easy answer. Every choice has costs. But pretending there are easy an
       },
       {
         question: "What is Article 5?",
-        answer: "NATO Article 5 states that an attack on one NATO member is an attack on all. It's been invoked only onceâ€”after 9/11. If a NATO member (like Turkey or the US) is directly attacked, all 32 NATO countries are obligated to respond collectively."
+        answer: "NATO Article 5 states that an attack on one NATO member is an attack on all. It's been invoked only once—after 9/11. If a NATO member (like Turkey or the US) is directly attacked, all 32 NATO countries are obligated to respond collectively."
       },
       {
         question: "Could Russia join the war on Iran's side?",
-        answer: "Direct Russian military intervention against US forces is unlikely (20% probability). Russia is already stretched thin in Ukraine. However, they could increase weapons shipments to Iran, share intelligence, or conduct cyber attacks. The real risk is accidentalâ€”US strikes killing Russian advisors in Iran."
+        answer: "Direct Russian military intervention against US forces is unlikely (20% probability). Russia is already stretched thin in Ukraine. However, they could increase weapons shipments to Iran, share intelligence, or conduct cyber attacks. The real risk is accidental—US strikes killing Russian advisors in Iran."
       },
       {
         question: "What about China?",
@@ -1665,10 +1665,10 @@ There's no easy answer. Every choice has costs. But pretending there are easy an
     ],
     keyTakeaway: {
       points: [
-        "On paper, the US outspends Iran 35:1 and should dominate easilyâ€”real war is more complex",
-        "Iran shooting down an F-35 proves technology alone doesn't win warsâ€”tactics and terrain matter",
+        "On paper, the US outspends Iran 35:1 and should dominate easily—real war is more complex",
+        "Iran shooting down an F-35 proves technology alone doesn't win wars—tactics and terrain matter",
         "Iran's missile arsenal (3,000+ rockets) creates a deterrent that airpower can't easily neutralize",
-        "The US has overwhelming power but lacks clear objectivesâ€”what does 'victory' look like?",
+        "The US has overwhelming power but lacks clear objectives—what does 'victory' look like?",
         "This war reveals that asymmetric warfare works: Iran can't win conventionally but can make winning too expensive for the US/Israel"
       ]
     },
@@ -1758,7 +1758,7 @@ Each F-35 costs $82 million. Each Iranian missile costs $500K-1M. Even at 1:1 ex
 
 **The Accuracy Surprise:**
 
-Western analysts assumed Iranian missiles were inaccurate. The hits on Tel Aviv and Ramat Gan prove otherwise. These aren't Scuds randomly fallingâ€”they're precision weapons.
+Western analysts assumed Iranian missiles were inaccurate. The hits on Tel Aviv and Ramat Gan prove otherwise. These aren't Scuds randomly falling—they're precision weapons.
 
 **The Rate of Fire:**
 
@@ -1897,9 +1897,9 @@ Logistics favor Iran defending their territory. Attacking is hard and getting ha
 ### Lesson 5: No Clear Victory Condition
 
 What does "winning" look like?
-- Regime change? Requires invasion (see Lesson 4â€”impossible)
+- Regime change? Requires invasion (see Lesson 4—impossible)
 - Destroy nuclear program? Already dispersed and underground
-- Force surrender? Iran is defending their homelandâ€”unthinkable
+- Force surrender? Iran is defending their homeland—unthinkable
 
 **Implication:**
 This war has no obvious endpoint. It continues until both sides are exhausted or external pressure forces talks.
@@ -1970,7 +1970,7 @@ America can afford this war financially. But can they afford it politically?
 
 **The Lesson for Future Wars:**
 
-If Iran can do this, what about China? Russia? The assumption of American military dominance just took a hit. Not a fatal hitâ€”but a significant one.
+If Iran can do this, what about China? Russia? The assumption of American military dominance just took a hit. Not a fatal hit—but a significant one.
 
 **What Happens Next:**
 
@@ -2001,22 +2001,22 @@ The F-35 was built for a different era. The aircraft carrier was built for a dif
       },
       {
         question: "How accurate are Iranian missiles?",
-        answer: "Much more accurate than Western analysts predicted. Iranian missiles have hit specific targets in Tel Aviv, Ramat Gan, and energy facilities in Qatar and Saudi Arabia. These aren't random Scud-style barragesâ€”they're precision weapons with GPS guidance."
+        answer: "Much more accurate than Western analysts predicted. Iranian missiles have hit specific targets in Tel Aviv, Ramat Gan, and energy facilities in Qatar and Saudi Arabia. These aren't random Scud-style barrages—they're precision weapons with GPS guidance."
       },
       {
         question: "Why doesn't the US just use more stealth bombers?",
-        answer: "The US has only 20 B-2 stealth bombers (and 100 B-1Bs/F-117s that are less stealthy). They're based in the US, require long flights with refueling, and carry limited payload. They're valuable for strategic targets but can't sustain a campaign alone. Plus, even stealth isn't invincibleâ€”detection technology evolves."
+        answer: "The US has only 20 B-2 stealth bombers (and 100 B-1Bs/F-117s that are less stealthy). They're based in the US, require long flights with refueling, and carry limited payload. They're valuable for strategic targets but can't sustain a campaign alone. Plus, even stealth isn't invincible—detection technology evolves."
       },
       {
         question: "What does 'victory' look like for either side?",
-        answer: "That's the problemâ€”neither side has a clear victory condition. Israel/US want to stop Iranian missiles and nuclear program, but can't without invasion. Iran wants to survive and hurt Israel, but can't destroy them. This is a war of attrition with no obvious endpoint beyond exhaustion or external pressure."
+        answer: "That's the problem—neither side has a clear victory condition. Israel/US want to stop Iranian missiles and nuclear program, but can't without invasion. Iran wants to survive and hurt Israel, but can't destroy them. This is a war of attrition with no obvious endpoint beyond exhaustion or external pressure."
       }
     ]
   },
   {
     id: "houthi-mystery-silence",
     slug: "houthi-mystery-silence",
-    title: "The Houthi Mystery â€” Why Haven't They Fired a Single Shot?",
+    title: "The Houthi Mystery — Why Haven't They Fired a Single Shot?",
     excerpt: "The group that shut down Red Sea shipping for 18 months has been completely silent for 23 days of the biggest war in the Middle East in decades.",
     category: "Military",
     readTime: "5 min",
@@ -2044,7 +2044,7 @@ The F-35 was built for a different era. The aircraft carrier was built for a dif
       points: [
         "The Houthis, who relentlessly attacked Red Sea shipping for 18 months before the war, have not fired a single shot since March 17",
         "Three theories explain the silence: strategic reserve (saving missiles for decisive moment), deal with Washington (secret negotiations), or tactical caution (waiting to see who wins)",
-        "On March 20, a Houthi official issued a cryptic warning: 'When we move, the world will know'â€”suggesting they haven't abandoned the fight",
+        "On March 20, a Houthi official issued a cryptic warning: 'When we move, the world will know'—suggesting they haven't abandoned the fight",
         "If Houthis do enter, closing the Red Sea would spike global shipping costs and add pressure to an already strained global economy",
         "Reports suggest their weapons stockpiles are running low, but recruitment and training continue in preparation for potential entry"
       ]
@@ -2088,7 +2088,7 @@ When the Houthis do attack, it won't be a skirmish. It'll be a coordinated, larg
 ### Theory 2: Deal With Washington
 
 **The Idea:**
-Secret back-channel negotiations between the Houthis and the US (possibly via Oman) have bought their neutralityâ€”for now.
+Secret back-channel negotiations between the Houthis and the US (possibly via Oman) have bought their neutrality—for now.
 
 **Evidence:**
 - Oman has a history of mediating between Houthis and the West
@@ -2168,7 +2168,7 @@ Remember the 2021 Suez Canal blockage? That was one ship for six days. This woul
 
 The Houthis are Iran's ace in the hole. Using them now risks their destruction. Saving them for later keeps the threat alive.
 
-But if Iran gets desperateâ€”if the US starts hitting Tehran directlyâ€”the Houthis become a valuable distraction. "You hit our capital, we close your shipping lanes."
+But if Iran gets desperate—if the US starts hitting Tehran directly—the Houthis become a valuable distraction. "You hit our capital, we close your shipping lanes."
 
 **The Stockpile Question:**
 
@@ -2193,7 +2193,7 @@ But the Houthi silence is equally significant. It's a wild card that could flip 
 
 1. **The Deal Holds:** Houthis stay out. The war remains limited to Iran-Israel-Lebanon-Gulf. Red Sea shipping continues (under heavy guard).
 
-2. **The Trigger:** Some eventâ€”an Israeli strike on Yemen, an Iranian order, a miscalculationâ€”brings Houthis in. The war expands south.
+2. **The Trigger:** Some event—an Israeli strike on Yemen, an Iranian order, a miscalculation—brings Houthis in. The war expands south.
 
 3. **The Wait:** Houthis stay quiet until Iran is truly desperate, then enter as a last-ditch effort to widen the conflict and force negotiations.
 
@@ -2203,7 +2203,7 @@ But the Houthi silence is equally significant. It's a wild card that could flip 
 - Iranian weapons shipments through Oman
 - Saudi Arabia's posture (are they preparing for Houthi entry?)
 - US naval movements in the Red Sea
-- That March 20 warningâ€”was it bluster, or a real signal?
+- That March 20 warning—was it bluster, or a real signal?
 
 ---
 
@@ -2231,7 +2231,7 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
   {
     id: "taiwan-window-xi-opportunity",
     slug: "taiwan-window-xi-opportunity",
-    title: "The Taiwan Window â€” Is This the Moment Xi Has Been Waiting For?",
+    title: "The Taiwan Window — Is This the Moment Xi Has Been Waiting For?",
     excerpt: "US arsenal draining. F-35 stealth broken. 50,000 troops in the wrong ocean. China studying every engagement. Trump-Xi summit April 1st. This is the meta-story.",
     category: "Strategic",
     readTime: "8 min",
@@ -2258,10 +2258,10 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
     ],
     keyTakeaway: {
       points: [
-        "China is the primary beneficiary of the US-Iran warâ€”every American resource diverted to the Middle East is one less available for the Pacific",
+        "China is the primary beneficiary of the US-Iran war—every American resource diverted to the Middle East is one less available for the Pacific",
         "Every Tomahawk fired, every F-35 lost, and every carrier group in the Gulf depletes the arsenal meant for a potential Taiwan scenario",
         "China has had 23 days of real-time intelligence watching how US systems perform against Iranian air defenses",
-        "The April 1 Trump-Xi summit is not a coincidenceâ€”it's the moment Xi decides whether this window is worth taking",
+        "The April 1 Trump-Xi summit is not a coincidence—it's the moment Xi decides whether this window is worth taking",
         "Two competing theories: (1) Xi acts while America is distracted, or (2) Xi waits and lets America bleed resources indefinitely"
       ]
     },
@@ -2282,7 +2282,7 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
       },
       {
         year: "Mar 21",
-        title: "F-35 Downed â€” Intel Goldmine",
+        title: "F-35 Downed — Intel Goldmine",
         description: "China studies exactly how Iranian/Russian air defense defeated American stealth. This data is priceless.",
         icon: "plane",
         highlight: true
@@ -2322,7 +2322,7 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
     id: "the-son-who-inherited-war",
     slug: "the-son-who-inherited-war",
     title: "The Son Who Inherited a War",
-    excerpt: "Iran's new Supreme Leader has never held public office, never made a public appearance, and nobody had heard his voice. Meet Mojtaba Khamenei â€” the man running a war from the shadows.",
+    excerpt: "Iran's new Supreme Leader has never held public office, never made a public appearance, and nobody had heard his voice. Meet Mojtaba Khamenei — the man running a war from the shadows.",
     category: "Leadership Crisis",
     readTime: "6 min",
     date: "March 22, 2026",
@@ -2344,34 +2344,34 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
     ],
     keyTakeaway: {
       points: [
-        "Ali Khamenei was killed on Day 1 â€” his son Mojtaba was elected Supreme Leader 8 days later",
-        "This is the first hereditary succession in the Islamic Republic's history â€” the system was specifically designed to prevent this",
-        "His first statement was read by a TV anchor while only a photograph was shown â€” fuelling speculation he was injured in the opening strikes",
-        "Experts describe him as more hardline than his father â€” shaped entirely by IRGC ideology from childhood",
+        "Ali Khamenei was killed on Day 1 — his son Mojtaba was elected Supreme Leader 8 days later",
+        "This is the first hereditary succession in the Islamic Republic's history — the system was specifically designed to prevent this",
+        "His first statement was read by a TV anchor while only a photograph was shown — fuelling speculation he was injured in the opening strikes",
+        "Experts describe him as more hardline than his father — shaped entirely by IRGC ideology from childhood",
         "A man who has never negotiated anything is now running a country at war"
       ]
     },
     timeline: [
       { year: "Feb 28", title: "Ali Khamenei Killed", description: "Israeli airstrike on Tehran kills Supreme Leader Ali Khamenei.", icon: "death", highlight: true },
       { year: "Mar 3-8", title: "Assembly of Experts Session", description: "Emergency session to select new Supreme Leader.", icon: "meeting", highlight: false },
-      { year: "Mar 8", title: "Mojtaba Elected", description: "Mojtaba Khamenei elected â€” first hereditary succession.", icon: "coup", highlight: true },
+      { year: "Mar 8", title: "Mojtaba Elected", description: "Mojtaba Khamenei elected — first hereditary succession.", icon: "coup", highlight: true },
       { year: "Mar 21", title: "First Statement Via TV Anchor", description: "Statement read by anchor, only still photo shown.", icon: "radio", highlight: true },
       { year: "Mar 22", title: "Still No Video/Audio", description: "Supreme Leader remains unseen, unheard.", icon: "ghost", highlight: false }
     ],
     content: `
-## TL;DR â€” The 30-Second Version
+## TL;DR — The 30-Second Version
 
 **America killed Iran's Supreme Leader on March 17.** Eight days later, his son Mojtaba replaced him. The problem? Mojtaba has never held public office, never appeared in public, and nobody had ever heard his voice.
 
-**His first statement came 14 days after taking power** â€” read by a TV anchor using a still photograph. No video. No audio.
+**His first statement came 14 days after taking power** — read by a TV anchor using a still photograph. No video. No audio.
 
-**This matters because:** A hereditary succession just turned the Islamic Republic into a de facto monarchy â€” the exact thing it was created to overthrow.
+**This matters because:** A hereditary succession just turned the Islamic Republic into a de facto monarchy — the exact thing it was created to overthrow.
 
 ---
 
 ## The Dynasty Problem
 
-Iran's political system was designed specifically to prevent a single bloodline accumulating power. The 1979 revolution overthrew Mohammad Reza Shah â€” a hereditary monarch â€” and replaced him with a clerical council so no family could dominate.
+Iran's political system was designed specifically to prevent a single bloodline accumulating power. The 1979 revolution overthrew Mohammad Reza Shah — a hereditary monarch — and replaced him with a clerical council so no family could dominate.
 
 On March 8, that assembly elected Ali Khamenei's son. The Islamic Republic just became what it was founded to destroy: a family dynasty.
 
@@ -2390,9 +2390,9 @@ He has never held elected office. Never participated in public diplomacy. Never 
 Iran will not negotiate. The man running the country has never negotiated anything, came to power mid-war, and has everything to prove. Every ceasefire overture from Washington lands in the hands of someone with no diplomatic history and no incentive to appear weak.
 `,
     faq: [
-      { question: "How is the Supreme Leader chosen?", answer: "By the Assembly of Experts â€” 88 Islamic scholars. They select based on religious qualifications, not bloodline. Mojtaba's selection is historically unprecedented." },
-      { question: "Was Mojtaba always expected to take over?", answer: "He was considered a possibility but never confirmed. His father kept him out of public view â€” possibly to maintain the fiction that succession wasn't hereditary." },
-      { question: "Does this make Iran a monarchy?", answer: "Functionally, many analysts argue yes. The Assembly voted â€” it wasn't automatic. But when a supreme leader's son becomes the supreme leader, the distinction becomes philosophical." }
+      { question: "How is the Supreme Leader chosen?", answer: "By the Assembly of Experts — 88 Islamic scholars. They select based on religious qualifications, not bloodline. Mojtaba's selection is historically unprecedented." },
+      { question: "Was Mojtaba always expected to take over?", answer: "He was considered a possibility but never confirmed. His father kept him out of public view — possibly to maintain the fiction that succession wasn't hereditary." },
+      { question: "Does this make Iran a monarchy?", answer: "Functionally, many analysts argue yes. The Assembly voted — it wasn't automatic. But when a supreme leader's son becomes the supreme leader, the distinction becomes philosophical." }
     ]
   },
   {
@@ -2422,10 +2422,10 @@ Iran will not negotiate. The man running the country has never negotiated anythi
     keyTakeaway: {
       points: [
         "The US struck Iran's Natanz nuclear facility with bunker-busters on March 21 morning",
-        "Hours later Iranian missiles hit Dimona â€” adjacent to Israel's main nuclear research center",
+        "Hours later Iranian missiles hit Dimona — adjacent to Israel's main nuclear research center",
         "First time in history two states have struck each other's nuclear sites on the same day",
         "IAEA confirmed both strikes, confirmed no radiation leak, called for maximum restraint",
-        "Iran's parliament speaker called it 'a new phase of battle' â€” signalling future strikes will be broader"
+        "Iran's parliament speaker called it 'a new phase of battle' — signalling future strikes will be broader"
       ]
     },
     timeline: [
@@ -2437,7 +2437,7 @@ Iran will not negotiate. The man running the country has never negotiated anythi
     content: `
 ## TL;DR
 
-On March 21, US B-2 stealth bombers dropped bunker-buster bombs on the Natanz uranium enrichment complex. By that evening, Iranian ballistic missiles struck Dimona â€” 20km from Israel's main nuclear research center.
+On March 21, US B-2 stealth bombers dropped bunker-buster bombs on the Natanz uranium enrichment complex. By that evening, Iranian ballistic missiles struck Dimona — 20km from Israel's main nuclear research center.
 
 Two buildings collapsed. A 10-year-old boy in critical condition. In Arad, 35km away: 8 killed, 130+ injured.
 
@@ -2447,7 +2447,7 @@ Since 1945 there has been an unwritten rule: you do not strike nuclear facilitie
 
 ## Why This Is Historic
 
-The unwritten rule that kept the nuclear age stable just broke. Not because of any treaty â€” none exists. Because the consequences of getting it wrong are civilizational.
+The unwritten rule that kept the nuclear age stable just broke. Not because of any treaty — none exists. Because the consequences of getting it wrong are civilizational.
 
 Both sides struck nuclear-adjacent targets on the same day. Both said no radiation leaked. The margin of error has never been thinner.
 
@@ -2457,24 +2457,24 @@ Both sides struck nuclear-adjacent targets on the same day. Both said no radiati
 
 Iran's parliament speaker: "If the Israeli regime is unable to intercept missiles in the heavily protected Dimona area, it is operationally a sign of entering a new phase of the battle."
 
-A military source told Tasnim News Agency that Iran has shifted strategy â€” away from proportional retaliation, toward broader strikes.
+A military source told Tasnim News Agency that Iran has shifted strategy — away from proportional retaliation, toward broader strikes.
 
 ---
 
 ## What It Means
 
-The taboo is gone â€” broken by both sides in hours. Every future confrontation involving nuclear-adjacent states now happens without that guardrail.
+The taboo is gone — broken by both sides in hours. Every future confrontation involving nuclear-adjacent states now happens without that guardrail.
 `,
     faq: [
-      { question: "Is Israel's nuclear program confirmed?", answer: "Israel maintains nuclear ambiguity â€” neither confirming nor denying. It is widely understood by intelligence agencies that Israel has 80-400 nuclear warheads." },
+      { question: "Is Israel's nuclear program confirmed?", answer: "Israel maintains nuclear ambiguity — neither confirming nor denying. It is widely understood by intelligence agencies that Israel has 80-400 nuclear warheads." },
       { question: "Did radiation leak?", answer: "Both countries and the IAEA confirmed no radiation leakage. Both sites sustained structural damage." },
-      { question: "What are bunker-busters?", answer: "Bombs designed to penetrate deep underground before detonating. The US GBU-57 penetrates 60 meters of reinforced concrete â€” specifically designed for hardened sites like Natanz." }
+      { question: "What are bunker-busters?", answer: "Bombs designed to penetrate deep underground before detonating. The US GBU-57 penetrates 60 meters of reinforced concrete — specifically designed for hardened sites like Natanz." }
     ]
   },
   {
     id: "qatar-lng-complex-destroyed",
     slug: "qatar-lng-complex-destroyed",
-    title: "The $26 Billion Fireball â€” Iran Destroys Qatar's LNG Complex",
+    title: "The $26 Billion Fireball — Iran Destroys Qatar's LNG Complex",
     excerpt: "Qatar and Iran were allies sharing the world's largest gas field. Then Iran turned Qatar's $26 billion crown jewel into a fireball visible from space.",
     category: "Economic Warfare",
     readTime: "6 min",
@@ -2485,7 +2485,7 @@ The taboo is gone â€” broken by both sides in hours. Every future confronta
     sections: [
       { id: "summary", title: "TL;DR" },
       { id: "what-hit", title: "What Iran Hit and Why" },
-      { id: "domino", title: "The Domino â€” Same Night Four Countries" },
+      { id: "domino", title: "The Domino — Same Night Four Countries" },
       { id: "stats", title: "Key Stats" },
       { id: "what-it-means", title: "What It Means" }
     ],
@@ -2497,8 +2497,8 @@ The taboo is gone â€” broken by both sides in hours. Every future confronta
     ],
     keyTakeaway: {
       points: [
-        "Iran struck Ras Laffan Industrial City â€” the world's largest LNG complex â€” destroying two of Qatar's 14 production trains",
-        "Qatar and Iran had a defense cooperation pact and shared the world's largest gas field â€” this ended that relationship permanently",
+        "Iran struck Ras Laffan Industrial City — the world's largest LNG complex — destroying two of Qatar's 14 production trains",
+        "Qatar and Iran had a defense cooperation pact and shared the world's largest gas field — this ended that relationship permanently",
         "QatarEnergy CEO: damage set the region back '10 to 20 years'",
         "Six energy facilities across four countries hit in the same 24-hour period",
         "Qatar immediately expelled Iran's military attachÃ©s"
@@ -2513,23 +2513,23 @@ The taboo is gone â€” broken by both sides in hours. Every future confronta
     content: `
 ## TL;DR
 
-Qatar and Iran share the North Dome/South Pars gas structure â€” the largest natural gas field in the world. They had a defense cooperation pact. Iranian forces trained with Qatar.
+Qatar and Iran share the North Dome/South Pars gas structure — the largest natural gas field in the world. They had a defense cooperation pact. Iranian forces trained with Qatar.
 
 On March 18, Iran turned Qatar's Ras Laffan Industrial City into a fireball. Two LNG trains destroyed. Fires burned three days. The night sky over Doha glowed orange.
 
-QatarEnergy CEO Saad al-Kaabi: "I never in my wildest dreams would have thought that Qatar would be attacked this way â€” especially from a brotherly Muslim country, in the month of Ramadan."
+QatarEnergy CEO Saad al-Kaabi: "I never in my wildest dreams would have thought that Qatar would be attacked this way — especially from a brotherly Muslim country, in the month of Ramadan."
 
 ---
 
 ## What Iran Hit and Why
 
-Ras Laffan Industrial City â€” two of 14 LNG trains destroyed, one of two gas-to-liquids facilities gutted. QatarEnergy declared force majeure on its entire LNG output.
+Ras Laffan Industrial City — two of 14 LNG trains destroyed, one of two gas-to-liquids facilities gutted. QatarEnergy declared force majeure on its entire LNG output.
 
-Why? Qatar hosts the US Al Udeid Air Base â€” 10,000 US troops. Iran views Qatar as complicit.
+Why? Qatar hosts the US Al Udeid Air Base — 10,000 US troops. Iran views Qatar as complicit.
 
 ---
 
-## The Domino â€” Same Night Four Countries
+## The Domino — Same Night Four Countries
 
 - Saudi Arabia's Ras Tanura refinery hit (550,000 bpd capacity)
 - UAE's Al Hosn gasfield targeted
@@ -2542,19 +2542,19 @@ Six energy facilities. Four countries. One night.
 
 ## What It Means
 
-This is deliberate strategy â€” making the war economically unbearable for the entire world. Iran cannot beat America militarily. But it can make the cost fall on every country that heats its homes with Qatari gas.
+This is deliberate strategy — making the war economically unbearable for the entire world. Iran cannot beat America militarily. But it can make the cost fall on every country that heats its homes with Qatari gas.
 `,
     faq: [
-      { question: "What is LNG?", answer: "Liquefied Natural Gas â€” cooled to -162Â°C to become liquid for ship transport. Qatar is the world's largest exporter. Europe depends heavily on it." },
-      { question: "Why did Iran hit a Muslim ally?", answer: "Qatar hosts the US Al Udeid Air Base â€” largest US military installation in the Middle East, 10,000 US troops. Iran views Qatar as complicit by hosting US forces." },
+      { question: "What is LNG?", answer: "Liquefied Natural Gas — cooled to -162Â°C to become liquid for ship transport. Qatar is the world's largest exporter. Europe depends heavily on it." },
+      { question: "Why did Iran hit a Muslim ally?", answer: "Qatar hosts the US Al Udeid Air Base — largest US military installation in the Middle East, 10,000 US troops. Iran views Qatar as complicit by hosting US forces." },
       { question: "Can it be repaired quickly?", answer: "No. LNG trains take years to build. The CEO said 3-5 years for repairs and the damage set the region back '10 to 20 years.'" }
     ]
   },
   {
     id: "china-yuan-dollar-hormuz",
     slug: "china-yuan-dollar-hormuz",
-    title: "China's Silent Yuan Play â€” The Dollar's Slow Funeral",
-    excerpt: "Iran didn't just close the Strait of Hormuz. It opened it for China â€” on one condition. Pay in yuan. This is the most consequential financial story of the decade.",
+    title: "China's Silent Yuan Play — The Dollar's Slow Funeral",
+    excerpt: "Iran didn't just close the Strait of Hormuz. It opened it for China — on one condition. Pay in yuan. This is the most consequential financial story of the decade.",
     category: "Financial Warfare",
     readTime: "7 min",
     date: "March 22, 2026",
@@ -2574,11 +2574,11 @@ This is deliberate strategy â€” making the war economically unbearable for 
     ],
     keyTakeaway: {
       points: [
-        "Iran closed Hormuz to most tankers but left it open for China â€” on condition they pay in yuan, not dollars",
-        "China's yuan payment infrastructure processed $245 trillion in 2025 â€” built years in advance",
-        "China stockpiled 15.8% more oil in Jan-Feb 2026 than same period last year â€” it knew what was coming",
+        "Iran closed Hormuz to most tankers but left it open for China — on condition they pay in yuan, not dollars",
+        "China's yuan payment infrastructure processed $245 trillion in 2025 — built years in advance",
+        "China stockpiled 15.8% more oil in Jan-Feb 2026 than same period last year — it knew what was coming",
         "This is the first time a yuan alternative to the dollar has been enforced by a missile-controlled energy chokepoint",
-        "The petrodollar system â€” foundation of US financial dominance since 1974 â€” now has a documented bypass route"
+        "The petrodollar system — foundation of US financial dominance since 1974 — now has a documented bypass route"
       ]
     },
     timeline: [
@@ -2590,7 +2590,7 @@ This is deliberate strategy â€” making the war economically unbearable for 
     content: `
 ## TL;DR
 
-When Iran closed the Strait of Hormuz, it did not close it equally. Chinese tankers were given passage â€” on one condition: agree to trade oil in yuan, not US dollars.
+When Iran closed the Strait of Hormuz, it did not close it equally. Chinese tankers were given passage — on one condition: agree to trade oil in yuan, not US dollars.
 
 Oil has been priced in dollars since 1974. That system forces every country that buys oil to hold dollar reserves, creating permanent global demand for US currency.
 
@@ -2600,9 +2600,9 @@ What Iran and China are constructing at Hormuz is not a replacement. It is a byp
 
 ## China Was Ready
 
-China's CIPS payment system processed $245 trillion in yuan transactions in 2025 â€” a 43% increase from the year before. The infrastructure existed before the first missile fell.
+China's CIPS payment system processed $245 trillion in yuan transactions in 2025 — a 43% increase from the year before. The infrastructure existed before the first missile fell.
 
-China also stockpiled aggressively â€” importing 15.8% more oil in January and February 2026 than the same period in 2025. Since February 28, nearly 12 million barrels of Iranian crude have moved to Chinese refineries through Hormuz.
+China also stockpiled aggressively — importing 15.8% more oil in January and February 2026 than the same period in 2025. Since February 28, nearly 12 million barrels of Iranian crude have moved to Chinese refineries through Hormuz.
 
 ---
 
@@ -2613,15 +2613,15 @@ The war will end. The financial precedent won't. Every yuan transaction complete
 For the first time in 50 years, a challenger to the petrodollar has scale, infrastructure, and military leverage operating simultaneously.
 `,
     faq: [
-      { question: "What is the petrodollar system?", answer: "A 1974 arrangement where Saudi Arabia priced oil in dollars in exchange for US military protection. Since every country needs oil, every country needs dollars â€” making the dollar the world's reserve currency." },
-      { question: "Can yuan replace the dollar?", answer: "Not quickly and probably not completely. What's being built is a parallel system â€” a second lane â€” that proves yuan-based energy trade works. That reduces dollar dependency at the margin, permanently." },
-      { question: "What is CIPS?", answer: "Cross-Border Interbank Payment System â€” China's alternative to SWIFT, allowing yuan transactions to settle internationally without routing through dollar infrastructure." }
+      { question: "What is the petrodollar system?", answer: "A 1974 arrangement where Saudi Arabia priced oil in dollars in exchange for US military protection. Since every country needs oil, every country needs dollars — making the dollar the world's reserve currency." },
+      { question: "Can yuan replace the dollar?", answer: "Not quickly and probably not completely. What's being built is a parallel system — a second lane — that proves yuan-based energy trade works. That reduces dollar dependency at the margin, permanently." },
+      { question: "What is CIPS?", answer: "Cross-Border Interbank Payment System — China's alternative to SWIFT, allowing yuan transactions to settle internationally without routing through dollar infrastructure." }
     ]
   },
   {
     id: "diego-garcia-4000km-missile",
     slug: "diego-garcia-4000km-missile",
-    title: "The 4,000km Secret â€” What the Diego Garcia Strike Really Revealed",
+    title: "The 4,000km Secret — What the Diego Garcia Strike Really Revealed",
     excerpt: "Iran's missiles were supposed to max out at 2,000km. Diego Garcia is 4,000km away. Both missiles failed. But the launch itself changed everything.",
     category: "Military Intelligence",
     readTime: "6 min",
@@ -2642,10 +2642,10 @@ For the first time in 50 years, a challenger to the petrodollar has scale, infra
     ],
     keyTakeaway: {
       points: [
-        "Iran fired two ballistic missiles at Diego Garcia â€” 4,000km away, double their stated maximum range",
-        "Neither hit the target â€” one malfunctioned, one intercepted â€” but the capability revelation mattered more than the miss",
+        "Iran fired two ballistic missiles at Diego Garcia — 4,000km away, double their stated maximum range",
+        "Neither hit the target — one malfunctioned, one intercepted — but the capability revelation mattered more than the miss",
         "IDF Chief of Staff: 'their range reaches Berlin, Paris, and Rome'",
-        "Iran lacks satellite coverage of the Indian Ocean â€” analysts believe Russia provided the targeting data",
+        "Iran lacks satellite coverage of the Indian Ocean — analysts believe Russia provided the targeting data",
         "Potentially the first documented Russian-Iranian intelligence coordination in an active war against the US"
       ]
     },
@@ -2658,7 +2658,7 @@ For the first time in 50 years, a challenger to the petrodollar has scale, infra
     content: `
 ## TL;DR
 
-The joint US-UK base at Diego Garcia sits in the middle of the Indian Ocean â€” supposed to be untouchable at 4,000km from Iran.
+The joint US-UK base at Diego Garcia sits in the middle of the Indian Ocean — supposed to be untouchable at 4,000km from Iran.
 
 Iran had publicly committed to a 2,000km missile ceiling. Diego Garcia is exactly double that.
 
@@ -2676,7 +2676,7 @@ CNN reported Russia has been providing Iran with intelligence on US troop locati
 
 ## What It Means
 
-Every US and allied military installation on earth just had to update its threat radius for Iran. And if Russia is providing targeting data for Iranian strikes on US facilities, this is a Russian-Iranian intelligence coalition operating in an active war against the United States â€” for the first time in history.
+Every US and allied military installation on earth just had to update its threat radius for Iran. And if Russia is providing targeting data for Iranian strikes on US facilities, this is a Russian-Iranian intelligence coalition operating in an active war against the United States — for the first time in history.
 `,
     faq: [
       { question: "What is Diego Garcia?", answer: "A British territory in the Indian Ocean, jointly operated with the US as a major military base hosting long-range bombers and intelligence infrastructure." },
@@ -2687,7 +2687,7 @@ Every US and allied military installation on earth just had to update its threat
   {
     id: "aws-dark-iran-cloud",
     slug: "aws-dark-iran-cloud",
-    title: "AWS Goes Dark â€” Iran Hits the Cloud",
+    title: "AWS Goes Dark — Iran Hits the Cloud",
     excerpt: "Three Amazon Web Services data centers were destroyed by Iranian drones in the UAE. First time a hyperscale cloud provider's physical infrastructure has been taken out in a live war.",
     category: "Cyber",
     readTime: "5 min",
@@ -2709,7 +2709,7 @@ Every US and allied military installation on earth just had to update its threat
     keyTakeaway: {
       points: [
         "Iranian drones struck three AWS data centers in the UAE causing structural damage and flooding",
-        "The attack hit multiple availability zones simultaneously â€” the one scenario AWS redundancy cannot handle",
+        "The attack hit multiple availability zones simultaneously — the one scenario AWS redundancy cannot handle",
         "4cm of internal flooding destroyed cooling systems, taking all servers offline",
         "This is the first time cloud infrastructure has been deliberately destroyed in active war",
         "The attack used AWS's own publicly available technical documentation to plan the strikes"
@@ -2736,9 +2736,9 @@ The era of treating cloud as borderless and invulnerable is over.
 
 AWS availability zones are geographically separated data centers designed so one can fail while others continue. This redundancy is one of cloud computing's core selling points.
 
-The strikes hit centers in different availability zones simultaneously. AWS's zone architecture is publicly documented. Someone mapped them and hit multiple zones at once â€” the one scenario the system cannot survive.
+The strikes hit centers in different availability zones simultaneously. AWS's zone architecture is publicly documented. Someone mapped them and hit multiple zones at once — the one scenario the system cannot survive.
 
-4cm of water accumulated in server floors from fire suppression systems â€” enough to destroy every rack.
+4cm of water accumulated in server floors from fire suppression systems — enough to destroy every rack.
 
 ---
 
@@ -2746,7 +2746,7 @@ The strikes hit centers in different availability zones simultaneously. AWS's zo
 
 Modern economies run on cloud infrastructure. Cloud infrastructure is physical. Physical infrastructure burns.
 
-Every hyperscaler â€” AWS, Azure, Google Cloud â€” now has to treat Middle East facilities as military-grade targets. The era of treating cloud as borderless and invulnerable is over.
+Every hyperscaler — AWS, Azure, Google Cloud — now has to treat Middle East facilities as military-grade targets. The era of treating cloud as borderless and invulnerable is over.
 `,
     faq: [
       { question: "What is an availability zone?", answer: "A separate physical data center location within a cloud region, designed so that if one fails, others in the same region continue operating. AWS typically runs 3+ zones per region for this redundancy." },
@@ -2783,7 +2783,7 @@ Every hyperscaler â€” AWS, Azure, Google Cloud â€” now has to treat Mi
         "Oil prices have risen 45% since February 28, creating political pressure to lower gas prices",
         "Russian crude oil sanctions were also partially lifted one week earlier for the same reason",
         "This tells adversaries exactly where the ceiling of American economic pressure is",
-        "Trump ran in 2024 on low gas prices â€” his war is causing the highest prices in years"
+        "Trump ran in 2024 on low gas prices — his war is causing the highest prices in years"
       ]
     },
     timeline: [
@@ -2807,7 +2807,7 @@ America is simultaneously trying to destroy Iran's military and buy its oil. Tha
 
 The entire premise of maximum pressure is that sustained economic pain forces behavioral change. The Trump administration just demonstrated it will waive its own sanctions mid-war if oil prices get domestically uncomfortable.
 
-Iran's negotiators â€” if there ever are any â€” now know exactly what lever to pull. Make the war cost enough at the pump and the sanctions architecture softens.
+Iran's negotiators — if there ever are any — now know exactly what lever to pull. Make the war cost enough at the pump and the sanctions architecture softens.
 
 ---
 
@@ -2826,13 +2826,13 @@ The sanctions waiver tells every current and future adversary where the ceiling 
     faq: [
       { question: "How long have sanctions been on Iran?", answer: "The US has maintained various sanctions on Iran since 1979. The current maximum pressure architecture was built by Trump in his first term (2018) when he withdrew from the nuclear deal." },
       { question: "Is this legal?", answer: "Yes. The president has broad authority to issue sanctions waivers for national security or economic stability reasons. Treasury does this routinely through licensing exceptions." },
-      { question: "What does this mean for the nuclear deal?", answer: "It signals that US sanctions can be softened under economic pressure even without Iranian concessions â€” which undermines the core leverage of any future nuclear negotiation." }
+      { question: "What does this mean for the nuclear deal?", answer: "It signals that US sanctions can be softened under economic pressure even without Iranian concessions — which undermines the core leverage of any future nuclear negotiation." }
     ]
   },
   {
     id: "200-billion-winning-cost",
     slug: "200-billion-winning-cost",
-    title: "The $200 Billion Question — What Does 'Winning' Actually Cost?",
+    title: "The $200 Billion Question � What Does 'Winning' Actually Cost?",
     excerpt: "The Pentagon asked Congress for $200 billion. Hegseth said 'it takes money to kill bad guys.' The war costs $4 billion a week. Trump says the US is 'winding down.'",
     category: "Politics",
     readTime: "5 min",
@@ -2854,21 +2854,21 @@ The sanctions waiver tells every current and future adversary where the ceiling 
     ],
     keyTakeaway: {
       points: [
-        "The Pentagon is asking Congress for $200 billion in emergency funding—on top of the $886 billion annual defense budget",
+        "The Pentagon is asking Congress for $200 billion in emergency funding�on top of the $886 billion annual defense budget",
         "Only 25% of Americans approve of the strikes, making this a deeply unpopular war with an enormous price tag",
         "Trump claims the US is 'winding down' involvement, yet simultaneously threatens to bomb Kharg Island and escalate further",
-        "Congress never authorized this war—the strikes began without declaration, vote, or debate",
+        "Congress never authorized this war�the strikes began without declaration, vote, or debate",
         "The $200 billion request includes restocking weapons, expanding operations, and preparing for a prolonged conflict that officials promised would be 'limited'"
       ]
     },
     content: `
-## TL;DR — The 30-Second Version
+## TL;DR � The 30-Second Version
 
 **The Pentagon wants $200 billion more.** That is on top of the $886 billion they already get. Defense Secretary Pete Hegseth told Congress: "It takes money to kill bad guys."
 
 **The war costs $4 billion per week.** After just 3 weeks, we are at $12 billion and counting.
 
-**Only 25% of Americans support the strikes.** Yet the administration keeps escalating—expanding targets, threatening Kharg Island, and planning for a "sustained operation."
+**Only 25% of Americans support the strikes.** Yet the administration keeps escalating�expanding targets, threatening Kharg Island, and planning for a "sustained operation."
 
 **Congress never voted on this war.** No declaration. No authorization. No debate.
 
@@ -2898,7 +2898,7 @@ For comparison:
 - Even the controversial 2011 Libya intervention had 47% support
 
 **The Political Math:**
-When a war is this unpopular, politicians start running for cover. The $200 billion request forces them to take a public position—either fund an unpopular war or be accused of "not supporting the troops."
+When a war is this unpopular, politicians start running for cover. The $200 billion request forces them to take a public position�either fund an unpopular war or be accused of "not supporting the troops."
 
 ---
 
@@ -2992,11 +2992,11 @@ Republicans face a choice:
     faq: [
       {
         question: "Does Congress have to approve the $200 billion request?",
-        answer: "Technically, no—emergency funding can be drawn from existing defense accounts. But replenishing those accounts requires congressional appropriation. The vote is effectively a referendum on continuing the war, even though they never voted to start it."
+        answer: "Technically, no�emergency funding can be drawn from existing defense accounts. But replenishing those accounts requires congressional appropriation. The vote is effectively a referendum on continuing the war, even though they never voted to start it."
       },
       {
         question: "What would $200 billion actually buy?",
-        answer: "The request includes: $60 billion for restocking munitions; $80 billion for expanded operations; $40 billion for regional military buildup; and $20 billion for contingency. The Pentagon told Congress this funds operations 'through fiscal year 2027 and potentially beyond'—indicating years of war, not weeks."
+        answer: "The request includes: $60 billion for restocking munitions; $80 billion for expanded operations; $40 billion for regional military buildup; and $20 billion for contingency. The Pentagon told Congress this funds operations 'through fiscal year 2027 and potentially beyond'�indicating years of war, not weeks."
       },
       {
         question: "How long until weapons stockpiles run low?",
@@ -3007,8 +3007,8 @@ Republicans face a choice:
   {
     id: "stuxnet-bank-outages-texas-grid",
     slug: "stuxnet-bank-outages-texas-grid",
-    title: "Stuxnet 2.0, Bank Outages, and the Texas Power Grid — The War Nobody Can See",
-    excerpt: "While cameras track missile contrails, a second war runs in silence — Iranian attacks on US banks, Israeli malware in Iranian nuclear systems, Chinese zero-days, and three dead scientists.",
+    title: "Stuxnet 2.0, Bank Outages, and the Texas Power Grid � The War Nobody Can See",
+    excerpt: "While cameras track missile contrails, a second war runs in silence � Iranian attacks on US banks, Israeli malware in Iranian nuclear systems, Chinese zero-days, and three dead scientists.",
     category: "Cyber",
     readTime: "6 min",
     date: "March 22, 2026",
@@ -3030,26 +3030,26 @@ Republicans face a choice:
     keyTakeaway: {
       points: [
         "Iran has launched cyber attacks on three major US banks (Chase, Wells Fargo, Bank of America), causing outages and financial disruption",
-        "US infrastructure is under assault — the Texas power grid and California water systems have been targeted by suspected Iranian hackers",
+        "US infrastructure is under assault � the Texas power grid and California water systems have been targeted by suspected Iranian hackers",
         "Israel has deployed advanced malware against Iranian nuclear facilities, a successor to the original Stuxnet operation",
         "Chinese state-sponsored hackers are providing zero-day exploits to Iranian cyber units, expanding their attack capabilities",
-        "Three Iranian nuclear scientists have died in mysterious 'accidents' — likely Israeli covert operations eliminating key personnel"
+        "Three Iranian nuclear scientists have died in mysterious 'accidents' � likely Israeli covert operations eliminating key personnel"
       ]
     },
     timeline: [
       { year: "Mar 18", title: "Bank Attacks Begin", description: "Iranian hackers hit Chase, Wells Fargo, and Bank of America with DDoS attacks.", icon: "cyber", highlight: true },
       { year: "Mar 18-19", title: "Infrastructure Probed", description: "Texas power grid and California water systems targeted.", icon: "alert", highlight: false },
-      { year: "Mar 18-20", title: "Scientists Killed", description: "Three Iranian nuclear scientists die in 'accidents' — likely Mossad operations.", icon: "death", highlight: true },
+      { year: "Mar 18-20", title: "Scientists Killed", description: "Three Iranian nuclear scientists die in 'accidents' � likely Mossad operations.", icon: "death", highlight: true },
       { year: "Ongoing", title: "Stuxnet 2.0 Active", description: "New Israeli malware detected in Iranian nuclear facility control systems.", icon: "virus", highlight: false }
     ],
     content: `
-## TL;DR — The Invisible War
+## TL;DR � The Invisible War
 
 **While missiles fly, another war is happening in silence.**
 
 Iranian hackers are hitting American banks. Israeli malware is infecting Iranian nuclear computers. Chinese zero-day exploits are being traded like weapons. And Iranian scientists are dying in "accidents" that are not accidents.
 
-**This is cyber warfare — and it is happening right now.**
+**This is cyber warfare � and it is happening right now.**
 
 No cameras capture it. No explosions announce it. But the damage is real: frozen bank accounts, flickering power grids, and nuclear programs set back by mysterious computer failures.
 
@@ -3059,7 +3059,7 @@ No cameras capture it. No explosions announce it. But the damage is real: frozen
 
 **The Original Stuxnet (2010):**
 
-You might remember the first Stuxnet — a joint US-Israel cyber weapon that destroyed Iranian nuclear centrifuges by making them spin themselves to death. It was the first time software caused physical damage to industrial equipment.
+You might remember the first Stuxnet � a joint US-Israel cyber weapon that destroyed Iranian nuclear centrifuges by making them spin themselves to death. It was the first time software caused physical damage to industrial equipment.
 
 **Stuxnet 2.0 (March 2026):**
 
@@ -3068,7 +3068,7 @@ Israel has apparently deployed a successor. Iranian nuclear facilities at Natanz
 **What is Different:**
 - Targets newer Iranian centrifuges (IR-9 models)
 - Uses different entry points (supply chain compromise)
-- Harder to detect — no obvious symptoms until failure
+- Harder to detect � no obvious symptoms until failure
 
 **Why It Matters:**
 Iran's nuclear program was already delayed by sanctions. Now their equipment is literally destroying itself.
@@ -3157,14 +3157,14 @@ The missiles are scary. But the cyber war could touch you directly.
 
 ## Discussion Question
 
-**If a cyber attack on infrastructure can cause as much disruption as a missile strike — and costs 1/100th as much — why are not we seeing more of them?**
+**If a cyber attack on infrastructure can cause as much disruption as a missile strike � and costs 1/100th as much � why are not we seeing more of them?**
 
 Or maybe the real question: If Iranian hackers can reach the Texas power grid, who else can?
 `,
     faq: [
       {
         question: "What is a DDoS attack?",
-        answer: "DDoS stands for 'Distributed Denial of Service.' It is when attackers flood a website or service with so much fake traffic that real users cannot access it. DDoS attacks do not steal data — they just disrupt service."
+        answer: "DDoS stands for 'Distributed Denial of Service.' It is when attackers flood a website or service with so much fake traffic that real users cannot access it. DDoS attacks do not steal data � they just disrupt service."
       },
       {
         question: "What is a zero-day exploit?",
