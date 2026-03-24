@@ -30,7 +30,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 
 // Components
-const WW3Counter = lazy(() => import('./components/WW3Counter'));
+const NewsTicker = lazy(() => import('./components/NewsTicker'));
 const BreakingAlert = lazy(() => import('./components/BreakingAlert'));
 const ConflictMap = lazy(() => import('./components/ConflictMap'));
 
@@ -314,10 +314,10 @@ function HomePage() {
       </Suspense>
 
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* 1. Conflict Tension Index (formerly WW3 Counter) */}
+        {/* 1. News Ticker - Breaking News Scroller */}
         <div className="mb-6">
-          <Suspense fallback={<div className="h-[120px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <WW3Counter tension={gameState.tension} />
+          <Suspense fallback={<div className="h-[100px] bg-black/40 rounded-2xl animate-pulse" />}>
+            <NewsTicker />
           </Suspense>
         </div>
 

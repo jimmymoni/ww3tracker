@@ -6,7 +6,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://ww3tracker.live/</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -18,28 +18,28 @@
   <!-- Core Feature Pages -->
   <url>
     <loc>https://ww3tracker.live/live-map</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/attacks</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.90</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/timeline</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/nuke</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
   </url>
@@ -47,42 +47,42 @@
   <!-- SEO Landing Pages -->
   <url>
     <loc>https://ww3tracker.live/is-ww3-happening</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/world-war-3-news</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/iran-nuclear-deal</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/iran-us-conflict</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/israel-hezbollah-conflict</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.90</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/pak-afghan-conflict</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.80</priority>
   </url>
@@ -90,14 +90,14 @@
   <!-- Trust Pages -->
   <url>
     <loc>https://ww3tracker.live/about</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   
   <url>
     <loc>https://ww3tracker.live/privacy</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
@@ -105,7 +105,7 @@
   <!-- Blog Index -->
   <url>
     <loc>https://ww3tracker.live/blog</loc>
-    <lastmod>2026-03-23</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
