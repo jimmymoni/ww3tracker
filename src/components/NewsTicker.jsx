@@ -9,7 +9,7 @@ const NewsTicker = () => {
 
   useEffect(() => {
     const loadHeadlines = () => {
-      const items = [];
+      let items = [];
       
       // Get recent news from cache
       const cachedNews = getCachedData('memes');
