@@ -2302,7 +2302,203 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
         highlight: true
       }
     ],
-    content: `## TL;DR\n\nWhile America fights Iran, China watches.`,
+    content: `## TL;DR
+      
+      **While America bleeds resources in the Middle East, China is quietly winning the most consequential strategic game of the decade.**
+      
+      Every Tomahawk missile fired at Iran is one fewer in the Pacific stockpile. Every carrier group in the Gulf is one not defending Taiwan. Every F-35 lost over Iran is data China can study for free. And on April 1, Xi Jinping sits down with Donald Trump to decide whether America is distracted enough to make a move.
+      
+      This isn't about Iran. This is about Taiwan. Iran is the sideshow. The main event hasn't started yet.
+      
+      ---
+      
+      ## The Distraction Dividend
+      
+      ### What America Has Committed to Iran
+      
+      Since February 28, the US has poured enormous resources into the Middle East:
+      
+      | Asset | Deployed to Gulf | Impact on Pacific |
+      |-------|------------------|-------------------|
+      | USS Abraham Lincoln CSG | Persian Gulf | Not in Pacific |
+      | 2,500 Marines (redirected) | Kuwait/Qatar | Pulled from Okinawa exercises |
+      | 50,000+ troops total | Region-wide | Largest ME deployment since 2003 |
+      | Patriot batteries | Gulf states | Redeployed from South Korea |
+      | Tomahawk missiles | 200+ fired | Each one costs $2M, takes 2 years to replace |
+      
+      **The Math That Matters:**
+      
+      America's military is designed to fight one major war at a time. The Pentagon's own war games assume that a Taiwan contingency would require the *entire* Pacific fleet, most of the Air Force's stealth bombers, and massive munition stocks.
+      
+      Right now, a significant chunk of those assets are 8,000 miles away, shooting at Iranian targets.
+      
+      **The Historical Parallel:**
+      
+      In 1956, Britain and France were consumed by the Suez Crisis — invading Egypt to control the canal. While they were distracted, the Soviet Union crushed the Hungarian uprising. Nobody could respond. Two crises, one military, zero capacity.
+      
+      America in 2026 faces the same equation. Two potential theaters. One overstretched military.
+      
+      ---
+      
+      ## The Intelligence Goldmine
+      
+      ### What the F-35 Shootdown Gave China for Free
+      
+      On March 21, Iran shot down an Israeli F-35 over Isfahan. For China's military planners, this was Christmas morning.
+      
+      **What China Learned:**
+      
+      1. **Radar signatures** — How Iranian/Russian air defenses detected stealth. China has similar systems (and better ones).
+      2. **Engagement patterns** — At what altitude, speed, and angle was the F-35 vulnerable? China is recording every detail.
+      3. **Electronic warfare** — What jamming did the F-35 use? Did it work? China now knows the countermeasures.
+      4. **Wreckage analysis** — If Iran shares debris (and they will, through Russia), China gets physical samples of America's most classified coatings and materials.
+      
+      **The Cost Asymmetry:**
+      
+      The US spent $1.7 trillion developing the F-35 program. China just got real-world combat data on its weaknesses for the cost of watching TV.
+      
+      For the full technical breakdown of how stealth was defeated, see our [stealth technology analysis](/blog/how-iran-hit-stealth-tech-breakdown).
+      
+      **What This Means for Taiwan:**
+      
+      Taiwan's defense relies heavily on the assumption that American stealth aircraft can operate freely over the Taiwan Strait. If Iran can shoot down an F-35, China — with far more advanced systems — absolutely can.
+      
+      Every US war game for Taiwan just got rewritten.
+      
+      ---
+      
+      ## The Oil Play
+      
+      ### China Was Ready Before the First Missile Fell
+      
+      The numbers tell a story of preparation, not reaction:
+      
+      | Indicator | Data | What It Suggests |
+      |-----------|------|------------------|
+      | China oil imports Jan-Feb 2026 | +15.8% vs 2025 | Stockpiling before war started |
+      | Iranian crude to China since Mar 17 | 12+ million barrels | Uninterrupted supply |
+      | CIPS yuan transactions 2025 | $245 trillion | Infrastructure built years in advance |
+      | Chinese tankers through Hormuz | Passage granted | While Western tankers diverted |
+      
+      **The Suspicious Timeline:**
+      
+      China began stockpiling oil aggressively in January 2026 — six weeks before the war started. Either they have excellent intelligence, or they were planning for this scenario regardless.
+      
+      When Iran closed the Strait of Hormuz to most commercial traffic, Chinese tankers were given preferential passage — on one condition: pay in yuan.
+      
+      For the full breakdown of the yuan-for-oil arrangement, see our [financial warfare analysis](/blog/china-yuan-dollar-hormuz).
+      
+      **What China Gets:**
+      
+      - Cheap oil (Iran offers 15-20% discount to bypass sanctions)
+      - Proof that yuan-based trade works at scale
+      - Leverage over Gulf states who now see an alternative customer
+      - Strategic petroleum reserves filled to capacity
+      
+      ---
+      
+      ## The April 1 Summit
+      
+      ### The Most Important Meeting Nobody's Talking About
+      
+      On April 1, 2026, Donald Trump meets Xi Jinping. The official agenda is "de-escalation and trade." The real agenda is Xi measuring America's remaining strength.
+      
+      **What Xi Will Be Calculating:**
+      
+      1. **Munition stocks:** How much has America spent? Can they sustain two theaters?
+      2. **Political will:** Is Trump's 25% approval for the war limiting his options?
+      3. **Alliance cohesion:** Are European allies backing America or pulling back?
+      4. **Pacific readiness:** How many assets can the US actually redirect if needed?
+      
+      **Two Scenarios:**
+      
+      **Scenario A: Xi Acts (15% probability)**
+      
+      If Xi concludes America is overextended, he could escalate pressure on Taiwan — not necessarily invasion, but:
+      - Naval blockade exercises
+      - Increased air incursions
+      - Economic pressure on Taiwanese companies
+      - Testing whether America can credibly respond
+      
+      **Scenario B: Xi Waits (85% probability)**
+      
+      The smarter play. Let America bleed resources in Iran for months. Every week the war continues:
+      - More munitions depleted
+      - More political capital spent
+      - More allies fatigued
+      - More intelligence gathered
+      
+      **Why Waiting Is Probably Smarter:**
+      
+      China's economy is fragile. An invasion risks $2 trillion in sanctions and trade disruption. Better to let America exhaust itself, build Chinese military readiness, and act from a position of maximum strength — maybe 2028, maybe 2029.
+      
+      The war doesn't need to end for China to benefit. It just needs to continue.
+      
+      ---
+      
+      ## The Weapons Depletion Problem
+      
+      ### America Is Spending Faster Than It Can Replace
+      
+      **Current Usage vs Production:**
+      
+      | Weapon | Used Since Mar 17 | Annual Production | Time to Replace |
+      |--------|-------------------|-------------------|-----------------|
+      | Tomahawk | 200+ | ~400/year | 6+ months |
+      | JDAM kits | 1,000+ | ~20,000/year | Manageable |
+      | SM-3 interceptors | 15+ | ~36/year | 5+ months per unit |
+      | Patriot missiles | 50+ | ~500/year | Strained |
+      
+      **The Taiwan Problem:**
+      
+      CSIS war games estimate a Taiwan conflict would require 5,000+ long-range missiles in the first three weeks. America currently has stockpiles for roughly one major theater.
+      
+      Every missile fired at Iran subtracts from that number. And production lines can't simply speed up — they require specialized components, often with 18-month lead times.
+      
+      **The $200 Billion Tell:**
+      
+      The Pentagon just asked Congress for [$200 billion in emergency funding](/blog/200-billion-winning-cost). Wars that are "winding down" don't need $200 billion. That request tells Beijing exactly how stretched America really is.
+      
+      ---
+      
+      ## Why This Matters
+      
+      **The Real Winner of the US-Iran War**
+      
+      In every conflict, someone benefits who isn't fighting. In this war, that someone is China.
+      
+      They're not firing a single missile. They're not losing a single soldier. They're not spending a single yuan on combat operations.
+      
+      Instead, they're:
+      - Getting cheap oil while the world pays premium prices
+      - Studying American military weaknesses in real-time
+      - Building financial infrastructure that bypasses the dollar
+      - Watching America's alliances strain under pressure
+      - Preparing for the moment they've been planning for decades
+      
+      **The Question Nobody in Washington Is Asking:**
+      
+      Every Pentagon briefing focuses on Iran. Every congressional hearing debates the $200 billion. Every news channel covers the latest strike.
+      
+      But the most important question isn't about Iran at all:
+      
+      *When this war ends, will America have enough left to deter China?*
+      
+      **The Best Move in Chess:**
+      
+      The best move in chess is the one your opponent doesn't see coming. China isn't making dramatic moves. They're not threatening. They're not posturing.
+      
+      They're sitting at the board. Watching America sacrifice pieces in a different game. And counting exactly how many pieces are left.
+      
+      ---
+      
+      ## Discussion Question
+      
+      **If you were advising Xi Jinping, would you act on Taiwan while America is distracted — or would you wait and let America exhaust itself? What's the risk of waiting too long versus moving too early?**
+      
+      There's no easy answer. Moving now risks everything on a gamble. Waiting risks the window closing. But one thing is certain: this war has given China options it didn't have six months ago.
+      
+      The Iran war might be remembered not for the missiles — but for what it enabled on the other side of the world.`,
     faq: [
       {
         question: "Why would the Iran war affect Taiwan?",
@@ -2358,37 +2554,190 @@ The Houthis have been unpredictable for a decade. But they've also been consiste
       { year: "Mar 21", title: "First Statement Via TV Anchor", description: "Statement read by anchor, only still photo shown.", icon: "radio", highlight: true },
       { year: "Mar 22", title: "Still No Video/Audio", description: "Supreme Leader remains unseen, unheard.", icon: "ghost", highlight: false }
     ],
-    content: `
-## TL;DR — The 30-Second Version
-
-**America killed Iran's Supreme Leader on March 17.** Eight days later, his son Mojtaba replaced him. The problem? Mojtaba has never held public office, never appeared in public, and nobody had ever heard his voice.
-
-**His first statement came 14 days after taking power** — read by a TV anchor using a still photograph. No video. No audio.
-
-**This matters because:** A hereditary succession just turned the Islamic Republic into a de facto monarchy — the exact thing it was created to overthrow.
-
----
-
-## The Dynasty Problem
-
-Iran's political system was designed specifically to prevent a single bloodline accumulating power. The 1979 revolution overthrew Mohammad Reza Shah — a hereditary monarch — and replaced him with a clerical council so no family could dominate.
-
-On March 8, that assembly elected Ali Khamenei's son. The Islamic Republic just became what it was founded to destroy: a family dynasty.
-
----
-
-## Who Is Mojtaba
-
-Experts describe him as shaped entirely by the IRGC from childhood. Harder, angrier, and more ideologically rigid than his father. Where the elder Khamenei occasionally permitted tactical flexibility, the son has none.
-
-He has never held elected office. Never participated in public diplomacy. Never given a press conference.
-
----
-
-## What It Means
-
-Iran will not negotiate. The man running the country has never negotiated anything, came to power mid-war, and has everything to prove. Every ceasefire overture from Washington lands in the hands of someone with no diplomatic history and no incentive to appear weak.
-`,
+    content: `## TL;DR — The 30-Second Version
+      
+      **Israel killed Iran's Supreme Leader on February 28.** Eight days later, his son Mojtaba replaced him. The problem? Mojtaba has never held public office, never appeared on camera, and nobody had ever heard his voice.
+      
+      **His first official statement came 14 days after taking power** — read by a TV news anchor while only a still photograph was displayed. No video. No audio. No press conference.
+      
+      **This matters because:** A hereditary succession just turned the Islamic Republic into a de facto monarchy — the exact thing the 1979 revolution was fought to destroy. And the man now running a country at war has never negotiated anything, never governed anything, and has everything to prove.
+      
+      ---
+      
+      ## The Dynasty Problem
+      
+      ### The Revolution That Ate Itself
+      
+      Iran's 1979 revolution had one overriding principle: no more kings. The Shah and his family had ruled Iran as a hereditary monarchy for decades, backed by American power. The revolution overthrew him and replaced the system with a clerical council — specifically designed so no single family could ever accumulate that kind of power again.
+      
+      The Assembly of Experts — 88 Islamic scholars elected by the public — selects the Supreme Leader based on religious qualifications, not bloodline. The entire architecture was built to prevent exactly what just happened.
+      
+      **On March 8, 2026, that assembly elected Ali Khamenei's son.**
+      
+      The Islamic Republic just became what it was founded to destroy: a family dynasty.
+      
+      **The Parallels:**
+      
+      | Dynasty | Country | How It Started |
+      |---------|---------|----------------|
+      | Kim family | North Korea | Father to son, 1994 |
+      | Assad family | Syria | Father to son, 2000 |
+      | Khamenei family | Iran | Father to son, 2026 |
+      
+      Every one of these successions was preceded by a crisis. Every one produced a leader more hardline than his father. Every one concentrated power further in the military.
+      
+      ---
+      
+      ## Who Is Mojtaba Khamenei
+      
+      ### The Man Nobody Has Seen
+      
+      **The Official Biography:**
+      
+      - Born: 1969, Mashhad, Iran
+      - Age: 56
+      - Education: Seminary studies in Qom
+      - Military: Served in the Iran-Iraq War (1980s)
+      - Public office held: None
+      - Press conferences given: Zero
+      - Public appearances as Supreme Leader: Zero
+      
+      **The Unofficial Biography:**
+      
+      For two decades, Mojtaba operated as his father's gatekeeper. If you wanted to reach the Supreme Leader, you went through the son. This gave him extraordinary informal power — he decided who had access, who was heard, whose proposals reached the top.
+      
+      Intelligence analysts describe him with consistent language:
+      
+      - **"More hardline than his father"** — shaped entirely by IRGC ideology from childhood
+      - **"No diplomatic instincts"** — has never participated in any negotiation, foreign or domestic
+      - **"Ideologically rigid"** — where Ali Khamenei occasionally permitted tactical flexibility (the 2015 nuclear deal), the son has shown none
+      - **"IRGC's candidate"** — his appointment was reportedly pushed through the Assembly by IRGC pressure
+      
+      **His Network:**
+      
+      Mojtaba's power base isn't clerical — it's military. His closest allies are:
+      - Senior IRGC commanders
+      - Basij paramilitary leadership
+      - Intelligence service chiefs
+      - Hardline clerics who opposed the nuclear deal
+      
+      The reformists and moderates who occasionally influenced his father have been sidelined. The people around Mojtaba want escalation, not negotiation.
+      
+      ---
+      
+      ## The Ghost Leader
+      
+      ### 14 Days of Silence
+      
+      **The Timeline:**
+      
+      | Date | Event | Details |
+      |------|-------|---------|
+      | Feb 28 | Ali Khamenei killed | Israeli airstrike on Tehran |
+      | Mar 1-7 | Total silence | No official successor announced |
+      | Mar 3-8 | Assembly of Experts convenes | Emergency session, closed to public |
+      | Mar 8 | Mojtaba elected | Announcement via state TV |
+      | Mar 8-21 | No appearances | No video, no audio, no presence |
+      | Mar 21 | First statement | Read by TV anchor. Still photo only. |
+      | Mar 24 | Still no video/audio | Supreme Leader remains unseen |
+      
+      **Why No Video?**
+      
+      Three theories circulate among analysts:
+      
+      **Theory 1: He Was Injured**
+      
+      The February 28 strikes hit Tehran's government district. Mojtaba may have been present or nearby. The 14-day gap and TV-anchor-read statement could indicate recovery from injuries.
+      
+      **Theory 2: Security**
+      
+      After his father was killed by a precision strike, showing Mojtaba's location via live video could make him a target. The still photo reveals nothing about where he is.
+      
+      **Theory 3: Deliberate Mystique**
+      
+      A leader nobody has seen becomes harder to undermine. You can't satirize a face you've never seen. You can't humanize or diminish someone who exists only as a concept.
+      
+      **The Comparison:**
+      
+      Even Kim Jong-un — the world's most secretive leader — makes public appearances, gives speeches, tours factories. Mojtaba has done none of this. He is, as of March 24, a leader known entirely through other people's words and a single photograph.
+      
+      ---
+      
+      ## What This Means for the War
+      
+      ### The Negotiation Problem
+      
+      **Diplomacy requires two things:** a channel and a willing partner.
+      
+      Mojtaba Khamenei is neither willing nor experienced:
+      
+      1. **No diplomatic history.** He has never sat across from a foreign leader. Never managed a trade deal. Never navigated a ceasefire. His entire experience is informal power — gatekeeping, not governing.
+      
+      2. **Everything to prove.** He inherited power during a war, selected by military hardliners. If his first act is negotiation, his own power base collapses. The IRGC didn't put him in power to make peace.
+      
+      3. **No incentive to appear weak.** Every ceasefire offer from Washington lands on the desk of a man who needs to demonstrate strength — not to America, but to the generals behind him.
+      
+      **The IRGC Factor:**
+      
+      The real question isn't what Mojtaba wants. It's what the IRGC wants.
+      
+      The Revolutionary Guards selected him. They expect escalation, broader strikes, no compromise. If Mojtaba resists, they can replace him — the Assembly that elected him can remove him.
+      
+      **The Most Dangerous Scenario:**
+      
+      A Supreme Leader who can't say no to his own generals. A figurehead who provides religious legitimacy while the military runs the war. This is how Iran's strategy becomes more aggressive, not less — because the man at the top has every incentive to prove he's not a puppet, and zero experience to know when to stop.
+      
+      ---
+      
+      ## The Question Nobody's Asking
+      
+      ### Is Mojtaba Actually in Control?
+      
+      The formal power of Iran's Supreme Leader is enormous: commander-in-chief of all armed forces, final say on foreign policy, authority to dismiss the president.
+      
+      But formal power means nothing if the military doesn't obey. And Mojtaba's authority comes entirely from the same generals who put him in power.
+      
+      **Historical Parallel:**
+      
+      In many wartime successions, the new leader starts as a genuine authority and gradually becomes a rubber stamp for the military. This happened in:
+      - Argentina during the Falklands War (1982)
+      - Pakistan during the Kargil Crisis (1999)
+      - Syria during the first years of Assad Jr.'s rule (2000-2005)
+      
+      Each time, the pattern was the same: young, inexperienced leader inherits a crisis, depends on generals for survival, slowly loses the ability to overrule them.
+      
+      **What to Watch:**
+      
+      - Does Mojtaba appear publicly? (Visibility = confidence)
+      - Does Iran's strategy shift? (Escalation = IRGC in control)
+      - Are diplomats empowered? (Talks = Mojtaba asserting authority)
+      - Do IRGC commanders speak publicly more than the Supreme Leader? (Bad sign)
+      
+      ---
+      
+      ## Why This Matters
+      
+      **For the War:**
+      
+      Iran will not negotiate in the near term. The power structure that selected Mojtaba has no interest in peace. Every diplomatic overture from Washington is being interpreted in Tehran not as opportunity but as weakness.
+      
+      **For Iran's Future:**
+      
+      The Islamic Republic has survived 47 years by maintaining the fiction that it's a republic — that power is earned, not inherited. The son-of-the-supreme-leader becoming supreme leader shatters that fiction. Iranians protesting in the streets for the last decade have been saying the system is corrupt. This succession proves them right.
+      
+      **For You:**
+      
+      If you're wondering when this war ends, the answer is partly about missiles and partly about this man. Wars end when leaders decide they've had enough.
+      
+      Mojtaba Khamenei hasn't had enough. He just started.
+      
+      ---
+      
+      ## Discussion Question
+      
+      **If Iran's new leader has never negotiated anything and his power base demands escalation, how does this war end diplomatically? Is there anyone in Iran's system who could force a ceasefire — or has that option been removed by selecting a leader who can't afford to take it?**
+      
+      The most dangerous moment in any conflict is when a new, untested leader has to prove himself to the people who gave him power. That's exactly where Iran is right now.`,
     faq: [
       { question: "How is the Supreme Leader chosen?", answer: "By the Assembly of Experts — 88 Islamic scholars. They select based on religious qualifications, not bloodline. Mojtaba's selection is historically unprecedented." },
       { question: "Was Mojtaba always expected to take over?", answer: "He was considered a possibility but never confirmed. His father kept him out of public view — possibly to maintain the fiction that succession wasn't hereditary." },
@@ -2434,37 +2783,190 @@ Iran will not negotiate. The man running the country has never negotiated anythi
       { year: "Mar 21 Evening", title: "IAEA Confirms", description: "International Atomic Energy Agency confirms both strikes, no radiation leak, calls for restraint.", icon: "alert", highlight: false },
       { year: "Mar 21 Night", title: "Netanyahu Emergency Cabinet", description: "Israel vows to continue operations.", icon: "meeting", highlight: false }
     ],
-    content: `
-## TL;DR
-
-On March 21, US B-2 stealth bombers dropped bunker-buster bombs on the Natanz uranium enrichment complex. By that evening, Iranian ballistic missiles struck Dimona — 20km from Israel's main nuclear research center.
-
-Two buildings collapsed. A 10-year-old boy in critical condition. In Arad, 35km away: 8 killed, 130+ injured.
-
-Since 1945 there has been an unwritten rule: you do not strike nuclear facilities. Both sides broke it on the same day.
-
----
-
-## Why This Is Historic
-
-The unwritten rule that kept the nuclear age stable just broke. Not because of any treaty — none exists. Because the consequences of getting it wrong are civilizational.
-
-Both sides struck nuclear-adjacent targets on the same day. Both said no radiation leaked. The margin of error has never been thinner.
-
----
-
-## What Iran Said
-
-Iran's parliament speaker: "If the Israeli regime is unable to intercept missiles in the heavily protected Dimona area, it is operationally a sign of entering a new phase of the battle."
-
-A military source told Tasnim News Agency that Iran has shifted strategy — away from proportional retaliation, toward broader strikes.
-
----
-
-## What It Means
-
-The taboo is gone — broken by both sides in hours. Every future confrontation involving nuclear-adjacent states now happens without that guardrail.
-`,
+    content: `## TL;DR
+      
+      On March 21, US B-2 stealth bombers dropped bunker-buster bombs on Iran's Natanz uranium enrichment complex. By that evening, Iranian ballistic missiles struck Dimona — 20km from Israel's main nuclear research center in the Negev desert.
+      
+      Two buildings collapsed. A 10-year-old boy was left in critical condition. In nearby Arad, 35km away: 8 killed, 130+ injured.
+      
+      Since 1945, there has been an unwritten rule: you do not strike nuclear facilities. Both sides broke it on the same day.
+      
+      The IAEA confirmed both strikes. They confirmed no radiation leaked. The margin between "structural damage" and "nuclear catastrophe" was measured in meters.
+      
+      ---
+      
+      ## The Unwritten Rule
+      
+      ### 80 Years of Nuclear Restraint — Broken in 12 Hours
+      
+      No treaty prohibits striking nuclear facilities. There's no Geneva Protocol for reactors. No UN resolution specifically banning it. The restraint that kept the nuclear age stable was maintained by something simpler: fear.
+      
+      **The Logic:**
+      
+      A conventional strike on a nuclear facility could rupture containment. Enriched uranium or spent fuel could disperse. Depending on wind, population density, and the type of material released, the result could range from localized contamination to a Chernobyl-scale disaster.
+      
+      Every military planner since 1945 understood this. So an unwritten rule emerged: *you don't touch nuclear sites.* Not because you can't. Because the consequences of getting it slightly wrong are civilizational.
+      
+      **Previous Exceptions:**
+      
+      | Year | Strike | Context |
+      |------|--------|---------|
+      | 1981 | Israel bombs Iraq's Osirak reactor | Pre-operational. No fuel loaded. No contamination risk. |
+      | 2007 | Israel bombs Syria's Al-Kibar reactor | Under construction. No fuel loaded. |
+      | 2026 | US hits Natanz + Iran hits Dimona | Both operational. Both with nuclear material. Both in populated areas. |
+      
+      The 1981 and 2007 strikes were controversial but controlled — they hit facilities before nuclear material was present. March 21, 2026 was fundamentally different. Both targets contained nuclear material. Both strikes could have caused radioactive release. Both were done anyway.
+      
+      ---
+      
+      ## What Happened at Natanz — The Morning Strike
+      
+      ### The Target
+      
+      Natanz is Iran's primary uranium enrichment facility, located in Isfahan province. It contains thousands of centrifuges spinning uranium hexafluoride gas to produce enriched uranium. Some of its most sensitive operations are buried 8 meters underground in reinforced concrete halls specifically designed to survive conventional bombing.
+      
+      ### The Weapon
+      
+      The US deployed B-2 Spirit stealth bombers carrying GBU-57 Massive Ordnance Penetrator bombs — the largest non-nuclear weapon in the American arsenal.
+      
+      **GBU-57 Specifications:**
+      
+      | Spec | Value |
+      |------|-------|
+      | Weight | 30,000 lbs (14 tons) |
+      | Length | 20 feet |
+      | Penetration | 60+ meters of reinforced concrete |
+      | Warhead | 6,000 lbs of explosive |
+      | Guidance | GPS + inertial |
+      | Designed for | Hardened underground targets (Natanz, specifically) |
+      
+      The GBU-57 was literally designed for this exact target. The Pentagon funded its development in 2004 specifically because Natanz was being hardened against conventional bombs.
+      
+      ### The Damage
+      
+      Iran's Atomic Energy Organization confirmed the strike hit the facility. They stated no radioactive material was released and no increased off-site radiation levels were detected. The IAEA corroborated this assessment.
+      
+      **What We Don't Know:**
+      
+      - How many centrifuges were destroyed
+      - Whether enriched uranium stockpiles were damaged
+      - How deep the penetration actually reached
+      - Whether the buried enrichment halls were breached
+      
+      This was at least the fourth strike on Iranian nuclear facilities since the war began. Natanz had been previously hit in June 2025 and earlier in March 2026.
+      
+      ---
+      
+      ## What Happened at Dimona — The Evening Strike
+      
+      ### The Target
+      
+      Dimona is home to the Shimon Peres Negev Nuclear Research Center — Israel's primary nuclear facility, operational since the 1960s. Israel maintains a policy of "nuclear ambiguity" — neither confirming nor denying it possesses nuclear weapons. Virtually every intelligence agency in the world believes Israel has 80–400 nuclear warheads.
+      
+      ### The Strike
+      
+      Hours after the Natanz bombing, Iran launched a barrage of ballistic missiles at southern Israel. Multiple projectiles targeted the Dimona area.
+      
+      **The Impact:**
+      
+      | Detail | Value |
+      |--------|-------|
+      | Missiles fired at Dimona area | 5+ ballistic missiles |
+      | Missiles that hit near facility | At least 2 |
+      | Distance from nuclear center | ~20 km from reactor |
+      | Buildings collapsed | 2 in Dimona city |
+      | Killed (Arad, 35km away) | 8 |
+      | Injured (Dimona + Arad) | 130+ including children |
+      | Child in critical condition | 10-year-old boy |
+      
+      Israeli air defense systems failed to intercept several incoming missiles. Netanyahu would later say the lack of fatalities at the nuclear site itself was "due to luck."
+      
+      **The IAEA Assessment:**
+      
+      The International Atomic Energy Agency confirmed no damage to Israel's nuclear facility and no abnormal radiation levels. The missiles hit *near* the facility, not the reactor itself.
+      
+      But "near" is doing a lot of heavy lifting in that sentence. The margin between "near miss" and "direct hit on a nuclear reactor" was a matter of kilometers.
+      
+      ---
+      
+      ## The Margin of Error
+      
+      ### How Close Was This to Catastrophe?
+      
+      **At Natanz:**
+      
+      Bunker-buster bombs detonating near centrifuge halls containing enriched uranium hexafluoride gas. UF6 is toxic and radioactive. If containment was breached and gas released, downwind communities — including Isfahan (population 2 million, 130km away) — would face contamination risk.
+      
+      **At Dimona:**
+      
+      Ballistic missiles landing 20km from a nuclear reactor. If a missile had struck the reactor building itself, the result could have ranged from localized contamination to a radiological disaster affecting southern Israel and northern Jordan.
+      
+      **The Wind Question:**
+      
+      On March 21, prevailing winds in the Negev were northwesterly — blowing toward Jordan and Saudi Arabia. At Natanz, winds blew toward populated areas of central Iran.
+      
+      Both sides struck nuclear-adjacent targets knowing that contamination, if it occurred, would affect millions.
+      
+      Both sides claimed the risk was "managed." Both got lucky.
+      
+      ---
+      
+      ## What Iran Said
+      
+      ### "A New Phase of Battle"
+      
+      Iran's parliament speaker, Mohammad Bagher Ghalibaf, issued a statement hours after the dual strikes:
+      
+      > "If the Israeli regime is unable to intercept missiles in the heavily protected Dimona area, it is operationally a sign of entering a new phase of the battle."
+      
+      **Translation:** Iran is announcing that its future targeting will be broader, not narrower. The restraint shown in the first week of the war is ending.
+      
+      A military source told Iran's Tasnim News Agency that Iran has shifted strategy — away from proportional retaliation, toward "degradation of the adversary's strategic assets."
+      
+      **What "Strategic Assets" Means:**
+      
+      - Nuclear facilities
+      - Desalination plants
+      - Power infrastructure
+      - Military command centers
+      
+      If nuclear facilities are now fair game, the escalation ladder has lost several rungs.
+      
+      ---
+      
+      ## What It Means
+      
+      ### The Taboo Is Gone
+      
+      **For This War:**
+      
+      Both sides have now demonstrated willingness to strike nuclear-adjacent targets. The restraint that existed in the first week is eroding. Each subsequent strike will push closer to actual reactors, actual enrichment halls, actual stockpiles.
+      
+      **For Future Conflicts:**
+      
+      Every future confrontation involving nuclear-adjacent states now happens without the guardrail that held for 80 years. If the US and Iran can strike each other's nuclear facilities, what stops India and Pakistan? What stops North and South Korea?
+      
+      The precedent set on March 21 will outlive this war.
+      
+      **Israel's Impossible Dilemma:**
+      
+      Israel can't publicly condemn the strike on Dimona as an attack on a "nuclear facility" — because they don't officially have nuclear weapons. Their policy of ambiguity, maintained for 60 years, now prevents them from making the strongest possible case against the attack.
+      
+      Iran knows this. The strike was calculated to exploit exactly this contradiction.
+      
+      **The IAEA's Plea:**
+      
+      The International Atomic Energy Agency called for "maximum restraint" and "immediate cessation of all military actions near nuclear facilities." Both sides ignored this.
+      
+      When the global nuclear watchdog issues a warning and both combatants shrug, the rules-based order has a problem.
+      
+      ---
+      
+      ## Discussion Question
+      
+      **If the unwritten rule against striking nuclear facilities is broken, what rule breaks next? And what stops the next strike from causing the contamination this one narrowly avoided?**
+      
+      March 21 wasn't a catastrophe. It was a dress rehearsal for one. The question is whether anyone learned the lesson — or whether both sides are now calibrating for strikes that get even closer.`,
     faq: [
       { question: "Is Israel's nuclear program confirmed?", answer: "Israel maintains nuclear ambiguity — neither confirming nor denying. It is widely understood by intelligence agencies that Israel has 80-400 nuclear warheads." },
       { question: "Did radiation leak?", answer: "Both countries and the IAEA confirmed no radiation leakage. Both sites sustained structural damage." },
@@ -2587,31 +3089,192 @@ This is deliberate strategy — making the war economically unbearable for the e
       { year: "Mar 17", title: "Hormuz Closure", description: "Iran closes strait to most tankers.", icon: "blockade", highlight: true },
       { year: "Mar 17-22", title: "Yuan-Only Passage", description: "Chinese tankers pass through paying in yuan. 12M barrels delivered.", icon: "check", highlight: true }
     ],
-    content: `
-## TL;DR
-
-When Iran closed the Strait of Hormuz, it did not close it equally. Chinese tankers were given passage — on one condition: agree to trade oil in yuan, not US dollars.
-
-Oil has been priced in dollars since 1974. That system forces every country that buys oil to hold dollar reserves, creating permanent global demand for US currency.
-
-What Iran and China are constructing at Hormuz is not a replacement. It is a bypass. A demonstration that yuan-denominated energy trade at scale is possible, functional, and immune to American sanctions.
-
----
-
-## China Was Ready
-
-China's CIPS payment system processed $245 trillion in yuan transactions in 2025 — a 43% increase from the year before. The infrastructure existed before the first missile fell.
-
-China also stockpiled aggressively — importing 15.8% more oil in January and February 2026 than the same period in 2025. Since February 28, nearly 12 million barrels of Iranian crude have moved to Chinese refineries through Hormuz.
-
----
-
-## What It Means
-
-The war will end. The financial precedent won't. Every yuan transaction completed while Hormuz is controlled by Iran is a proof-of-concept that survives the peace.
-
-For the first time in 50 years, a challenger to the petrodollar has scale, infrastructure, and military leverage operating simultaneously.
-`,
+    content: `## TL;DR
+      
+      **The war everyone can see is about missiles. The war nobody's watching is about money.**
+      
+      Since 1974, oil has been priced in US dollars. That's not a law of nature — it's an arrangement. One that forces every country on earth to hold dollar reserves, making the USD the world's reserve currency and giving America extraordinary economic power.
+      
+      Iran just demonstrated a bypass. Chinese tankers sail through Hormuz. They pay in yuan. The oil flows. No dollars involved. No SWIFT transactions. No American banks.
+      
+      The missiles will stop. The financial precedent won't.
+      
+      ---
+      
+      ## What Is the Petrodollar (And Why Should You Care)
+      
+      ### The 1974 Deal That Rules the World
+      
+      After the 1973 oil crisis, the US made a deal with Saudi Arabia: price your oil in dollars, and we'll protect your kingdom with our military.
+      
+      **Why This Matters More Than Any War:**
+      
+      Every country needs oil. If oil is priced in dollars, every country needs dollars. If every country needs dollars, they buy US Treasury bonds to hold dollar reserves. If the world buys US bonds, America can borrow cheaply and run massive deficits without consequence.
+      
+      **Think of it like this:** Imagine if every grocery store in the world only accepted one brand of gift card. You'd have to buy that gift card before you could eat. The company that makes that gift card would have extraordinary power — not because their card is better, but because you have no choice.
+      
+      That's the dollar. Oil is the grocery store. And for 50 years, there's been no alternative gift card.
+      
+      **The Numbers:**
+      
+      | Metric | Value |
+      |--------|-------|
+      | US dollar share of global reserves | 58% (down from 72% in 2000) |
+      | Oil traded in USD | ~80% of global market |
+      | US national debt | $35+ trillion (affordable because of dollar demand) |
+      | Countries holding US Treasuries | 130+ |
+      
+      Until now.
+      
+      ---
+      
+      ## China Was Ready — Years Before the First Missile
+      
+      ### The Infrastructure Nobody Noticed
+      
+      This wasn't improvised. China has been building the plumbing for yuan-based trade for over a decade:
+      
+      **CIPS (Cross-Border Interbank Payment System):**
+      
+      China's alternative to SWIFT — the Western-controlled messaging system that processes most international bank transfers. CIPS allows yuan transactions to settle entirely within Chinese financial architecture.
+      
+      | Year | CIPS Transaction Volume | Growth |
+      |------|------------------------|--------|
+      | 2020 | $50 trillion | — |
+      | 2023 | $123 trillion | +146% |
+      | 2025 | $245 trillion | +99% |
+      | Coverage | 5,000+ banks, 190 countries | — |
+      
+      **The Oil Stockpiling:**
+      
+      China imported 15.8% more oil in January-February 2026 than the same period in 2025. They were filling strategic reserves at an unusual pace — weeks before the war started.
+      
+      Either Chinese intelligence predicted the conflict, or they've been preparing for *any* scenario that would let them push yuan-for-oil. Both options should worry Washington.
+      
+      **The 25-Year Deal:**
+      
+      In 2021, China and Iran signed a $400 billion, 25-year cooperation agreement. China gets discounted Iranian oil. Iran gets infrastructure investment and a customer who ignores Western sanctions.
+      
+      This deal was the foundation. The war was just the trigger.
+      
+      ---
+      
+      ## The Hormuz Bypass — How It Actually Works
+      
+      ### The Selective Closure
+      
+      When Iran restricted passage through the Strait of Hormuz, it didn't close the strait equally.
+      
+      **Who's Blocked:**
+      - Western-flagged tankers
+      - Ships insured by Lloyd's of London
+      - Any vessel trading in dollars
+      
+      **Who Gets Through:**
+      - Chinese-flagged tankers
+      - Ships with Chinese insurance
+      - Vessels settling in yuan
+      
+      **The Numbers Since March 17:**
+      
+      | Metric | Value |
+      |--------|-------|
+      | Iranian crude delivered to China | 12+ million barrels |
+      | Payment currency | 100% yuan |
+      | Chinese tankers through Hormuz | Uninterrupted |
+      | Western tankers through Hormuz | Effectively zero |
+      
+      **How the Money Moves:**
+      
+      1. Chinese refinery orders Iranian crude
+      2. Payment processed through CIPS (yuan)
+      3. Iran receives yuan, uses it to buy Chinese goods
+      4. No dollar touches the transaction
+      5. No US bank has visibility or jurisdiction
+      6. Sanctions don't apply — no American entity is involved
+      
+      **The Discount:**
+      
+      Iran sells to China at roughly 15-20% below market price. At $110/barrel market price, China pays ~$90. For 12 million barrels, that's a $240 million savings in three weeks. China gets cheap oil. Iran gets a buyer. Both get sanctions immunity.
+      
+      ---
+      
+      ## What This Means for the Dollar
+      
+      ### Not a Replacement — A Bypass
+      
+      The yuan isn't replacing the dollar tomorrow. It doesn't need to. What's happening is more subtle and more dangerous:
+      
+      **The Highway Analogy:**
+      
+      Imagine the dollar is a toll highway that all traffic must use. There's no alternative. The toll operator (America) sets the rules.
+      
+      Now someone builds a side road. It's narrower. It's bumpier. But it works. And it has no tolls.
+      
+      At first, only a few trucks use the side road. But once it exists, it never goes away. And every time the toll operator raises prices or blocks a driver they don't like (sanctions), more traffic diverts to the side road.
+      
+      **Who's Watching:**
+      
+      | Country | Why They Care |
+      |---------|---------------|
+      | Saudi Arabia | Already accepting yuan for some Chinese oil purchases since 2023 |
+      | UAE | Major Chinese trade partner, exploring non-dollar settlements |
+      | India | BRICS member, building its own payment alternatives |
+      | Russia | Already moved most trade to yuan/ruble after 2022 sanctions |
+      | Brazil | Signed yuan trade agreements in 2023 |
+      
+      **The Historical Precedent:**
+      
+      The British pound was the world's reserve currency for 100 years. Its decline wasn't sudden — it was a slow erosion from the 1920s to the 1970s, accelerated by wars (WWI, WWII, Suez) that drained British resources and credibility.
+      
+      The dollar may follow the same path. Not a collapse. A gradual shift. Accelerated by wars that make alternatives look attractive.
+      
+      ---
+      
+      ## What This Means for You
+      
+      ### Your Wallet, Explained
+      
+      **If the Dollar Weakens:**
+      
+      - **Imports get more expensive** — iPhones, cars, electronics, clothing
+      - **Gas prices rise** — oil priced in a weaker dollar costs more
+      - **Interest rates increase** — less foreign demand for Treasuries means higher borrowing costs
+      - **Inflation sticks around** — everything imported costs more, which is almost everything
+      
+      **The Timeline:**
+      
+      This isn't an overnight crash. It's a 10-20 year shift. But every yuan transaction completed through Hormuz accelerates the timeline.
+      
+      **The Irony:**
+      
+      America's sanctions policy — designed to punish Iran — is the single biggest accelerant of de-dollarization. Every country that watches Iran successfully bypass dollar-based trade through CIPS thinks: *"If they can do it, so can we."*
+      
+      The weapon designed to enforce dollar dominance is the weapon destroying it.
+      
+      ---
+      
+      ## The Number That Matters Most
+      
+      **$245 trillion.**
+      
+      That's how much China's CIPS processed in 2025. For context, SWIFT — the Western system — processed about $150 trillion.
+      
+      CIPS is already bigger. It's already faster. And it's growing 40%+ per year.
+      
+      The infrastructure for a post-dollar world doesn't need to be built. It already exists. What it needed was a crisis to prove it works at scale.
+      
+      The US-Iran war just provided that proof.
+      
+      ---
+      
+      ## Discussion Question
+      
+      **If oil can be traded in yuan through a missile-controlled strait, does the petrodollar survive the decade? And if it doesn't, what happens to an America that's been borrowing against dollar dominance for 50 years?**
+      
+      The war will end. The yuan transactions won't be un-done. Every barrel of oil that moved outside the dollar system is a precedent that survives the peace.
+      
+      This might be the most consequential story of the entire conflict — and almost nobody is covering it.`,
     faq: [
       { question: "What is the petrodollar system?", answer: "A 1974 arrangement where Saudi Arabia priced oil in dollars in exchange for US military protection. Since every country needs oil, every country needs dollars — making the dollar the world's reserve currency." },
       { question: "Can yuan replace the dollar?", answer: "Not quickly and probably not completely. What's being built is a parallel system — a second lane — that proves yuan-based energy trade works. That reduces dollar dependency at the margin, permanently." },
@@ -2655,29 +3318,220 @@ For the first time in 50 years, a challenger to the petrodollar has scale, infra
       { year: "Mar 20", title: "One Intercepted", description: "Second missile intercepted by US defenses over Indian Ocean.", icon: "shield", highlight: false },
       { year: "Mar 21", title: "Capability Revealed", description: "IDF confirms Iran's range now covers major European capitals.", icon: "alert", highlight: true }
     ],
-    content: `
-## TL;DR
-
-The joint US-UK base at Diego Garcia sits in the middle of the Indian Ocean — supposed to be untouchable at 4,000km from Iran.
-
-Iran had publicly committed to a 2,000km missile ceiling. Diego Garcia is exactly double that.
-
-The first missile malfunctioned. The second was intercepted. But Iran just demonstrated that whatever technology they now possess, the 2,000km ceiling was false.
-
----
-
-## The Russia Question
-
-How did Iran know exactly where Diego Garcia was and what was deployed there? Iran has no satellite coverage of that region. Targeting a base 4,000km away requires precise real-time intelligence.
-
-CNN reported Russia has been providing Iran with intelligence on US troop locations. The missile that crossed 4,000km was likely guided by Russian satellite imagery.
-
----
-
-## What It Means
-
-Every US and allied military installation on earth just had to update its threat radius for Iran. And if Russia is providing targeting data for Iranian strikes on US facilities, this is a Russian-Iranian intelligence coalition operating in an active war against the United States — for the first time in history.
-`,
+    content: `## TL;DR
+      
+      The joint US-UK military base at Diego Garcia sits in the middle of the Indian Ocean — 4,000 kilometers from Iran. It was supposed to be untouchable. Iran's publicly stated missile range was 2,000km. Diego Garcia is exactly double that limit.
+      
+      On March 20, Iran launched two ballistic missiles at the base. The first malfunctioned mid-flight. The second was intercepted by a US Navy SM-3 interceptor over the Indian Ocean.
+      
+      Neither missile hit. But the launch itself changed everything.
+      
+      Iran just proved the 2,000km ceiling was a lie. And the intelligence needed to target a base 4,000km away — across open ocean, with no Iranian satellite coverage — almost certainly came from Russia.
+      
+      ---
+      
+      ## What Is Diego Garcia
+      
+      ### The "Untouchable" Base
+      
+      Diego Garcia is a small atoll in the Chagos Archipelago, a British territory in the middle of the Indian Ocean. Since the 1970s, it has served as a joint US-UK military installation — one of the most strategically important bases in the American global network.
+      
+      **What's There:**
+      
+      | Asset | Purpose |
+      |-------|---------|
+      | B-2 stealth bomber hangars | Long-range strikes on Iran, Afghanistan |
+      | B-52 bomber rotations | Strategic bombardment capability |
+      | Satellite intelligence stations | Signals intelligence collection |
+      | Naval support facility | Submarine and surface ship resupply |
+      | Pre-positioned equipment | Rapid deployment stores |
+      | ~4,000 military personnel | Operations and support |
+      
+      **Why It Matters:**
+      
+      Diego Garcia is where America's B-2 bombers stage for strikes deep inside Iran. The GBU-57 bunker-busters that hit Natanz on March 21? They likely flew from Diego Garcia.
+      
+      Iran's message was clear: *we know where you launch from, and we can reach it.*
+      
+      ---
+      
+      ## The 2,000km Lie
+      
+      ### How Iran's Stated Ceiling Collapsed
+      
+      **The Diplomatic Agreement:**
+      
+      Iran has long maintained a public commitment to limiting its ballistic missiles to a 2,000km maximum range. This was part of diplomatic assurances given to European nations — a trade-off to keep Europe from fully supporting US sanctions.
+      
+      Iran's Foreign Minister Abbas Araghchi stated in February 2026: *"Iran limits its missile range to 2,000 kilometers. This is a sovereign decision, not a negotiated limit."*
+      
+      **The Reality:**
+      
+      Diego Garcia is 4,000km from Iranian territory. Both missiles launched on March 20 covered significant portions of that distance — one malfunctioning en route, the other intercepted near the target.
+      
+      **How Iran Doubled Its Range:**
+      
+      Analysts suggest several possibilities:
+      
+      | Theory | Details |
+      |--------|---------|
+      | Upgraded Khorramshahr-4 | Iran's most advanced liquid-fueled missile, modified for extended range with reduced payload |
+      | Space launch vehicle conversion | Iran's Simorgh and Qaem-100 SLVs use technology applicable to long-range ballistic missiles |
+      | Two-stage design | A satellite-like launch profile using booster separation to extend range |
+      | Foreign technology | Russian or Chinese components enabling range extension |
+      
+      **The Diplomatic Fallout:**
+      
+      Israel's military chief, Eyal Zamir, stated bluntly after the launch: *"Their range reaches Berlin, Paris, and Rome."*
+      
+      This is no longer a Middle Eastern problem. A 4,000km range from Iran covers:
+      
+      | City | Distance from Iran |
+      |------|-------------------|
+      | Berlin | 3,900 km |
+      | Paris | 4,200 km |
+      | Rome | 3,400 km |
+      | London | 4,400 km |
+      | Moscow | 2,600 km |
+      | New Delhi | 2,700 km |
+      
+      Europe's existing missile defense — which was calibrated for a 2,000km Iranian threat — is now insufficient. NATO's entire threat assessment just shifted.
+      
+      ---
+      
+      ## The Russia Question
+      
+      ### How Did Iran Know Where to Aim?
+      
+      **The Intelligence Problem:**
+      
+      Targeting a base 4,000km away isn't just about range. You need to know exactly where it is, what's deployed there, and what trajectory will evade detection.
+      
+      Standard GPS coordinates for Diego Garcia are publicly available. But precision military targeting requires more:
+      
+      - Real-time satellite imagery (where are the bombers parked?)
+      - Radar profiles of the island's defenses
+      - Signals intelligence on communication patterns
+      - Weather data for trajectory calculation
+      
+      **Iran Has None of This.**
+      
+      Iran's satellite constellation consists of a handful of low-resolution imaging satellites, none with coverage over the central Indian Ocean. Their intelligence capabilities in that region are effectively zero.
+      
+      **Russia Has All of It.**
+      
+      Russia operates the GLONASS satellite navigation system, multiple military imaging satellites (Persona, Bars-M), and signals intelligence platforms with global coverage. Russian naval vessels have operated in the Indian Ocean for decades.
+      
+      **The Evidence:**
+      
+      The Washington Post reported that Russia has been actively providing Iran with targeting intelligence on US military positions throughout the conflict, including locations of warships and aircraft.
+      
+      CNN confirmed that the Diego Garcia launch coordinates were consistent with Russian satellite-grade precision — far beyond what Iran could achieve independently.
+      
+      **What Russia Gets From This:**
+      
+      | Benefit | Details |
+      |---------|---------|
+      | Proxy testing | Iranian missiles test US defenses without Russian fingerprints |
+      | US depletion | Every SM-3 interceptor fired ($15M each) depletes Pacific stocks |
+      | Intelligence collection | Russian assets monitor the US intercept to study SM-3 performance |
+      | Plausible deniability | "We didn't fire anything." |
+      
+      **The Historical Parallel:**
+      
+      During the Vietnam War, Soviet advisors trained North Vietnamese air defense crews and occasionally operated systems themselves. But providing direct targeting data for strikes on US facilities would have been considered a massive escalation.
+      
+      What Russia appears to be doing in 2026 goes further than anything documented during the Cold War.
+      
+      ---
+      
+      ## Why the Miss Doesn't Matter
+      
+      ### The Capability Is the Message
+      
+      **0 for 2 means nothing strategically.** Here's why:
+      
+      **First attempt at double stated range.** Both missiles failed — one mechanically, one to interception. This is entirely normal for a new weapons capability. Pakistan's Shaheen-III missile failed six times before its first successful test. The US's own SM-3 interceptor failed its first three test launches.
+      
+      **Iteration is inevitable.** Iran's missile program has improved consistently over 20 years. The next generation will have better guidance, better reliability, and lessons learned from this attempt.
+      
+      **The US must now defend the undefendable.** Diego Garcia's defenses were built for a world where Iran couldn't reach it. Now:
+      - Additional SM-3 interceptor ships must be deployed to the Indian Ocean
+      - THAAD batteries may need repositioning
+      - Early warning radar coverage must expand
+      - Every other "safe" base needs reassessment
+      
+      **The Cost Asymmetry:**
+      
+      | Item | Cost |
+      |------|------|
+      | Iranian missile (modified Khorramshahr-4) | ~$2 million |
+      | SM-3 interceptor used to stop it | ~$15 million |
+      | Permanently stationing AEGIS destroyer near DG | $2+ billion per year |
+      | Relocating B-2 operations to continental US | Billions + reduced capability |
+      
+      Iran spent $4 million on two missiles. The US response will cost billions in permanent defensive repositioning.
+      
+      ---
+      
+      ## The New Threat Map
+      
+      ### Every US/NATO Base Just Got Reassessed
+      
+      **If Iran has 4,000km range, the following are within reach:**
+      
+      | Installation | Country | Distance | Purpose |
+      |-------------|---------|----------|---------|
+      | Ramstein | Germany | 3,900 km | USAF European HQ |
+      | Aviano | Italy | 3,400 km | F-16 fighter base |
+      | Sigonella | Italy | 3,200 km | Naval air station |
+      | Incirlik | Turkey | 1,500 km | Nuclear weapons storage |
+      | Souda Bay | Greece | 3,100 km | Naval support |
+      | Akrotiri | Cyprus | 2,200 km | RAF base |
+      | Camp Lemonnier | Djibouti | 2,400 km | Counter-terrorism HQ |
+      | Al Udeid | Qatar | 600 km | Already in range |
+      | Al Dhafra | UAE | 700 km | Already in range |
+      | Diego Garcia | Indian Ocean | 4,000 km | Now confirmed in range |
+      
+      **The NATO Calculus:**
+      
+      European NATO members have treated Iranian missiles as a Middle Eastern problem — someone else's concern. A 4,000km range makes it a European problem.
+      
+      France, Germany, and Italy are now within theoretical striking distance. The political dynamics of "should we support the US against Iran" just changed substantially when your own capital is targetable.
+      
+      ---
+      
+      ## What It Means
+      
+      ### Three Things That Changed on March 20
+      
+      **1. Iran's stated limits are worthless.**
+      
+      Every arms control discussion, every diplomatic assurance, every threat assessment that relied on the 2,000km ceiling is now invalid. If Iran lied about range, what else did they lie about? Warhead capability? Number of missiles? Accuracy?
+      
+      **2. Russia is actively targeting US facilities through Iran.**
+      
+      If Russian satellites provided the targeting data — and multiple intelligence reports suggest they did — this is the first documented case of Russian-Iranian intelligence coordination directly targeting American military infrastructure in an active war.
+      
+      This isn't "supporting an ally." This is participating in attacks on US forces with a layer of deniability.
+      
+      **3. The defense perimeter just doubled.**
+      
+      Every US and allied military installation on earth just had to reassess its threat radius for Iranian missiles. The "safe zone" shrank by half overnight. Billions of dollars in new defensive deployments will be required.
+      
+      Two missiles. Both missed. Total kinetic damage: zero.
+      
+      Strategic impact: incalculable.
+      
+      ---
+      
+      ## Discussion Question
+      
+      **If Russia is providing targeting data for Iranian strikes on American military facilities, where is the line between "supporting an ally" and "act of war"? Should the US respond directly to Russia for enabling these strikes — and if so, how?**
+      
+      The missiles that failed taught Iran more than the missiles that hit. They now know the flight profile needed, the interception capability at Diego Garcia, and exactly what to improve for next time.
+      
+      The 4,000km secret isn't a secret anymore. What Iran does with it next is the question that should keep Pentagon planners awake at night.`,
     faq: [
       { question: "What is Diego Garcia?", answer: "A British territory in the Indian Ocean, jointly operated with the US as a major military base hosting long-range bombers and intelligence infrastructure." },
       { question: "Does Iran have ICBMs?", answer: "Not officially. The Diego Garcia attempt suggests their stated 2,000km limit was false, or they received range-extending technology from Russia or China." },
