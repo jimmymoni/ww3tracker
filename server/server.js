@@ -24,6 +24,7 @@ import { getChatResponse } from './services/replicateService.js';
 import { getAllZones, getZoneById, getZoneStats, getRelatedZones, getActiveZones } from './data/conflictZones.js';
 import { ACTORS, RELATIONSHIPS, getAllActors, getRelationshipsForActor, getConflictStats } from './data/conflictRelationships.js';
 import * as telegramBot from './services/telegramBotSimple.js';
+import { getNews, refreshNews, getNewsStatus } from './services/newsService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +40,7 @@ console.log('GIPHY_API_KEY:', process.env.GIPHY_API_KEY ? '✅ Set (' + process.
 
 console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN ? '✅ Set (' + process.env.TELEGRAM_BOT_TOKEN.slice(0, 10) + '...)' : '❌ NOT SET (bot disabled)');
 console.log('TELEGRAM_CHANNEL_ID:', process.env.TELEGRAM_CHANNEL_ID || '❌ NOT SET');
+console.log('NEWS_API_KEY:', process.env.NEWS_API_KEY ? '✅ Set (' + process.env.NEWS_API_KEY.slice(0, 10) + '...)' : '❌ NOT SET (using fallback)');
 console.log('PORT:', process.env.PORT || '3001 (default)');
 console.log('💰 Using Replicate (~$0.0001-0.0002 per request)');
 console.log('=====================================\n');
@@ -170,32 +172,45 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Get news (RSS + GDELT merged) - Returns cached/fallback IMMEDIATELY (<100ms)
-// Get breaking news - returns verified attacks as news items
-app.get('/api/news', (req, res) => {
+// Get real-time news from GNews API with caching
+app.get('/api/news', async (req, res) => {
   const startTime = Date.now();
   const limit = parseInt(req.query.limit) || 10;
   
-  // Get verified attacks as news items
-  const attacks = getAllAttacks().slice(0, limit);
-  
-  const newsItems = attacks.map(attack => ({
-    headline: attack.headline,
-    description: attack.description,
-    source: attack.source,
-    pubDate: attack.date,
-    location: attack.location,
-    severity: attack.severity,
-    verified: true
-  }));
-  
-  res.json({
-    items: newsItems,
-    total: getAttackCount(),
-    lastUpdated: new Date().toISOString(),
-    verified: true,
-    responseTime: Date.now() - startTime
-  });
+  try {
+    const articles = await getNews(limit);
+    
+    res.json({
+      items: articles,
+      total: articles.length,
+      lastUpdated: new Date().toISOString(),
+      cached: (Date.now() - startTime) < 50, // Likely cached if fast
+      responseTime: Date.now() - startTime
+    });
+  } catch (error) {
+    console.error('[News API Error]', error.message);
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});
+
+// Refresh news cache
+app.post('/api/news/refresh', async (req, res) => {
+  try {
+    const articles = await refreshNews();
+    res.json({
+      items: articles,
+      total: articles.length,
+      refreshed: true,
+      lastUpdated: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to refresh news' });
+  }
+});
+
+// Get news service status
+app.get('/api/news/status', (req, res) => {
+  res.json(getNewsStatus());
 });
 
 // No hardcoded conflicts - using verified manual database only
