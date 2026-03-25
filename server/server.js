@@ -1247,7 +1247,7 @@ app.get('*', (req, res) => {
   }
   
   // Known SPA routes — serve index.html with 200
-  const knownRoutes = ['/', '/live-map', '/blog', '/nuke', '/timeline', '/attacks',
+  const knownRoutes = ['/', '/live-map', '/blog', '/nuke', '/timeline', '/quiz', '/attacks',
     '/is-ww3-happening', '/world-war-3-news', '/iran-nuclear-deal',
     '/iran-us-conflict', '/israel-hezbollah-conflict', '/pak-afghan-conflict',
     '/about', '/privacy'];

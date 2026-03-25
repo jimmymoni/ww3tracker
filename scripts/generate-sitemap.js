@@ -66,6 +66,13 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   </url>
   
   <url>
+    <loc>${baseUrl}/quiz</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
+  <url>
     <loc>${baseUrl}/nuke</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>

@@ -19,6 +19,7 @@ const routes = [
   '/blog',
   '/live-map',
   '/timeline',
+  '/quiz',
   '/attacks',
   '/nuke',
   '/is-ww3-happening',

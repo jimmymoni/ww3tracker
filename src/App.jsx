@@ -24,6 +24,7 @@ const AttacksArchivePage = lazy(() => import('./pages/AttacksArchivePage'));
 
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const NukeSimulatorPage = lazy(() => import('./pages/NukeSimulatorPage'));
+const WW3QuizPage = lazy(() => import('./pages/WW3QuizPage'));
 
 // Trust Pages
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -31,7 +32,8 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 
 // Components
 const BreakingAlert = lazy(() => import('./components/BreakingAlert'));
-const ConflictMap = lazy(() => import('./components/ConflictMap'));
+const WW3Counter = lazy(() => import('./components/WW3Counter'));
+const WW3QuizHome = lazy(() => import('./components/WW3QuizHome'));
 
 const EmailSignup = lazy(() => import('./components/EmailSignup'));
 const LatestBlogHero = lazy(() => import('./components/LatestBlogHero'));
@@ -50,9 +52,9 @@ import { fetchGameState, getCachedData } from './lib/api';
 const NavLinks = ({ mobile = false, onClose }) => {
   const links = [
     { to: '/', label: 'Home' },
-    { to: '/live-map', label: 'Live Map' },
-    { to: '/blog', label: 'WW3 News' },
-    { to: '/nuke', label: '☢️ Nuke Sim', external: true },
+    { to: '/blog', label: 'News' },
+    { to: '/quiz', label: 'Quiz' },
+    { to: '/nuke', label: 'Nuke Sim', external: true },
   ];
 
   if (mobile) {
@@ -78,8 +80,8 @@ const DesktopNav = () => (
   <nav className="hidden lg:flex items-center gap-1">
     {[
       { to: '/', label: 'Home' },
-      { to: '/live-map', label: 'Live Map' },
-      { to: '/blog', label: 'WW3 News' },
+      { to: '/blog', label: 'News' },
+      { to: '/quiz', label: 'Quiz' },
     ].map(link => (
       <Link
         key={link.to}
@@ -171,17 +173,15 @@ const FooterNav = () => (
   <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-4">
     <Link to="/" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Home</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/live-map" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Live Map</Link>
+    <Link to="/blog" className="text-gray-500 hover:text-white text-xs font-body transition-colors">News</Link>
     <span className="text-gray-700">•</span>
-    <Link to="/blog" className="text-gray-500 hover:text-white text-xs font-body transition-colors">WW3 News</Link>
+    <Link to="/quiz" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Quiz</Link>
     <span className="text-gray-700">•</span>
     <Link to="/timeline" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Timeline</Link>
     <span className="text-gray-700">•</span>
     <a href="/nuke" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Nuke Sim</a>
     <span className="text-gray-700">•</span>
     <Link to="/about" className="text-gray-500 hover:text-white text-xs font-body transition-colors">About</Link>
-    <span className="text-gray-700">•</span>
-    <Link to="/privacy" className="text-gray-500 hover:text-white text-xs font-body transition-colors">Privacy</Link>
   </div>
 );
 
@@ -211,37 +211,16 @@ const LoadingScreen = () => (
   </div>
 );
 
-// Live Map Page - Full screen map
-function LiveMapPage() {
-  return (
-    <div className="min-h-screen bg-grid text-white pb-16">
-      <Header />
-      <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        <Suspense fallback={<div className="h-[600px] bg-black/40 rounded-2xl animate-pulse" />}>
-          <ConflictMap />
-        </Suspense>
-      </main>
-      <Disclaimer />
-    </div>
-  );
-}
-
-// Homepage - Redesigned for traffic growth with SEO
+// Homepage - New welcoming design with quiz centerpiece
 function HomePage() {
   const cachedState = getCachedData('gameState');
   const [gameState, setGameState] = useState(cachedState || { tension: 35, breakingAlert: null });
   const [initialLoading, setInitialLoading] = useState(!cachedState);
 
   // Get blog posts - latest first
-  const sortedPosts = [...blogPosts].sort((a, b) => {
-    // Simple date sort (assuming format like "March 5, 2026")
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateB - dateA;
-  });
-
+  const sortedPosts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
   const latestPost = sortedPosts[0];
-  const morePosts = sortedPosts.slice(1, 5); // Next 4 posts
+  const morePosts = sortedPosts.slice(1, 4);
 
   useEffect(() => {
     const load = async () => {
@@ -263,103 +242,145 @@ function HomePage() {
 
   if (initialLoading) return <LoadingScreen />;
 
-  // FAQ data for AI citation optimization
-  const homeFAQData = [
-    {
-      question: "What is the current status of the US-Iran war?",
-      answer: "The US-Iran war began on March 17, 2026. Current operations include Israeli strikes on Iranian leadership in Tehran, US airstrikes on Bandar Abbas, Iranian missile attacks on Israel and US bases, and ongoing hostilities across the Middle East."
-    },
-    {
-      question: "How many casualties in the US-Iran war?",
-      answer: "The conflict has resulted in significant casualties including Iranian military personnel from strikes in Tehran and Bandar Abbas, US casualties from Iranian missile attacks, Israeli losses from missile strikes, and civilian casualties across the region."
-    },
-    {
-      question: "What weapons is Iran using?",
-      answer: "Iran has deployed ballistic missiles (Shahab and Emad series), cruise missiles, and suicide drone swarms (Shahed-136) targeting Israel, US bases, and commercial shipping in the Persian Gulf."
-    },
-    {
-      question: "Is the Strait of Hormuz still open?",
-      answer: "The Strait of Hormuz remains operational but volatile. This waterway handles 20% of global oil shipments. Military activity poses risks to international shipping and energy markets."
-    }
-  ];
-
   return (
     <>
-      {/* Homepage SEO - Optimized for US-Iran War queries */}
       <PageSEO
-        title="WW3 Tracker | Live US-Iran War Map & Analysis"
-        description="Real-time tracking of the US-Iran conflict. Interactive map of every strike, verified news, and military analysis. See what's happening now."
+        title="WW3 Tracker | Understanding the US-Iran Conflict"
+        description="Clear, fact-based analysis of the US-Iran war. Test your knowledge, track developments, and understand what's really happening."
         pathname="/"
       />
       
       <Helmet>
-        <meta name="keywords" content="US-Iran war, Iran conflict map, WW3 tracker, World War 3, US strikes Iran, Iran missiles, live war map, military casualties, Strait of Hormuz, Tehran, Bandar Abbas" />
+        <meta name="keywords" content="US-Iran war, Iran conflict, WW3 tracker, World War 3, US strikes Iran, Iran missiles, war analysis" />
       </Helmet>
 
-      {/* Structured Data for Homepage */}
-      <WebsiteSchema />
-      <OrganizationSchema />
-      <FAQSchema faqs={homeFAQData} />
+      <div className="min-h-screen bg-[#0a0a0f] text-white">
+        <Header />
 
-      <div className="min-h-screen bg-grid text-white pb-16">
-      <Header />
+        <Suspense fallback={null}>
+          <BreakingAlert 
+            alert={gameState.breakingAlert} 
+            onDismiss={() => setGameState(prev => ({ ...prev, breakingAlert: null }))} 
+          />
+        </Suspense>
 
-      <Suspense fallback={null}>
-        <BreakingAlert alert={gameState.breakingAlert} onDismiss={() => setGameState(prev => ({ ...prev, breakingAlert: null }))} />
-      </Suspense>
+        <main className="max-w-6xl mx-auto px-4 py-8">
+          {/* Hero Section - Welcoming */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-10"
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              Understanding the <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">US-Iran Conflict</span>
+            </h1>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+              Clear, fact-based analysis of what's happening and why it matters. 
+              No sensationalism. No noise. Just the story.
+            </p>
+          </motion.section>
 
-      <Suspense fallback={null}>
-
-      </Suspense>
-
-      <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        {/* 2. Conflict Map - Crown Jewel */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <Suspense fallback={<div className="h-[500px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <ConflictMap />
-          </Suspense>
-        </motion.section>
-
-        {/* 3. Impact Summary Bar (compact stats) */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Suspense fallback={<div className="h-[80px] bg-black/40 rounded-2xl animate-pulse" />}>
-
-          </Suspense>
-        </motion.section>
-
-        {/* 4. Latest Blog Post (Hero) */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-          <Suspense fallback={<div className="h-[400px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <LatestBlogHero post={latestPost} />
-          </Suspense>
-        </motion.section>
-
-        {/* 5. More Blog Posts (Grid) */}
-        {morePosts.length > 0 && (
-          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-            <Suspense fallback={<div className="h-[300px] bg-black/40 rounded-2xl animate-pulse" />}>
-              <BlogPostGrid posts={morePosts} />
+          {/* WW3 Counter - Real-time Tension */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.1 }}
+            className="mb-8"
+          >
+            <Suspense fallback={<div className="h-[60px] bg-white/5 rounded-xl animate-pulse" />}>
+              <WW3Counter tension={gameState.tension} />
             </Suspense>
           </motion.section>
-        )}
 
-        {/* 6. Nuke Sim CTA */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-          <Suspense fallback={<div className="h-[100px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <NukeSimCTA />
-          </Suspense>
-        </motion.section>
+          {/* Two Column Layout: Quiz + Latest News */}
+          <div className="grid lg:grid-cols-2 gap-6 mb-10">
+            {/* Quiz Column */}
+            <motion.section 
+              initial={{ opacity: 0, x: -20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ delay: 0.2 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-white">Test Your Knowledge</h2>
+                <span className="text-xs text-gray-500">15 questions</span>
+              </div>
+              <Suspense fallback={<div className="h-[400px] bg-white/5 rounded-2xl animate-pulse" />}>
+                <WW3QuizHome />
+              </Suspense>
+            </motion.section>
 
-        {/* 7. Email Signup */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6">
-          <Suspense fallback={<div className="h-[200px] bg-black/40 rounded-2xl animate-pulse" />}>
-            <EmailSignup />
-          </Suspense>
-        </motion.section>
+            {/* News Column */}
+            <motion.section 
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ delay: 0.3 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-white">Latest Analysis</h2>
+                <a href="/blog" className="text-sm text-orange-400 hover:text-orange-300">View all</a>
+              </div>
+              <div className="space-y-4">
+                {latestPost && (
+                  <Suspense fallback={<div className="h-[200px] bg-white/5 rounded-xl animate-pulse" />}>
+                    <LatestBlogHero post={latestPost} />
+                  </Suspense>
+                )}
+                {morePosts.length > 0 && (
+                  <Suspense fallback={<div className="h-[150px] bg-white/5 rounded-xl animate-pulse" />}>
+                    <BlogPostGrid posts={morePosts} />
+                  </Suspense>
+                )}
+              </div>
+            </motion.section>
+          </div>
 
-        <Disclaimer />
-      </main>
-    </div>
+          {/* Stats Row */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.4 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
+          >
+            {[
+              { label: 'Conflict Started', value: 'March 17, 2026' },
+              { label: 'Days Active', value: Math.floor((new Date() - new Date('2026-03-17')) / (1000 * 60 * 60 * 24)) },
+              { label: 'Articles', value: '40+' },
+              { label: 'Data Sources', value: 'Verified' },
+            ].map((stat, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <p className="text-xl font-bold text-white">{stat.value}</p>
+                <p className="text-xs text-gray-500 uppercase tracking-wider">{stat.label}</p>
+              </div>
+            ))}
+          </motion.section>
+
+          {/* Nuke Sim CTA */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.5 }}
+            className="mb-8"
+          >
+            <Suspense fallback={<div className="h-[80px] bg-white/5 rounded-xl animate-pulse" />}>
+              <NukeSimCTA />
+            </Suspense>
+          </motion.section>
+
+          {/* Email Signup */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.6 }}
+            className="mb-8"
+          >
+            <Suspense fallback={<div className="h-[150px] bg-white/5 rounded-xl animate-pulse" />}>
+              <EmailSignup />
+            </Suspense>
+          </motion.section>
+
+          <Disclaimer />
+        </main>
+      </div>
     </>
   );
 }
@@ -372,9 +393,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/live-map" element={<LiveMapPage />} />
           
-          {/* Blog */}
+          {/* Blog }
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={
             <Suspense fallback={<LoadingScreen />}>
@@ -393,6 +413,13 @@ function App() {
           <Route path="/timeline" element={
             <Suspense fallback={<LoadingScreen />}>
               <TimelinePage />
+            </Suspense>
+          } />
+          
+          {/* Quiz */}
+          <Route path="/quiz" element={
+            <Suspense fallback={<LoadingScreen />}>
+              <WW3QuizPage />
             </Suspense>
           } />
           
@@ -444,15 +471,16 @@ function App() {
           } />
           
           {/* Redirect deleted pages to home */}
-          <Route path="/conflict-tracker" element={<Navigate to="/live-map" replace />} />
-          <Route path="/live-monitor" element={<Navigate to="/live-map" replace />} />
+          <Route path="/conflict-tracker" element={<Navigate to="/" replace />} />
+          <Route path="/live-monitor" element={<Navigate to="/" replace />} />
+          <Route path="/live-map" element={<Navigate to="/" replace />} />
           <Route path="/global-risk-monitor" element={<Navigate to="/" replace />} />
           <Route path="/ww3-risk-calculator" element={<Navigate to="/" replace />} />
           <Route path="/why-conflicts-happen" element={<Navigate to="/blog" replace />} />
           <Route path="/relationships" element={<Navigate to="/blog" replace />} />
           <Route path="/multi-conflict-timeline" element={<Navigate to="/timeline" replace />} />
           <Route path="/us-iran-war-tracker" element={<Navigate to="/iran-us-conflict" replace />} />
-          <Route path="/iran-conflict-live" element={<Navigate to="/live-map" replace />} />
+          <Route path="/iran-conflict-live" element={<Navigate to="/" replace />} />
           <Route path="/ww3-probability" element={<Navigate to="/" replace />} />
           
           {/* Trust Pages */}
