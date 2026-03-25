@@ -32,12 +32,11 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 
 // Components
 const BreakingAlert = lazy(() => import('./components/BreakingAlert'));
-const WW3Counter = lazy(() => import('./components/WW3Counter'));
+const WW3CounterHero = lazy(() => import('./components/WW3CounterHero'));
 const WW3QuizHome = lazy(() => import('./components/WW3QuizHome'));
-
+const BlogCard = lazy(() => import('./components/BlogCard'));
+const BlogCardSmall = lazy(() => import('./components/BlogCardSmall'));
 const EmailSignup = lazy(() => import('./components/EmailSignup'));
-const LatestBlogHero = lazy(() => import('./components/LatestBlogHero'));
-const BlogPostGrid = lazy(() => import('./components/BlogPostGrid'));
 const NukeSimCTA = lazy(() => import('./components/NukeSimCTA'));
 
 
@@ -211,7 +210,7 @@ const LoadingScreen = () => (
   </div>
 );
 
-// Homepage - New welcoming design with quiz centerpiece
+// Homepage - Clean, minimal design with WW3 Counter as hero
 function HomePage() {
   const cachedState = getCachedData('gameState');
   const [gameState, setGameState] = useState(cachedState || { tension: 35, breakingAlert: null });
@@ -220,7 +219,7 @@ function HomePage() {
   // Get blog posts - latest first
   const sortedPosts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
   const latestPost = sortedPosts[0];
-  const morePosts = sortedPosts.slice(1, 4);
+  const morePosts = sortedPosts.slice(1, 3); // Only 2 more posts
 
   useEffect(() => {
     const load = async () => {
@@ -245,16 +244,16 @@ function HomePage() {
   return (
     <>
       <PageSEO
-        title="WW3 Tracker | Understanding the US-Iran Conflict"
-        description="Clear, fact-based analysis of the US-Iran war. Test your knowledge, track developments, and understand what's really happening."
+        title="WW3 Tracker | Live Conflict Monitor"
+        description="Real-time WW3 probability tracking and in-depth analysis of the US-Iran conflict."
         pathname="/"
       />
       
       <Helmet>
-        <meta name="keywords" content="US-Iran war, Iran conflict, WW3 tracker, World War 3, US strikes Iran, Iran missiles, war analysis" />
+        <meta name="keywords" content="WW3 tracker, WW3 probability, Iran war, conflict monitor" />
       </Helmet>
 
-      <div className="min-h-screen bg-[#0a0a0f] text-white">
+      <div className="min-h-screen bg-black text-white">
         <Header />
 
         <Suspense fallback={null}>
@@ -264,116 +263,64 @@ function HomePage() {
           />
         </Suspense>
 
-        <main className="max-w-6xl mx-auto px-4 py-8">
-          {/* Hero Section - Welcoming */}
+        <main className="max-w-4xl mx-auto px-4 py-6">
+          
+          {/* WW3 Counter - MAIN HERO ELEMENT */}
           <motion.section 
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-10"
+            className="mb-8"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              Understanding the <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">US-Iran Conflict</span>
-            </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-              Clear, fact-based analysis of what's happening and why it matters. 
-              No sensationalism. No noise. Just the story.
-            </p>
+            <Suspense fallback={<div className="h-[120px] bg-white/5 rounded-2xl animate-pulse" />}>
+              <WW3CounterHero tension={gameState.tension} />
+            </Suspense>
           </motion.section>
 
-          {/* WW3 Counter - Real-time Tension */}
+          {/* Quiz Section - Clean Design */}
           <motion.section 
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ delay: 0.1 }}
             className="mb-8"
           >
-            <Suspense fallback={<div className="h-[60px] bg-white/5 rounded-xl animate-pulse" />}>
-              <WW3Counter tension={gameState.tension} />
+            <Suspense fallback={<div className="h-[350px] bg-white/5 rounded-2xl animate-pulse" />}>
+              <WW3QuizHome />
             </Suspense>
           </motion.section>
 
-          {/* Two Column Layout: Quiz + Latest News */}
-          <div className="grid lg:grid-cols-2 gap-6 mb-10">
-            {/* Quiz Column */}
-            <motion.section 
-              initial={{ opacity: 0, x: -20 }} 
-              animate={{ opacity: 1, x: 0 }} 
-              transition={{ delay: 0.2 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Test Your Knowledge</h2>
-                <span className="text-xs text-gray-500">15 questions</span>
-              </div>
-              <Suspense fallback={<div className="h-[400px] bg-white/5 rounded-2xl animate-pulse" />}>
-                <WW3QuizHome />
-              </Suspense>
-            </motion.section>
-
-            {/* News Column */}
-            <motion.section 
-              initial={{ opacity: 0, x: 20 }} 
-              animate={{ opacity: 1, x: 0 }} 
-              transition={{ delay: 0.3 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Latest Analysis</h2>
-                <a href="/blog" className="text-sm text-orange-400 hover:text-orange-300">View all</a>
-              </div>
-              <div className="space-y-4">
-                {latestPost && (
-                  <Suspense fallback={<div className="h-[200px] bg-white/5 rounded-xl animate-pulse" />}>
-                    <LatestBlogHero post={latestPost} />
-                  </Suspense>
-                )}
-                {morePosts.length > 0 && (
-                  <Suspense fallback={<div className="h-[150px] bg-white/5 rounded-xl animate-pulse" />}>
-                    <BlogPostGrid posts={morePosts} />
-                  </Suspense>
-                )}
-              </div>
-            </motion.section>
-          </div>
-
-          {/* Stats Row */}
+          {/* Simple Blog Section */}
           <motion.section 
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.4 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
-          >
-            {[
-              { label: 'Conflict Started', value: 'March 17, 2026' },
-              { label: 'Days Active', value: Math.floor((new Date() - new Date('2026-03-17')) / (1000 * 60 * 60 * 24)) },
-              { label: 'Articles', value: '40+' },
-              { label: 'Data Sources', value: 'Verified' },
-            ].map((stat, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-                <p className="text-xl font-bold text-white">{stat.value}</p>
-                <p className="text-xs text-gray-500 uppercase tracking-wider">{stat.label}</p>
-              </div>
-            ))}
-          </motion.section>
-
-          {/* Nuke Sim CTA */}
-          <motion.section 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.2 }}
             className="mb-8"
           >
-            <Suspense fallback={<div className="h-[80px] bg-white/5 rounded-xl animate-pulse" />}>
-              <NukeSimCTA />
-            </Suspense>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider">Latest</h2>
+              <Link to="/blog" className="text-xs text-orange-400 hover:text-orange-300">View all →</Link>
+            </div>
+            <div className="space-y-3">
+              {latestPost && (
+                <Suspense fallback={<div className="h-[100px] bg-white/5 rounded-xl animate-pulse" />}>
+                  <BlogCard post={latestPost} />
+                </Suspense>
+              )}
+              {morePosts.map(post => (
+                <Suspense key={post.id} fallback={<div className="h-[80px] bg-white/5 rounded-xl animate-pulse" />}>
+                  <BlogCardSmall post={post} />
+                </Suspense>
+              ))}
+            </div>
           </motion.section>
 
           {/* Email Signup */}
           <motion.section 
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.3 }}
             className="mb-8"
           >
-            <Suspense fallback={<div className="h-[150px] bg-white/5 rounded-xl animate-pulse" />}>
+            <Suspense fallback={<div className="h-[100px] bg-white/5 rounded-xl animate-pulse" />}>
               <EmailSignup />
             </Suspense>
           </motion.section>
